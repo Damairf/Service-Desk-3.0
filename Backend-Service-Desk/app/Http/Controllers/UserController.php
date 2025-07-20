@@ -39,4 +39,22 @@ class UserController extends Controller
 
         return response(["message" => "User ditambahkan", "data" => $newUser]);
     }
+
+    public function profile(Request $request){
+        $user = User::where("ID_User", $request->ID_User)->get();
+
+        return response(["message"=>"ini endpoint profile", "data user" => $user]);
+    }
+
+    public function updateProfile(Request $request){
+        $user = User::where("ID_User", $request->ID_User)->first();
+        $Password = Hash::make($request->Password);
+        $Nama_Depan = $request->Nama_Depan;
+
+        User::where('ID_User', $user)
+        ->update(['Nama_Depan'=>$Nama_Depan, 'Password'=>$Password]);
+
+
+        return response (["ini endpoint edit untuk user " => $user]);
+    }
 }
