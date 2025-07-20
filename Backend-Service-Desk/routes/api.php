@@ -21,12 +21,11 @@ Route::middleware([CekToken::class])->group(function(){
 Route::get('/user/profile',[UserController::class, 'profile']);
 Route::put('/user/profile', [UserController::class, 'update_Profile']);
 
+// endpoint user
+Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
 
-Route::get('/user/profile',[AuthController::class, 'profile']);
-Route::get('/user/edit',[AuthController::class, 'edit']);
-Route::get('/user/laporan',[AuthController::class, 'laporan']);
 
-// api User Keseluruhan
+// endpoint pengelola
 Route::post('/user',[UserController::class, 'createOne_User']);
 Route::get('/user',[UserController::class, 'findAll_User']);
 Route::post('/user',[UserController::class, 'createOne_User']);
@@ -50,7 +49,7 @@ Route::delete('/organisasi/{organisasiId}',[OrganisasiController::class, 'delete
 Route::get('/status',[StatusController::class, 'findAll_Status']);
 Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
 
-Route::get('/pelayanan',[PelayananController::class, 'getAll_Permintaan']);
+Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 
 // endpoint unit pelaksana
 
@@ -58,7 +57,5 @@ Route::get('/pelayanan',[PelayananController::class, 'getAll_Permintaan']);
 
 // endpoint kepala dinas
 
-// api Pelayanan
-Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
-Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
+
 });
