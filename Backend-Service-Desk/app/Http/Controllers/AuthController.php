@@ -50,6 +50,6 @@ class AuthController extends Controller
 
     public function edit(){
         return response (["ini endpoint edit"]);
-    }
+    } wadaw
 
 }
