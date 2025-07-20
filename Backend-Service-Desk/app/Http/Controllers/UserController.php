@@ -41,7 +41,7 @@ class UserController extends Controller
     }
 
     public function profile(Request $request){
-        $user = User::where("ID_User", $request->ID_User)->get();
+        $user = User::select('ID_User')->where("ID_User", $request->ID_User)->get();
 
         return response(["message"=>"ini endpoint profile", "data user" => $user]);
     }
@@ -55,7 +55,7 @@ class UserController extends Controller
         ->update(['Nama_Depan'=>$Nama_Depan, 'Password'=>$Password]);
 
 
-        return response (["profile diupdate menjadi " => $user->fresh()]);
+        return response (["profile Anda     diupdate menjadi " => $user->fresh()]);
     }
 
     public function update_User(Request $request){
