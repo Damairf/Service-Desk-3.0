@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ID_Jabatan')->nullable(false);
             $table->unsignedBigInteger('ID_Organisasi')->nullable(false);
             $table->unsignedBigInteger('ID_Status')->nullable(false);
-            $table->decimal('NIP', 18, 0)->nullable(false);
+            $table->decimal('NIP', 18, 0)->nullable(false)->unique();
             $table->string('Nama_Depan')->nullable(false);
             $table->string('Nama_Belakang')->nullable(false);
             $table->string('Password')->nullable(false);
