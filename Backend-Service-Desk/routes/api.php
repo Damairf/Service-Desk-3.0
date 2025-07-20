@@ -49,6 +49,7 @@ Route::get('/status',[StatusController::class, 'findAll_Status']);
 Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
 
 Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
+Route::put('/pelayanan/{pelayananId}', [PelayananController::class, 'Verif_Pengelola']);
 
 // endpoint unit pelaksana
 

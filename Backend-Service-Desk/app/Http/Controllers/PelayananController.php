@@ -47,4 +47,19 @@ class PelayananController extends Controller
 
         return response(["message" => "Layanan ditambahkan", "data" => $newPelayanan]);
     }
+
+    public function Verif_Pengelola(Request $request){
+        $pelayananId = $request->route('pelayananId');
+        $dataPelayanan = $request->only([
+            'ID_Unit'
+        ]);
+
+        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
+
+        $pelayanan->update($dataPelayanan);
+
+        return response(["Pelayanan diverifikasi menjadi " => $pelayanan->fresh()]);
+    
+    }
+        
 }
