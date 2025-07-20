@@ -23,6 +23,7 @@ Route::put('/user/profile', [UserController::class, 'update_Profile']);
 
 // endpoint user
 Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
+Route::put('/pelayanan/tambah/survey/{pelayananId}',[PelayananController::class, 'putSurvey']);
 
 // endpoint pengelola
 Route::post('/user',[UserController::class, 'createOne_User']);
