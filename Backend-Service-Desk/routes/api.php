@@ -21,10 +21,13 @@ Route::middleware([CekToken::class])->group(function(){
 Route::get('/user/profile',[UserController::class, 'profile']);
 Route::put('/user/profile', [UserController::class, 'update_Profile']);
 
-// endpoint user
 
+Route::get('/user/profile',[AuthController::class, 'profile']);
+Route::get('/user/edit',[AuthController::class, 'edit']);
+Route::get('/user/laporan',[AuthController::class, 'laporan']);
 
-// endpoint pengelola
+// api User Keseluruhan
+Route::post('/user',[UserController::class, 'createOne_User']);
 Route::get('/user',[UserController::class, 'findAll_User']);
 Route::post('/user',[UserController::class, 'createOne_User']);
 Route::put('/user/{userId}', [UserController::class, 'update_User']);
@@ -55,4 +58,7 @@ Route::get('/pelayanan',[PelayananController::class, 'getAll_Permintaan']);
 
 // endpoint kepala dinas
 
+// api Pelayanan
+Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
+Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
 });
