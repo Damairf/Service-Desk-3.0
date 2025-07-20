@@ -27,6 +27,14 @@ class JenisPelayananSeeder extends Seeder
                 "Nama_Jenis_Pelayanan" => "Pembuatan Website",
                 "Persyaratan" => "Peruntukannya jelas"
             ],
+            [
+                "Nama_Jenis_Pelayanan" => "Hosting Website",
+                "Persyaratan" => "Harus sudah memiliki website"
+            ],
+            [
+                "Nama_Jenis_Pelayanan" => "Pembuatan desain logo",
+                "Persyaratan" => "Memiliki konsep logo"
+            ],
         ]);
     }
 }

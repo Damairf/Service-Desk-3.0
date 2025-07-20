@@ -56,5 +56,6 @@ Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 
 // endpoint kepala dinas
 Route::get('/pelayanan/{pelayananId}',[PelayananController::class, 'getByID_Layanan']);
+Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 
 });
