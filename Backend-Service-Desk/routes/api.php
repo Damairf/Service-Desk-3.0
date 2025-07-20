@@ -24,7 +24,7 @@ Route::put('/user/profile', [UserController::class, 'update_Profile']);
 // endpoint pengelola
 Route::get('/user',[UserController::class, 'findAll_User']);
 Route::post('/user',[UserController::class, 'createOne_User']);
-Route::put('/user', [UserController::class, 'update_User']);
+Route::put('/user/{userId}', [UserController::class, 'update_User']);
 
 
 // endpoint uni pelaksana

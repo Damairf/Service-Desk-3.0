@@ -60,17 +60,11 @@ class UserController extends Controller
 
     public function update_User(Request $request){
         $userId = $request->route('userId');
-        $Nama_Depan = $request->Nama_Depan;
-        $Nama_Belakang = $request->Nama_Belakang;
-        $NIP = $request->Nama_Depan;
-        $Nama_Depan = $request->Nama_Depan;
-        $Nama_Depan = $request->Nama_Depan;
-        $Nama_Depan = $request->Nama_Depan;
-        $Nama_Depan = $request->Nama_Depan;
+        $dataUser = $request->except('Password');
+        $user = User::where('ID_User', $userId)->first();
 
-        Jabatan::where('ID_Jabatan', $jabatanId)
-        ->update(['Nama_Jabatan'=>$Nama_Jabatan]);
+        $user->update($dataUser);
 
-        return response("Jabatan Diperbarui");
+        return response(["User Diperbarui menjadi " => $user->fresh()]);
     }
 }
