@@ -41,7 +41,7 @@ class UserController extends Controller
     }
 
     public function profile(Request $request){
-        $user = User::select('ID_User')->where("ID_User", $request->ID_User)->get();
+        $user = User::where("ID_User", $request->ID_User)->get();
 
         return response(["message"=>"ini endpoint profile", "data user" => $user]);
     }
