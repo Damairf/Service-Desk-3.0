@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('Deskripsi')->nullable(false);
             $table->string('Surat_Dinas_Path')->nullable(false);
             $table->string('Lampiran_Path')->nullable(false);
-            $table->unsignedBigInteger('ID_Unit');
-            $table->unsignedBigInteger('ID_Teknis');
+            $table->unsignedBigInteger('ID_Unit')->nullable(true);
+            $table->unsignedBigInteger('ID_Teknis')->nullable(true);
             $table->string('Rating')->nullable(true);
             $table->string('Isi_Survey')->nullable(true);
             $table->timestamps();

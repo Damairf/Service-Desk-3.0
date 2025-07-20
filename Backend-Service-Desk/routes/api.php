@@ -24,7 +24,6 @@ Route::put('/user/profile', [UserController::class, 'update_Profile']);
 // endpoint user
 Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
 
-
 // endpoint pengelola
 Route::post('/user',[UserController::class, 'createOne_User']);
 Route::get('/user',[UserController::class, 'findAll_User']);
@@ -56,6 +55,6 @@ Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 // endpoint pelaksana teknis
 
 // endpoint kepala dinas
-
+Route::get('/pelayanan/{pelayananId}',[PelayananController::class, 'getByID_Layanan']);
 
 });
