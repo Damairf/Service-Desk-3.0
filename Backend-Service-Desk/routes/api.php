@@ -16,15 +16,18 @@ use Illuminate\Support\Facades\Route;
 Route::post('/user/login',[AuthController::class, 'login']);
 
 Route::middleware([CekToken::class])->group(function(){
-
-//endpoint user
+// endpoint fitur umum
 Route::get('/user/profile',[UserController::class, 'profile']);
-Route::put('/user/profile', [UserController::class, 'updateProfile']);
+Route::put('/user/profile', [UserController::class, 'update_Profile']);
 
-
-// api User Keseluruhan
-Route::post('/user',[UserController::class, 'createOne_User']);
+// endpoint user
+// endpoint pengelola
 Route::get('/user',[UserController::class, 'findAll_User']);
+Route::post('/user',[UserController::class, 'createOne_User']);
+Route::put('/user', [UserController::class, 'update_User']);
+
+
+// endpoint uni pelaksana
 
 // api Role
 Route::get('/role',[RoleController::class, 'findAll_Role']);

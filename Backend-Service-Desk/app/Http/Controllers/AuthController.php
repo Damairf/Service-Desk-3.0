@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-     public function login(Request $request)
-    {
+     public function login(Request $request){
+
         $NIP = $request->NIP;
         $Password = $request->Password;
 
@@ -18,7 +18,7 @@ class AuthController extends Controller
         
 
         if(!$user){
-            return response("NIP salah");
+            return response("NIP tidak ditemukan");
         }
 
         if(!Hash::check($Password, $user->Password)){
