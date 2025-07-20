@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 "Nama_Depan" => "User",
                 "Nama_Belakang" => "Staff",
                 "Password" => Hash::make('passworduser1'),
+                "Gambar_Path" => "Tidak ada gambar",
             ],
             [
                 "ID_Role" => 2,
@@ -34,6 +35,7 @@ class UserSeeder extends Seeder
                 "Nama_Depan" => "Pengelola",
                 "Nama_Belakang" => "Koordinator",
                 "Password" => Hash::make('passworduser2'),
+                "Gambar_Path" => "Tidak ada gambar",
             ],
             [
                 "ID_Role" => 3,
@@ -44,6 +46,7 @@ class UserSeeder extends Seeder
                 "Nama_Depan" => "Unit",
                 "Nama_Belakang" => "Staff",
                 "Password" => Hash::make('passworduser3'),
+                "Gambar_Path" => "Tidak ada gambar",
             ],
             [
                 "ID_Role" => 4,
@@ -54,6 +57,7 @@ class UserSeeder extends Seeder
                 "Nama_Depan" => "Teknis",
                 "Nama_Belakang" => "Tenaga",
                 "Password" => Hash::make('passworduser4'),
+                "Gambar_Path" => "Tidak ada gambar",
             ],
             [
                 "ID_Role" => 5,
@@ -64,6 +68,7 @@ class UserSeeder extends Seeder
                 "Nama_Depan" => "Kepala",
                 "Nama_Belakang" => "Dinas",
                 "Password" => Hash::make('passworduser5'),
+                "Gambar_Path" => "Tidak ada gambar",
             ],
         ]);
     }

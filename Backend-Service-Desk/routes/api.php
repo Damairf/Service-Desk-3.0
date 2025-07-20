@@ -8,7 +8,6 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CekToken;
-use App\Http\Middleware\CekRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +21,6 @@ Route::middleware([CekToken::class])->group(function(){
 Route::get('/user/profile',[AuthController::class, 'profile']);
 Route::get('/user/edit',[AuthController::class, 'edit']);
 Route::get('/user/laporan',[AuthController::class, 'laporan']);
-
 
 // api User Keseluruhan
 Route::post('/user',[UserController::class, 'createOne_User']);
@@ -46,6 +44,7 @@ Route::get('/organisasi',[OrganisasiController::class, 'findAll_Organisasi']);
 Route::get('/status',[StatusController::class, 'findAll_Status']);
 Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
 
-// api Permintaan
-Route::get('/pelayanan',[PelayananController::class, 'getAll_Permintaan']);
+// api Pelayanan
+Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
+Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
 });

@@ -10,7 +10,18 @@ class Pelayanan extends Model
 {
     protected $table = 'Pelayanan';
     protected $primaryKey = 'ID_Pelayanan';
-    protected $fillable = ['Perihal', 'Deskripsi', 'PIC', 'Lampiran', 'Progress', 'Lampiran_Path', 'Surat_Dinas_Path', 'ID_User', 'ID_Survey0', 'ID_Jenis_Pelayanan'];
+    protected $fillable = [
+        'Perihal',
+        'Deskripsi',
+        'Lampiran',
+        'Lampiran_Path',
+        'Surat_Dinas_Path',
+        'ID_User',
+        'ID_Survey',
+        'ID_Jenis_Pelayanan',
+        'ID_Unit',
+        'ID_Teknis'
+    ];
 
     public function User(): BelongsTo{
         return $this -> belongsTo( Organisasi::class, 'ID_User','ID_User');
