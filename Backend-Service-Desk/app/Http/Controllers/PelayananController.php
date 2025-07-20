@@ -62,4 +62,22 @@ class PelayananController extends Controller
     
     }
         
+
+    public function putSurvey(Request $request){
+        $pelayananId = $request->route('pelayananId');
+        // $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
+        $Rating = $request->Rating;
+        $Isi_Survey = $request->Isi_Survey;
+
+        Pelayanan::where('ID_Pelayanan', $pelayananId)->update([
+            'Rating' => $Rating,
+            'Isi_Survey' => $Isi_Survey
+        ]);
+
+        $updateSurvey = Pelayanan::where('ID_Pelayanan', $pelayananId)
+        ->select('ID_Pelayanan', 'Rating', 'Isi_Survey')
+        ->first();
+
+        return response(["message" => "Survey ditambahkan", "data" => $updateSurvey]);
+    }
 }
