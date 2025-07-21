@@ -20,6 +20,7 @@ class PelayananController extends Controller
         return response()->json($pelayanan);
     }
 
+    // hanya untuk role user mengajukan layanan baru
     public function postLayanan(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
         $ID_Jenis_Pelayanan = $request->ID_Jenis_Pelayanan;
@@ -27,10 +28,6 @@ class PelayananController extends Controller
         $Deskripsi = $request->Deskripsi;
         $Surat_Dinas_Path = $request->Surat_Dinas_Path;
         $Lampiran_Path = $request->Lampiran_Path; 
-        $ID_Unit = $request->ID_Unit; 
-        $ID_Teknis = $request->ID_Teknis;
-        $Rating = $request->Rating;
-        $Isi_Survey = $request->Isi_Survey;
 
         $newPelayanan = Pelayanan::create([
             'ID_User' => $ID_User,
@@ -38,19 +35,15 @@ class PelayananController extends Controller
             'Perihal' => $Perihal,
             'Deskripsi' => $Deskripsi,
             'Surat_Dinas_Path' => $Surat_Dinas_Path,
-            'Lampiran_Path' => $Lampiran_Path,
-            'ID_Unit' => $ID_Unit,
-            'ID_Teknis' => $ID_Teknis,
-            'Rating' => $Rating,
-            'Isi_Survey' => $Isi_Survey
+            'Lampiran_Path' => $Lampiran_Path
         ]);
 
         return response(["message" => "Layanan ditambahkan", "data" => $newPelayanan]);
     }
 
+    // hanya untuk role user memberikan survey
     public function putSurvey(Request $request){
         $pelayananId = $request->route('pelayananId');
-        // $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
         $Rating = $request->Rating;
         $Isi_Survey = $request->Isi_Survey;
 
@@ -64,5 +57,21 @@ class PelayananController extends Controller
         ->first();
 
         return response(["message" => "Survey ditambahkan", "data" => $updateSurvey]);
+    }
+
+    // untuk role pelaksan teknis mengunggah laporan hasil 
+    public function putLaporan_Hasil(Request $request){
+        $pelayananId = $request->route('pelayananId');
+        $Surat_Laporan_Hasil = $request->Surat_Laporan_Hasil;
+
+        Pelayanan::where('ID_Pelayanan', $pelayananId)->update([
+            'Surat_Laporan_Hasil' => $Surat_Laporan_Hasil
+        ]);
+
+        $updateLaporan = Pelayanan::where('ID_Pelayanan', $pelayananId)
+        ->select('ID_Pelayanan', 'Surat_Laporan_Hasil')
+        ->first();
+
+        return response(["message" => "Laporan hasil ditambahkan", "data" => $updateLaporan]);
     }
 }

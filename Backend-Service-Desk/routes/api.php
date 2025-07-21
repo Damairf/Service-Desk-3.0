@@ -54,6 +54,7 @@ Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 // endpoint unit pelaksana
 
 // endpoint pelaksana teknis
+Route::put('/pelayanan/tambah/hasil/{pelayananId}',[PelayananController::class, 'putLaporan_Hasil']);
 
 // endpoint kepala dinas
 Route::get('/pelayanan/{pelayananId}',[PelayananController::class, 'getByID_Layanan']);

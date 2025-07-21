@@ -17,10 +17,12 @@ class Pelayanan extends Model
         'Lampiran_Path',
         'Surat_Dinas_Path',
         'ID_User',
-        'ID_Survey',
         'ID_Jenis_Pelayanan',
         'ID_Unit',
-        'ID_Teknis'
+        'ID_Teknis',
+        'Rating',
+        'Isi_Survey',
+        'Surat_Laporan_Hasil'
     ];
 
     public function User(): BelongsTo{

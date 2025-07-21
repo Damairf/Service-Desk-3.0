@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ID_Teknis')->nullable(true);
             $table->string('Rating')->nullable(true);
             $table->string('Isi_Survey')->nullable(true);
+            $table->string('Surat_Laporan_Hasil')->nullable(true);
             $table->timestamps();
 
             $table->foreign('ID_User')->references('ID_User')->on('user');
