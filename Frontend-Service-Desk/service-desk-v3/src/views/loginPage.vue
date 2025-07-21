@@ -1,19 +1,32 @@
-<script setup>
+<script>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
-const username = ref('')
-const password = ref('')
-const message = ref('')
+import axios from 'axios'
 
-function login() {
-  if (username.value === 'admin' && password.value === '1234') {
-    message.value = '✅ Login successful!'
-    router.push('/beranda')
-  } else {
-    message.value = '❌ Invalid username or password.'
-  }
+export default{
+  data(){
+    return{
+      NIP: "",
+      Password: ""
+    }
+  },
+  methods:{
+    login(){
+      axios.post('http://127.0.0.1:8000/api/user/login', {
+        NIP: this.NIP,
+        Password: this.Password
+      })
+      .then(function(response){
+        console.log(response);
+        localStorage.setItem('Token', response.data.data)
+      })
+      .catch(function(error){
+        console.log(error)
+      });
+    }
+  },
 }
 </script>
 
@@ -27,8 +40,8 @@ function login() {
 
       <div class="login-box">
         <h2 class="loginTitle">Login</h2>
-        <input class="placeholderLgn" v-model="username" type="text" placeholder="Username" />
-        <input class="placeholderLgn" v-model="password" type="password" placeholder="Password" />
+        <input class="placeholderLgn" v-model="NIP" type="integer" placeholder="NIP" />
+        <input class="placeholderLgn" v-model="Password" type="password" placeholder="Password" />
         <button class= "login" @click="login">Login</button>
         <p class= "invalidLogin">{{ message }}</p>
       </div>

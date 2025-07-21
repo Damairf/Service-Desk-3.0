@@ -147,13 +147,13 @@
   align-content: center;
   background-color: #099D49;
   color: white;
-  width: 74rem;
+  width: 100vw;
   padding-top: 0;
 }
 
 .akun{
   background-color: #0185DA;
-  width: 15rem;
+  width: 20vw;
   text-align: center;
   color: white;
 }
