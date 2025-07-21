@@ -41,6 +41,21 @@ class PelayananController extends Controller
         return response(["message" => "Layanan ditambahkan", "data" => $newPelayanan]);
     }
 
+    // untuk role pengelola memberikan ID Unit Pelaksana
+    public function Verif_Pengelola(Request $request){
+        $pelayananId = $request->route('pelayananId');
+        $dataPelayanan = $request->only([
+            'ID_Unit'
+        ]);
+
+        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
+
+        $pelayanan->update($dataPelayanan);
+
+        return response(["Pelayanan diverifikasi menjadi " => $pelayanan->fresh()]);
+    
+    }
+        
     // hanya untuk role user memberikan survey
     public function putSurvey(Request $request){
         $pelayananId = $request->route('pelayananId');
@@ -59,7 +74,7 @@ class PelayananController extends Controller
         return response(["message" => "Survey ditambahkan", "data" => $updateSurvey]);
     }
 
-    // untuk role pelaksan teknis mengunggah laporan hasil 
+    // untuk role pelaksana teknis mengunggah laporan hasil 
     public function putLaporan_Hasil(Request $request){
         $pelayananId = $request->route('pelayananId');
         $Surat_Laporan_Hasil = $request->Surat_Laporan_Hasil;
