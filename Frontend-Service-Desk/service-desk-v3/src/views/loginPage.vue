@@ -1,19 +1,16 @@
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
 import axios from 'axios'
 
-export default{
-  data(){
-    return{
-      NIP: "",
-      Password: ""
-    }
-  },
-  methods:{
-    login(){
+
+const NIP = ref('')
+const Password = ref('')
+
+
+function login(){
       axios.post('http://127.0.0.1:8000/api/user/login', {
         NIP: this.NIP,
         Password: this.Password
@@ -26,8 +23,7 @@ export default{
         console.log(error)
       });
     }
-  },
-}
+    
 </script>
 
 <template>
