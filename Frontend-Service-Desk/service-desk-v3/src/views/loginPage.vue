@@ -23,7 +23,6 @@ function login(){
         console.log(error)
       });
     }
-    g
 </script>
 
 <template>
