@@ -1,19 +1,17 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-const router = useRouter()
-
 import axios from 'axios'
 
+const router = useRouter()
 
 const NIP = ref('')
 const Password = ref('')
 
-
 function login(){
       axios.post('http://127.0.0.1:8000/api/user/login', {
-        NIP: this.NIP,
-        Password: this.Password
+        NIP: NIP.value,
+        Password: Password.value
       })
       .then(function(response){
         console.log(response);
@@ -35,7 +33,7 @@ function login(){
 
       <div class="login-box">
         <h2 class="loginTitle">Login</h2>
-        <input class="placeholderLgn" v-model="NIP" type="integer" placeholder="NIP" />
+        <input class="placeholderLgn" v-model="NIP" type="text" placeholder="NIP" />
         <input class="placeholderLgn" v-model="Password" type="password" placeholder="Password" />
         <button class= "login" @click="login">Login</button>
         <p class= "invalidLogin">{{ message }}</p>
