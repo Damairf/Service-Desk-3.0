@@ -21,8 +21,10 @@ function login() {
   <div class="container">
     <div class="flex-wrapper">
       <div class="buatLogo">
-        <h2 class="title">Service Desk <br>V3.0</h2>
+        <img src="/logo.svg" alt="Logo" class="logo-image" />
+        <h2 class="title">SERVICE<br>DESK V3.0</h2>
       </div>
+
       <div class="login-box">
         <h2 class="loginTitle">Login</h2>
         <input class="placeholderLgn" v-model="username" type="text" placeholder="Username" />
@@ -44,7 +46,6 @@ html, body {
 </style> -->
 
 <style scoped>
-
 .container {
   width: 100vw;
   height: 100vh;
@@ -74,9 +75,23 @@ html, body {
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 40px;
   box-shadow: 0 10px 250px rgba(0, 0, 0, 0.1);
-  text-align: center;
   color: black;
   backdrop-filter: blur(10px);
+  align-items: center;
+}
+
+.logo-image {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  margin-left: 2rem;
+  margin-top: 2rem;
+}
+
+.title {
+  margin-left: 3rem;
+  margin-top: 0rem;
+  line-height: 1.2;
 }
 
 .loginTitle{
@@ -113,9 +128,7 @@ input {
   text-align: left;
 }
 
-.title{
-  padding-top: 50%;
-}
+
 
 .login {
   background-color: #42b983;
