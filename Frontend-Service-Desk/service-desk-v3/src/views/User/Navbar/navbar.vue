@@ -1,10 +1,15 @@
 <script setup>
-  import {ref} from 'vue'
+  import {provide, ref} from 'vue'
   import './navbar.css'
   import { useRouter } from 'vue-router'
   import beranda from '../Beranda/beranda.vue'
   import pengajuanpermintaan from '../pengajuanPermintaan/pengajuanPermintaan.vue'
-import Beranda from '../Beranda/beranda.vue'
+  import permintaanDiproses from '../permintaanDiproses/permintaanDiproses.vue'
+  import Beranda from '../Beranda/beranda.vue'
+
+  /*Sub halaman */
+import halamanFormulirTiketBaru from '../pengajuanPermintaan/halaman-formulir-tiket-baru.vue'
+
   const router = useRouter()
 
   /*buat collapse */
@@ -25,11 +30,16 @@ import Beranda from '../Beranda/beranda.vue'
   function selectMenu(item) {
     selected.value = item
   }
+  /*biar bisa dapet dari file lain */
+provide('selectMenu', selectMenu)
 
   /* biar bisa ganti2 */
   const componentsMap = {
     Beranda: beranda,
-    'Pengajuan Permintaan': pengajuanpermintaan
+    /*Pengajuan Permintaan */
+    'Pengajuan Permintaan': pengajuanpermintaan,
+    'Halaman Formulir Tiket Baru': halamanFormulirTiketBaru
+    
   }
 
   /* biar warna hovernya beda */

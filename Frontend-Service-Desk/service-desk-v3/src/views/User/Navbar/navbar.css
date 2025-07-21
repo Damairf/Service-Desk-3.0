@@ -58,9 +58,6 @@
   
 }
 
-.navbar{
-    margin-top: 10px;
-}
 
 /* teksnya */
 .sidebar ul {
@@ -96,9 +93,10 @@
 }
 
 .layout {
-  padding-top: 20px;
+  padding-top: 0px;
   display: flex;
   height: 100vh;
+  background-color: #faf4ff;
 }
 
 .sidebar {

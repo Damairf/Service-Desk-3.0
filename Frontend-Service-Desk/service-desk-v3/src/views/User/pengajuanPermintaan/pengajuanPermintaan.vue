@@ -1,144 +1,288 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { inject, ref, computed } from 'vue'
 
-const username = ref('')
-const password = ref('')
-const message = ref('')
+const selectMenu = inject('selectMenu')
 
-function login() {
-  if (username.value === 'admin' && password.value === '1234') {
-    message.value = '✅ Login successful!'
-    router.push('/beranda')
-  } else {
-    message.value = '❌ Invalid username or password.'
+const services = ref([
+  "Pelayanan Email dan Drive Jabarprov",
+  "Pelayanan Email dan Drive Jabarprov",
+  "Pelayanan Email dan Drive Jabarprov",
+  "Pelayanan Email dan Drive Jabarprov",
+  "Pelayanan Email dan Drive Jabarprov",
+  "Pelayanan Email dan Drive Jabarprov",
+  "Pelayanan Email dan Drive Jabarprov",
+])
+
+const page = ref(1)
+const searchTerm = ref("")
+const showModal = ref(false)
+const isChecked = ref(false)
+const selectedItem = ref("")
+
+const filteredServices = computed(() => {
+  const term = searchTerm.value.toLowerCase();
+  return services.value
+    .filter((s) => s.toLowerCase().includes(term))
+    .slice((page.value - 1) * 10, page.value * 10);
+})
+
+function prevPage() {
+  if (page.value > 1) page.value--
+}
+
+function nextPage() {
+  if (page.value * 5 < services.value.length) page.value++
+}
+
+function openModal(item) {
+  selectedItem.value = item
+  showModal.value = true
+}
+
+function handleOk() {
+  console.log("kontol")
+  if (selectMenu) {
+    selectMenu('Halaman Formulir Tiket Baru')
   }
+  showModal.value = false
 }
 </script>
 
 <template>
   <div class="container">
-    <div class="flex-wrapper">
-      <div class="buatLogo">
-        <h2 class="title">Service Desk <br>V3.0</h2>
+    <!-- Info box -->
+    <div class="info-box">
+      <strong>Petunjuk Pelayanan:</strong> <br />
+      <p>Siapkan surat permohonan (khusus untuk layanan infrastruktur), serta gambar atau file pendukung untuk memperjelas pelaporan.</p>
+      <p>Klik tombol Plus (+) untuk memulai permintaan layanan.</p>
+      <p>Pantau perkembangan permintaan/pengaduan melalui notifikasi email dari tim Service Desk.</p>
+    </div>
+
+    <!-- Search -->
+    <div class="container-pencarian">
+      <input type="text" v-model="searchTerm" placeholder="Cari" />
+    </div>
+
+    <!-- List Pelayanan -->
+    <div class="container-pelayanan">
+      <div
+        class="list-wrapper"
+        v-for="(item, index) in filteredServices"
+        :key="index"
+      >
+        <div
+          class="list-item"
+          :class="index % 2 === 0 ? 'grey-bg' : 'white-bg'"
+        >
+          {{ item }}
+        </div>
+        <button class="tombol-tambah" @click="openModal(item)">+</button>
       </div>
-      <div class="login-box">
-        <h2 class="loginTitle">Login</h2>
-        <input class="placeholderLgn" v-model="username" type="text" placeholder="Username" />
-        <input class="placeholderLgn" v-model="password" type="password" placeholder="Password" />
-        <button class= "login" @click="login">Login</button>
-        <p class= "invalidLogin">{{ message }}</p>
+    </div>
+
+    <!-- Paging -->
+    <div class="paging">
+      <button @click="prevPage" :disabled="page === 1"><</button>
+      <button :class="{ active: page === 1 }" @click="page = 1">1</button>
+      <button :class="{ active: page === 2 }" @click="page = 2">2</button>
+      <button @click="nextPage">></button>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div v-if="showModal" class="overlay">
+      <div class="overlay-content">
+        <button class="close-btn" @click="showModal = false">×</button>
+        <h3>Pesyaratan</h3>
+        <p>{{ selectedItem }}</p>
+        <label>
+          <input type="checkbox" v-model="isChecked" />
+          Persetujuan Sudah Lengkap
+        </label>
+        <br />
+        <button class="tombol-ok" :disabled="!isChecked" @click="handleOk">OK</button>
       </div>
     </div>
   </div>
 </template>
 
-<!-- <style>
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden; /* Prevent scrolling */
-}
-</style> -->
-
 <style scoped>
-
 .container {
-  width: 100vw;
-  height: 100vh;
+  background-color: #faf4ff;
+  min-height: 100vh;
+  padding: 1rem;
+  position: relative;
+}
+
+.info-box {
+  background-color: #fff8b1;
+  border: 1px solid #e6cc00;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info-box p {
+  font-size: small;
+  font-weight: 500;
+  margin: 2px;
+}
+
+.container-pencarian input {
+  background-color: white;
+  color: black;
+  width: 96%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 9999px;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+  outline: none;
+}
+
+.container-pelayanan {
+  width: 100%;
+}
+
+.list-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.list-item {
+  flex: 1;
+  padding: 1rem;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  font-weight: bold;
+  background-color: #e0f7fa;
+}
+
+.grey-bg {
+  background-color: #e6e6e6;
+}
+
+.white-bg {
+  background-color: white;
+}
+
+.tombol-tambah {
+  background-color: #006920;
+  color: white;
+  font-size: 2rem;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.tombol-tambah:hover {
+  transform: scale(1.1);
+}
+
+.paging {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.paging button {
+  background-color: white;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 0.5rem 0.75rem;
+  border-radius: 50%;
+  cursor: pointer;
+  min-width: 2rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.paging .active {
+  background-color: #2196f3;
+  color: white;
+  border-color: #2196f3;
+}
+
+.paging button:not(.active):hover {
+  background-color: #f0f0f0;
+}
+
+/* Overlay Persyaratan */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('/BG-login.svg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  z-index: 1000;
 }
 
-
-.flex-wrapper {
-  display: flex;
-  gap: 0rem; /* jarak antar box */
+.overlay h3{
+  margin-bottom: 3.5rem;
 }
 
-/* ukuran disamakan */
-.buatLogo {
-  width: 200px; /* sama dengan login-box */
-  height: 300px;
-  background-color: rgba(183,197,255, 0.7);
-  padding: 5rem;
-  border-top-left-radius: 40px;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 40px;
-  box-shadow: 0 10px 250px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  color: black;
-  backdrop-filter: blur(10px);
+.overlay p{
+  margin-bottom: 3rem;
 }
 
-.loginTitle{
-  color: black;
-  text-align: center;        
-  margin-bottom: 45px;       
-  margin-top: 70px;        
-  font-size: 48px;         
-  font-weight: bold;        
+.overlay label{
+  margin: 1rem;
 }
 
-.login-box {
-  width: 300px;
+.overlay-content {
   background-color: white;
-  padding: 2rem;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 40px;
-  border-bottom-right-radius: 40px;
-  border-bottom-left-radius: 0px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  border-radius: 18px;
+  position: relative;
+  min-width: 200px; /*--*/
+  max-width: 90%; /* Menyesuaikan isi overlay */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-
-
-input {
-  display: block;
-  align-items: center;
-  width: 80%;
-  margin: 1rem auto;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  text-align: left;
-}
-
-.title{
-  padding-top: 50%;
-}
-
-.login {
-  background-color: #42b983;
-  color: white;
-  padding: 0.5rem 1rem;
+.close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
   border: none;
-  border-radius: 20px;
+  font-size: 1.5rem;
   cursor: pointer;
-  width: 35%;
 }
 
-.placeholderLgn{
-  background-color: white;
-  color: black;
+.tombol-ok {
+  background-color: #cccccc; /* Disable warna by default */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 2rem;
+  transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #369870;
+.tombol-ok:enabled {
+  background-color: #2196f3;
 }
 
-p {
-  margin-top: 1rem;
-  font-weight: bold;
-  color: black;
+.tombol-ok:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 </style>
