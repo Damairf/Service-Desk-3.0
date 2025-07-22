@@ -1,10 +1,17 @@
 <script setup>
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-import { ref, onBeforeMount } from 'vue';
-
+import { ref, onBeforeMount, onMounted } from 'vue';
 
 const nama_depan = ref('')
+const router = useRouter()
+
+onMounted(()=> {
+  const token = localStorage.getItem('Token');
+  if(!token) {
+    router.push('/login')
+  }
+})
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
@@ -18,7 +25,6 @@ onBeforeMount(() => {
     nama_depan.value = response.data.Nama_Depan // <- masukkan ke ref
     localStorage.setItem('nama_depan', response.data.Nama_Depan)
   })
-    
   .catch(error => {
     console.error(error);
   });
