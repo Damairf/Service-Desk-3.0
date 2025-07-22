@@ -13,7 +13,7 @@
     tampilinOverlay.value = !tampilinOverlay.value
   }
   function logout(){
-  router.push('/')
+  router.push('/login')
   }
 
   // nama profile
