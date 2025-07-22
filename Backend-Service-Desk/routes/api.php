@@ -20,7 +20,7 @@ Route::middleware([CekToken::class])->group(function(){
 
 // endpoint fitur umum
 Route::get('/user/profile',[UserController::class, 'profile']);
-Route::put('/user/profile', [UserController::class, 'update_Profile']);
+Route::put('/user/profile', [UserController::class, 'update_Password']);
 
 // endpoint user
 Route::get('/jenispelayanan',[JenisPelayananController::class, 'getAll_JnsPelayanan']);
