@@ -1,7 +1,33 @@
+<script>
+import axios from 'axios'
+
+const router = useRouter()
+
+const NIP = ref('')
+const Password = ref('')
+
+function login(){
+      axios.post('http://127.0.0.1:8000/api/user/login', {
+        NIP: NIP.value,
+        Password: Password.value
+      })
+      .then(function(response){
+        console.log(response);
+        localStorage.setItem('Token', response.data.token)
+        router.push('/beranda')
+      })
+      .catch(function(error){
+        console.log(error)
+      });
+    }
+
+
+</script>
+  
   <template>
       <div class="container">
         <div class="greet">
-        <h1>Selamat datang, "Nama User"</h1>
+        <h1>Selamat datang, "Nama cpy"</h1>
         <p>
           Ada yang bisa kami bantu?
         </p>
