@@ -1,24 +1,20 @@
-<script>
+<script setup>
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
-export default {
-  data() {
-    return {
-      Token : ''
-    }
-  },
-  mounted() {
-    Token.value = localStorage.getItem('data')
-    if(!token.value || token.value == '' || token.value == null) {
-      router.push('loginPage')
-    }
-  },
-}
+axios.get('http://127.0.0.1:8000/api/user/profile', {
+  headers: {
+    Authorization: 'Bearer ' + localStorage.getItem('Token')
+  }
+  .then(function(response){
+    console.log(response);
+  })
+})
 
 </script>
   
   <template>
+    "nama"
       <div class="container">
         <div class="greet">
         <h1>Selamat datang, "Nama cpy"</h1>
