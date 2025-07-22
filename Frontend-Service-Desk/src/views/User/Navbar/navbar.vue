@@ -7,8 +7,25 @@
   import permintaanDiproses from '../permintaanDiproses/permintaanDiproses.vue'
   import Beranda from '../Beranda/beranda.vue'
 
-  /*Sub halaman */
-import halamanFormulirTiketBaru from '../pengajuanPermintaan/halaman-formulir-tiket-baru.vue'
+  //overlay
+  const tampilinOverlay = ref(false)
+  function toggleOverlay(){
+    tampilinOverlay.value = !tampilinOverlay.value
+  }
+  function logout(){
+  router.push('/')
+  }
+
+  // nama profile
+  const namaDepan = "Nama"
+  const namaBelakang = "User4"
+
+  // Sub halaman
+  // formulir
+  import halamanFormulirTiketBaru from '../pengajuanPermintaan/halaman-formulir-tiket-baru.vue'
+  // profile
+  import profileSaya from '../profile/profileSaya.vue'
+  import editProfile from '../profile/editProfile.vue'
 
   const router = useRouter()
 
@@ -31,15 +48,16 @@ import halamanFormulirTiketBaru from '../pengajuanPermintaan/halaman-formulir-ti
     selected.value = item
   }
   /*biar bisa dapet dari file lain */
-provide('selectMenu', selectMenu)
+  provide('selectMenu', selectMenu)
 
   /* biar bisa ganti2 */
   const componentsMap = {
     Beranda: beranda,
     /*Pengajuan Permintaan */
     'Pengajuan Permintaan': pengajuanpermintaan,
-    'Halaman Formulir Tiket Baru': halamanFormulirTiketBaru
-    
+    'Halaman Formulir Tiket Baru': halamanFormulirTiketBaru,
+    'Profile Saya': profileSaya,
+    'Edit Profile': editProfile,
   }
 
   /* biar warna hovernya beda */
@@ -63,10 +81,19 @@ provide('selectMenu', selectMenu)
       <div>SERVICE</div>
       <div>DESK V3.0</div>
     </div>
-    <div class="akun">
-      <h4>Nama User</h4>
+    <!-- blok akun -->
+    <div class="wrapperAkun">
+      <div class="akun" @click="toggleOverlay">
+      <h4>{{ namaDepan + " " + namaBelakang }}</h4>
+      </div>
+      <!-- overlay -->
+      <div v-if="tampilinOverlay" class="menuOverlay">
+        <button @click="() => { selectMenu('Profile Saya'); toggleOverlay(); }">Akun Saya</button>
+        <button @click="logout()">Keluar</button>
+      </div>
     </div>
   </div>
+
   <div class="layout">
     <aside class="sidebar" :class="{collapsed : collapse}">
       <button class="toggle-btn" @click="toggleSidebar">
@@ -88,4 +115,3 @@ provide('selectMenu', selectMenu)
     </main>
   </div>
 </template>
-

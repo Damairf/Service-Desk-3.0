@@ -1,7 +1,20 @@
 <script setup>
+<<<<<<< HEAD
+  import { inject, ref, computed } from 'vue'
+  import axios from 'axios'
+  import { useRouter } from 'vue-router'
+  import { ref, onBeforeMount } from 'vue';
+  
+  // biar tombolnya bisa berfungsi
+  const selectMenu = inject('selectMenu')
+  function handleOK(){
+    selectMenu('Pengajuan Permintaan')
+  }
+=======
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { ref, onBeforeMount, onMounted } from 'vue';
+>>>>>>> e80586b9dc6702939f18ebcef60e5ea21f106fe0
 
 const nama_depan = ref('')
 const router = useRouter()
@@ -45,7 +58,7 @@ onBeforeMount(() => {
         <div class="box">
           <h3>Permintaan Baru</h3>
           <p>Mulai permintaan pelayanan pada Diskominfo Jabar</p>
-          <button class="tambah">Baru</button>
+          <button class="tambah" @click="handleOK">Baru</button>
         </div>
         <div class="box">
           <h3>Lacak Permintaan</h3>

@@ -40,7 +40,6 @@ function openModal(item) {
 }
 
 function handleOk() {
-  console.log("kontol")
   if (selectMenu) {
     selectMenu('Halaman Formulir Tiket Baru')
   }
