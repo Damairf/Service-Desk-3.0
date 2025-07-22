@@ -68,7 +68,6 @@ onBeforeMount(() => {
     <style>
       html, body {
       height: 100%;
-      width: 100%;
       margin: 0;
       padding: 0;
     }
@@ -79,6 +78,8 @@ onBeforeMount(() => {
     .container{
       background-color: #FAF4FF;
       min-height: 100vh;
+      padding: 1rem;
+      position: relative;
     }
     
     .greet h1{
@@ -94,25 +95,41 @@ onBeforeMount(() => {
       font-size: 20px;
     }
     
-    .boxHolder{
+    .boxHolder {
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
     }
-    
-    .box{
+
+    .box {
       background-color: white;
-      width: 30rem; 
+      width: 100%;
+      max-width: 30rem;
+      min-width: 250px;
       height: 30rem;
       border-radius: 8px;
       box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-    
+      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
       margin-top: 5rem;
-      margin-left: 2.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .boxHolder {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+      }
+      .box {
+        max-width: 90vw;
+        height: auto;
+        margin-top: 2rem;
+      }
     }
     
     .box h3 {
