@@ -11,6 +11,7 @@
 
 const nama_depan = ref('')
 const nama_belakang = ref('')
+const nip_user = ref('')
 const router = useRouter()
 
 onMounted(()=> {
@@ -31,6 +32,8 @@ onBeforeMount(() => {
     console.log(response);
     nama_depan.value = response.data.Nama_Depan
     nama_belakang.value = response.data.Nama_Belakang
+    nip_user.value = response.data.NIP
+    localStorage.setItem('nip_user', response.data.NIP)
     localStorage.setItem('nama_depan', response.data.Nama_Depan)
     localStorage.setItem('nama_belakang', response.data.Nama_Belakang)
   })

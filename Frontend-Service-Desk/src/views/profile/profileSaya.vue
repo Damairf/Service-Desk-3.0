@@ -5,9 +5,9 @@
   const selectMenu = inject('selectMenu')
   const namaDepan = localStorage.getItem('nama_depan')
   const namaBelakang = localStorage.getItem('nama_belakang')
+  const nip = localStorage.getItem('nip_user')
 
 
-  const nip = 123456789
   const email = "Email@Diskominfo.Jabar.id"
 </script>
 
