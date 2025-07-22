@@ -1,12 +1,36 @@
+
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
 const layanan = ref('')
+const layananList = ref([])
 const perihal = ref('')
 const nip = ref('')
 const deskripsi = ref('')
 const suratDinas = ref(null)
 const lampiran = ref(null)
+
+onMounted(() => {
+  const token = localStorage.getItem('Token')
+  axios.get('http://127.0.0.1:8000/api/jenispelayanan', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    if (Array.isArray(response.data)) {
+      layananList.value = response.data
+    } else if (Array.isArray(response.data.data)) {
+      layananList.value = response.data.data
+    } else {
+      layananList.value = []
+    }
+  })
+  .catch(error => {
+    console.error(error)
+  })
+})
 
 function handleFileChange(e, field) {
   const file = e.target.files[0]
@@ -63,9 +87,9 @@ function handleSubmit() {
         <label>Layanan</label>
         <select v-model="layanan">
           <option disabled value="">Nama Layanan</option>
-          <option>Layanan A</option>
-          <option>Layanan B</option>
-          <option>Layanan C</option>
+          <option v-for="item in layananList" :key="item.id || item.nama" :value="item.Nama_Jenis_Pelayanan">
+            {{ item.Nama_Jenis_Pelayanan }}
+          </option>
         </select>
 
         <label>Perihal</label>
