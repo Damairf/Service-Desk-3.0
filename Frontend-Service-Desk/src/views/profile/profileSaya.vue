@@ -6,6 +6,9 @@
   const namaDepan = localStorage.getItem('nama_depan')
   const namaBelakang = localStorage.getItem('nama_belakang')
   const nip = localStorage.getItem('nip_user')
+  const role = localStorage.getItem('nama_role')
+  const jabatan = localStorage.getItem('nama_jabatan')
+  const organisasi = localStorage.getItem('nama_organisasi')
 
 </script>
 
@@ -46,7 +49,7 @@
           <div class="info-text">
             <p><strong>Role</strong> : {{role}}</p>
             <p><strong>Jabatan</strong> : {{jabatan}}</p>
-            <p><strong>Instansi</strong> : {{instansi}}</p>
+            <p><strong>Organisasi</strong> : {{organisasi}}</p>
           </div>
         </div>
       </div>
