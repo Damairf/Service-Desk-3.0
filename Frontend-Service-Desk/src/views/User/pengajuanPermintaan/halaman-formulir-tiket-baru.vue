@@ -11,6 +11,7 @@ const deskripsi = ref('')
 const suratDinas = ref(null)
 const lampiran = ref(null)
 
+// Ambil data layanan dari API
 onMounted(() => {
   const token = localStorage.getItem('Token')
   axios.get('http://127.0.0.1:8000/api/jenispelayanan', {
@@ -32,6 +33,7 @@ onMounted(() => {
   })
 })
 
+// Fungsi untuk menangani perubahan file
 function handleFileChange(e, field) {
   const file = e.target.files[0]
   const maxSize = 8 * 1024 * 1024 // 8MB
