@@ -22,6 +22,11 @@ function login(){
         console.log(error)
       });
     }
+
+// dummy buat tombol bypass
+function goToBeranda(){
+  router.push('/beranda')
+}
 </script>
 
 <template>
@@ -38,6 +43,7 @@ function login(){
         <input class="placeholderLgn" v-model="Password" type="password" placeholder="Password" />
         <button class= "login" @click="login">Login</button>
         <p class= "invalidLogin">{{ message }}</p>
+        <button @click="goToBeranda" class="btn">Ke Beranda</button>
       </div>
     </div>
   </div>

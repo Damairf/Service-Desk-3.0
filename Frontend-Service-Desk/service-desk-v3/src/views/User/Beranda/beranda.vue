@@ -1,3 +1,12 @@
+<script setup>
+  // biar tombolnya bisa berfungsi
+  import { inject, ref, computed } from 'vue'
+  const selectMenu = inject('selectMenu')
+  function handleOK(){
+    selectMenu('Pengajuan Permintaan')
+  }
+</script>
+  
   <template>
       <div class="container">
         <div class="greet">
@@ -10,7 +19,7 @@
         <div class="box">
           <h3>Permintaan Baru</h3>
           <p>Mulai permintaan pelayanan pada Diskominfo Jabar</p>
-          <button class="tambah">Baru</button>
+          <button class="tambah" @click="handleOK">Baru</button>
         </div>
         <div class="box">
           <h3>Lacak Permintaan</h3>

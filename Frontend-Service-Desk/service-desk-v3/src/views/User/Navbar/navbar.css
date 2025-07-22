@@ -85,11 +85,58 @@
   padding-top: 0;
 }
 
+.wrapperAkun {
+  position: relative;
+  width: fit-content;
+}
+
 .akun{
   background-color: #0185DA;
   width: 15vw;
+  /* somehow ini jadi defacto penentu tinggi wrapperAtas */
+  height: 4vw;
   text-align: center;
   color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+}
+
+/* harus ada ginian biar blok akunnya gk ada blank space */
+.akun h4{
+  margin: 0;
+  color: white;
+  padding: 0.5rem;
+}
+
+.menuOverlay {
+  position: absolute;
+  top: 4.5rem;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  padding: 8px;
+  width: 180px;
+}
+
+.menuOverlay button{
+  color: black;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.menuOverlay button:hover{
+  background-color: #f0f0f0;
 }
 
 .layout {
@@ -114,4 +161,5 @@
 .content {
   flex: 1;
   padding: 2rem;
+
 }
