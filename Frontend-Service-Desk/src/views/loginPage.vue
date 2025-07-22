@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -24,6 +24,13 @@ function login(){
     }
 
 const data = ref(null);
+
+onMounted(()=> {
+  const token = localStorage.getItem('Token');
+  if(token) {
+    router.push('/beranda')
+  }
+})
 </script>
 
 <template>
