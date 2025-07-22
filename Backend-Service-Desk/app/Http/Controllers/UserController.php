@@ -47,16 +47,27 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function update_Profile(Request $request){
+    public function update_Password(Request $request){
+        $PasswordLama = $request->PasswordLama;
+        $PasswordBaru = $request->PasswordBaru;
+
         $user = User::where("ID_User", $request->ID_User)->first();
-        $Password = Hash::make($request->Password);
-        $Nama_Depan = $request->Nama_Depan;
+        
 
-        User::where('ID_User', $user->ID_User)
-        ->update(['Nama_Depan'=>$Nama_Depan, 'Password'=>$Password]);
+        if (!Hash::check($PasswordLama, $user->Password)) {
+        return response()->json([
+            'message' => 'Password lama salah!'
+        ], 400);
+    }
 
+    // Ganti password baru dan simpan
+    $user->password = Hash::make($PasswordBaru);
+    $user->save();
 
-        return response (["profile Anda     diupdate menjadi " => $user->fresh()]);
+    return response()->json([
+        'message' => 'Password berhasil diubah!'
+    ], 200);
+
     }
 
     public function update_User(Request $request){

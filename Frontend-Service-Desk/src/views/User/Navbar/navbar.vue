@@ -5,6 +5,7 @@
   import beranda from '../Beranda/beranda.vue'
   import pengajuanpermintaan from '../pengajuanPermintaan/pengajuanPermintaan.vue'
   import permintaanDiproses from '../permintaanDiproses/permintaanDiproses.vue'
+  import halamanProses from '../permintaanDiproses/halaman-proses.vue'
   import Beranda from '../Beranda/beranda.vue'
   import axios from 'axios'
 
@@ -87,8 +88,12 @@ onBeforeMount(() => {
 
   /* biar ada isi kliknya */
   const menuItem = [
-  "Beranda","Permintaan Baru", "Lacak Permintaan",
-  "Hasil Pemenuhan SLA dan BA", "Riwayat"]
+    "Beranda",
+    "Permintaan Baru",
+    "Lacak Permintaan",
+    "Hasil Pemenuhan SLA dan BA",
+    "Riwayat"
+  ]
 
   /* biar bisa diklik */
   const selected = ref('Beranda')
@@ -103,6 +108,7 @@ onBeforeMount(() => {
     Beranda: beranda,
     /*Pengajuan Permintaan */
     'Permintaan Baru': pengajuanpermintaan,
+    'Lacak Permintaan': halamanProses,
     'Halaman Formulir Tiket Baru': halamanFormulirTiketBaru,
     'Profile Saya': profileSaya,
     'Edit Profile': editProfile,
