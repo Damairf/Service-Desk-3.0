@@ -85,7 +85,7 @@ function removeImage() {
           </div>
           <div class="form-group">
             <label>Kecocokan Password Baru</label>
-            <input type="text" v-model="PasswordLama.passwordMatch" disabled />
+            <input type="text" v-model="UbahPassword.KecocokanPassword" disabled />
           </div>
         </div>
 
