@@ -1,14 +1,53 @@
 <script setup>
-  import { inject, ref, computed } from 'vue'
+  import { inject, ref, computed, onBeforeMount } from 'vue'
+  import axios from 'axios'
   // transisi ke edit profile
 
   const selectMenu = inject('selectMenu')
-  const namaDepan = localStorage.getItem('nama_depan')
+  const namaDepan = reff('')
   const namaBelakang = localStorage.getItem('nama_belakang')
   const nip = localStorage.getItem('nip_user')
   const role = localStorage.getItem('nama_role')
   const jabatan = localStorage.getItem('nama_jabatan')
   const organisasi = localStorage.getItem('nama_organisasi')
+
+  const nama_depan = ref('')
+const nama_belakang = ref('')
+const nip_user = ref('')
+const id_role = ref('')
+const nama_role = ref('')
+const nama_jabatan = ref('')
+const nama_organisasi = ref('')
+const router = useRouter()
+
+  onBeforeMount(() => {
+    const token = localStorage.getItem('Token');
+    axios.get('http://127.0.0.1:8000/api/user/profile', {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
+    .then(response => {
+      console.log(response);
+      nama_depan.value = response.data.Nama_Depan
+      nama_belakang.value = response.data.Nama_Belakang
+      nip_user.value = response.data.NIP
+      id_role.value = response.data.ID_Role
+      nama_role.value = response.data.user_role.map(item => item.Nama_Role)
+      nama_jabatan.value = response.data.user_jabatan.map(item => item.Nama_Jabatan)
+      nama_organisasi.value = response.data.user_organisasi.map(item => item.Nama_OPD)
+      localStorage.setItem('nama_depan', response.data.Nama_Depan)
+      localStorage.setItem('nama_belakang', response.data.Nama_Belakang)
+      // localStorage.setItem('nip_user', response.data.NIP)
+      // localStorage.setItem('id_role', response.data.ID_Role)
+      // localStorage.setItem('nama_role', response.data.user_role.map(item => item.Nama_Role))
+      // localStorage.setItem('nama_jabatan', response.data.user_jabatan.map(item => item.Nama_Jabatan))
+      // localStorage.setItem('nama_organisasi', response.data.user_organisasi.map(item => item.Nama_OPD))
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  });
 
 </script>
 
@@ -40,7 +79,7 @@
           <div class="info-text">
             <p><strong>Nama Depan</strong> : {{namaDepan}}</p>
             <p><strong>Nama Belakang</strong> : {{namaBelakang}}</p>
-            <p><strong>Nama NIP</strong> : {{nip}}</p>
+            <p><strong>NIP</strong> : {{nip}}</p>
           </div>
         </div>
 

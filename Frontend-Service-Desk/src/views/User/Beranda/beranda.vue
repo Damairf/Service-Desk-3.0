@@ -41,13 +41,13 @@ onBeforeMount(() => {
     nama_role.value = response.data.user_role.map(item => item.Nama_Role)
     nama_jabatan.value = response.data.user_jabatan.map(item => item.Nama_Jabatan)
     nama_organisasi.value = response.data.user_organisasi.map(item => item.Nama_OPD)
-    localStorage.setItem('nip_user', response.data.NIP)
     localStorage.setItem('nama_depan', response.data.Nama_Depan)
     localStorage.setItem('nama_belakang', response.data.Nama_Belakang)
-    localStorage.setItem('id_role', response.data.ID_Role)
-    localStorage.setItem('nama_role', response.data.user_role.map(item => item.Nama_Role))
-    localStorage.setItem('nama_jabatan', response.data.user_jabatan.map(item => item.Nama_Jabatan))
-    localStorage.setItem('nama_organisasi', response.data.user_organisasi.map(item => item.Nama_OPD))
+    // localStorage.setItem('nip_user', response.data.NIP)
+    // localStorage.setItem('id_role', response.data.ID_Role)
+    // localStorage.setItem('nama_role', response.data.user_role.map(item => item.Nama_Role))
+    // localStorage.setItem('nama_jabatan', response.data.user_jabatan.map(item => item.Nama_Jabatan))
+    // localStorage.setItem('nama_organisasi', response.data.user_organisasi.map(item => item.Nama_OPD))
   })
   .catch(error => {
     console.error(error);

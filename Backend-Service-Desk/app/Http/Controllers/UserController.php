@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class UserController extends Controller
 {
@@ -40,7 +42,7 @@ class UserController extends Controller
     }
 
     public function profile(Request $request){
-        $user = User::where("ID_User", $request->ID_User)->first();
+        $user = User::with("user_role", "user_jabatan", "user_organisasi")->where("ID_User", $request->ID_User)->first();
 
         return response()->json($user);
     }

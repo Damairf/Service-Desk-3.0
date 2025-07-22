@@ -23,6 +23,7 @@ Route::get('/user/profile',[UserController::class, 'profile']);
 Route::put('/user/profile', [UserController::class, 'update_Profile']);
 
 // endpoint user
+Route::get('/role/{roleId}', [RoleController::class, 'findOne_Role']);
 Route::get('/jenispelayanan',[JenisPelayananController::class, 'getAll_JnsPelayanan']);
 
 Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);

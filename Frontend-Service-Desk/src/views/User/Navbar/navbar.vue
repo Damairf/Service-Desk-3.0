@@ -126,8 +126,7 @@ onBeforeMount(() => {
 <template>
   <div class="wrapperAtas">
     <div class="judul">
-      <div>SERVICE</div>
-      <div>DESK V3.0</div>
+      <div>SERVICE DESK V3.0</div>
     </div>
     <!-- blok akun -->
     <div class="wrapperAkun">
