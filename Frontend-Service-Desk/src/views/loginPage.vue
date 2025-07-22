@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -9,6 +10,7 @@ const NIP = ref('')
 const Password = ref('')
 
 function login(){
+localStorage.clear();
       axios.post('http://127.0.0.1:8000/api/user/login', {
         NIP: NIP.value,
         Password: Password.value
@@ -22,6 +24,8 @@ function login(){
         console.log(error)
       });
     }
+
+const data = ref(null);
 </script>
 
 <template>

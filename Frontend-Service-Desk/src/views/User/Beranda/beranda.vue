@@ -1,25 +1,33 @@
 <script setup>
-import axios from 'axios'
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
+const data = ref(null);
 
-    axios.get('http://127.0.0.1:8000/api/user/profile', {
+onMounted(() => {
+  const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/user/profile', {
     headers: {
-      Authorization: 'Bearer ' + localStorage.getItem('Token')
+      Authorization: 'Bearer ' + token
     }
-    .then(function(response){
-        console.log(response);
-    })
-    })
+  })
+  .then(response => {
+    console.error(response);
+    localStorage.setItem('nama_depan', response.data.Nama_Depan)
+  })
+  .catch(error => {
+    console.error(error);
+  });
+});
 
-
+const nama_depan = localStorage.getItem('nama_depan')
 
 </script>
   
   <template>
-    "nama"
       <div class="container">
         <div class="greet">
-        <h1>Selamat datang, "Nama cpy"</h1>
+        <h1>Selamat datang, {{ nama_depan }}</h1>
         <p>
           Ada yang bisa kami bantu?
         </p>
