@@ -1,11 +1,12 @@
 <script setup>
-  import {provide, ref} from 'vue'
+  import {provide, onBeforeMount, ref} from 'vue'
   import './navbar.css'
   import { useRouter } from 'vue-router'
   import beranda from '../Beranda/beranda.vue'
   import pengajuanpermintaan from '../pengajuanPermintaan/pengajuanPermintaan.vue'
   import permintaanDiproses from '../permintaanDiproses/permintaanDiproses.vue'
   import Beranda from '../Beranda/beranda.vue'
+  import axios from 'axios'
 
   //overlay
   const tampilinOverlay = ref(false)
@@ -13,12 +14,34 @@
     tampilinOverlay.value = !tampilinOverlay.value
   }
   function logout(){
+  localStorage.clear();
   router.push('/login')
   }
 
-  // nama profile
-  const namaDepan = "Nama"
-  const namaBelakang = "User4"
+
+
+const nama_depan = ref('')
+const nama_belakang = ref('')
+
+onBeforeMount(() => {
+  const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/user/profile', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    nama_depan.value = response.data.Nama_Depan
+    nama_belakang.value = response.data.Nama_Belakang
+  })
+  .catch(error => {
+    console.error(error)
+  })
+})
+
+
+
+    
 
   // Sub halaman
   // formulir
@@ -84,7 +107,7 @@
     <!-- blok akun -->
     <div class="wrapperAkun">
       <div class="akun" @click="toggleOverlay">
-      <h4>{{ namaDepan + " " + namaBelakang }}</h4>
+      <h4>{{ nama_depan + " " + nama_belakang }}</h4>
       </div>
       <!-- overlay -->
       <div v-if="tampilinOverlay" class="menuOverlay">
