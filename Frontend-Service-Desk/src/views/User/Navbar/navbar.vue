@@ -62,8 +62,7 @@ onBeforeMount(() => {
   const menuItem = [
   "Beranda", "Pengajuan Permintaan", 
   "Permintaan Baru", "Lacak Permintaan",
-  "Hasil Pemenuhan SLA dan BA", "Riwayat",
-  "History"]
+  "Hasil Pemenuhan SLA dan BA", "Riwayat"]
 
   /* biar bisa diklik */
   const selected = ref('Beranda')
