@@ -24,8 +24,8 @@
   // formulir
   import halamanFormulirTiketBaru from '../pengajuanPermintaan/halaman-formulir-tiket-baru.vue'
   // profile
-  import profileSaya from '../profile/profileSaya.vue'
-  import editProfile from '../profile/editProfile.vue'
+  import profileSaya from '../../profile/profileSaya.vue'
+  import editProfile from '../../profile/editProfile.vue'
 
   const router = useRouter()
 
