@@ -16,4 +16,7 @@ class Organisasi extends Model
     public function status(): BelongsTo{
         return $this -> belongsTo(Status::class, "ID_Status", 'ID_Status');
     }
+    public function user_organisasi(): BelongsTo{
+        return $this -> belongsTo(Status::class, "ID_Status", 'ID_Status');
+    }
 }

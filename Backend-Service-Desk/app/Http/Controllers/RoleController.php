@@ -14,8 +14,8 @@ class RoleController extends Controller
     }
 
     public function findOne_Role(Request $request){
-        $roleId = $request->route("roleId");
-        $role = Role::where("ID_Role", $roleId)->get();
+        $roleId = $request->route('roleId');
+        $role = Role::where('ID_Role', $roleId)->get();
         return response()->json($role);
     }
         

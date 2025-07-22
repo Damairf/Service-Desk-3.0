@@ -1,5 +1,6 @@
 <script setup>
-  import { inject, ref, computed } from 'vue'
+  import { inject, ref, computed, onBeforeMount } from 'vue'
+  import axios from 'axios'
   // transisi ke edit profile
 
   const selectMenu = inject('selectMenu')
@@ -40,7 +41,7 @@
           <div class="info-text">
             <p><strong>Nama Depan</strong> : {{namaDepan}}</p>
             <p><strong>Nama Belakang</strong> : {{namaBelakang}}</p>
-            <p><strong>Nama NIP</strong> : {{nip}}</p>
+            <p><strong>NIP</strong> : {{nip}}</p>
           </div>
         </div>
 
