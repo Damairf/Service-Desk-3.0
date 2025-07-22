@@ -5,11 +5,7 @@
   const selectMenu = inject('selectMenu')
   const namaDepan = localStorage.getItem('nama_depan')
   const namaBelakang = localStorage.getItem('nama_belakang')
-  const nip = ref("test123")
-  
-  const role = ref("Teknisi")
-  const jabatan = ref("Staff IT")
-  const instansi = ref("Dinas Kominfo")
+  const nip = localStorage.getItem('nip_user')
 
 </script>
 
