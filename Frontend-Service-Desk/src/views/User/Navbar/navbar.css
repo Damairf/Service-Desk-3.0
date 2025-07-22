@@ -90,6 +90,9 @@
 .wrapperAkun {
   display: flex;
   position: sticky;
+  top: 0;
+  display: flex;
+  position: sticky;
   right: 0;
   top: 0;
   width: fit-content;
