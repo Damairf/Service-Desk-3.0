@@ -50,7 +50,6 @@
 
 
 const nama_depan = ref('')
-const nama_belakang = ref('')
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
@@ -61,7 +60,6 @@ onBeforeMount(() => {
   })
   .then(response => {
     nama_depan.value = response.data.Nama_Depan
-    nama_belakang.value = response.data.Nama_Belakang
   })
   .catch(error => {
     console.error(error)
@@ -135,7 +133,7 @@ onBeforeMount(() => {
     <!-- blok akun -->
     <div class="wrapperAkun">
       <div class="akun" ref="akunRef" @click="toggleOverlay">
-        <h4>{{ nama_depan + " " + nama_belakang }}</h4>
+        <h4>{{ nama_depan }}</h4>
       </div>
       <!-- overlay -->
       <div v-if="tampilinOverlay" class="menuOverlay" ref="overlayRef">
