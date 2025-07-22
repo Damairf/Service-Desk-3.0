@@ -1,10 +1,12 @@
 <script setup>
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 
-const data = ref(null);
-onMounted(() => {
+
+const nama_depan = ref('')
+
+onBeforeMount(() => {
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/user/profile', {
     headers: {
@@ -12,15 +14,16 @@ onMounted(() => {
     }
   })
   .then(response => {
-    console.error(response);
+    console.log(response);
+    nama_depan.value = response.data.Nama_Depan // <- masukkan ke ref
     localStorage.setItem('nama_depan', response.data.Nama_Depan)
   })
+    
   .catch(error => {
     console.error(error);
   });
 });
 
-const nama_depan = localStorage.getItem('nama_depan')
 
 </script>
   
