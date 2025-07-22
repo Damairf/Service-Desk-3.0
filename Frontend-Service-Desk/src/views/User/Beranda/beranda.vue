@@ -6,7 +6,7 @@
   // biar tombolnya bisa berfungsi
   const selectMenu = inject('selectMenu')
   function handleOK(){
-    selectMenu('Pengajuan Permintaan')
+    selectMenu('Permintaan Baru')
   }
 
 const nama_depan = ref('')
