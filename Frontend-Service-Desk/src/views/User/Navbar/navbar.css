@@ -88,15 +88,15 @@
 }
 
 .wrapperAkun {
-  position: relative;
+  position: fixed;
+  right: 0;
   width: fit-content;
 }
 
 .akun{
   background-color: #0185DA;
   width: 15vw;
-  /* somehow ini jadi defacto penentu tinggi wrapperAtas */
-  height: 4vw;
+  height: 6.2vh;
   text-align: center;
   color: white;
   cursor: pointer;

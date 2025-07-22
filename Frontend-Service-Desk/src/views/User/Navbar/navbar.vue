@@ -1,5 +1,5 @@
 <script setup>
-  import {provide, onBeforeMount, ref} from 'vue'
+  import {provide, onBeforeMount, ref, watch, onMounted, onBeforeUnmount} from 'vue'
   import './navbar.css'
   import { useRouter } from 'vue-router'
   import beranda from '../Beranda/beranda.vue'
@@ -8,15 +8,44 @@
   import Beranda from '../Beranda/beranda.vue'
   import axios from 'axios'
 
-  //overlay
+
+  // overlay
   const tampilinOverlay = ref(false)
+  const overlayRef = ref(null)
+  const akunRef = ref(null)
+
   function toggleOverlay(){
     tampilinOverlay.value = !tampilinOverlay.value
   }
+
   function logout(){
-  localStorage.clear();
-  router.push('/login')
+    localStorage.clear();
+    router.push('/login')
   }
+
+  // Handler to close overlay when clicking outside
+  function handleClickOutside(event) {
+    const overlay = overlayRef.value
+    const akun = akunRef.value
+    if (
+      overlay && !overlay.contains(event.target) &&
+      akun && !akun.contains(event.target)
+    ) {
+      tampilinOverlay.value = false
+    }
+  }
+
+  watch(tampilinOverlay, (val) => {
+    if (val) {
+      document.addEventListener('mousedown', handleClickOutside)
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  })
+
+  onBeforeUnmount(() => {
+    document.removeEventListener('mousedown', handleClickOutside)
+  })
 
 
 
@@ -105,11 +134,11 @@ onBeforeMount(() => {
     </div>
     <!-- blok akun -->
     <div class="wrapperAkun">
-      <div class="akun" @click="toggleOverlay">
-      <h4>{{ nama_depan + " " + nama_belakang }}</h4>
+      <div class="akun" ref="akunRef" @click="toggleOverlay">
+        <h4>{{ nama_depan + " " + nama_belakang }}</h4>
       </div>
       <!-- overlay -->
-      <div v-if="tampilinOverlay" class="menuOverlay">
+      <div v-if="tampilinOverlay" class="menuOverlay" ref="overlayRef">
         <button @click="() => { selectMenu('Profile Saya'); toggleOverlay(); }">Akun Saya</button>
         <button @click="logout()">Keluar</button>
       </div>
