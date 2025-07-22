@@ -52,23 +52,20 @@ class UserController extends Controller
         $PasswordBaru = $request->PasswordBaru;
 
         $user = User::where("ID_User", $request->ID_User)->first();
-        
 
-        if (!Hash::check($PasswordLama, $user->Password)) {
-        return response()->json([
-            'message' => 'Password lama salah!'
-        ], 400);
+    if (!$user) {
+        return response()->json(['message' => 'User tidak ditemukan'], 404);
     }
 
-    // Ganti password baru dan simpan
-    $user->password = Hash::make($PasswordBaru);
+    if (!Hash::check($PasswordLama, $user->Password)) {
+        return response()->json(['message' => 'Password lama salah!'], 400);
+    }
+
+    $user->Password = Hash::make($PasswordBaru);
     $user->save();
 
-    return response()->json([
-        'message' => 'Password berhasil diubah!'
-    ], 200);
-
-    }
+    return response()->json(['message' => 'Password berhasil diubah!'], 200);
+}
 
     public function update_User(Request $request){
         $userId = $request->route('userId');

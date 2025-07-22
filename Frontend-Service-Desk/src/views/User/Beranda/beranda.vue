@@ -45,6 +45,7 @@ onBeforeMount(() => {
     localStorage.setItem('nama_depan', response.data.Nama_Depan)
     localStorage.setItem('nama_belakang', response.data.Nama_Belakang)
     localStorage.setItem('nip_user', response.data.NIP)
+    localStorage.setItem('ID_User', response.data.ID_User)
     localStorage.setItem('id_role', response.data.ID_Role)
     localStorage.setItem('nama_role', response.data.user_role.map(item => item.Nama_Role))
     localStorage.setItem('nama_jabatan', response.data.user_jabatan.map(item => item.Nama_Jabatan))

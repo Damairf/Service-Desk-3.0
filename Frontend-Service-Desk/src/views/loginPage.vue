@@ -27,7 +27,7 @@ function login(){
           alert("Terjadi kesalahan server");
         }
 });
-    }
+}
 
 const data = ref(null);
 

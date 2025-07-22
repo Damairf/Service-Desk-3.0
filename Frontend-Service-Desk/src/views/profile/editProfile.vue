@@ -1,5 +1,9 @@
 <script setup>
 import { ref, reactive, watch } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const UbahPassword = reactive({
   PasswordBaru: '',
@@ -25,12 +29,39 @@ watch(() => PasswordLama.konfirmasiPassword, (newVal) => {
   PasswordLama.passwordMatch = newVal === PasswordLama.passwordLama ? 'Cocok' : 'Tidak Cocok'
 })
 
+const userID = localStorage.getItem("ID_User");
 function saveChanges() {
-  console.log('Changes saved:', {
-    ...UbahPassword,
-    ...PasswordLama,
+  if (UbahPassword.PasswordBaru !== UbahPassword.KonfirmasiPassword) {
+    alert('Konfirmasi password baru tidak cocok!');
+    return;
+  }
+  if (PasswordLama.passwordLama !== PasswordLama.konfirmasiPassword) {
+    alert('Konfirmasi password lama tidak cocok!');
+    return;
+  }
+  const token = localStorage.getItem('Token');
+  axios.put('http://127.0.0.1:8000/api/user/profile', {
+    ID_User: userID,            // <-- ID_User yang sedang login
+    PasswordLama: PasswordLama.passwordLama,  // <-- Password lama dari input
+    PasswordBaru: UbahPassword.PasswordBaru
+  },{
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
   })
+  .then(response => {
+    alert(response.data.message);
+    localStorage.clear();
+    router.push('/login')
+    cancelChanges(); // Reset form setelah berhasil
+  })
+  .catch(error => {
+    console.error(error);
+    alert(error.response?.data?.message || "Terjadi kesalahan saat mengubah password.");
+  });
 }
+
+
 
 function cancelChanges() {
   UbahPassword.PasswordBaru = ''
