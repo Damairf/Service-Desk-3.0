@@ -135,6 +135,8 @@ input[type="text"],
 select,
 textarea,
 input[type="file"] {
+  background-color: white;
+  color: black;
   width: 95%;
   padding: 0.7rem;
   margin-bottom: 1rem;
