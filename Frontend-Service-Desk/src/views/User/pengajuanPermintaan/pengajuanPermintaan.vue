@@ -105,6 +105,11 @@ function handleOk() {
 </template>
 
 <style scoped>
+input[type="checkbox"]{
+  cursor: pointer;
+}
+
+
 .container {
   background-color: #faf4ff;
   min-height: 100vh;

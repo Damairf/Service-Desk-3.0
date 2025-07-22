@@ -88,8 +88,13 @@
 }
 
 .wrapperAkun {
-  position: fixed;
+  display: flex;
+  position: sticky;
+  top: 0;
+  display: flex;
+  position: sticky;
   right: 0;
+  top: 0;
   width: fit-content;
 }
 
@@ -152,6 +157,7 @@
 
 .sidebar {
   width: 220px;
+  height: 100%;
   background-color: white;
   color: black;
   padding: 1rem;

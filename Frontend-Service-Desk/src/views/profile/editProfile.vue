@@ -1,16 +1,15 @@
 <script setup>
 import { ref, reactive, watch } from 'vue'
 
-const basicInfo = reactive({
-  namaDepan: '',
-  namaBelakang: '',
-  nip: '',
-  email: '',
+const UbahPassword = reactive({
+  PasswordBaru: '',
+  KonfirmasiPassword: '',
+  KecocokanPassword: '',
 })
 
-const userLogin = reactive({
-  password: '',
-  confirmPassword: '',
+const PasswordLama = reactive({
+  passwordLama: '',
+  konfirmasiPassword: '',
   passwordMatch: '',
 })
 
@@ -18,25 +17,28 @@ const showOverlay = ref(false)
 const selectedImage = ref(null)
 const fileInput = ref(null)
 
-watch(() => userLogin.confirmPassword, (newVal) => {
-  userLogin.passwordMatch = newVal === userLogin.password ? 'Cocok' : 'Tidak Cocok'
+watch(() => UbahPassword.KonfirmasiPassword, (newVal) => {
+  UbahPassword.KecocokanPassword = newVal === UbahPassword.PasswordBaru ? 'Cocok' : 'Tidak Cocok'
+})
+
+watch(() => PasswordLama.konfirmasiPassword, (newVal) => {
+  PasswordLama.passwordMatch = newVal === PasswordLama.passwordLama ? 'Cocok' : 'Tidak Cocok'
 })
 
 function saveChanges() {
   console.log('Changes saved:', {
-    ...basicInfo,
-    ...userLogin,
+    ...UbahPassword,
+    ...PasswordLama,
   })
 }
 
 function cancelChanges() {
-  basicInfo.firstName = ''
-  basicInfo.lastName = ''
-  basicInfo.nip = ''
-  basicInfo.email = ''
-  userLogin.password = ''
-  userLogin.confirmPassword = ''
-  userLogin.passwordMatch = ''
+  UbahPassword.PasswordBaru = ''
+  UbahPassword.KonfirmasiPassword = ''
+  UbahPassword.KecocokanPassword = ''
+  PasswordLama.passwordLama = ''
+  PasswordLama.konfirmasiPassword = ''
+  PasswordLama.passwordMatch = ''
 }
 
 function triggerFileInput() {
@@ -72,38 +74,34 @@ function removeImage() {
 
       <div class="form-container">
         <div class="form-section">
-          <h3>Basic Information</h3>
+          <h3>Ubah Password</h3>
           <div class="form-group">
-            <label>Nama Depan</label>
-            <input type="text" v-model="basicInfo.firstName" />
+            <label>Password Baru</label>
+            <input type="password" v-model="UbahPassword.PasswordBaru" />
           </div>
           <div class="form-group">
-            <label>Nama Belakang</label>
-            <input type="text" v-model="basicInfo.lastName" />
+            <label>Konfirmasi Password Baru</label>
+            <input type="password" v-model="UbahPassword.KonfirmasiPassword" />
           </div>
           <div class="form-group">
-            <label>NIP</label>
-            <input type="text" v-model="basicInfo.phone" />
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" v-model="basicInfo.email" />
+            <label>Kecocokan Password Baru</label>
+            <input type="text" v-model="UbahPassword.KecocokanPassword" disabled />
           </div>
         </div>
 
         <div class="form-section">
-          <h3>User Login</h3>
+          <h3>Password Lama</h3>
           <div class="form-group">
             <label>Password</label>
-            <input type="password" v-model="userLogin.password" />
+            <input type="password" v-model="PasswordLama.passwordLama" />
           </div>
           <div class="form-group">
             <label>Confirm Password</label>
-            <input type="password" v-model="userLogin.confirmPassword" />
+            <input type="password" v-model="PasswordLama.konfirmasiPassword" />
           </div>
           <div class="form-group">
-            <label>Password Cocok</label>
-            <input type="text" v-model="userLogin.passwordMatch" disabled />
+            <label>Kecocokan Password</label>
+            <input type="text" v-model="PasswordLama.passwordMatch" disabled />
           </div>
         </div>
       </div>
@@ -167,7 +165,6 @@ function removeImage() {
   transform: scale(1.1);
 }
 
-/* Lanjutkan CSS lainnya sesuai dengan file kamu yang sebelumnya */
 .container {
 
   min-height: 100vh;

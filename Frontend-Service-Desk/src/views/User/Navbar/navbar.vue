@@ -50,7 +50,6 @@
 
 
 const nama_depan = ref('')
-const nama_belakang = ref('')
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
@@ -61,7 +60,6 @@ onBeforeMount(() => {
   })
   .then(response => {
     nama_depan.value = response.data.Nama_Depan
-    nama_belakang.value = response.data.Nama_Belakang
   })
   .catch(error => {
     console.error(error)
@@ -89,8 +87,7 @@ onBeforeMount(() => {
 
   /* biar ada isi kliknya */
   const menuItem = [
-  "Beranda", "Pengajuan Permintaan", 
-  "Permintaan Baru", "Lacak Permintaan",
+  "Beranda","Permintaan Baru", "Lacak Permintaan",
   "Hasil Pemenuhan SLA dan BA", "Riwayat"]
 
   /* biar bisa diklik */
@@ -105,7 +102,7 @@ onBeforeMount(() => {
   const componentsMap = {
     Beranda: beranda,
     /*Pengajuan Permintaan */
-    'Pengajuan Permintaan': pengajuanpermintaan,
+    'Permintaan Baru': pengajuanpermintaan,
     'Halaman Formulir Tiket Baru': halamanFormulirTiketBaru,
     'Profile Saya': profileSaya,
     'Edit Profile': editProfile,
@@ -116,7 +113,7 @@ onBeforeMount(() => {
     if(["Beranda", "Riwayat", "History"].includes(item)){
       return "hover-blue";
     }
-    else if(["Pengajuan Permintaan", "Permintaan Baru"].includes(item)){
+    else if(["Permintaan Baru"].includes(item)){
       return "hover-yellow";
     }
     else{
@@ -135,7 +132,7 @@ onBeforeMount(() => {
     <!-- blok akun -->
     <div class="wrapperAkun">
       <div class="akun" ref="akunRef" @click="toggleOverlay">
-        <h4>{{ nama_depan + " " + nama_belakang }}</h4>
+        <h4>{{ nama_depan }}</h4>
       </div>
       <!-- overlay -->
       <div v-if="tampilinOverlay" class="menuOverlay" ref="overlayRef">
