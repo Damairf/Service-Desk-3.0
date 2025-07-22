@@ -1,9 +1,19 @@
 <script setup>
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 const data = ref(null);
 
+axios.get('http://127.0.0.1:8000/api/user/profile', {
+  headers: {
+    Authorization: 'Bearer ' + localStorage.getItem('Token')
+  }
+  .then(function(response){
+    console.log(response);
+  })
+})
 onMounted(() => {
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/user/profile', {
@@ -50,6 +60,7 @@ const nama_depan = localStorage.getItem('nama_depan')
     <style>
       html, body {
       height: 100%;
+      width: 100%;
       margin: 0;
       padding: 0;
     }

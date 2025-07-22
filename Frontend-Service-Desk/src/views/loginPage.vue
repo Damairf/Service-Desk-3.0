@@ -18,7 +18,7 @@ localStorage.clear();
       .then(function(response){
         console.log(response);
         localStorage.setItem('Token', response.data.data)
-        router.push('/beranda')
+        router.push('beranda')
       })
       .catch(function(error){
         console.log(error)
