@@ -22,7 +22,7 @@ onBeforeMount(() => {
   })
   .then(response => {
     console.log(response);
-    nama_depan.value = response.data.Nama_Depan // <- masukkan ke ref
+    nama_depan.value = response.data.Nama_Depan 
     localStorage.setItem('nama_depan', response.data.Nama_Depan)
   })
   .catch(error => {
