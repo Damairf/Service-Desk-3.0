@@ -88,9 +88,7 @@
 }
 
 .wrapperAkun {
-  display: flex;
-  position: sticky;
-  top: 0;
+  position: fixed;
   right: 0;
   width: fit-content;
 }
@@ -98,6 +96,7 @@
 .akun{
   background-color: #0185DA;
   width: 15vw;
+  height: 6.2vh;
   text-align: center;
   color: white;
   cursor: pointer;
