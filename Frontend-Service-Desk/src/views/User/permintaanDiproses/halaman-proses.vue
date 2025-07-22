@@ -147,6 +147,7 @@ h1 {
 }
 .pagination button {
   background-color: white;
+  color: black;
   border: 1px solid #ccc;
   padding: 0.5rem 0.75rem;
   border-radius: 50%;
@@ -157,10 +158,15 @@ h1 {
 }
 .pagination button:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  color: black;
+  opacity: 30%;
 }
 .pagination button.active {
   background-color: #007bff;
   color: white;
+}
+
+.pagination button:not(.active):hover {
+  background-color: #f0f0f0;
 }
 </style>
