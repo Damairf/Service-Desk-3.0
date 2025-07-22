@@ -18,9 +18,15 @@ function login(){
         localStorage.setItem('Token', response.data.data)
         router.push('beranda')
       })
-      .catch(function(error){
-        console.log(error)
-      });
+      .catch(function(error) {
+        if (error.response && error.response.status === 401) {
+          alert("Password salah!");
+        } else if (error.response && error.response.status === 404) {
+          alert("NIP tidak ditemukan!");
+        } else {
+          alert("Terjadi kesalahan server");
+        }
+});
     }
 
 const data = ref(null);
