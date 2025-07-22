@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\JenisPelayananController;
 use App\Http\Controllers\OrganisasiController;
 use App\Http\Controllers\PelayananController;
 use App\Http\Controllers\RoleController;
@@ -22,6 +23,8 @@ Route::get('/user/profile',[UserController::class, 'profile']);
 Route::put('/user/profile', [UserController::class, 'update_Profile']);
 
 // endpoint user
+Route::get('/jenispelayanan',[JenisPelayananController::class, 'getAll_JnsPelayanan']);
+
 Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
 Route::put('/pelayanan/tambah/survey/{pelayananId}',[PelayananController::class, 'putSurvey']);
 
