@@ -92,11 +92,6 @@ function handleSubmit() {
 </template>
 
 <style scoped>
-input{
-  background-color: white;
-  color: black;
-}
-
 .form-container {
   background-color: #f4f0fb;
   min-height: 100vh;
@@ -140,8 +135,7 @@ input[type="text"],
 select,
 textarea,
 input[type="file"] {
-  background-color: white;
-  color: black;
+  cursor:pointer;
   width: 95%;
   padding: 0.7rem;
   margin-bottom: 1rem;

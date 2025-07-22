@@ -87,8 +87,7 @@ onBeforeMount(() => {
 
   /* biar ada isi kliknya */
   const menuItem = [
-  "Beranda", "Pengajuan Permintaan", 
-  "Permintaan Baru", "Lacak Permintaan",
+  "Beranda","Permintaan Baru", "Lacak Permintaan",
   "Hasil Pemenuhan SLA dan BA", "Riwayat"]
 
   /* biar bisa diklik */
@@ -103,7 +102,7 @@ onBeforeMount(() => {
   const componentsMap = {
     Beranda: beranda,
     /*Pengajuan Permintaan */
-    'Pengajuan Permintaan': pengajuanpermintaan,
+    'Permintaan Baru': pengajuanpermintaan,
     'Halaman Formulir Tiket Baru': halamanFormulirTiketBaru,
     'Profile Saya': profileSaya,
     'Edit Profile': editProfile,
@@ -114,7 +113,7 @@ onBeforeMount(() => {
     if(["Beranda", "Riwayat", "History"].includes(item)){
       return "hover-blue";
     }
-    else if(["Pengajuan Permintaan", "Permintaan Baru"].includes(item)){
+    else if(["Permintaan Baru"].includes(item)){
       return "hover-yellow";
     }
     else{
