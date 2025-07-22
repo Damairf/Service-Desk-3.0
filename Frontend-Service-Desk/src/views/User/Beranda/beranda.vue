@@ -1,16 +1,42 @@
 <script setup>
-  // biar tombolnya bisa berfungsi
   import { inject, ref, computed } from 'vue'
+  import axios from 'axios'
+  import { useRouter } from 'vue-router'
+  import { ref, onBeforeMount } from 'vue';
+  
+  // biar tombolnya bisa berfungsi
   const selectMenu = inject('selectMenu')
   function handleOK(){
     selectMenu('Pengajuan Permintaan')
   }
+
+const nama_depan = ref('')
+
+onBeforeMount(() => {
+  const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/user/profile', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    console.log(response);
+    nama_depan.value = response.data.Nama_Depan // <- masukkan ke ref
+    localStorage.setItem('nama_depan', response.data.Nama_Depan)
+  })
+    
+  .catch(error => {
+    console.error(error);
+  });
+});
+
+
 </script>
   
   <template>
       <div class="container">
         <div class="greet">
-        <h1>Selamat datang, "Nama User"</h1>
+        <h1>Selamat datang, {{ nama_depan }}</h1>
         <p>
           Ada yang bisa kami bantu?
         </p>
@@ -33,6 +59,7 @@
     <style>
       html, body {
       height: 100%;
+      width: 100%;
       margin: 0;
       padding: 0;
     }
