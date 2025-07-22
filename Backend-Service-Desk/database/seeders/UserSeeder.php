@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
                 "ID_Organisasi" => 1,
                 "ID_Status" => 1,
                 "NIP" => 1111,
-                "Nama_Depan" => "Damair",
+                "Nama_Depan" => "Damai",
                 "Nama_Belakang" => "Raya",
                 "Password" => Hash::make('1234'),
                 "Gambar_Path" => "Tidak ada gambar",
