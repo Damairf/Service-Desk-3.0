@@ -1,20 +1,13 @@
 <script setup>
-<<<<<<< HEAD
-  import { inject, ref, computed } from 'vue'
+  import { inject, ref, computed, onBeforeMount, onMounted } from 'vue';
   import axios from 'axios'
   import { useRouter } from 'vue-router'
-  import { ref, onBeforeMount } from 'vue';
   
   // biar tombolnya bisa berfungsi
   const selectMenu = inject('selectMenu')
   function handleOK(){
     selectMenu('Pengajuan Permintaan')
   }
-=======
-import axios from 'axios'
-import { useRouter } from 'vue-router'
-import { ref, onBeforeMount, onMounted } from 'vue';
->>>>>>> e80586b9dc6702939f18ebcef60e5ea21f106fe0
 
 const nama_depan = ref('')
 const router = useRouter()
