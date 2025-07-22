@@ -10,6 +10,7 @@
   }
 
 const nama_depan = ref('')
+const nama_belakang = ref('')
 const router = useRouter()
 
 onMounted(()=> {
@@ -28,8 +29,10 @@ onBeforeMount(() => {
   })
   .then(response => {
     console.log(response);
-    nama_depan.value = response.data.Nama_Depan 
+    nama_depan.value = response.data.Nama_Depan
+    nama_belakang.value = response.data.Nama_Belakang
     localStorage.setItem('nama_depan', response.data.Nama_Depan)
+    localStorage.setItem('nama_belakang', response.data.Nama_Belakang)
   })
   .catch(error => {
     console.error(error);
@@ -42,7 +45,7 @@ onBeforeMount(() => {
   <template>
       <div class="container">
         <div class="greet">
-        <h1>Selamat datang, {{ nama_depan }}</h1>
+        <h1>Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
         <p>
           Ada yang bisa kami bantu?
         </p>
