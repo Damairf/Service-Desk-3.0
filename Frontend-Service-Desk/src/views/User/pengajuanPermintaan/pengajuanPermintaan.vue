@@ -13,6 +13,8 @@ const selectMenu = inject('selectMenu')
 //   "Pelayanan Email dan Drive Jabarprov",
 //   "Pelayanan Email dan Drive Jabarprov",
 // ])
+
+const services = ref([])
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/jenispelayanan', {
@@ -22,7 +24,7 @@ onBeforeMount(() => {
   })
   .then(response => {
     console.log(response);
-
+    services.value = response.data;
   })
   .catch(error => {
     console.error(error);
@@ -38,7 +40,7 @@ const selectedItem = ref("")
 const filteredServices = computed(() => {
   const term = searchTerm.value.toLowerCase();
   return services.value
-    .filter((s) => s.toLowerCase().includes(term))
+    .filter((s) => s.Nama_Jenis_Pelayanan.toLowerCase().includes(term))
     .slice((page.value - 1) * 10, page.value * 10);
 })
 
@@ -89,7 +91,7 @@ function handleOk() {
           class="list-item"
           :class="index % 2 === 0 ? 'grey-bg' : 'white-bg'"
         >
-          {{ item }}
+          {{ item.Nama_Jenis_Pelayanan }}
         </div>
         <button class="tombol-tambah" @click="openModal(item)">+</button>
       </div>
@@ -108,7 +110,7 @@ function handleOk() {
       <div class="overlay-content">
         <button class="close-btn" @click="showModal = false">×</button>
         <h3>Pesyaratan</h3>
-        <p>{{ selectedItem }}</p>
+        <p>{{ selectedItem.Nama_Jenis_Pelayanan }}</p>
         <label>
           <input type="checkbox" v-model="isChecked" />
           Persetujuan Sudah Lengkap
