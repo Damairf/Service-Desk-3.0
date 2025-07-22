@@ -5,10 +5,12 @@
   const selectMenu = inject('selectMenu')
   const namaDepan = localStorage.getItem('nama_depan')
   const namaBelakang = localStorage.getItem('nama_belakang')
+  const nip = ref("test123")
+  
+  const role = ref("Teknisi")
+  const jabatan = ref("Staff IT")
+  const instansi = ref("Dinas Kominfo")
 
-
-  const nip = 123456789
-  const email = "Email@Diskominfo.Jabar.id"
 </script>
 
 
@@ -39,14 +41,16 @@
           <div class="info-text">
             <p><strong>Nama Depan</strong> : {{namaDepan}}</p>
             <p><strong>Nama Belakang</strong> : {{namaBelakang}}</p>
+            <p><strong>Nama NIP</strong> : {{nip}}</p>
           </div>
         </div>
 
         <div class="info-box blue">
           <div class="icon-area">📱</div>
           <div class="info-text">
-            <p><strong>No NIP</strong> : {{nip}}</p>
-            <p><strong>Email</strong> : {{email}}</p>
+            <p><strong>Role</strong> : {{role}}</p>
+            <p><strong>Jabatan</strong> : {{jabatan}}</p>
+            <p><strong>Instansi</strong> : {{instansi}}</p>
           </div>
         </div>
       </div>
