@@ -23,10 +23,6 @@ function login(){
       });
     }
 
-// dummy buat tombol bypass
-function goToBeranda(){
-  router.push('/beranda')
-}
 const data = ref(null);
 </script>
 
@@ -44,7 +40,6 @@ const data = ref(null);
         <input class="placeholderLgn" v-model="Password" type="password" placeholder="Password" />
         <button class= "login" @click="login">Login</button>
         <p class= "invalidLogin">{{ message }}</p>
-        <button @click="goToBeranda" class="btn">Ke Beranda</button>
       </div>
     </div>
   </div>
