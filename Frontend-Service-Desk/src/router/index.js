@@ -10,7 +10,7 @@ import HalamanFormulirTiketBaru from '../views/User/pengajuanPermintaan/halaman-
 
 // Daftar rute
 const routes = [
-  { path: '/', name: 'Login', component: Login },
+  { path: '/login', name: 'Login', component: Login },
   { path: '/beranda', name: 'Beranda', component: navbar },
   { path: '/FormulirTikerBaru', name: 'FormulirTiketBaru', component:HalamanFormulirTiketBaru}
 ]
