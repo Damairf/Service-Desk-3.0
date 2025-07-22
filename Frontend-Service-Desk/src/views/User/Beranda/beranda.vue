@@ -2,18 +2,8 @@
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
 
 const data = ref(null);
-
-axios.get('http://127.0.0.1:8000/api/user/profile', {
-  headers: {
-    Authorization: 'Bearer ' + localStorage.getItem('Token')
-  }
-  .then(function(response){
-    console.log(response);
-  })
-})
 onMounted(() => {
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/user/profile', {
