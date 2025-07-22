@@ -289,7 +289,7 @@ function removeImage() {
   background-color: #d32f2f;
 }
 
-/* Overlay Styles */
+/* Overlay*/
 .overlay {
   position: fixed;
   top: 0;

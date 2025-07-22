@@ -1,17 +1,33 @@
 <script setup>
-import { inject, ref, computed } from 'vue'
+import { inject, ref, computed , onBeforeMount } from 'vue'
+import axios from 'axios'
 
 const selectMenu = inject('selectMenu')
 
-const services = ref([
-  "Pelayanan Email dan Drive Jabarprov",
-  "Pelayanan Email dan Drive Jabarprov",
-  "Pelayanan Email dan Drive Jabarprov",
-  "Pelayanan Email dan Drive Jabarprov",
-  "Pelayanan Email dan Drive Jabarprov",
-  "Pelayanan Email dan Drive Jabarprov",
-  "Pelayanan Email dan Drive Jabarprov",
-])
+// const services = ref([
+//   "Pelayanan Email dan Drive Jabarprov",
+//   "Pelayanan Email dan Drive Jabarprov",
+//   "Pelayanan Email dan Drive Jabarprov",
+//   "Pelayanan Email dan Drive Jabarprov",
+//   "Pelayanan Email dan Drive Jabarprov",
+//   "Pelayanan Email dan Drive Jabarprov",
+//   "Pelayanan Email dan Drive Jabarprov",
+// ])
+onBeforeMount(() => {
+  const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/jenispelayanan', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    console.log(response);
+
+  })
+  .catch(error => {
+    console.error(error);
+  });
+});
 
 const page = ref(1)
 const searchTerm = ref("")
