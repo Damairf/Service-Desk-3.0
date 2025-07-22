@@ -1,26 +1,20 @@
 <script>
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
-const router = useRouter()
-
-const NIP = ref('')
-const Password = ref('')
-
-function login(){
-      axios.post('http://127.0.0.1:8000/api/user/login', {
-        NIP: NIP.value,
-        Password: Password.value
-      })
-      .then(function(response){
-        console.log(response);
-        localStorage.setItem('Token', response.data.token)
-        router.push('/beranda')
-      })
-      .catch(function(error){
-        console.log(error)
-      });
+export default {
+  data() {
+    return {
+      Token : ''
     }
-
+  },
+  mounted() {
+    Token.value = localStorage.getItem('data')
+    if(!token.value || token.value == '' || token.value == null) {
+      router.push('loginPage')
+    }
+  },
+}
 
 </script>
   
