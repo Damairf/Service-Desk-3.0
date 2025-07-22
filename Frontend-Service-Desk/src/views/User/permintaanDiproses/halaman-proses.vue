@@ -87,12 +87,18 @@ export default {
 
 <style scoped>
 
+.container {
+  background-color: #faf4ff;
+  min-height: 100vh;
+  padding: 1rem;
+  position: relative;
+}
+
 .progress-card {
   background-color: white;
   border-radius: 16px;
   padding: 2rem;
-  width: 100%;
-  max-width: 1100px;
+  width: 95%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: left;
   position: relative;
