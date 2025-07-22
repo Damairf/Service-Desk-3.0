@@ -1,7 +1,51 @@
-<template>
+<script setup>
+  import { inject, ref, computed, onBeforeMount, onMounted } from 'vue';
+  import axios from 'axios'
+  import { useRouter } from 'vue-router'
+  
+  // biar tombolnya bisa berfungsi
+  const selectMenu = inject('selectMenu')
+  function handleOK(){
+    selectMenu('Pengajuan Permintaan')
+  }
+
+const nama_depan = ref('')
+const nama_belakang = ref('')
+const router = useRouter()
+
+onMounted(()=> {
+  const token = localStorage.getItem('Token');
+  if(!token) {
+    router.push('/login')
+  }
+})
+
+onBeforeMount(() => {
+  const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/user/profile', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    console.log(response);
+    nama_depan.value = response.data.Nama_Depan
+    nama_belakang.value = response.data.Nama_Belakang
+    localStorage.setItem('nama_depan', response.data.Nama_Depan)
+    localStorage.setItem('nama_belakang', response.data.Nama_Belakang)
+  })
+  .catch(error => {
+    console.error(error);
+  });
+});
+
+
+</script>
+  
+  <template>
       <div class="container">
         <div class="greet">
-        <h1>Selamat datang, "Nama User"</h1>
+        <h1>Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
         <p>
           Ada yang bisa kami bantu?
         </p>
@@ -10,7 +54,7 @@
         <div class="box">
           <h3>Permintaan Baru</h3>
           <p>Mulai permintaan pelayanan pada Diskominfo Jabar</p>
-          <button class="tambah">Baru</button>
+          <button class="tambah" @click="handleOK">Baru</button>
         </div>
         <div class="box">
           <h3>Lacak Permintaan</h3>
