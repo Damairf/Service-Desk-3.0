@@ -9,23 +9,23 @@ const NIP = ref('')
 const Password = ref('')
 
 function login(){
-      axios.post('http://127.0.0.1:8000/api/user/login', {
-        NIP: NIP.value,
-        Password: Password.value
-      })
-      .then(function(response){
-        console.log(response);
-        localStorage.setItem('Token', response.data.data)
-        router.push('beranda')
-      })
-      .catch(function(error) {
-        if (error.response && error.response.status === 401) {
-          alert("Password salah!");
-        } else if (error.response && error.response.status === 404) {
-          alert("NIP tidak ditemukan!");
-        } else {
-          alert("Terjadi kesalahan server");
-        }
+  axios.post('http://127.0.0.1:8000/api/user/login', {
+    NIP: NIP.value,
+    Password: Password.value
+    })
+  .then(function(response){
+    console.log(response);
+    localStorage.setItem('Token', response.data.data)
+    router.push('beranda')
+    })
+  .catch(function(error) {
+    if (error.response && error.response.status === 401) {
+      alert("Password salah!");
+    } else if (error.response && error.response.status === 404) {
+      alert("NIP tidak ditemukan!");
+    } else {
+      alert("Terjadi kesalahan server");
+    }
 });
 }
 

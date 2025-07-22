@@ -41,8 +41,8 @@ function saveChanges() {
   }
   const token = localStorage.getItem('Token');
   axios.put('http://127.0.0.1:8000/api/user/profile', {
-    ID_User: userID,            // <-- ID_User yang sedang login
-    PasswordLama: PasswordLama.passwordLama,  // <-- Password lama dari input
+    ID_User: userID,          
+    PasswordLama: PasswordLama.passwordLama, 
     PasswordBaru: UbahPassword.PasswordBaru
   },{
     headers: {
@@ -53,7 +53,7 @@ function saveChanges() {
     alert(response.data.message);
     localStorage.clear();
     router.push('/login')
-    cancelChanges(); // Reset form setelah berhasil
+    cancelChanges(); 
   })
   .catch(error => {
     console.error(error);
