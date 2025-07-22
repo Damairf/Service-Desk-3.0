@@ -18,11 +18,11 @@ class AuthController extends Controller
         
 
         if(!$user){
-            return response("NIP tidak ditemukan");
+            return response("NIP tidak ditemukan", 404);
         }
 
         if(!Hash::check($Password, $user->Password)){
-            return response("Password salah", 201);
+            return response("Password salah", 401);
         }
        
 
