@@ -170,7 +170,7 @@ function removeImage() {
 
           <img
             class="photo-preview"
-            :src="`src/assets/${gambar}`"
+            :src="`http://localhost:8000/storage/${gambar}`"
             alt="Preview Foto Profil"
           />
 
