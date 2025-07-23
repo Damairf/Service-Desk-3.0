@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
@@ -76,9 +76,8 @@ function triggerFileInput() {
   fileInput.value?.click()
 }
 
-const gambar = localStorage.getItem('src_gambar')
-
-const Gambar_Path = ref('')
+const gambar = ref(localStorage.getItem('src_gambar'));
+const imageSrc = computed(() => `http://localhost:8000/images/${gambar.value}?t=${Date.now()}`);
 
 function handleImageUpload(event) {
   const token = localStorage.getItem('Token');
@@ -97,7 +96,10 @@ function handleImageUpload(event) {
       }
     })
     .then(function(response){
-      console.log(response)
+      gambar.value = response.data.nama_file;
+      localStorage.setItem('src_gambar', response.data.nama_file);
+      selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
+      showOverlay.value = false; // close overlay if you want
     })
     .catch(function(error) {
       console.log(error)
@@ -118,7 +120,7 @@ function removeImage() {
     <div class="profile-card">
       <img
         class="profile-image"
-        :src="`http://localhost:8000/images/${gambar}`"
+        :src="imageSrc"
         alt="Foto Profil"
         @click="showOverlay = true"
       />
