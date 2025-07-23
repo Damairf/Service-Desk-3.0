@@ -1,6 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import navbar from './views/User/Navbar/navbar.vue';
 import Sidebar from '../src/views/SideBar/sidebar.vue';
 import { useRoute } from 'vue-router'
 const route = useRoute()

@@ -5,7 +5,6 @@ import Sidebar from '../views/SideBar/sidebar.vue' //apus aja kali ntar
 import profileSaya from '../views/profile/profileSaya.vue'
 // Import halaman-halaman
 import Login from '../views/loginPage.vue'
-import navbar from '../views/User/Navbar/navbar.vue' //ini juga hapus mungkin tapi tar dulu
 import beranda from '../views/User/Beranda/beranda.vue'
 // Permintaan baru
 import permintaanBaru from '../views/User/pengajuanPermintaan/pengajuanPermintaan.vue'
