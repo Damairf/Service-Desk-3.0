@@ -1,5 +1,5 @@
 <script setup>
-  import { inject, ref, computed, onBeforeMount } from 'vue'
+  import { inject } from 'vue'
   import axios from 'axios'
   // transisi ke edit profile
 
@@ -22,7 +22,7 @@
       <!-- FOTO & NAMA -->
       <div class="left-column">
         <img
-          src="https://via.placeholder.com/200x200.png?text=User+Image"
+          src="/src/assets/gambar_profile/Fadia Tanoto.jpg"
           alt="Foto Profil"
           class="profile-img"
         />
