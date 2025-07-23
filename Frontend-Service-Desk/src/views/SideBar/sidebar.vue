@@ -3,22 +3,9 @@ import { ref , onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 // buat backend
 import axios from 'axios'
-const nama_depan = ref('')
-onBeforeMount(() => {
-  const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/user/profile', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    nama_depan.value = response.data.Nama_Depan
-  })
-  .catch(error => {
-    console.error(error)
-  })
-})
-//backend
+const nama_depan = ref(localStorage.getItem('nama_depan'));
+const gambar = ref(localStorage.getItem('src_gambar'));
+
 
 const role = ref(1)
 const menuItem = ref([])
@@ -112,7 +99,7 @@ if (role.value == 1) {
     <!-- Profile -->
     <div class="profile">
       <img
-          src="https://via.placeholder.com/200x200.png?text=User+Image"
+          :src="`http://localhost:8000/images/${gambar}`"
           alt="Foto Profil"
           class="gambar-profile"
           @click="toggleOverlay"
