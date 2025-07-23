@@ -76,7 +76,25 @@ function triggerFileInput() {
   fileInput.value?.click()
 }
 
+const gambar = localStorage.getItem('src_gambar')
+
+const Gambar_Path = ref('')
+
 function handleImageUpload(event) {
+  const token = localStorage.getItem('Token');
+  axios.put('http://127.0.0.1:8000/api/user/profilepict', {
+    Gambar_Path : Gambar_Path.value
+  },{
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(function(response){
+    console.log(response)
+    })
+  .catch(function(error) {
+    console.log(error)
+});
   const file = event.target.files[0]
   if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
     selectedImage.value = URL.createObjectURL(file)
@@ -96,7 +114,7 @@ function removeImage() {
     <div class="profile-card">
       <img
         class="profile-image"
-        :src="selectedImage || 'https://via.placeholder.com/160'"
+        :src="`src/assets/${gambar}`"
         alt="Foto Profil"
         @click="showOverlay = true"
       />
@@ -152,20 +170,20 @@ function removeImage() {
 
           <img
             class="photo-preview"
-            :src="selectedImage || 'https://via.placeholder.com/160'"
+            :src="`src/assets/${gambar}`"
             alt="Preview Foto Profil"
           />
 
           <input
             type="file"
             ref="fileInput"
-            @change="handleImageUpload"
+            @change="handleImageUpload($event)"
             accept="image/png, image/jpeg"
             style="display: none"
           />
 
           <div class="action-buttons">
-            <button class="btn ubah" @click="triggerFileInput">
+            <button class="btn ubah" @click="triggerFileInput()">
               <i class="fas fa-pen"></i> Ubah
             </button>
             <button class="btn hapus" @click="removeImage">
@@ -375,7 +393,7 @@ function removeImage() {
   background-color: #ccc;
   border-radius: 50%;
   margin: 0 auto 1.5rem auto;
-  background-image: url('https://via.placeholder.com/160');
+  background-image: url('https://cdn.pixabay.com/photo/2024/04/19/16/06/ai-generated-8706603_1280.jpg');
   background-size: cover;
   background-position: center;
 }

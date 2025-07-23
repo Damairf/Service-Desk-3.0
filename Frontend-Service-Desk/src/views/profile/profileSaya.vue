@@ -10,10 +10,8 @@
   const role = localStorage.getItem('nama_role')
   const jabatan = localStorage.getItem('nama_jabatan')
   const organisasi = localStorage.getItem('nama_organisasi')
-  const gambar = ref('')
-onMounted(() => {
-  gambar.value = localStorage.getItem('src_gambar') || ''
-})
+  const gambar = localStorage.getItem('src_gambar')
+
 </script>
 
 

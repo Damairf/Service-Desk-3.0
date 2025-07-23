@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestPayloadValueResolver;
 
 class UserController extends Controller
 {
@@ -79,6 +80,15 @@ class UserController extends Controller
     return response()->json(['message' => 'Password berhasil diubah!'], 200);
 }
 
+public function update_Photo(Request $request){
+    $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
+
+    $Gambar_Path = $request->Gambar_Path;
+
+    User::where('ID_User', $userId)->update(['Gambar_Path'=>$Gambar_Path]);
+
+        return response("Gambar Diperbarui");
+}
     public function update_User(Request $request){
         $userId = $request->route('userId');
         $dataUser = $request->except('Password');
