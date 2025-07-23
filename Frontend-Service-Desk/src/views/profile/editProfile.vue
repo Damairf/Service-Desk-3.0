@@ -82,22 +82,26 @@ const Gambar_Path = ref('')
 
 function handleImageUpload(event) {
   const token = localStorage.getItem('Token');
-  axios.put('http://127.0.0.1:8000/api/user/profilepict', {
-    Gambar_Path : Gambar_Path.value
-  },{
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(function(response){
-    console.log(response)
-    })
-  .catch(function(error) {
-    console.log(error)
-});
-  const file = event.target.files[0]
+  const file = event.target.files[0];
   if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
-    selectedImage.value = URL.createObjectURL(file)
+    selectedImage.value = URL.createObjectURL(file);
+
+    const formData = new FormData();
+    formData.append('Gambar_Path', file);
+    formData.append('ID_User', userID); 
+
+    axios.post('http://127.0.0.1:8000/api/user/profilepict', formData, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then(function(response){
+      console.log(response)
+    })
+    .catch(function(error) {
+      console.log(error)
+    });
   } else {
     alert('Hanya mendukung gambar PNG atau JPEG')
   }
@@ -114,7 +118,7 @@ function removeImage() {
     <div class="profile-card">
       <img
         class="profile-image"
-        :src="`http://localhost:8000/storage/${gambar}`"
+        :src="`http://localhost:8000/images/${gambar}`"
         alt="Foto Profil"
         @click="showOverlay = true"
       />
@@ -170,7 +174,7 @@ function removeImage() {
 
           <img
             class="photo-preview"
-            :src="`http://localhost:8000/storage/${gambar}`"
+            :src="`http://localhost:8000/images/${gambar}`"
             alt="Preview Foto Profil"
           />
 
