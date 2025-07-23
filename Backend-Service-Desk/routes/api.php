@@ -22,6 +22,7 @@ Route::middleware([CekToken::class])->group(function(){
 Route::get('/user/profile',[UserController::class, 'profile']);
 Route::put('/user/profile', [UserController::class, 'update_Password']);
 Route::post('/user/profilepict', [UserController::class, 'update_Photo']);
+Route::delete('/user/profilepict', [UserController::class, 'delete_Photo']);
 
 
 // endpoint user

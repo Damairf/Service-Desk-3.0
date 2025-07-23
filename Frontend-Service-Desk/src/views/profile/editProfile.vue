@@ -113,8 +113,8 @@ function handleImageUpload(event) {
 }
 
 function removeImage() {
-  selectedImage.value = null
-  if (fileInput.value) fileInput.value.value = null
+  selectedImage.value = ('default.jpeg')
+  if (fileInput.value) fileInput.value.value = ('default.jpeg')
 }
 </script>
 
