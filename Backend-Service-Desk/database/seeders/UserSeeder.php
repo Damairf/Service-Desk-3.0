@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
                 "ID_Status" => 1,
                 "NIP" => 2222,
                 "Nama_Depan" => "Farrel",
-                "Nama_Belakang" => "Al'fathan",
+                "Nama_Belakang" => "Alfat'han",
                 "Password" => Hash::make('1234'),
                 "Gambar_Path" => "default.jpeg",
             ],
