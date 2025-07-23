@@ -102,7 +102,7 @@ function handleImageUpload(event) {
       gambar.value = response.data.nama_file;
       localStorage.setItem('src_gambar', response.data.nama_file);
       selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
-      showOverlay.value = false; // close overlay if you want
+      showOverlay.value = false; 
     })
     .catch(function(error) {
       console.log(error)
@@ -113,8 +113,21 @@ function handleImageUpload(event) {
 }
 
 function removeImage() {
-  selectedImage.value = ('default.jpeg')
-  if (fileInput.value) fileInput.value.value = ('default.jpeg')
+  const token = localStorage.getItem('Token');
+  axios.delete('http://127.0.0.1:8000/api/user/profilepict', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    gambar.value = response.data.nama_file;
+      localStorage.setItem('src_gambar', response.data.nama_file);
+      selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
+      showOverlay.value = false; 
+  })
+  .catch(error => {
+    console.error(error);
+  });
 }
 </script>
 

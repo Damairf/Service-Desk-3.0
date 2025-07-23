@@ -102,6 +102,15 @@ public function update_Photo(Request $request){
         $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
         User::where('ID_User', $userId)->update(['Gambar_Path' => 'default.jpeg']);
 
+        $user = User::where('ID_User', $userId)->first();
+        
+        $gambar_path = $user->Gambar_Path;
+
+        return response()->json([
+            'message' => 'Foto dihapus',
+            'nama_file' => $gambar_path
+        ]);
+
     }
     public function update_User(Request $request){
         $userId = $request->route('userId');
