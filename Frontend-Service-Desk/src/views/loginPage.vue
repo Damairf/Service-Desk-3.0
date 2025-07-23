@@ -14,7 +14,6 @@ function login(){
     Password: Password.value
     })
   .then(function(response){
-    console.log(response);
     localStorage.setItem('Token', response.data.data)
     router.push('beranda')
     })

@@ -42,8 +42,20 @@ class UserController extends Controller
     }
 
     public function profile(Request $request){
-        $user = User::with("user_role", "user_jabatan", "user_organisasi")->where("ID_User", $request->ID_User)->first();
-
+        $user = User::select('ID_User', 'NIP', 'Nama_Depan', 'Nama_Belakang')
+    ->with([
+        'user_role' => function ($query) {
+            $query->select('ID_Role', 'Nama_Role');
+        },
+        'user_jabatan' => function ($query) {
+            $query->select('ID_Jabatan', 'Nama_Jabatan');
+        },
+        'user_organisasi' => function ($query) {
+            $query->select('ID_Organisasi', 'Nama_OPD');
+        }
+    ])
+    ->where('ID_User', $request->ID_User)
+    ->first();
         return response()->json($user);
     }
 

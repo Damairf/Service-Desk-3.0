@@ -10,6 +10,7 @@
   const role = localStorage.getItem('nama_role')
   const jabatan = localStorage.getItem('nama_jabatan')
   const organisasi = localStorage.getItem('nama_organisasi')
+  const gambar = localStorage.getItem('src_gambar')
 
 </script>
 
@@ -22,7 +23,7 @@
       <!-- FOTO & NAMA -->
       <div class="left-column">
         <img
-          src="https://via.placeholder.com/200x200.png?text=User+Image"
+          src=""
           alt="Foto Profil"
           class="profile-img"
         />
