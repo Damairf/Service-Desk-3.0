@@ -21,6 +21,9 @@ Route::middleware([CekToken::class])->group(function(){
 // endpoint fitur umum
 Route::get('/user/profile',[UserController::class, 'profile']);
 Route::put('/user/profile', [UserController::class, 'update_Password']);
+Route::post('/user/profilepict', [UserController::class, 'update_Photo']);
+Route::delete('/user/profilepict', [UserController::class, 'delete_Photo']);
+
 
 // endpoint user
 Route::get('/role/{roleId}', [RoleController::class, 'findOne_Role']);

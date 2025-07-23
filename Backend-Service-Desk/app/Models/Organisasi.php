@@ -14,9 +14,9 @@ class Organisasi extends Model
     protected $fillable = ['Nama_OPD', 'Induk_OPD', 'Nama_Pengelola', 'No_HP_Pengelola', 'Email', 'ID_Status'];
 
     public function status(): BelongsTo{
-        return $this -> belongsTo(Status::class, "ID_Status", 'ID_Status');
+        return $this -> belongsTo(Status::class, "ID_Status");
     }
     public function user_organisasi(): BelongsTo{
-        return $this -> belongsTo(Status::class, "ID_Status", 'ID_Status');
+        return $this -> belongsTo(Status::class, "ID_Status");
     }
 }

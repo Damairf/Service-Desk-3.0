@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
@@ -28,6 +28,9 @@ watch(() => UbahPassword.KonfirmasiPassword, (newVal) => {
 watch(() => PasswordLama.konfirmasiPassword, (newVal) => {
   PasswordLama.passwordMatch = newVal === PasswordLama.passwordLama ? 'Cocok' : 'Tidak Cocok'
 })
+
+  const nama_depan = localStorage.getItem('nama_depan')
+  const nama_belakang = localStorage.getItem('nama_belakang')
 
 const userID = localStorage.getItem("ID_User");
 function saveChanges() {
@@ -76,18 +79,55 @@ function triggerFileInput() {
   fileInput.value?.click()
 }
 
+const gambar = ref(localStorage.getItem('src_gambar'));
+const imageSrc = computed(() => `http://localhost:8000/images/${gambar.value}?t=${Date.now()}`);
+
 function handleImageUpload(event) {
-  const file = event.target.files[0]
+  const token = localStorage.getItem('Token');
+  const file = event.target.files[0];
   if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
-    selectedImage.value = URL.createObjectURL(file)
+    selectedImage.value = URL.createObjectURL(file);
+
+    const formData = new FormData();
+    formData.append('Gambar_Path', file);
+    formData.append('ID_User', userID); 
+
+    axios.post('http://127.0.0.1:8000/api/user/profilepict', formData, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then(function(response){
+      gambar.value = response.data.nama_file;
+      localStorage.setItem('src_gambar', response.data.nama_file);
+      selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
+      showOverlay.value = false; 
+    })
+    .catch(function(error) {
+      console.log(error)
+    });
   } else {
     alert('Hanya mendukung gambar PNG atau JPEG')
   }
 }
 
 function removeImage() {
-  selectedImage.value = null
-  if (fileInput.value) fileInput.value.value = null
+  const token = localStorage.getItem('Token');
+  axios.delete('http://127.0.0.1:8000/api/user/profilepict', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    gambar.value = response.data.nama_file;
+      localStorage.setItem('src_gambar', response.data.nama_file);
+      selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
+      showOverlay.value = false; 
+  })
+  .catch(error => {
+    console.error(error);
+  });
 }
 </script>
 
@@ -96,12 +136,12 @@ function removeImage() {
     <div class="profile-card">
       <img
         class="profile-image"
-        :src="selectedImage || 'https://via.placeholder.com/160'"
+        :src="imageSrc"
         alt="Foto Profil"
         @click="showOverlay = true"
       />
 
-      <h2 class="user-name">Nama User</h2>
+      <h2 class="user-name">{{ nama_depan + " " + nama_belakang }}</h2>
 
       <div class="form-container">
         <div class="form-section">
@@ -152,20 +192,20 @@ function removeImage() {
 
           <img
             class="photo-preview"
-            :src="selectedImage || 'https://via.placeholder.com/160'"
+            :src="`http://localhost:8000/images/${gambar}`"
             alt="Preview Foto Profil"
           />
 
           <input
             type="file"
             ref="fileInput"
-            @change="handleImageUpload"
+            @change="handleImageUpload($event)"
             accept="image/png, image/jpeg"
             style="display: none"
           />
 
           <div class="action-buttons">
-            <button class="btn ubah" @click="triggerFileInput">
+            <button class="btn ubah" @click="triggerFileInput()">
               <i class="fas fa-pen"></i> Ubah
             </button>
             <button class="btn hapus" @click="removeImage">
@@ -375,7 +415,7 @@ function removeImage() {
   background-color: #ccc;
   border-radius: 50%;
   margin: 0 auto 1.5rem auto;
-  background-image: url('https://via.placeholder.com/160');
+  background-image: url('https://cdn.pixabay.com/photo/2024/04/19/16/06/ai-generated-8706603_1280.jpg');
   background-size: cover;
   background-position: center;
 }

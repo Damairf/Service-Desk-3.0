@@ -10,10 +10,7 @@
   const role = localStorage.getItem('nama_role')
   const jabatan = localStorage.getItem('nama_jabatan')
   const organisasi = localStorage.getItem('nama_organisasi')
-  const gambar = ref('')
-onMounted(() => {
-  gambar.value = localStorage.getItem('src_gambar') || ''
-})
+  const gambar = localStorage.getItem('src_gambar')
 </script>
 
 
@@ -25,7 +22,7 @@ onMounted(() => {
       <!-- FOTO & NAMA -->
       <div class="left-column">
         <img
-          :src="`src/assets/${gambar}`"
+          :src="`http://localhost:8000/images/${gambar}`"
           alt="Foto Profil"
           class="profile-img"
         />

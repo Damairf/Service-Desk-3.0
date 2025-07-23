@@ -1,7 +1,5 @@
-
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref, inject, onMounted } from 'vue'
 
 const layanan = ref('')
 const layananList = ref([])
@@ -10,28 +8,6 @@ const nip = ref('')
 const deskripsi = ref('')
 const suratDinas = ref(null)
 const lampiran = ref(null)
-
-// Ambil data layanan dari API
-onMounted(() => {
-  const token = localStorage.getItem('Token')
-  axios.get('http://127.0.0.1:8000/api/jenispelayanan', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    if (Array.isArray(response.data)) {
-      layananList.value = response.data
-    } else if (Array.isArray(response.data.data)) {
-      layananList.value = response.data.data
-    } else {
-      layananList.value = []
-    }
-  })
-  .catch(error => {
-    console.error(error)
-  })
-})
 
 // Fungsi untuk menangani perubahan file
 function handleFileChange(e, field) {

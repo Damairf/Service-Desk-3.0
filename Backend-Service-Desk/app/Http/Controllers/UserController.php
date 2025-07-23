@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestPayloadValueResolver;
 
 class UserController extends Controller
 {
@@ -79,6 +80,38 @@ class UserController extends Controller
     return response()->json(['message' => 'Password berhasil diubah!'], 200);
 }
 
+public function update_Photo(Request $request){
+    $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
+
+    if ($request->hasFile('Gambar_Path')) {
+        $file = $request->file('Gambar_Path');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('images'), $filename);
+        User::where('ID_User', $userId)->update(['Gambar_Path' => $filename]);
+
+        return response()->json([
+            'message' => 'Upload berhasil',
+            'nama_file' => $filename
+        ]);
+    }
+
+    return response()->json(['message' => 'Tidak ada file dikirim'], 400);
+}
+
+    public function delete_Photo(Request $request){
+        $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
+        User::where('ID_User', $userId)->update(['Gambar_Path' => 'default.jpeg']);
+
+        $user = User::where('ID_User', $userId)->first();
+        
+        $gambar_path = $user->Gambar_Path;
+
+        return response()->json([
+            'message' => 'Foto dihapus',
+            'nama_file' => $gambar_path
+        ]);
+
+    }
     public function update_User(Request $request){
         $userId = $request->route('userId');
         $dataUser = $request->except('Password');
