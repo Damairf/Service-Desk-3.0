@@ -1,5 +1,6 @@
 <script setup>
-  import { inject } from 'vue'
+  import { inject, ref, computed, onMounted } from 'vue'
+  import axios from 'axios'
   // transisi ke edit profile
 
   const selectMenu = inject('selectMenu')
@@ -9,8 +10,10 @@
   const role = localStorage.getItem('nama_role')
   const jabatan = localStorage.getItem('nama_jabatan')
   const organisasi = localStorage.getItem('nama_organisasi')
-  const gambar = localStorage.getItem('src_gambar')
-
+  const gambar = ref('')
+onMounted(() => {
+  gambar.value = localStorage.getItem('src_gambar') || ''
+})
 </script>
 
 
@@ -22,7 +25,7 @@
       <!-- FOTO & NAMA -->
       <div class="left-column">
         <img
-          :src="gambar"
+          :src="`/src/assets/${gambar}`"
           alt="Foto Profil"
           class="profile-img"
         />
