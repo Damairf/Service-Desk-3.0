@@ -25,7 +25,7 @@ onMounted(() => {
       <!-- FOTO & NAMA -->
       <div class="left-column">
         <img
-          :src="`/src/assets/${gambar}`"
+          :src="gambar"
           alt="Foto Profil"
           class="profile-img"
         />
