@@ -27,7 +27,8 @@ class PelayananController extends Controller
         $Perihal = $request->Perihal;
         $Deskripsi = $request->Deskripsi;
         $Surat_Dinas_Path = $request->Surat_Dinas_Path;
-        $Lampiran_Path = $request->Lampiran_Path; 
+        $Lampiran_Path = $request->Lampiran_Path;
+        $ID_Status = $request->ID_Status;
 
         $newPelayanan = Pelayanan::create([
             'ID_User' => $ID_User,
@@ -35,7 +36,8 @@ class PelayananController extends Controller
             'Perihal' => $Perihal,
             'Deskripsi' => $Deskripsi,
             'Surat_Dinas_Path' => $Surat_Dinas_Path,
-            'Lampiran_Path' => $Lampiran_Path
+            'Lampiran_Path' => $Lampiran_Path,
+            'ID_Status' => $ID_Status,
         ]);
 
         return response(["message" => "Layanan ditambahkan", "data" => $newPelayanan]);
