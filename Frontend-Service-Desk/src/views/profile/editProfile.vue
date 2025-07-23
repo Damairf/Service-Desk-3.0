@@ -114,7 +114,7 @@ function removeImage() {
     <div class="profile-card">
       <img
         class="profile-image"
-        :src="`src/assets/${gambar}`"
+        :src="`http://localhost:8000/storage/${gambar}`"
         alt="Foto Profil"
         @click="showOverlay = true"
       />

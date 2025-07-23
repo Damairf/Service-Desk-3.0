@@ -83,11 +83,26 @@ class UserController extends Controller
 public function update_Photo(Request $request){
     $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
 
-    $Gambar_Path = $request->Gambar_Path;
+    // Pastikan ada file yang dikirim
+    if ($request->hasFile('Gambar_Path')) {
+        $file = $request->file('Gambar_Path');
 
-    User::where('ID_User', $userId)->update(['Gambar_Path'=>$Gambar_Path]);
+        // Buat nama file unik
+        $filename = time() . '_' . $file->getClientOriginalName();
 
-        return response("Gambar Diperbarui");
+        // Simpan file ke folder public/images
+        $file->move(public_path('images'), $filename);
+
+        // Update nama file di database
+        User::where('ID_User', $userId)->update(['Gambar_Path' => $filename]);
+
+        return response()->json([
+            'message' => 'Upload berhasil',
+            'nama_file' => $filename
+        ]);
+    }
+
+    return response()->json(['message' => 'Tidak ada file dikirim'], 400);
 }
     public function update_User(Request $request){
         $userId = $request->route('userId');
