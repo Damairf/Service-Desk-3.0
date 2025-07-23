@@ -1,5 +1,7 @@
 <script setup>
   import { inject } from 'vue'
+  import { inject, ref, computed, onMounted } from 'vue'
+  import axios from 'axios'
   // transisi ke edit profile
 
   const selectMenu = inject('selectMenu')
@@ -10,7 +12,6 @@
   const jabatan = localStorage.getItem('nama_jabatan')
   const organisasi = localStorage.getItem('nama_organisasi')
   const gambar = localStorage.getItem('src_gambar')
-
 </script>
 
 
@@ -22,7 +23,7 @@
       <!-- FOTO & NAMA -->
       <div class="left-column">
         <img
-          src="/src/assets/gambar_profile/Fadia Tanoto.jpg"
+          :src="`http://localhost:8000/storage/${gambar}`"
           alt="Foto Profil"
           class="profile-img"
         />
