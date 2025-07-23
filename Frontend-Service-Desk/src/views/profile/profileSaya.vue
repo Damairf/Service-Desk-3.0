@@ -1,6 +1,5 @@
 <script setup>
-  import { inject, ref, computed, onBeforeMount } from 'vue'
-  import axios from 'axios'
+  import { inject } from 'vue'
   // transisi ke edit profile
 
   const selectMenu = inject('selectMenu')
@@ -23,7 +22,7 @@
       <!-- FOTO & NAMA -->
       <div class="left-column">
         <img
-          src=""
+          :src="gambar"
           alt="Foto Profil"
           class="profile-img"
         />

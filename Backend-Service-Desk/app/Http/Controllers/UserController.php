@@ -42,7 +42,7 @@ class UserController extends Controller
     }
 
     public function profile(Request $request){
-        $user = User::select('ID_User', 'NIP', 'Nama_Depan', 'Nama_Belakang')
+        $user = User::select('ID_User', 'NIP', 'Nama_Depan', 'Nama_Belakang', 'Gambar_Path')
     ->with([
         'user_role' => function ($query) {
             $query->select('ID_Role', 'Nama_Role');
