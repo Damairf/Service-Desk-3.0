@@ -1,187 +1,172 @@
-<script setup>
-import { ref } from 'vue'
+<script>
+import { inject } from 'vue'
 
-const activeTab = ref('tracking')
-const currentStep = ref(0) // buat tau 
+const selectMenu = inject('selectMenu')
+ function handleOK(){
+    selectMenu('Lacak Permintaan')
+  }
 
-const steps = [
-  'Permintaan Masuk',
-  'Pembuatan Email dan Password Untuk Pengguna',
-  'Pemberian Hasil dan BA',
-  'Validasi Permintaan Layanan',
-  'User Membalas BA dan Survei',
-  'Penutupan Permintaan Layanan',
-  '✓' // Checkmark step terakhir
-]
+export default {
+  data() {
+    return {
+      search: '',
+      currentPage: 1,
+      itemsPerPage: 10,
+      items: [
+        { id: 1, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
+        { id: 2, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
+        { id: 3, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
+        { id: 4, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' }
+      ]
+    };
+  },
+  computed: {
+    filteredItems() {
+      return this.items.filter(item =>
+        item.perihal.toLowerCase().includes(this.search.toLowerCase())
+      );
+    },
+    totalPages() {
+      return Math.ceil(this.filteredItems.length / this.itemsPerPage);
+    },
+    paginatedItems() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.filteredItems.slice(start, end);
+    }
+  },
+  watch: {
+    filteredItems() {
+      this.currentPage = 1; // Reset to first page when search changes
+    }
+  },
+  methods: {
+    checkProgress(item) {
+      // Add your logic here, e.g., alert or navigate to a progress detail page
+      alert(`Checking progress for ticket ${item.ticket}`);
+    }
+  }
+};
 </script>
 
 <template>
   <div class="container">
-    <!-- Tabs -->
-    <div class="tabs">
-      <div
-        :class="['tab', activeTab === 'informasi' ? 'active-tab-info' : 'inactive-tab']"
-        @click="activeTab = 'informasi'"
-      >
-        Informasi
-      </div>
-      <div
-        :class="['tab', activeTab === 'tracking' ? 'active-tab-track' : 'inactive-tab']"
-        @click="activeTab = 'tracking'"
-      >
-        Tracking
-      </div>
-    </div>
-
-    <!-- Card -->
-    <div class="card">
-      <h2 class="card-title">Detail Progress</h2>
-
-      <div class="step-wrapper">
-        <div
-          v-for="(step, index) in steps"
-          :key="index"
-          class="step-row"
-        >
-          <div
-            class="circle"
-            :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
-          >
-            {{ step === '✓' ? '✓' : index + 1 }}
-          </div>
-
-          <div
-            class="step-label"
-            v-if="step !== '✓'"
-          >
-            {{ step }}
-          </div>
-        </div>
+    <div class="progress-card">
+      <h1>On Progress</h1>
+      <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
+      <table class="rounded-table">
+        <thead>
+          <tr>
+            <th>No. Tiket</th>
+            <th>Perihal</th>
+            <th>Tanggal Laporan</th>
+            <th>PIC</th>
+            <th>Detail Proses</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in paginatedItems" :key="item.id">
+            <td>{{ item.ticket }}</td>
+            <td>{{ item.perihal }}</td>
+            <td>{{ item.date }}</td>
+            <td>{{ item.pic }}</td>
+            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progress</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <button @click="currentPage--" :disabled="currentPage === 1"><</button>
+        <button v-for="page in totalPages" :key="page" @click="currentPage = page" :class="{ active: currentPage === page }">
+          {{ page }}
+        </button>
+        <button @click="currentPage++" :disabled="currentPage === totalPages">></button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+
 .container {
-  width: 100%;
-  padding: 24px;
-  background-color: #f6f0fc;
+  background-color: #faf4ff;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 32px;
+  padding: 1rem;
+  position: relative;
 }
 
-/* Tabs */
-.tabs {
-  align-self: flex-start;
-  display: flex;
-  gap: 16px;
+.progress-card {
   background-color: white;
-  padding: 8px 16px;
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 95%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  position: relative;
 }
 
-.tab {
-  padding: 8px 16px;
-  border-radius: 8px 8px 0 0;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+h1 {
+  color: #333;
 }
-
-.tab:hover {
-  transform: scale(1.05);
+.search-bar {
+  width: 97%;
+  padding: 10px;
+  margin-bottom: 40px;
+  border: none;
+  border-radius: 13px;
+  background-color: #e0e0e0;
 }
-
-.active-tab-info {
-  color: black;
-  background-color: #fb923c;
-}
-
-.active-tab-track {
-  background-color: #fb923c;
-  color: black;
-}
-
-.inactive-tab {
-  color: #6b7280;
-}
-
-/* Card */
-.card {
+.rounded-table {
   width: 100%;
-  max-width: 640px;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.rounded-table th, .rounded-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.rounded-table th {
+  background-color: #e0e0e0;
+}
+.rounded-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.rounded-table tr:first-child td {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.rounded-table tr:last-child td {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+.pagination button {
   background-color: white;
-  padding: 32px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 32px;
-}
-
-/* Steps */
-.step-wrapper {
-  position: relative;
-  padding-left: 36px;
-}
-
-.vertical-line {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  bottom: 0;
-  width: 2px;
-  background-color: #d1d5db;
-  z-index: 0;
-}
-
-.step-row {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 32px;
-  z-index: 10;
-}
-
-.circle {
-  width: 40px;
-  height: 40px;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 0.5rem 0.75rem;
   border-radius: 50%;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-  font-size: 16px;
-}
-
-.circle:hover {
-  transform: scale(1.1);
-}
-
-.circle-active {
-  background-color: #22c55e;
-  color: white;
-}
-
-.circle-inactive {
-  background-color: #d1d5db;
-  color: white;
-}
-
-.step-label {
-  font-size: 14px;
+  cursor: pointer;
+  min-width: 2rem;
+  text-align: center;
   font-weight: 500;
-  color: #1f2937;
+}
+.pagination button:disabled {
+  cursor: not-allowed;
+  color: black;
+  opacity: 30%;
+}
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.pagination button:not(.active):hover {
+  background-color: #f0f0f0;
 }
 </style>

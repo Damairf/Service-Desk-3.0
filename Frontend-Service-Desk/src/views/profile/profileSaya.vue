@@ -61,19 +61,20 @@ onMounted(() => {
   </div>
 </template>
 
-<style>
+<!-- <style>
 html, body {
-  height: 100%;
+  height: auto;
   margin: 0;
   padding: 0;
   background-color: #FAF4FF;
 }
-</style>
+</style> -->
 
 <style scoped>
 
 .profile-card {
   max-width: 40rem;
+  max-height: 60rem;
   margin: 2rem auto;
   padding: 2rem;
   background: white;

@@ -15,7 +15,7 @@ function login(){
     })
   .then(function(response){
     localStorage.setItem('Token', response.data.data)
-    router.push('beranda')
+    router.push('/beranda')
     })
   .catch(function(error) {
     if (error.response && error.response.status === 401) {
@@ -31,6 +31,7 @@ function login(){
 const data = ref(null);
 
 onMounted(()=> {
+  console.log("Login Page Mounted");
   const token = localStorage.getItem('Token');
   if(token) {
     router.push('/beranda')

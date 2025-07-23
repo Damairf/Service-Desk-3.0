@@ -163,17 +163,7 @@
   height: 100vh;
 }
 
-.sidebar {
-  width: 220px;
-  background-color: white;
-  color: black;
-  padding: 1rem;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: width 0.2s ease;
-  position: sticky;
-}
+
 
 .content {
   flex: 1;
