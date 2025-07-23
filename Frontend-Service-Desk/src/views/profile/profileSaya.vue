@@ -1,5 +1,4 @@
 <script setup>
-  import { inject } from 'vue'
   import { inject, ref, computed, onMounted } from 'vue'
   import axios from 'axios'
   // transisi ke edit profile
