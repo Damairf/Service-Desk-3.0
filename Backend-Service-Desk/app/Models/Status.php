@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Status extends Model
@@ -13,7 +14,14 @@ class Status extends Model
    protected $table = 'reff_status';
    protected $primaryKey = 'ID_Status';
    protected $fillable = ['Is_Active'];
+   
    public function organisasi(): HasMany{
-      return $this -> hasMany( Organisasi::class, 'ID_Status','ID_Status');
+      return $this -> hasMany( Organisasi::class, 'ID_Status');
+   }
+   public function status_pelayanan(): HasMany{
+      return $this -> hasMany( Organisasi::class, 'ID_Pelayanan');
+   }
+   public function pelayanan_status(): BelongsTo{
+      return $this-> belongsTo(Pelayanan::class, 'ID_Pelayanan');
    }
 }

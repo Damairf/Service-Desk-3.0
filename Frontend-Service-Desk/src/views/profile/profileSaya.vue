@@ -1,9 +1,5 @@
 <script setup>
   import { inject } from 'vue'
-<<<<<<< HEAD
-  import axios from 'axios'
-=======
->>>>>>> cd06c613338069c7d88060622f275fd581221edb
   // transisi ke edit profile
 
   const selectMenu = inject('selectMenu')
