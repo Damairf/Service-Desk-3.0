@@ -1,22 +1,7 @@
 <script setup>
-import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, inject, onMounted } from 'vue'
 
-const route = useRoute()
-const layanan = ref(route.query.layanan || '')
-
-const props = defineProps({
-  layananAwal: {
-    type: String,
-    default: ''
-  }
-})
-
-
-watch(() => props.layananAwal, (newValue) => {
-  layanan.value = newValue
-})
-
+const layanan = ref('')
 const layananList = ref([])
 const perihal = ref('')
 const nip = ref('')
@@ -78,8 +63,12 @@ function handleSubmit() {
 
       <form @submit.prevent="handleSubmit">
         <label>Layanan</label>
-        <input type="text" v-model="layanan" disabled />
-
+        <select v-model="layanan">
+          <option disabled value="">Nama Layanan</option>
+          <option v-for="item in layananList" :key="item.id || item.nama" :value="item.Nama_Jenis_Pelayanan">
+            {{ item.Nama_Jenis_Pelayanan }}
+          </option>
+        </select>
 
         <label>Perihal</label>
         <input type="text" v-model="perihal" />

@@ -166,7 +166,6 @@ onBeforeMount(() => {
     <main class="content">
       <component
       :is="componentsMap[selected]"
-      :layananAwal="selectedItem?.Nama_Jenis_Pelayanan || ''"
       />
     </main>
   </div>
