@@ -90,7 +90,7 @@ onBeforeMount(() => {
   const menuItem = [
     "Beranda",
     "Permintaan Baru",
-    "Lacak Permintaan",
+    "Permintaan Diproses",
     "Hasil Pemenuhan SLA dan BA",
     "Riwayat"
   ]
@@ -108,7 +108,7 @@ onBeforeMount(() => {
     Beranda: beranda,
     /*Pengajuan Permintaan */
     'Permintaan Baru': pengajuanpermintaan,
-    'Lacak Permintaan': halamanProses,
+    'Permintaan Diproses': halamanProses,
     'Halaman Formulir Tiket Baru': halamanFormulirTiketBaru,
     'Profile Saya': profileSaya,
     'Edit Profile': editProfile,
@@ -164,7 +164,10 @@ onBeforeMount(() => {
       </ul>
     </aside>
     <main class="content">
-      <component :is="componentsMap[selected]"/>
+      <component
+      :is="componentsMap[selected]"
+      :layananAwal="selectedItem?.Nama_Jenis_Pelayanan || ''"
+      />
     </main>
   </div>
 </template>

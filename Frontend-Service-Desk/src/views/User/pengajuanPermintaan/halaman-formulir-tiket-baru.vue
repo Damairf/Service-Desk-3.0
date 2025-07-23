@@ -1,37 +1,28 @@
-
 <script setup>
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
-const layanan = ref('')
+const route = useRoute()
+const layanan = ref(route.query.layanan || '')
+
+const props = defineProps({
+  layananAwal: {
+    type: String,
+    default: ''
+  }
+})
+
+
+watch(() => props.layananAwal, (newValue) => {
+  layanan.value = newValue
+})
+
 const layananList = ref([])
 const perihal = ref('')
 const nip = ref('')
 const deskripsi = ref('')
 const suratDinas = ref(null)
 const lampiran = ref(null)
-
-// Ambil data layanan dari API
-onMounted(() => {
-  const token = localStorage.getItem('Token')
-  axios.get('http://127.0.0.1:8000/api/jenispelayanan', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    if (Array.isArray(response.data)) {
-      layananList.value = response.data
-    } else if (Array.isArray(response.data.data)) {
-      layananList.value = response.data.data
-    } else {
-      layananList.value = []
-    }
-  })
-  .catch(error => {
-    console.error(error)
-  })
-})
 
 // Fungsi untuk menangani perubahan file
 function handleFileChange(e, field) {
@@ -87,12 +78,8 @@ function handleSubmit() {
 
       <form @submit.prevent="handleSubmit">
         <label>Layanan</label>
-        <select v-model="layanan">
-          <option disabled value="">Nama Layanan</option>
-          <option v-for="item in layananList" :key="item.id || item.nama" :value="item.Nama_Jenis_Pelayanan">
-            {{ item.Nama_Jenis_Pelayanan }}
-          </option>
-        </select>
+        <input type="text" v-model="layanan" disabled />
+
 
         <label>Perihal</label>
         <input type="text" v-model="perihal" />

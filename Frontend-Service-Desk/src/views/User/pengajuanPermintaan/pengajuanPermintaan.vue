@@ -2,6 +2,16 @@
 import { inject, ref, computed , onBeforeMount } from 'vue'
 import axios from 'axios'
 
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+function handleOk() {
+  router.push({
+    name: 'FormulirTiketBaru',
+    query: { layanan: selectedItem.value.Nama_Jenis_Pelayanan }
+  })
+}
+
 const selectMenu = inject('selectMenu')
 
 // const services = ref([
@@ -61,13 +71,6 @@ function openModal(item) {
   showModal.value = true
 }
 
-// Tombol Overlay
-function handleOk() {
-  if (selectMenu) {
-    selectMenu('Halaman Formulir Tiket Baru')
-  }
-  showModal.value = false
-}
 </script>
 
 <template>
