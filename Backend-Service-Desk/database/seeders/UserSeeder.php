@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
                 "Nama_Depan" => "Damai",
                 "Nama_Belakang" => "Raya",
                 "Password" => Hash::make('1234'),
-                "Gambar_Path" => "Tidak ada gambar",
+                "Gambar_Path" => "default.jpeg",
             ],
             [
                 "ID_Role" => 2,
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
                 "Nama_Depan" => "Farrel",
                 "Nama_Belakang" => "Al'fathan",
                 "Password" => Hash::make('1234'),
-                "Gambar_Path" => "Tidak ada gambar",
+                "Gambar_Path" => "default.jpeg",
             ],
             [
                 "ID_Role" => 3,
@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
                 "Nama_Depan" => "Farrel",
                 "Nama_Belakang" => "Razaan",
                 "Password" => Hash::make('1234'),
-                "Gambar_Path" => "Tidak ada gambar",
+                "Gambar_Path" => "default.jpeg",
             ],
             [
                 "ID_Role" => 4,
@@ -57,7 +57,7 @@ class UserSeeder extends Seeder
                 "Nama_Depan" => "Syahbana",
                 "Nama_Belakang" => "Hatab",
                 "Password" => Hash::make('1234'),
-                "Gambar_Path" => "Tidak ada gambar",
+                "Gambar_Path" => "default.jpeg",
             ],
             [
                 "ID_Role" => 5,
@@ -68,7 +68,7 @@ class UserSeeder extends Seeder
                 "Nama_Depan" => "Syaiful",
                 "Nama_Belakang" => "Iful",
                 "Password" => Hash::make('1234'),
-                "Gambar_Path" => "Tidak ada gambar",
+                "Gambar_Path" => "default.jpeg",
             ],
         ]);
     }

@@ -29,6 +29,9 @@ watch(() => PasswordLama.konfirmasiPassword, (newVal) => {
   PasswordLama.passwordMatch = newVal === PasswordLama.passwordLama ? 'Cocok' : 'Tidak Cocok'
 })
 
+  const nama_depan = localStorage.getItem('nama_depan')
+  const nama_belakang = localStorage.getItem('nama_belakang')
+
 const userID = localStorage.getItem("ID_User");
 function saveChanges() {
   if (UbahPassword.PasswordBaru !== UbahPassword.KonfirmasiPassword) {
@@ -125,7 +128,7 @@ function removeImage() {
         @click="showOverlay = true"
       />
 
-      <h2 class="user-name">Nama User</h2>
+      <h2 class="user-name">{{ nama_depan + " " + nama_belakang }}</h2>
 
       <div class="form-container">
         <div class="form-section">

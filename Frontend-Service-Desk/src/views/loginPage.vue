@@ -15,7 +15,7 @@ function login(){
     })
   .then(function(response){
     localStorage.setItem('Token', response.data.data)
-    router.push('beranda')
+    router.push('/beranda')
     })
   .catch(function(error) {
     if (error.response && error.response.status === 401) {
