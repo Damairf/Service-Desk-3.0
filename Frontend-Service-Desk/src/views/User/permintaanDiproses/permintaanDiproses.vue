@@ -1,7 +1,5 @@
 <script>
-import { inject } from 'vue'
 
-const selectMenu = inject('selectMenu')
  function handleOK(){
     selectMenu('Lacak Permintaan')
   }

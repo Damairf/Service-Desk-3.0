@@ -1,12 +1,11 @@
 <script setup>
-  import { inject, ref, computed, onBeforeMount, onMounted } from 'vue';
+  import { ref, computed, onBeforeMount, onMounted } from 'vue';
   import axios from 'axios'
   import { useRouter } from 'vue-router'
 
   
   // biar tombolnya bisa berfungsi
-  const selectMenu = inject('selectMenu')
-  function handleOK(){
+   function handleOK(){
     selectMenu('Permintaan Baru')
   }
 

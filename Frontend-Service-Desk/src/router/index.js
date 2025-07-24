@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-//import sidebar
-import Sidebar from '../views/SideBar/sidebar.vue' //apus aja kali ntar
 // profile
 import profileSaya from '../views/profile/profileSaya.vue'
+import editProfile from '../views/profile/editProfile.vue'
 // Import halaman-halaman
 import Login from '../views/loginPage.vue'
 import beranda from '../views/User/Beranda/beranda.vue'
@@ -18,7 +17,8 @@ const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', name: 'Login', component: Login },
   // Halaman Profile
-  {path: '/profileSaya', nama: 'ProfileSaya', component: profileSaya },
+  { path: '/profileSaya', nama: 'ProfileSaya', component: profileSaya },
+  { path: '/editProfile', nama: 'EditProfile', component: editProfile},
   // Halaman Beranda 
   { path: '/beranda', name: 'Beranda', component: beranda },
   // User

@@ -2,7 +2,6 @@
 import { ref, reactive, watch, computed } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-
 const router = useRouter()
 
 const UbahPassword = reactive({
@@ -54,9 +53,9 @@ function saveChanges() {
   })
   .then(response => {
     alert(response.data.message);
-    localStorage.clear();
-    router.push('/login')
+    router.push('/profileSaya')
     cancelChanges(); 
+
   })
   .catch(error => {
     console.error(error);
