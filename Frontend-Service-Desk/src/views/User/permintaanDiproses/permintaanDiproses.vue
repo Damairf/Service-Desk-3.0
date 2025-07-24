@@ -1,51 +1,46 @@
-<script>
+<script setup>
+import { ref, computed, watch } from 'vue'
 
- function handleOK(){
-    selectMenu('Lacak Permintaan')
-  }
+// Data dan state
+const search = ref('')
+const currentPage = ref(1)
+const itemsPerPage = 10
 
-export default {
-  data() {
-    return {
-      search: '',
-      currentPage: 1,
-      itemsPerPage: 10,
-      items: [
-        { id: 1, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-        { id: 2, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-        { id: 3, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-        { id: 4, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' }
-      ]
-    };
-  },
-  computed: {
-    filteredItems() {
-      return this.items.filter(item =>
-        item.perihal.toLowerCase().includes(this.search.toLowerCase())
-      );
-    },
-    totalPages() {
-      return Math.ceil(this.filteredItems.length / this.itemsPerPage);
-    },
-    paginatedItems() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.filteredItems.slice(start, end);
-    }
-  },
-  watch: {
-    filteredItems() {
-      this.currentPage = 1; // Reset to first page when search changes
-    }
-  },
-  methods: {
-    checkProgress(item) {
-      // Add your logic here, e.g., alert or navigate to a progress detail page
-      alert(`Checking progress for ticket ${item.ticket}`);
-    }
-  }
-};
+const items = ref([
+  { id: 1, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
+  { id: 2, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
+  { id: 3, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
+  { id: 4, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' }
+])
+
+// Computed
+const filteredItems = computed(() => {
+  return items.value.filter(item =>
+    item.perihal.toLowerCase().includes(search.value.toLowerCase())
+  )
+})
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredItems.value.length / itemsPerPage)
+})
+
+const paginatedItems = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return filteredItems.value.slice(start, end)
+})
+
+// Watcher
+watch(filteredItems, () => {
+  currentPage.value = 1
+})
+
+// Methods
+function checkProgress(item) {
+  alert(`Checking progress for ticket ${item.ticket}`)
+}
 </script>
+
 
 <template>
   <div class="container">
