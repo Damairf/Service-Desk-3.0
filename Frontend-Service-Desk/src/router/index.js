@@ -10,6 +10,9 @@ import permintaanBaru from '../views/User/pengajuanPermintaan/pengajuanPermintaa
 import HalamanFormulirTiketBaru from '../views/User/pengajuanPermintaan/halaman-formulir-tiket-baru.vue'
 // Permintaan Diproses
 import permintaanDiproses from '../views/User/permintaanDiproses/permintaanDiproses.vue'
+import detailPermintaan from '../views/User/permintaanDiproses/detailPermintaan.vue'
+import halamanLacak from '../views/User/permintaanDiproses/halaman-lacak.vue'
+import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
 
 // Daftar rute
 const routes = [
@@ -26,7 +29,13 @@ const routes = [
   { path: '/permintaanBaru', name: 'PermintaanBaru', component: permintaanBaru},
   { path: '/FormulirTiket', name: 'FormulirTiketBaru', component: HalamanFormulirTiketBaru},
   // Halaman permintaan diproses
-  {path: '/permintaanDiproses', name: 'PermintaanDiproses', component: permintaanDiproses },
+  { path: '/permintaanDiproses', name: 'PermintaanDiproses', component: permintaanDiproses },
+  { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, 
+    children: [
+      { path: 'lacak', name: 'HalamanLacak', component: halamanLacak},
+      { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi}
+    ]
+  }
 ]
 
 const router = createRouter({

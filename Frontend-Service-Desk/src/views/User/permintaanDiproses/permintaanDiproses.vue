@@ -1,16 +1,17 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
-
+import { useRouter } from 'vue-router'
+const router = useRouter()
 // Data dan state
 const search = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 10
 
 const items = ref([
-  { id: 1, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-  { id: 2, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-  { id: 3, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-  { id: 4, ticket: 'Nomor', perihal: 'Perihal', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' }
+  { id: 1, ticket: 'Nomor', perihal: 'Perihal1', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
+  { id: 2, ticket: 'Nomor', perihal: 'Perihal2', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
+  { id: 3, ticket: 'Nomor', perihal: 'Perihal3', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
+  { id: 4, ticket: 'Nomor', perihal: 'Perihal4', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' }
 ])
 
 // Computed
@@ -38,6 +39,9 @@ watch(filteredItems, () => {
 // Methods
 function checkProgress(item) {
   alert(`Checking progress for ticket ${item.ticket}`)
+  router.push({
+    name: 'DetailPermintaan', query: {layanan: item.perihal}
+  })
 }
 </script>
 

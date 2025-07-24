@@ -1,6 +1,11 @@
 <script setup>
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+const router = useRouter()
+const route = useRoute()
 
+
+const namaLayanan = ref(route.query.layanan || '')
 const activeTab = ref('tracking')
 const currentStep = ref(0) // buat tau 
 
@@ -29,35 +34,13 @@ const steps = [
         :class="['tab', activeTab === 'tracking' ? 'active-tab-track' : 'inactive-tab']"
         @click="activeTab = 'tracking'"
       >
-        Tracking
+        Lacak
       </div>
     </div>
 
     <!-- Card -->
     <div class="card">
-      <h2 class="card-title">Detail Progress</h2>
-
-      <div class="step-wrapper">
-        <div
-          v-for="(step, index) in steps"
-          :key="index"
-          class="step-row"
-        >
-          <div
-            class="circle"
-            :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
-          >
-            {{ step === '✓' ? '✓' : index + 1 }}
-          </div>
-
-          <div
-            class="step-label"
-            v-if="step !== '✓'"
-          >
-            {{ step }}
-          </div>
-        </div>
-      </div>
+      <strong>{{ namaLayanan }}</strong>
     </div>
   </div>
 </template>
@@ -66,7 +49,6 @@ const steps = [
 .container {
   width: 100%;
   padding: 24px;
-  background-color: #f6f0fc;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -119,69 +101,5 @@ const steps = [
   padding: 32px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 32px;
-}
-
-/* Steps */
-.step-wrapper {
-  position: relative;
-  padding-left: 36px;
-}
-
-.vertical-line {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  bottom: 0;
-  width: 2px;
-  background-color: #d1d5db;
-  z-index: 0;
-}
-
-.step-row {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 32px;
-  z-index: 10;
-}
-
-.circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-  font-size: 16px;
-}
-
-.circle:hover {
-  transform: scale(1.1);
-}
-
-.circle-active {
-  background-color: #22c55e;
-  color: white;
-}
-
-.circle-inactive {
-  background-color: #d1d5db;
-  color: white;
-}
-
-.step-label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #1f2937;
 }
 </style>
