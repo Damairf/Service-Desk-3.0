@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-
-const activeTab = ref('tracking')
+import { useRoute } from 'vue-router'
+const route = useRoute()
+// buat import tulisan perihalnya, tapi kyknya mending diammbil dari backendnya
+const namaLayanan = ref(route.query.layanan || '')
 const currentStep = ref(0) // buat tau 
 
 const steps = [
@@ -16,47 +18,26 @@ const steps = [
 </script>
 
 <template>
-  <div class="container">
-    <!-- Tabs -->
-    <div class="tabs">
-      <div
-        :class="['tab', activeTab === 'informasi' ? 'active-tab-info' : 'inactive-tab']"
-        @click="activeTab = 'informasi'"
-      >
-        Informasi
-      </div>
-      <div
-        :class="['tab', activeTab === 'tracking' ? 'active-tab-track' : 'inactive-tab']"
-        @click="activeTab = 'tracking'"
-      >
-        Tracking
-      </div>
-    </div>
-
     <!-- Card -->
-    <div class="card">
-      <h2 class="card-title">Detail Progress</h2>
+  <h2 class="card-title">Detail Progress<br>{{ namaLayanan }}</h2>
+  <div class="step-wrapper">
+    <div
+      v-for="(step, index) in steps"
+      :key="index"
+      class="step-row"
+    >
+      <div
+        class="circle"
+        :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
+      >
+        {{ step === '✓' ? '✓' : index + 1 }}
+      </div>
 
-      <div class="step-wrapper">
-        <div
-          v-for="(step, index) in steps"
-          :key="index"
-          class="step-row"
-        >
-          <div
-            class="circle"
-            :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
-          >
-            {{ step === '✓' ? '✓' : index + 1 }}
-          </div>
-
-          <div
-            class="step-label"
-            v-if="step !== '✓'"
-          >
-            {{ step }}
-          </div>
-        </div>
+      <div
+        class="step-label"
+        v-if="step !== '✓'"
+      >
+        {{ step }}
       </div>
     </div>
   </div>

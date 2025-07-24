@@ -8,6 +8,12 @@ const route = useRoute()
 const namaLayanan = ref(route.query.layanan || '')
 const activeTab = ref('tracking')
 const currentStep = ref(0) // buat tau 
+//halaman lacak
+if (activeTab.value == 'tracking'){
+    router.push({
+    name: 'HalamanLacak', query: {layanan: namaLayanan.value}
+  })
+}
 
 const steps = [
   'Permintaan Masuk',
@@ -40,7 +46,7 @@ const steps = [
 
     <!-- Card -->
     <div class="card">
-      <strong>{{ namaLayanan }}</strong>
+      <router-view/>
     </div>
   </div>
 </template>
