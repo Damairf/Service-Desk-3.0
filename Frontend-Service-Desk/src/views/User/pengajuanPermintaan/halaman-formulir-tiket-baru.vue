@@ -95,7 +95,6 @@ function handleSubmit() {
 
 <style scoped>
 .form-container {
-  background-color: #f4f0fb;
   min-height: 100vh;
   padding: 2rem;
   display: flex;

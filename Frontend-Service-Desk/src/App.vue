@@ -18,13 +18,13 @@ const route = useRoute()
 </template>
 
 <style>
-    html, body {
-        scroll-behavior: smooth;
-        height: auto;
-        margin: 0;
-        padding: 0;
-        background-color: #FAF4FF;
-    }
+html, body, #app {
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #FAF4FF !important;
+}
 </style>
 
 <style scoped>
