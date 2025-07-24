@@ -23,8 +23,8 @@ const routes = [
   { path: '/beranda', name: 'Beranda', component: beranda },
   // User
   // Halaman permintaan baru 
-  { path: '/permintaanBaru', name: 'PermintaanBaru', component: permintaanBaru },
-  { path: '/FormulirTiketBaru', name: 'FormulirTiketBaru', component:HalamanFormulirTiketBaru},
+  { path: '/permintaanBaru', name: 'PermintaanBaru', component: permintaanBaru},
+  { path: '/FormulirTiket', name: 'FormulirTiketBaru', component: HalamanFormulirTiketBaru},
   // Halaman permintaan diproses
   {path: '/permintaanDiproses', name: 'PermintaanDiproses', component: permintaanDiproses },
 ]

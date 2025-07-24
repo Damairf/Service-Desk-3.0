@@ -1,9 +1,16 @@
 <script setup>
-import { inject, ref, computed , onBeforeMount } from 'vue'
+import { ref, computed , onBeforeMount } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router';
 
-const selectMenu = inject('selectMenu')
-
+// buat push layanan ke halaman formulir tiket baru
+const router = useRouter()
+function handleOk() {
+  showModal.value = false
+  router.push({
+    name: 'FormulirTiketBaru', query: {layanan: selectedItem.value.Nama_Jenis_Pelayanan}
+  })
+}
 // const services = ref([
 //   "Pelayanan Email dan Drive Jabarprov",
 //   "Pelayanan Email dan Drive Jabarprov",
@@ -55,13 +62,6 @@ function nextPage() {
 function openModal(item) {
   selectedItem.value = item
   showModal.value = true
-}
-
-function handleOk() {
-  if (selectMenu) {
-    selectMenu('Halaman Formulir Tiket Baru')
-  }
-  showModal.value = false
 }
 </script>
 

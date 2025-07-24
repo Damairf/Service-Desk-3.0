@@ -1,7 +1,11 @@
 <script setup>
-import { ref, inject, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 
-const layanan = ref('')
+// nerima dari pengajuanPermintaan.vue
+const route = useRoute()
+const layanan = ref(route.query.layanan || '')
+
 const layananList = ref([])
 const perihal = ref('')
 const nip = ref('')
@@ -40,6 +44,7 @@ function handleFileChange(e, field) {
 
 function handleSubmit() {
   console.log('Form data:', {
+    // bookmark
     layanan: layanan.value,
     perihal: perihal.value,
     nip: nip.value,
@@ -63,12 +68,7 @@ function handleSubmit() {
 
       <form @submit.prevent="handleSubmit">
         <label>Layanan</label>
-        <select v-model="layanan">
-          <option disabled value="">Nama Layanan</option>
-          <option v-for="item in layananList" :key="item.id || item.nama" :value="item.Nama_Jenis_Pelayanan">
-            {{ item.Nama_Jenis_Pelayanan }}
-          </option>
-        </select>
+        <p class="layanan-display">{{ layanan }}</p>
 
         <label>Perihal</label>
         <input type="text" v-model="perihal" />
@@ -123,6 +123,15 @@ function handleSubmit() {
 
 form {
   padding: 2rem;
+}
+
+.layanan-display{
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 95%;
 }
 
 label {
