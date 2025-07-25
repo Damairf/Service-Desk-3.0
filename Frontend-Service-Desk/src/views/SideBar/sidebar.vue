@@ -14,6 +14,10 @@ onMounted(() => {
   window.addEventListener('gambar-changed', () => {
     gambar.value = localStorage.getItem('src_gambar');
   });
+  window.addEventListener('sudahLogin', () => {
+    nama_depan.value = localStorage.getItem('nama_depan');
+    gambar.value = localStorage.getItem('src_gambar');
+  });
 });
 
 

@@ -13,6 +13,9 @@ import permintaanDiproses from '../views/User/permintaanDiproses/permintaanDipro
 import detailPermintaan from '../views/User/permintaanDiproses/detailPermintaan.vue'
 import halamanLacak from '../views/User/permintaanDiproses/halaman-lacak.vue'
 import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
+//Riwayat
+import riwayat from '../views/User/Riwayat/riwayat.vue'
+
 
 // Daftar rute
 const routes = [
@@ -35,7 +38,8 @@ const routes = [
       { path: 'lacak', name: 'HalamanLacak', component: halamanLacak},
       { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi}
     ]
-  }
+  },
+  { path: '/riwayat', name: 'Riwayat', component: riwayat}
 ]
 
 const router = createRouter({

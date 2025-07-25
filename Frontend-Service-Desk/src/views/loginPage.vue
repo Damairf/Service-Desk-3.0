@@ -15,6 +15,10 @@ function login(){
     })
   .then(function(response){
     localStorage.setItem('Token', response.data.data)
+    //bookmark
+    localStorage.setItem('nama_depan', response.data.Nama_Depan);
+    localStorage.setItem('src_gambar', response.data.Gambar_Path);
+    window.dispatchEvent(new Event('sudahLogin'));
     router.push('/beranda')
     })
   .catch(function(error) {
