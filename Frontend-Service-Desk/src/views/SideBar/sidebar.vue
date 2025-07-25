@@ -178,7 +178,7 @@ if (role.value == 1) {
   height: 100px;
   object-fit: cover;
   border-radius: 100%;
-  margin-bottom: 1rem;
+  margin-top: 0.5rem;
   border: 3px solid #099D49;
 }
 
@@ -188,6 +188,7 @@ if (role.value == 1) {
   border-radius: 50%;
   object-fit: cover;
   transition: all 0.3s;
+  margin-top: 0;
 }
 
 .sidebar.collapsed .nama-profile {
@@ -196,7 +197,6 @@ if (role.value == 1) {
 
 
 .sidebar {
-  
   position: fixed;
   top: 0;
   left: 0;
@@ -211,7 +211,7 @@ if (role.value == 1) {
   -ms-overflow-style: none;  /* IE and Edge */
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -261,7 +261,6 @@ nav {
   padding: 8px;
   text-decoration: none;
   color: white;
-  border-radius: 4px;
   transition: background 0.2s;
 }
 
