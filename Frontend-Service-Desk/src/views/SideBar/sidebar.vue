@@ -141,7 +141,7 @@ if (role.value == 1) {
 <style scoped>
 .menuOverlay{
   position: absolute;
-  left: 13rem;
+  left: 13.8rem;
   top: 13rem;
   background: white;
   border: 1px solid #ddd;
@@ -211,7 +211,7 @@ if (role.value == 1) {
   height: 100vh;
   background: #099D49;
   color: white;
-  width: 200px;
+  width: 220px;
   transition: width 0.2s ease;
   /* overflow: hidden; */
   overflow-y: auto; /* Scrollable if content overflows */

@@ -3,6 +3,7 @@
   import axios from 'axios'
   import { useRouter } from 'vue-router'
 
+
   
   // biar tombolnya bisa berfungsi
    function handleOK(){
@@ -58,14 +59,16 @@ onBeforeMount(() => {
       </div>
       <div class="boxHolder">
         <div class="box">
+          <img src="../../../../public/Beranda_Baru.svg" alt="Permintaan Baru">
           <h3>Permintaan Baru</h3>
           <p>Mulai permintaan pelayanan pada Diskominfo Jabar</p>
-          <button class="tambah" @click="handleOK">Baru</button>
+          <button class="tambah" @click="router.push('/permintaanBaru')">Baru</button>
         </div>
         <div class="box">
+          <img src="../../../../public/Beranda_Lacak.svg" alt="Lacak Permintaan">
           <h3>Lacak Permintaan</h3>
-          <p>Mulai permintaan pelayanan pada Diskominfo Jabar</p>
-          <button class="lacak">Lacak</button>
+          <p>Mulai melacak pelayanan yang sudah diajukan pada Diskominfo Jabar</p>
+          <button class="lacak" @click="router.push('/permintaanDiproses')">Lacak</button>
         </div>
       </div>
       </div>
@@ -157,6 +160,7 @@ onBeforeMount(() => {
       color: white;
       cursor: pointer;
       margin-top: 1.2rem;
+      transition: transform 0.1s ease;
     
       /*text*/
       font-size: 1.25rem;
@@ -165,5 +169,8 @@ onBeforeMount(() => {
       border: none;
       min-width: 100px; 
     }
-    
+  .tambah:hover, .lacak:hover {
+    transform: scale(1.02);
+    background-color: #52AE6E;
+  }
     </style>
