@@ -6,7 +6,6 @@ import axios from 'axios'
 
 const nama_depan = ref(localStorage.getItem('nama_depan'));
 const gambar = ref(localStorage.getItem('src_gambar'));
-// const role = ref(localStorage.getItem('role_id'));
 const role = ref(localStorage.getItem('id_role'))
 
 // biar auto update
