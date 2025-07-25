@@ -17,7 +17,9 @@ const items = ref([
 // Computed
 const filteredItems = computed(() => {
   return items.value.filter(item =>
-    item.perihal.toLowerCase().includes(search.value.toLowerCase())
+    item.perihal.toLowerCase().includes(search.value.toLowerCase()) ||
+        item.perihal.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.pic.toLowerCase().includes(search.value.toLowerCase())
   )
 })
 
