@@ -290,6 +290,7 @@ input[type="checkbox"]{
 }
 
 .close-btn {
+  color: black;
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
