@@ -5,25 +5,15 @@ const router = useRouter()
 const route = useRoute()
 
 
-const namaLayanan = ref(route.query.layanan || '')
+const idLayanan = ref(route.query.layanan || '')
 const activeTab = ref('tracking')
 const currentStep = ref(0) // buat tau 
 //halaman lacak
 if (activeTab.value == 'tracking'){
     router.push({
-    name: 'HalamanLacak', query: {layanan: namaLayanan.value}
+    name: 'HalamanLacak', query: {layanan: idLayanan.value}
   })
 }
-
-const steps = [
-  'Permintaan Masuk',
-  'Pembuatan Email dan Password Untuk Pengguna',
-  'Pemberian Hasil dan BA',
-  'Validasi Permintaan Layanan',
-  'User Membalas BA dan Survei',
-  'Penutupan Permintaan Layanan',
-  '✓' // Checkmark step terakhir
-]
 </script>
 
 <template>
@@ -106,6 +96,7 @@ const steps = [
   background-color: white;
   padding: 32px;
   border-radius: 12px;
+  border-top-left-radius: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 </style>
