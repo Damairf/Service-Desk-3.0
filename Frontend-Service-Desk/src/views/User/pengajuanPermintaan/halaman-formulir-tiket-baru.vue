@@ -49,11 +49,11 @@ function handleSubmit(){
   axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
     "ID_User": id_user,
     "ID_Jenis_Pelayanan": id_jenis_pelayanan,
-    "Perihal": perihal.value,
-    "Deskripsi": deskripsi.value,
-    "ID_Status": id_status.value,
-    "Surat_Dinas_Path": suratDinas.value,
-    "Lampiran_Path": lampiran.value,
+    "Perihal": perihal.value, // data dummy
+    "Deskripsi": deskripsi.value, // data dummy
+    "ID_Status": id_status.value, // data dummy
+    "Surat_Dinas_Path": suratDinas.value, // data dummy
+    "Lampiran_Path": lampiran.value, // data dummy
    },{
     headers: {
       Authorization: 'Bearer ' + token
