@@ -54,6 +54,9 @@ Route::put('/organisasi/{organisasiId}',[OrganisasiController::class, 'updateOne
 Route::delete('/organisasi/{organisasiId}',[OrganisasiController::class, 'deleteOne_Organisasi']);
 
 Route::get('/status',[StatusController::class, 'findAll_Status']);
+Route::get('/status/organisasi',[StatusController::class, 'findAll_Organisasi_Status']);
+Route::get('/status/pelayanan',[StatusController::class, 'findAll_Pelayanan_Status']);
+Route::get('/status/pelayanan/{statusId}',[StatusController::class, 'findOne_Status_Pelayanan']);
 Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
 
 Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
@@ -63,6 +66,7 @@ Route::put('/pelayanan/{pelayananId}', [PelayananController::class, 'Verif_Penge
 
 // endpoint pelaksana teknis
 Route::put('/pelayanan/tambah/hasil/{pelayananId}',[PelayananController::class, 'putLaporan_Hasil']);
+Route::get('/status/pelayanan/{statusId}',[StatusController::class, 'findOne_Status_Pelayanan']);
 
 // endpoint kepala dinas
 Route::get('/pelayanan/{pelayananId}',[PelayananController::class, 'getByID_Layanan']);
