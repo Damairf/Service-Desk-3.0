@@ -81,6 +81,7 @@ onBeforeMount(() => {
       height: 100%;
       margin: 0;
       padding: 0;
+      /* overflow: hidden; */
     }
     </style>
     
@@ -91,6 +92,7 @@ onBeforeMount(() => {
       min-height: 100vh;
       padding: 1rem;
       position: relative;
+
     }
     
     .greet h1{
