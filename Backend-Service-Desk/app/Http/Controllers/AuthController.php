@@ -34,12 +34,13 @@ class AuthController extends Controller
         $hash = "HS256";
 
         $token = JWT::encode($payload, $key, $hash);
-        $datauser = User::where("ID_User", $request->ID_User)->get();
+        $datauser = User::where("ID_User", $user->ID_User)->select('Nama_Depan', 'Nama_Belakang', 'Gambar_Path')->first();
 
 
         return response([
             "message" => "Login Berhasil",
-            "data" => $token, 
+            "data" => $token,
+            "data_user" => $datauser,
         ]);
 
     }

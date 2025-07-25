@@ -15,6 +15,9 @@ function login(){
     })
   .then(function(response){
     localStorage.setItem('Token', response.data.data)
+    localStorage.setItem('nama_depan', response.data.data_user.Nama_Depan)
+    localStorage.setItem('nama_belakang', response.data.data_user.Nama_Belakang)
+    localStorage.setItem('src_gambar', response.data.data_user.Gambar_Path)
     router.push('/beranda')
     })
   .catch(function(error) {
