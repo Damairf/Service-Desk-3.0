@@ -19,9 +19,6 @@ class Status extends Model
       return $this -> hasMany( Organisasi::class, 'ID_Status');
    }
    public function status_pelayanan(): HasMany{
-      return $this -> hasMany( Organisasi::class, 'ID_Pelayanan');
-   }
-   public function pelayanan_status(): BelongsTo{
-      return $this-> belongsTo(Pelayanan::class, 'ID_Pelayanan');
+      return $this -> hasMany( Pelayanan::class, 'ID_Status');
    }
 }

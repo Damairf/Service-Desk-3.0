@@ -17,6 +17,8 @@ class StatusSeeder extends Seeder
             ["Nama_Status" => "Aktif"],
             ["Nama_Status" => "Nonaktif"],
             ["Nama_Status" => "Baru"],
+            ["Nama_Status" => "Disetujui"],
+            ["Nama_Status" => "Ditolak"],
             ["Nama_Status" => "Proses"],
             ["Nama_Status" => "Selesai"],
             ["Nama_Status" => "Tutup"],

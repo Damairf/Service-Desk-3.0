@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Hash;
 
@@ -34,12 +35,18 @@ class AuthController extends Controller
         $hash = "HS256";
 
         $token = JWT::encode($payload, $key, $hash);
-        $datauser = User::where("ID_User", $request->ID_User)->get();
+        $datauser = User::select('Nama_Depan', 'Nama_Belakang', 'Gambar_Path', 'ID_Role')
+        ->with([
+            'role_user' => function ($query) {
+                $query->select('ID_Role', 'Nama_Role');
+            }
+        ])->where("ID_User", $user->ID_User)->first();
 
 
         return response([
             "message" => "Login Berhasil",
-            "data" => $token, 
+            "data" => $token,
+            "data_user" => $datauser,
         ]);
 
     }

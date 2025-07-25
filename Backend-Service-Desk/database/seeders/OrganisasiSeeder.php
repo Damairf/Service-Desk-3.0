@@ -30,7 +30,7 @@ class OrganisasiSeeder extends Seeder
                 "Email" => "pengelola2@gmail.com",
             ],
             [
-                "ID_Status" => 1,
+                "ID_Status" => 2,
                 "Nama_OPD" => "Dinas Pekerjaan Umum dan Penataan Ruang",
                 "Nama_Pengelola" => "Pengelola 3",
                 "No_HP_Pengelola" => "081234567890",

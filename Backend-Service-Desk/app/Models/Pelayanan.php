@@ -16,6 +16,7 @@ class Pelayanan extends Model
         'Lampiran',
         'Lampiran_Path',
         'Surat_Dinas_Path',
+        'ID_Status',
         'ID_User',
         'ID_Jenis_Pelayanan',
         'ID_Unit',
@@ -31,11 +32,7 @@ class Pelayanan extends Model
     public function Jenis_Pelayanan(): HasMany{
         return $this -> hasMany( Organisasi::class, 'ID_Jenis_Pelayanan');
     }
-    public function pelayanan_status(): HasMany{
-        return $this -> hasMany(Status::class, 'ID_Status');
-    }
     public function status_pelayanan(): BelongsTo{
         return $this -> belongsTo(Status::class, 'ID_Status');
     }
-
 }
