@@ -9,6 +9,7 @@ const gambar = ref(localStorage.getItem('src_gambar'));
 // const role = ref(localStorage.getItem('role_id'));
 const role = ref(1)
 
+// biar auto update
 onMounted(() => {
   window.addEventListener('gambar-changed', () => {
     gambar.value = localStorage.getItem('src_gambar');
