@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 // buat import tulisan perihalnya, tapi kyknya mending diammbil dari backendnya
-const namaLayanan = ref(route.query.layanan || '')
+const idLayanan = ref(route.query.layanan || '')
 const currentStep = ref(0) // buat tau 
 
 const steps = [
@@ -19,7 +19,7 @@ const steps = [
 
 <template>
     <!-- Card -->
-  <h2 class="card-title">Detail Progress<br>{{ namaLayanan }}</h2>
+  <h2 class="card-title">Detail Progress<br>{{ idLayanan }}</h2>
   <div class="step-wrapper">
     <div
       v-for="(step, index) in steps"

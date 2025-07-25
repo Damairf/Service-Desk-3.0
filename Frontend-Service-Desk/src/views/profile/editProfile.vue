@@ -100,6 +100,8 @@ function handleImageUpload(event) {
     .then(function(response){
       gambar.value = response.data.nama_file;
       localStorage.setItem('src_gambar', response.data.nama_file);
+      //buat kasih tau ke sidebar
+      window.dispatchEvent(new Event('gambar-changed'));
       selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
       showOverlay.value = false; 
     })
@@ -144,22 +146,6 @@ function removeImage() {
 
       <div class="form-container">
         <div class="form-section">
-          <h3>Ubah Password</h3>
-          <div class="form-group">
-            <label>Password Baru</label>
-            <input type="password" v-model="UbahPassword.PasswordBaru" />
-          </div>
-          <div class="form-group">
-            <label>Konfirmasi Password Baru</label>
-            <input type="password" v-model="UbahPassword.KonfirmasiPassword" />
-          </div>
-          <div class="form-group">
-            <label>Kecocokan Password Baru</label>
-            <input type="text" v-model="UbahPassword.KecocokanPassword" disabled />
-          </div>
-        </div>
-
-        <div class="form-section">
           <h3>Password Lama</h3>
           <div class="form-group">
             <label>Password</label>
@@ -172,6 +158,22 @@ function removeImage() {
           <div class="form-group">
             <label>Kecocokan Password</label>
             <input type="text" v-model="PasswordLama.passwordMatch" disabled />
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Ubah Password</h3>
+          <div class="form-group">
+            <label>Password Baru</label>
+            <input type="password" v-model="UbahPassword.PasswordBaru" />
+          </div>
+          <div class="form-group">
+            <label>Konfirmasi Password Baru</label>
+            <input type="password" v-model="UbahPassword.KonfirmasiPassword" />
+          </div>
+          <div class="form-group">
+            <label>Kecocokan Password Baru</label>
+            <input type="text" v-model="UbahPassword.KecocokanPassword" disabled />
           </div>
         </div>
       </div>
