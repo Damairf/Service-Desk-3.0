@@ -195,7 +195,7 @@ if (role.value == 1) {
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
   margin-top: 0;
 }
 
