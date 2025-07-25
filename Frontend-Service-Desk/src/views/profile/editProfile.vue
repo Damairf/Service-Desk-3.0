@@ -2,7 +2,6 @@
 import { ref, reactive, watch, computed } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-
 const router = useRouter()
 
 const UbahPassword = reactive({
@@ -54,9 +53,9 @@ function saveChanges() {
   })
   .then(response => {
     alert(response.data.message);
-    localStorage.clear();
-    router.push('/login')
+    router.push('/profileSaya')
     cancelChanges(); 
+
   })
   .catch(error => {
     console.error(error);
@@ -102,7 +101,7 @@ function handleImageUpload(event) {
       gambar.value = response.data.nama_file;
       localStorage.setItem('src_gambar', response.data.nama_file);
       selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
-      showOverlay.value = false; // close overlay if you want
+      showOverlay.value = false; 
     })
     .catch(function(error) {
       console.log(error)
@@ -113,8 +112,21 @@ function handleImageUpload(event) {
 }
 
 function removeImage() {
-  selectedImage.value = null
-  if (fileInput.value) fileInput.value.value = null
+  const token = localStorage.getItem('Token');
+  axios.delete('http://127.0.0.1:8000/api/user/profilepict', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    gambar.value = response.data.nama_file;
+      localStorage.setItem('src_gambar', response.data.nama_file);
+      selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
+      showOverlay.value = false; 
+  })
+  .catch(error => {
+    console.error(error);
+  });
 }
 </script>
 

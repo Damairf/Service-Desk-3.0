@@ -1,9 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-const route = useRoute()
-// buat import tulisan perihalnya, tapi kyknya mending diammbil dari backendnya
-const namaLayanan = ref(route.query.layanan || '')
+
+const activeTab = ref('tracking')
 const currentStep = ref(0) // buat tau 
 
 const steps = [
@@ -19,28 +17,31 @@ const steps = [
 
 <template>
     <!-- Card -->
-  <h2 class="card-title">Detail Progress<br>{{ namaLayanan }}</h2>
-  <div class="step-wrapper">
-    <div
-      v-for="(step, index) in steps"
-      :key="index"
-      class="step-row"
-    >
-      <div
-        class="circle"
-        :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
-      >
-        {{ step === '✓' ? '✓' : index + 1 }}
-      </div>
+    <div class="card">
+      <h2 class="card-title">Detail Progress</h2>
 
-      <div
-        class="step-label"
-        v-if="step !== '✓'"
-      >
-        {{ step }}
+      <div class="step-wrapper">
+        <div
+          v-for="(step, index) in steps"
+          :key="index"
+          class="step-row"
+        >
+          <div
+            class="circle"
+            :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
+          >
+            {{ step === '✓' ? '✓' : index + 1 }}
+          </div>
+
+          <div
+            class="step-label"
+            v-if="step !== '✓'"
+          >
+            {{ step }}
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 </template>
 
 <style scoped>

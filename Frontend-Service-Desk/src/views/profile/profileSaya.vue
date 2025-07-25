@@ -1,9 +1,14 @@
 <script setup>
-  import { inject, ref, computed, onMounted } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import axios from 'axios'
   // transisi ke edit profile
+  import { useRouter } from 'vue-router'
+  const router = useRouter()
+  function toEdit(){
+    router.push('/editProfile')
+  }
 
-  const selectMenu = inject('selectMenu')
+
   const namaDepan = localStorage.getItem('nama_depan')
   const namaBelakang = localStorage.getItem('nama_belakang')
   const nip = localStorage.getItem('nip_user')
@@ -28,7 +33,7 @@
         />
         <div class="name-button">
           <span class="nama-user">{{namaDepan + " " + namaBelakang}}</span>
-          <button class="btn-edit" @click="selectMenu('Edit Profile')">
+          <button class="btn-edit" @click="toEdit()">
             ✏️ Edit
           </button>
         </div>
@@ -58,19 +63,20 @@
   </div>
 </template>
 
-<style>
+<!-- <style>
 html, body {
-  height: 100%;
+  height: auto;
   margin: 0;
   padding: 0;
   background-color: #FAF4FF;
 }
-</style>
+</style> -->
 
 <style scoped>
 
 .profile-card {
   max-width: 40rem;
+  max-height: 60rem;
   margin: 2rem auto;
   padding: 2rem;
   background: white;

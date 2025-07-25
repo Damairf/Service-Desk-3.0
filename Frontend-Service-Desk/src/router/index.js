@@ -1,19 +1,41 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
+// profile
+import profileSaya from '../views/profile/profileSaya.vue'
+import editProfile from '../views/profile/editProfile.vue'
 // Import halaman-halaman
 import Login from '../views/loginPage.vue'
-import navbar from '../views/User/Navbar/navbar.vue'
 import beranda from '../views/User/Beranda/beranda.vue'
-
-//import sub halaman
+// Permintaan baru
+import permintaanBaru from '../views/User/pengajuanPermintaan/pengajuanPermintaan.vue'
 import HalamanFormulirTiketBaru from '../views/User/pengajuanPermintaan/halaman-formulir-tiket-baru.vue'
+// Permintaan Diproses
+import permintaanDiproses from '../views/User/permintaanDiproses/permintaanDiproses.vue'
+import detailPermintaan from '../views/User/permintaanDiproses/detailPermintaan.vue'
+import halamanLacak from '../views/User/permintaanDiproses/halaman-lacak.vue'
+import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
 
 // Daftar rute
 const routes = [
+  // Login page
   { path: '/', redirect: '/login' },
   { path: '/login', name: 'Login', component: Login },
-  { path: '/beranda', name: 'Beranda', component: navbar },
-  { path: '/FormulirTikerBaru', name: 'FormulirTiketBaru', component:HalamanFormulirTiketBaru}
+  // Halaman Profile
+  { path: '/profileSaya', nama: 'ProfileSaya', component: profileSaya },
+  { path: '/editProfile', nama: 'EditProfile', component: editProfile},
+  // Halaman Beranda 
+  { path: '/beranda', name: 'Beranda', component: beranda },
+  // User
+  // Halaman permintaan baru 
+  { path: '/permintaanBaru', name: 'PermintaanBaru', component: permintaanBaru},
+  { path: '/FormulirTiket', name: 'FormulirTiketBaru', component: HalamanFormulirTiketBaru},
+  // Halaman permintaan diproses
+  { path: '/permintaanDiproses', name: 'PermintaanDiproses', component: permintaanDiproses },
+  { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, 
+    children: [
+      { path: 'lacak', name: 'HalamanLacak', component: halamanLacak},
+      { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi}
+    ]
+  }
 ]
 
 const router = createRouter({

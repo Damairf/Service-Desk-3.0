@@ -1,12 +1,11 @@
 <script setup>
-  import { inject, ref, computed, onBeforeMount, onMounted } from 'vue';
+  import { ref, computed, onBeforeMount, onMounted } from 'vue';
   import axios from 'axios'
   import { useRouter } from 'vue-router'
 
   
   // biar tombolnya bisa berfungsi
-  const selectMenu = inject('selectMenu')
-  function handleOK(){
+   function handleOK(){
     selectMenu('Permintaan Baru')
   }
 
@@ -49,6 +48,7 @@ onBeforeMount(() => {
     localStorage.setItem('nip_user', response.data.NIP)
     localStorage.setItem('ID_User', response.data.ID_User)
     localStorage.setItem('src_gambar', response.data.Gambar_Path)
+    localStorage.setItem('role_id', response.data.user_role.map(item => item.ID_Role))
     localStorage.setItem('nama_role', response.data.user_role.map(item => item.Nama_Role))
     localStorage.setItem('nama_jabatan', response.data.user_jabatan.map(item => item.Nama_Jabatan))
     localStorage.setItem('nama_organisasi', response.data.user_organisasi.map(item => item.Nama_OPD))

@@ -1,9 +1,16 @@
 <script setup>
-import { inject, ref, computed , onBeforeMount } from 'vue'
+import { ref, computed , onBeforeMount } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router';
 
-const selectMenu = inject('selectMenu')
-
+// buat push layanan ke halaman formulir tiket baru
+const router = useRouter()
+function handleOk() {
+  showModal.value = false
+  router.push({
+    name: 'FormulirTiketBaru', query: {layanan: selectedItem.value.Nama_Jenis_Pelayanan}
+  })
+}
 // const services = ref([
 //   "Pelayanan Email dan Drive Jabarprov",
 //   "Pelayanan Email dan Drive Jabarprov",
@@ -14,14 +21,13 @@ const selectMenu = inject('selectMenu')
 //   "Pelayanan Email dan Drive Jabarprov",
 // ])
 
-// Ambil Data
 const services = ref([])
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/jenispelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
-    }
+    } 
   })
   .then(response => {
     console.log(response);
@@ -38,7 +44,6 @@ const showModal = ref(false)
 const isChecked = ref(false)
 const selectedItem = ref("")
 
-// Searchbar
 const filteredServices = computed(() => {
   const term = searchTerm.value.toLowerCase();
   return services.value
@@ -46,7 +51,6 @@ const filteredServices = computed(() => {
     .slice((page.value - 1) * 10, page.value * 10);
 })
 
-// Paging
 function prevPage() {
   if (page.value > 1) page.value--
 }
@@ -55,18 +59,9 @@ function nextPage() {
   if (page.value * 5 < services.value.length) page.value++
 }
 
-// Overlay
 function openModal(item) {
   selectedItem.value = item
   showModal.value = true
-}
-
-// Tombol Overlay
-function handleOk() {
-  if (selectMenu) {
-    selectMenu('Halaman Formulir Tiket Baru')
-  }
-  showModal.value = false
 }
 </script>
 

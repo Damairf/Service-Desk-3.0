@@ -31,6 +31,7 @@ function login(){
 const data = ref(null);
 
 onMounted(()=> {
+  console.log("Login Page Mounted");
   const token = localStorage.getItem('Token');
   if(token) {
     router.push('/beranda')
