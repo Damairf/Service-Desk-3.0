@@ -50,15 +50,15 @@ onBeforeMount(() => {
 </script>
   
   <template>
-      <div class="container">
+      <div class="container" >
         <div class="greet">
         <h1>Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
         <p>
           Ada yang bisa kami bantu?
         </p>
       </div>
-      <div class="boxHolder" @click="router.push('/permintaanBaru')">
-        <div class="box">
+      <div class="boxHolder">
+        <div class="box" @click="router.push('/permintaanBaru')">
           <img src="../../../../public/Beranda_Baru.svg" alt="Permintaan Baru">
           <h3>Permintaan Baru</h3>
           <p>Mulai permintaan pelayanan pada Diskominfo Jabar</p>
@@ -125,7 +125,7 @@ onBeforeMount(() => {
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
-      margin-top: 5rem;
+      margin-top: 2rem;
     }
 
     @media (max-width: 900px) {
