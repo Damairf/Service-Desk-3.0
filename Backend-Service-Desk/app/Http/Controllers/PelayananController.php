@@ -9,7 +9,7 @@ use App\Models\User;
 class PelayananController extends Controller
 {
     public function getAll_Layanan(){
-        $pelayanans = Pelayanan::get();
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan')->get();
         return response()->json($pelayanans);
     }
 
