@@ -13,8 +13,8 @@ const currentPage = ref(1)
 const itemsPerPage = 10
 
 const items = ref([
-  { id: 1, ticket: 'Nomor', perihal: 'Perihal1', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-  { id: 2, ticket: 'Nomor', perihal: 'Perihal2', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
+  { id: 1, ticket: 'Nomor1', perihal: 'Perihal1', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
+  { id: 2, ticket: 'Nomor', perihal: 'Perihal2', date: 'xx-xx-xxxx', pic: 'Nama PIC1', progress: 'Progress' },
   { id: 3, ticket: 'Nomor', perihal: 'Perihal3', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
   { id: 4, ticket: 'Nomor', perihal: 'Perihal4', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' }
 ])
@@ -22,7 +22,9 @@ const items = ref([
 // Computed
 const filteredItems = computed(() => {
   return items.value.filter(item =>
-    item.perihal.toLowerCase().includes(search.value.toLowerCase())
+    item.ticket.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.perihal.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.pic.toLowerCase().includes(search.value.toLowerCase())
   )
 })
 
