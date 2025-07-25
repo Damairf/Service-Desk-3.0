@@ -1,5 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+
+onMounted(() => {
+  window.scrollTo(0, 0);
+  });
 
 const activeTab = ref('tracking')
 const currentStep = ref(0) // buat tau 

@@ -1,8 +1,12 @@
 <script setup>
-import { ref, reactive, watch, computed } from 'vue'
+import { ref, reactive, watch, computed, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 const router = useRouter()
+
+onMounted(() => {
+  window.scrollTo(0, 0);
+  });
 
 const UbahPassword = reactive({
   PasswordBaru: '',
@@ -258,12 +262,10 @@ function removeImage() {
 }
 
 .container {
-
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
 }
 
 .profile-card {
@@ -362,6 +364,8 @@ function removeImage() {
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
+  align-items: center;
+  justify-content: center;
 }
 
 .ubah {
@@ -454,9 +458,10 @@ function removeImage() {
   padding: 0.75rem 1.25rem;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
-  border-top-right-radius: 50px;
-  border-bottom-right-radius: 50px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
   display: flex;
+  width: 10rem;
   align-items: center;
   font-weight: 500;
   font-size: 0.95rem;
@@ -465,11 +470,12 @@ function removeImage() {
 
 .btn.ubah {
   padding: 0.75rem 1.25rem;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: 50px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
   border-top-right-radius: 8px;
-  border-bottom-right-radius: px;
+  border-bottom-right-radius: 8px;
   display: flex;
+  width: 10rem;
   align-items: center;
   gap: 0.5rem;
   font-weight: 500;
