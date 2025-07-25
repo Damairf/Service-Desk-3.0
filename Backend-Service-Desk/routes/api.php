@@ -28,6 +28,7 @@ Route::delete('/user/profilepict', [UserController::class, 'delete_Photo']);
 // endpoint user
 Route::get('/role/{roleId}', [RoleController::class, 'findOne_Role']);
 Route::get('/jenispelayanan',[JenisPelayananController::class, 'getAll_JnsPelayanan']);
+Route::get('/jenispelayanan/{jnspelayananId}',[JenisPelayananController::class, 'findOne_JnsPelayanan']);
 
 Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
 Route::put('/pelayanan/tambah/survey/{pelayananId}',[PelayananController::class, 'putSurvey']);

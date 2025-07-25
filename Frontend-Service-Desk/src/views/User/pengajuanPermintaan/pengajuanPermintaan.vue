@@ -11,23 +11,15 @@ function handleOk() {
     name: 'FormulirTiketBaru', query: {layanan: selectedItem.value.Nama_Jenis_Pelayanan}
   })
 }
-// const services = ref([
-//   "Pelayanan Email dan Drive Jabarprov",
-//   "Pelayanan Email dan Drive Jabarprov",
-//   "Pelayanan Email dan Drive Jabarprov",
-//   "Pelayanan Email dan Drive Jabarprov",
-//   "Pelayanan Email dan Drive Jabarprov",
-//   "Pelayanan Email dan Drive Jabarprov",
-//   "Pelayanan Email dan Drive Jabarprov",
-// ])
 
 const services = ref([])
+const isLoading = ref(true)
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/jenispelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
-    } 
+    }
   })
   .then(response => {
     console.log(response);
@@ -35,6 +27,9 @@ onBeforeMount(() => {
   })
   .catch(error => {
     console.error(error);
+  })
+  .finally(() => {
+    isLoading.value = false;
   });
 });
 
@@ -62,6 +57,8 @@ function nextPage() {
 function openModal(item) {
   selectedItem.value = item
   showModal.value = true
+  localStorage.setItem('ID_Jenis_Pelayanan', item.ID_Jenis_Pelayanan)
+  console.log(item)
 }
 </script>
 
@@ -79,22 +76,26 @@ function openModal(item) {
     <div class="container-pencarian">
       <input type="text" v-model="searchTerm" placeholder="Cari" />
     </div>
-
-    <!-- List Pelayanan -->
-    <div class="container-pelayanan">
-      <div
-        class="list-wrapper"
-        v-for="(item, index) in filteredServices"
-        :key="index"
-      >
+    
+    <div class="loading-data" v-if="isLoading">Memuat data layanan...</div>
+    
+    <div v-else>
+      <!-- List Pelayanan -->
+      <div class="container-pelayanan">
         <div
-          class="list-item"
-          :class="index % 2 === 0 ? 'grey-bg' : 'white-bg'"
+          class="list-wrapper"
+          v-for="(item, index) in filteredServices"
+          :key="index"
         >
-          {{ item.Nama_Jenis_Pelayanan }}
+          <div
+            class="list-item"
+            :class="index % 2 === 0 ? 'grey-bg' : 'white-bg'"
+          >
+            {{ item.Nama_Jenis_Pelayanan }}
+          </div>
+          <button class="tombol-tambah" @click="openModal(item)">+</button>
         </div>
-        <button class="tombol-tambah" @click="openModal(item)">+</button>
-      </div>
+    </div>
     </div>
 
     <!-- Paging -->
@@ -133,6 +134,12 @@ input[type="checkbox"]{
   min-height: 100vh;
   padding: 1rem;
   position: relative;
+}
+
+.loading-data {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 1.1rem;
 }
 
 .info-box {

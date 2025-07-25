@@ -1,17 +1,19 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import axios from 'axios'
 
 // nerima dari pengajuanPermintaan.vue
 const route = useRoute()
 const layanan = ref(route.query.layanan || '')
+const id_user = localStorage.getItem('ID_User')
+const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
 
-const layananList = ref([])
 const perihal = ref('')
-const nip = ref('')
 const deskripsi = ref('')
-const suratDinas = ref(null)
-const lampiran = ref(null)
+const id_status = ref(1)
+const suratDinas = ref('tes surat dinas')
+const lampiran = ref('tes lampiran')
 
 // Fungsi untuk menangani perubahan file
 function handleFileChange(e, field) {
@@ -42,17 +44,28 @@ function handleFileChange(e, field) {
   }
 }
 
-function handleSubmit() {
-  console.log('Form data:', {
-    // bookmark
-    layanan: layanan.value,
-    perihal: perihal.value,
-    nip: nip.value,
-    deskripsi: deskripsi.value,
-    suratDinas: suratDinas.value,
-    lampiran: lampiran.value,
+function handleSubmit(){
+  const token = localStorage.getItem('Token');
+  axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
+    "ID_User": id_user,
+    "ID_Jenis_Pelayanan": id_jenis_pelayanan,
+    "Perihal": perihal.value,
+    "Deskripsi": deskripsi.value,
+    "ID_Status": id_status.value,
+    "Surat_Dinas_Path": suratDinas.value,
+    "Lampiran_Path": lampiran.value,
+   },{
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
   })
-  alert('Form berhasil dikirim (dummy)')
+  .then(response => {
+    console.log(response)
+    console.log("Berhasil")
+  })
+  .catch(error => {
+    console.error(error.response?.data || error.message);
+  });
 }
 </script>
 
@@ -72,9 +85,6 @@ function handleSubmit() {
 
         <label>Perihal</label>
         <input type="text" v-model="perihal" />
-
-        <label>Nomor NIP</label>
-        <input type="text" v-model="nip" />
 
         <label>Deskripsi</label>
         <textarea v-model="deskripsi" rows="5"></textarea>
