@@ -24,7 +24,7 @@
 
 <template>
   <div class="profile-card">
-    <h2 class="profile-title">Profil saya</h2>
+    <h2 class="profile-title">Profil Saya</h2>
 
     <div class="profile-container">
       <!-- FOTO & NAMA -->
