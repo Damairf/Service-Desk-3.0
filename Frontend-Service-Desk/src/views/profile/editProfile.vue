@@ -123,6 +123,7 @@ function removeImage() {
   .then(response => {
     gambar.value = response.data.nama_file;
       localStorage.setItem('src_gambar', response.data.nama_file);
+      window.dispatchEvent(new Event('gambar-changed'));
       selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
       showOverlay.value = false; 
   })
