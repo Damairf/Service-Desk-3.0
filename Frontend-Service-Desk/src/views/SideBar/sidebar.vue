@@ -139,6 +139,10 @@ if (role.value == 1) {
 
 
 <style scoped>
+.nama-profile{
+  text-align: center;
+}
+
 .menuOverlay{
   position: absolute;
   left: 13.8rem;
@@ -219,7 +223,7 @@ if (role.value == 1) {
   -ms-overflow-style: none;  /* IE and Edge */
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  /* gap: 5px; */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -253,6 +257,7 @@ if (role.value == 1) {
   cursor: pointer;
   padding: 5px;
   font-size: 18px;
+  transition: background 0.2s;
 }
 
 nav {
@@ -273,7 +278,11 @@ nav {
 }
 
 .menu-item:hover {
-  background: #006920;
+  background: #07883e;
+}
+
+.tombol-toggle:hover {
+  background: #07883e;
 }
 
 .icon {

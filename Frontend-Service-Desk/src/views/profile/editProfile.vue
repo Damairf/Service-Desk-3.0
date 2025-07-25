@@ -67,8 +67,6 @@ function saveChanges() {
   });
 }
 
-
-
 function cancelChanges() {
   UbahPassword.PasswordBaru = ''
   UbahPassword.KonfirmasiPassword = ''
@@ -76,6 +74,7 @@ function cancelChanges() {
   PasswordLama.passwordLama = ''
   PasswordLama.konfirmasiPassword = ''
   PasswordLama.passwordMatch = ''
+  router.push('/profileSaya');
 }
 
 function triggerFileInput() {
