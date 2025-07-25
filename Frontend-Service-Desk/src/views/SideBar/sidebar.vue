@@ -132,7 +132,7 @@ if (role.value == 1) {
   </div>
   <!-- Overlay -->
     <div v-if="tampilinOverlay" :class="['menuOverlay', {collapsed: !isOpen}]" ref="overlayRef">
-      <button @click="() => {toggleOverlay(); toProfile()}">Profile Saya</button>
+      <button @click="() => {toggleOverlay(); toProfile()}">Profil Saya</button>
       <button @click="logout()">Keluar</button>
     </div>
 </template>
