@@ -100,6 +100,8 @@ function handleImageUpload(event) {
     .then(function(response){
       gambar.value = response.data.nama_file;
       localStorage.setItem('src_gambar', response.data.nama_file);
+      //buat kasih tau ke sidebar
+      window.dispatchEvent(new Event('gambar-changed'));
       selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
       showOverlay.value = false; 
     })

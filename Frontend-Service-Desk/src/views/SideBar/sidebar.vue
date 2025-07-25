@@ -1,5 +1,5 @@
 <script setup>
-import { ref , onBeforeMount } from 'vue'
+import { ref , onBeforeMount, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 // buat backend
 import axios from 'axios'
@@ -9,7 +9,11 @@ const gambar = ref(localStorage.getItem('src_gambar'));
 // const role = ref(localStorage.getItem('role_id'));
 const role = ref(1)
 
-
+onMounted(() => {
+  window.addEventListener('gambar-changed', () => {
+    gambar.value = localStorage.getItem('src_gambar');
+  });
+});
 
 
 const menuItem = ref([])
