@@ -1,9 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 
+onMounted(() => {
+  window.scrollTo(0, 0);
+  });
 
 const idLayanan = ref(route.query.layanan || '')
 const activeTab = ref('tracking')

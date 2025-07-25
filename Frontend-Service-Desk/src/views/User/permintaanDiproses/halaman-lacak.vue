@@ -1,10 +1,14 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 // buat import tulisan perihalnya, tapi kyknya mending diammbil dari backendnya
 const idLayanan = ref(route.query.layanan || '')
 const currentStep = ref(0) // buat tau 
+
+onMounted(() => {
+  window.scrollTo(0, 0);
+  });
 
 const steps = [
   'Permintaan Masuk',

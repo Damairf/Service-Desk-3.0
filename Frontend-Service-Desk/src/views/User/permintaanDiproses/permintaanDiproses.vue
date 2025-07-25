@@ -1,6 +1,11 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+
+onMounted(() => {
+  window.scrollTo(0, 0);
+  });
+
 const router = useRouter()
 // Data dan state
 const search = ref('')

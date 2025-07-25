@@ -3,6 +3,10 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 
+onMounted(() => {
+  window.scrollTo(0, 0);
+  });
+
 // nerima dari pengajuanPermintaan.vue
 const route = useRoute()
 const layanan = ref(route.query.layanan || '')

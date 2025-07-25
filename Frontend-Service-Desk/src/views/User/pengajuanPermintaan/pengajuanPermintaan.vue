@@ -1,7 +1,11 @@
 <script setup>
-import { ref, computed , onBeforeMount } from 'vue'
+import { ref, computed , onBeforeMount, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router';
+
+onMounted(() => {
+  window.scrollTo(0, 0);
+  });
 
 // buat push layanan ke halaman formulir tiket baru
 const router = useRouter()
