@@ -141,7 +141,8 @@ function removeImage() {
         alt="Foto Profil"
         @click="showOverlay = true"
       />
-
+      
+      <button class="edit-btn" @click="showOverlay = true">Ubah Foto</button>
       <h2 class="user-name">{{ nama_depan + " " + nama_belakang }}</h2>
 
       <div class="form-container">
@@ -221,6 +222,24 @@ function removeImage() {
 
 
 <style scoped>
+
+.edit-btn {
+  background-color: #006920;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  width: 8rem;
+  display: block;
+  margin: 0 auto;
+}
+
+.edit-btn:hover{
+  background-color: #52AE6E;
+  transform: scale(1.02);
+}
+
 .profile-image,
 .photo-preview {
   width: 160px;
@@ -247,6 +266,8 @@ function removeImage() {
 }
 
 .profile-card {
+  display: flex;
+  flex-direction: column;
   background-color: white;
   border-radius: 16px;
   padding: 2rem;
@@ -277,6 +298,7 @@ function removeImage() {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
+  margin-top: 0;
 }
 
 .form-container {

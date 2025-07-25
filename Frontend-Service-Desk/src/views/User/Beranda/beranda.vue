@@ -50,7 +50,7 @@ onBeforeMount(() => {
 </script>
   
   <template>
-      <div class="container">
+      <div class="container" @click="router.push('/permintaanBaru')">
         <div class="greet">
         <h1>Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
         <p>
@@ -64,7 +64,7 @@ onBeforeMount(() => {
           <p>Mulai permintaan pelayanan pada Diskominfo Jabar</p>
           <button class="tambah" @click="router.push('/permintaanBaru')">Baru</button>
         </div>
-        <div class="box">
+        <div class="box" @click="router.push('/permintaanDiproses')">
           <img src="../../../../public/Beranda_Lacak.svg" alt="Lacak Permintaan">
           <h3>Lacak Permintaan</h3>
           <p>Mulai melacak pelayanan yang sudah diajukan pada Diskominfo Jabar</p>
@@ -151,6 +151,10 @@ onBeforeMount(() => {
       font-size: 0.9rem;
       text-align: left;
       font-weight: lighter;
+    }
+
+    .box:hover {
+      cursor: pointer;
     }
     
     /*tombol baru & lacak*/
