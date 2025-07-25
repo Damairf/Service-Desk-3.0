@@ -18,6 +18,8 @@ function login(){
     localStorage.setItem('nama_depan', response.data.data_user.Nama_Depan)
     localStorage.setItem('nama_belakang', response.data.data_user.Nama_Belakang)
     localStorage.setItem('src_gambar', response.data.data_user.Gambar_Path)
+    localStorage.setItem('id_role', response.data.data_user.ID_Role)
+    localStorage.setItem('nama_role', response.data.data_user.role_user.Nama_Role)
     router.push('/beranda')
     })
   .catch(function(error) {

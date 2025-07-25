@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Model
@@ -14,6 +15,10 @@ class User extends Model
     public function user_role(): HasMany
     {
         return $this->hasMany(Role::class, 'ID_Role'); 
+    }
+    public function role_user(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'ID_Role'); 
     }
     public function user_jabatan(): HasMany
     {

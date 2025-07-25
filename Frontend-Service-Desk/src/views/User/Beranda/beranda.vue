@@ -12,8 +12,6 @@
 const nama_depan = localStorage.getItem('nama_depan')
 const nama_belakang = localStorage.getItem('nama_belakang')
 const nip_user = ref('')
-const id_role = ref('')
-const nama_role = ref('')
 const nama_jabatan = ref('')
 const nama_organisasi = ref('')
 const router = useRouter()
@@ -35,14 +33,10 @@ onBeforeMount(() => {
   .then(response => {
     console.log(response)
     nip_user.value = response.data.NIP
-    id_role.value = response.data.ID_Role
-    nama_role.value = response.data.user_role.map(item => item.Nama_Role)
     nama_jabatan.value = response.data.user_jabatan.map(item => item.Nama_Jabatan)
     nama_organisasi.value = response.data.user_organisasi.map(item => item.Nama_OPD)
     localStorage.setItem('nip_user', response.data.NIP)
     localStorage.setItem('ID_User', response.data.ID_User)
-    localStorage.setItem('role_id', response.data.user_role.map(item => item.ID_Role))
-    localStorage.setItem('nama_role', response.data.user_role.map(item => item.Nama_Role))
     localStorage.setItem('nama_jabatan', response.data.user_jabatan.map(item => item.Nama_Jabatan))
     localStorage.setItem('nama_organisasi', response.data.user_organisasi.map(item => item.Nama_OPD))
   })
