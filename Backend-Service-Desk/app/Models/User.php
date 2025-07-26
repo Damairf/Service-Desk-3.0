@@ -12,9 +12,9 @@ class User extends Model
     protected $primaryKey = 'ID_User';
     protected $fillable = ['Nama_Depan', 'Nama_Belakang', 'NIP',  'Password', 'ID_Role', 'ID_Status','ID_Organisasi', 'ID_Jabatan' ];
 
-    public function user_role(): HasMany
+    public function user_role(): BelongsTo
     {
-        return $this->hasMany(Role::class, 'ID_Role'); 
+        return $this->belongsTo(Role::class, 'ID_Role'); 
     }
     public function user_jabatan(): HasMany
     {

@@ -41,10 +41,6 @@ function saveChanges() {
     alert('Konfirmasi password baru tidak cocok!');
     return;
   }
-  if (PasswordLama.passwordLama !== PasswordLama.konfirmasiPassword) {
-    alert('Konfirmasi password lama tidak cocok!');
-    return;
-  }
   const token = localStorage.getItem('Token');
   axios.put('http://127.0.0.1:8000/api/user/profile', {
     ID_User: userID,          
@@ -74,8 +70,6 @@ function cancelChanges() {
   UbahPassword.KonfirmasiPassword = ''
   UbahPassword.KecocokanPassword = ''
   PasswordLama.passwordLama = ''
-  PasswordLama.konfirmasiPassword = ''
-  PasswordLama.passwordMatch = ''
   router.push('/profileSaya');
 }
 
@@ -146,71 +140,55 @@ function removeImage() {
 </script>
 
 <template>
-  <div class="container">
-    <div class="profile-card">
-      <img
-        class="profile-image"
-        :src="imageSrc"
-        alt="Foto Profil"
-        @click="showOverlay = true"
-      />
-      
-      <button class="edit-btn" @click="showOverlay = true">Ubah Foto</button>
-      <h2 class="user-name">{{ nama_depan + " " + nama_belakang }}</h2>
-
-      <div class="form-container">
-        <div class="form-section">
-          <h3>Password Lama</h3>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" v-model="PasswordLama.passwordLama" />
-          </div>
-          <div class="form-group">
-            <label>Confirm Password</label>
-            <input type="password" v-model="PasswordLama.konfirmasiPassword" />
-          </div>
-          <div class="form-group">
-            <label>Kecocokan Password</label>
-            <input type="text" v-model="PasswordLama.passwordMatch" disabled />
-          </div>
-        </div>
-
-        <div class="form-section">
-          <h3>Ubah Password</h3>
-          <div class="form-group">
-            <label>Password Baru</label>
-            <input type="password" v-model="UbahPassword.PasswordBaru" />
-          </div>
-          <div class="form-group">
-            <label>Konfirmasi Password Baru</label>
-            <input type="password" v-model="UbahPassword.KonfirmasiPassword" />
-          </div>
-          <div class="form-group">
-            <label>Kecocokan Password Baru</label>
-            <input type="text" v-model="UbahPassword.KecocokanPassword" disabled />
-          </div>
+  <div class="edit-profile-container">
+    <div class="edit-profile-card">
+      <!-- KIRI: FOTO PROFIL -->
+      <div class="profile-left">
+        <img
+          class="profile-image-large"
+          :src="imageSrc"
+          alt="Foto Profil"
+          @click="showOverlay = true"
+        />
+        <div class="profile-btn-group">
+          <button class="btn edit" @click="showOverlay = true">
+            <i class="fas fa-pen"></i> Ubah Foto
+          </button>
+          <button class="btn delete" @click="removeImage">
+            <i class="fas fa-trash"></i> Hapus
+          </button>
         </div>
       </div>
-
-      <div class="button-group">
-        <button class="btn ubah" @click="saveChanges">Ubah</button>
-        <button class="btn batal" @click="cancelChanges">Batal</button>
+      <!-- KANAN: FORM PASSWORD -->
+      <div class="profile-right">
+        <h2 class="form-title">Ubah Password</h2>
+        <div class="form-group">
+          <label>Password Lama</label>
+          <input type="password" v-model="PasswordLama.passwordLama" />
+        </div>
+        <div class="form-group">
+          <label>Password Baru</label>
+          <input type="password" v-model="UbahPassword.PasswordBaru" />
+        </div>
+        <div class="form-group">
+          <label>Konfirmasi Password Baru</label>
+          <input type="password" v-model="UbahPassword.KonfirmasiPassword" />
+        </div>
+        <div class="button-group">
+          <button class="btn save" @click="saveChanges">Simpan</button>
+          <button class="btn cancel" @click="cancelChanges">Batal</button>
+        </div>
       </div>
-
+      <!-- Overlay Ubah Foto -->
       <div v-if="showOverlay" class="overlay">
         <div class="overlay-content photo-overlay">
           <button class="close-btn" @click="showOverlay = false">×</button>
-          <h2 class="overlay-title">Foto profil</h2>
-          <p class="overlay-subtext">
-            Gambar membantu memberi tahu Anda saat Anda masuk ke akun Anda
-          </p>
-
+          <h2 class="overlay-title">Ubah Foto Profil</h2>
           <img
             class="photo-preview"
-            :src="`http://localhost:8000/images/${gambar}`"
+            :src="imageSrc"
             alt="Preview Foto Profil"
           />
-
           <input
             type="file"
             ref="fileInput"
@@ -218,12 +196,11 @@ function removeImage() {
             accept="image/png, image/jpeg"
             style="display: none"
           />
-
           <div class="action-buttons">
-            <button class="btn ubah" @click="triggerFileInput()">
-              <i class="fas fa-pen"></i> Ubah
+            <button class="btn edit" @click="triggerFileInput()">
+              <i class="fas fa-pen"></i> Pilih Foto
             </button>
-            <button class="btn hapus" @click="removeImage">
+            <button class="btn delete" @click="removeImage">
               <i class="fas fa-trash"></i> Hapus
             </button>
           </div>
@@ -233,170 +210,139 @@ function removeImage() {
   </div>
 </template>
 
-
 <style scoped>
-
-.edit-btn {
-  background-color: #006920;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 500;
-  width: 8rem;
-  display: block;
-  margin: 0 auto;
-}
-
-.edit-btn:hover{
-  background-color: #52AE6E;
-  transform: scale(1.02);
-}
-
-.profile-image,
-.photo-preview {
-  width: 160px;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin: 0 auto 1.5rem auto;
-  cursor: pointer;
-  transition: transform 0.2s;
-  background-color: #ccc;
-}
-
-.profile-image:hover {
-  transform: scale(1.1);
-}
-
-.container {
+.edit-profile-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #f7f7f7;
 }
-
-.profile-card {
+.edit-profile-card {
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  padding: 2.5rem 2rem;
+  gap: 2.5rem;
+  max-width: 900px;
+  width: 100%;
+}
+.profile-left {
   display: flex;
   flex-direction: column;
-  background-color: white;
-  border-radius: 16px;
-  padding: 2rem;
-  width: 100%;
-  max-width: 800px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 260px;
+  max-width: 320px;
+  flex: 1;
 }
-
-.profile-image {
-  width: 100px;
-  height: 100px;
-  background-color: #d3d3d3;
+.profile-image-large {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
   border-radius: 50%;
-  margin: 0 auto 1rem;
+  background: #d3d3d3;
+  margin-bottom: 1.5rem;
+  border: 4px solid #e0e0e0;
+}
+.profile-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  align-items: center;
+}
+.btn {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
   cursor: pointer;
-  transition: transform 0.2s;
-  background-size: cover;
-  background-position: center;
+  transition: background 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
-
-.profile-image:hover {
-  transform: scale(1.1);
+.btn.edit {
+  background: #2196f3;
+  color: #fff;
 }
-
-.user-name {
-  font-size: 1.5rem;
+.btn.edit:hover {
+  background: #1976d2;
+}
+.btn.delete {
+  background: #f44336;
+  color: #fff;
+}
+.btn.delete:hover {
+  background: #d32f2f;
+}
+.profile-right {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 2rem 2rem 1.5rem 2rem;
+  min-width: 320px;
+  max-width: 420px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.form-title {
+  font-size: 1.4rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
-  margin-top: 0;
-}
-
-.form-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-}
-
-.form-section {
-  flex: 1;
-  min-width: 300px;
-  padding: 1rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-}
-
-.form-section h3 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
-.form-group {
-  margin-bottom: 1rem;
+  color: #222;
   text-align: left;
-  width: 95%;
 }
-
+.form-group {
+  margin-bottom: 1.1rem;
+  text-align: left;
+}
 .form-group label {
   display: block;
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
+  color: #333;
 }
-
 .form-group input {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
-  color: black;
-  background-color: white;
+  color: #222;
+  background: #fff;
 }
-
 .form-group input:disabled {
-  background-color: #f0f0f0;
-  color: #666;
+  background: #f0f0f0;
+  color: #888;
 }
-
 .button-group {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   display: flex;
-  justify-content: center;
   gap: 1rem;
 }
-
-.btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  align-items: center;
-  justify-content: center;
+.btn.save {
+  background: #006920;
+  color: #fff;
 }
-
-.ubah {
-  background-color: #2196f3;
-  color: white;
+.btn.save:hover {
+  background: #52AE6E;
 }
-
-.ubah:hover {
-  background-color: #1976d2;
+.btn.cancel {
+  background: #f44336;
+  color: #fff;
 }
-
-.batal,
-.btn.hapus {
-  background-color: #f44336;
-  color: white;
+.btn.cancel:hover {
+  background: #d32f2f;
 }
-
-.batal:hover,
-.btn.hapus:hover {
-  background-color: #d32f2f;
-}
-
-/* Overlay*/
+/* Overlay (tetap gunakan style lama) */
 .overlay {
   position: fixed;
   top: 0;
@@ -409,7 +355,6 @@ function removeImage() {
   align-items: center;
   z-index: 1000;
 }
-
 .overlay-content {
   background-color: white;
   padding: 1.5rem;
@@ -420,7 +365,6 @@ function removeImage() {
   max-width: 400px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-
 .photo-overlay {
   align-items: center;
   justify-content: center;
@@ -430,67 +374,26 @@ function removeImage() {
   width: 100%;
   border-radius: 20px;
 }
-
 .overlay-title {
   font-size: 1.75rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
   color: #333;
 }
-
-.overlay-subtext {
-  font-size: 0.95rem;
-  color: #666;
-  margin-bottom: 1.5rem;
-  line-height: 1.4;
-}
-
 .photo-preview {
   width: 160px;
   height: 160px;
   background-color: #ccc;
   border-radius: 50%;
   margin: 0 auto 1.5rem auto;
-  background-image: url('https://cdn.pixabay.com/photo/2024/04/19/16/06/ai-generated-8706603_1280.jpg');
   background-size: cover;
   background-position: center;
 }
-
 .action-buttons {
   display: flex;
   justify-content: center;
   gap: 1rem;
 }
-
-.btn.hapus, .btn.batal{
-  padding: 0.75rem 1.25rem;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  display: flex;
-  width: 10rem;
-  align-items: center;
-  font-weight: 500;
-  font-size: 0.95rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.btn.ubah {
-  padding: 0.75rem 1.25rem;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  display: flex;
-  width: 10rem;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
-  font-size: 0.95rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
 .close-btn {
   position: absolute;
   top: 0.5rem;
@@ -501,9 +404,27 @@ function removeImage() {
   cursor: pointer;
   color: #f44336;
 }
-
 .close-btn:hover {
   color: #d32f2f;
   transform: scale(1.1);
+}
+@media (max-width: 900px) {
+  .edit-profile-card {
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0.5rem;
+    gap: 1.5rem;
+  }
+  .profile-right {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    padding: 1.5rem 1rem;
+  }
+  .profile-left {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+  }
 }
 </style>

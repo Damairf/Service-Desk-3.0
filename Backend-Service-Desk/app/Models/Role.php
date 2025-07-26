@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Role extends Model
 {
@@ -14,10 +14,10 @@ class Role extends Model
     protected $primaryKey = 'ID_Role';
     protected $fillable = ['Nama_Role'];
 
-    public function user_role(): BelongsTo
+    public function user_role(): HasMany{
     {
-        return $this->belongsTo(User::class, 'ID_Role'); 
+        return $this->hasMany(User::class, 'ID_Role'); 
     }
     
+    }
 }
-    

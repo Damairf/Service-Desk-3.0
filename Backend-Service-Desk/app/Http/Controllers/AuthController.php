@@ -37,7 +37,7 @@ class AuthController extends Controller
         $token = JWT::encode($payload, $key, $hash);
         $datauser = User::select('Nama_Depan', 'Nama_Belakang', 'Gambar_Path', 'ID_Role')
         ->with([
-            'role_user' => function ($query) {
+            'user_role' => function ($query) {
                 $query->select('ID_Role', 'Nama_Role');
             }
         ])->where("ID_User", $user->ID_User)->first();
