@@ -48,7 +48,8 @@ class PelayananController extends Controller
     public function Verif_Pengelola(Request $request){
         $pelayananId = $request->route('pelayananId');
         $dataPelayanan = $request->only([
-            'ID_Unit'
+            'ID_Unit',
+            'ID_Status'
         ]);
 
         $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
