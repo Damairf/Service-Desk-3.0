@@ -80,7 +80,7 @@ function checkProgress(item) {
 <template>
   <div class="container">
     <div class="progress-card">
-      <h1>Riwayat</h1>
+      <h1>Hasil Pemenuhan BA dan SLA</h1>
       <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
       <table class="rounded-table">
         <thead>
