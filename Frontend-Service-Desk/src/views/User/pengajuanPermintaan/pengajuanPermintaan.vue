@@ -1,11 +1,13 @@
 <script setup>
-import { ref, computed , onBeforeMount, onMounted } from 'vue'
+import { ref, computed , onBeforeMount, onMounted , watch} from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router';
 
 onMounted(() => {
   window.scrollTo(0, 0);
   });
+
+
 
 // buat push layanan ke halaman formulir tiket baru
 const router = useRouter()
@@ -37,6 +39,10 @@ const searchTerm = ref("")
 const showModal = ref(false)
 const isChecked = ref(false)
 const selectedItem = ref("")
+
+watch(searchTerm, () => {
+  page.value = 1
+})
 
 const filteredServices = computed(() => {
   const term = searchTerm.value.toLowerCase();
