@@ -14,14 +14,25 @@ function login(){
     Password: Password.value
     })
   .then(function(response){
-    localStorage.setItem('Token', response.data.data)
-    localStorage.setItem('nama_depan', response.data.data_user.Nama_Depan)
-    localStorage.setItem('nama_belakang', response.data.data_user.Nama_Belakang)
-    localStorage.setItem('src_gambar', response.data.data_user.Gambar_Path)
-    localStorage.setItem('id_role', response.data.data_user.ID_Role)
-    localStorage.setItem('nama_role', response.data.data_user.user_role.Nama_Role)
-    router.push('/beranda')
+    const token = response.data.data;
+    const user = response.data.data_user;
+
+    localStorage.setItem('Token', token);
+    localStorage.setItem('nama_depan', user.Nama_Depan);
+    localStorage.setItem('nama_belakang', user.Nama_Belakang);
+    localStorage.setItem('src_gambar', user.Gambar_Path);
+    localStorage.setItem('id_role', user.ID_Role);
+    localStorage.setItem('nama_role', user.user_role.Nama_Role);
+    
+    const role = user.ID_Role;
+
+    if (role === 1) {
+      router.push('/beranda');
+    } else {
+      router.push('/beranda-Pengelola');
+    } 
     })
+
   .catch(function(error) {
     if (error.response && error.response.status === 401) {
       alert("Password salah!");
