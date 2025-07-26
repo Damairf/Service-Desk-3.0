@@ -49,7 +49,7 @@ const configPermintaanLayanan = {
     },
     title: {
       display: true,
-      text: "Persentase Permintaan Layanan",
+      text: "Persentase Permintaan Pelayanan",
       color: '#000000',
       font: {
         size: 16,

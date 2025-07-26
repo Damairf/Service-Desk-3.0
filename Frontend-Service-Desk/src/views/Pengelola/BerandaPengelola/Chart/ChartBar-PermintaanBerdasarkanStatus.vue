@@ -47,7 +47,7 @@ const configpermintaanBerdasarkanStatus = {
     },
     title: {
       display: true,
-      text: "Persentase Berdasarkan Status",
+      text: "Permintaan Berdasarkan Status",
       color: '#000000',
       font: {
         size: 16,

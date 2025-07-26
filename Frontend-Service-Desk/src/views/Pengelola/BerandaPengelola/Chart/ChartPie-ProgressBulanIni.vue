@@ -49,7 +49,7 @@ const configProgressBulanIni = {
     },
     title: {
       display: true,
-      text: "Persentase Progress Keseluruhan",
+      text: "Persentase Progress Bulan Ini",
       color: '#000000',
       font: {
         size: 16,

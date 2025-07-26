@@ -47,7 +47,7 @@ const configpermintaanBerdasarkanPengelolaTeknis = {
     },
     title: {
       display: true,
-      text: "Persentase Berdasarkan Pengelola Teknis",
+      text: "Permintaan Berdasarkan Pengelola Teknis",
       color: '#000000',
       font: {
         size: 16,

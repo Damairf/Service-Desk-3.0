@@ -101,13 +101,16 @@ class PelayananController extends Controller
     }
 
     public function pie_chart(){
-        $statusCounts = Pelayanan::select('ID_Status', Status::raw('count(*) as total'))->groupBy('ID_Status')->get();
+        $statusCounts = Pelayanan::select('ID_Status' , Status::raw('count(*) as total'))->with([
+        'status_pelayanan' => function ($query) {
+            $query->select('ID_Status', 'Nama_Status');
+         }])->groupBy('ID_Status')->get();
 
         $dataPoints = [];
         foreach ($statusCounts as $row) {
             $dataPoints[] = [
-                "label" => "Status " . $row->ID_Status,
-                "y" => $row->total
+                "status" => $row->status_pelayanan->Nama_Status,
+                "total" => $row->total
         ];
         }
         return response()->json($dataPoints);

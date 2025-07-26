@@ -1,39 +1,57 @@
 <script setup>
-  import {ref, onMounted} from 'vue'
-  import { Bar, Pie } from 'vue-chartjs';
+  import {ref, onMounted, onBeforeMount, computed} from 'vue'
+  import axios from 'axios';
+  import { Pie } from 'vue-chartjs';
   import {
   Chart as ChartJS,
   Title,
   Tooltip,
   Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
   ArcElement
 } from 'chart.js'
-import { color } from 'chart.js/helpers';
 
-// Registrasi komponen Chart.js
-ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement, ArcElement)
+// Registrasi komponen Chart.js yang diperlukan untuk Pie chart
+ChartJS.register(Title, Tooltip, Legend, ArcElement)
 
 //placeholder untuk diskominfo
 // ceritanya backend
-const labelProgressKeseluruhan = ['Close', 'Diproses', 'Open', 'Selesai']
-const dataProgressKeseluruhan = [60, 15, 5, 20]
+const labelProgressKeseluruhan = ref([]);
+const dataProgressKeseluruhan = ref([]);
+
+onBeforeMount(async () => {
+  try {
+    const token = localStorage.getItem('Token');
+    const response = await axios.get('http://127.0.0.1:8000/api/pelayananchart', {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    });
+    
+    console.log(response.data);
+    const data = response.data;
+    labelProgressKeseluruhan.value = data.map(item => item.status);
+    dataProgressKeseluruhan.value = data.map(item => item.total);
+  } catch (error) {
+    console.error('Error fetching chart data:', error);
+    // Fallback data jika API gagal
+    labelProgressKeseluruhan.value = ['Baru',  'Disetujui',  'Ditolak', 'Proses', 'Selesai', 'Ditolak'];
+    dataProgressKeseluruhan.value = [0, 0, 0, 0];
+  }
+});
 
 //data fixed jadi cmn ada di FrontEnd
 const warnaChart = ['#4264C2', '#CA4D2D', '#F3A33C', '#449533']
 //presentasi progress keseluruhan
-const progressKeseluruhanData = {
-  labels: labelProgressKeseluruhan,
+const progressKeseluruhanData = computed(() => ({
+  labels: labelProgressKeseluruhan.value,
   datasets: [
     {
       label: "Presentase Progress",
-      data: dataProgressKeseluruhan,
+      data: dataProgressKeseluruhan.value,
       backgroundColor: warnaChart
     }
   ]
-} 
+}));
 
 const configKeseluruhanData = {
   maintainAspectRatio: false,
