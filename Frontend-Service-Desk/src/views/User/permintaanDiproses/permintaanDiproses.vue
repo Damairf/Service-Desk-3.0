@@ -36,7 +36,7 @@ onBeforeMount(() => {
     items.value = response.data.map(item => ({
       ticket: item.ID_Pelayanan,
       perihal: item.Perihal,
-      pic: item.teknis_pelayanan.Nama_Depan,
+      pic: item.teknis_pelayanan?.Nama_Depan || '-',
       date: item.created_at,
       status: item.status_pelayanan.Nama_Status,
     }))
