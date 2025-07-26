@@ -27,12 +27,13 @@ onMounted(() => {
     }
   })
   .then(response => {
-    console.log(response)
+    console.log(response);
     items.value = response.data.map(item => ({
       ticket: item.ID_Pelayanan,
       perihal: item.Perihal,
-      pic: item.teknis_pelayanan.Nama_Depan,
-      date: item.created_at
+      pic: item.teknis_pelayanan?.Nama_Depan || '-',
+      date: item.created_at,
+      status: item.status_pelayanan.Nama_Status,
     }))
 
   })
@@ -90,6 +91,7 @@ function checkProgress(item) {
             <th>Tanggal Laporan</th>
             <th>PIC</th>
             <th>Detail Proses</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -99,6 +101,7 @@ function checkProgress(item) {
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.pic }}</td>
             <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progress</a></td>
+            <td>{{ item.status }}</td>
           </tr>
         </tbody>
       </table>
