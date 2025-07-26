@@ -70,6 +70,17 @@ class UserSeeder extends Seeder
                 "Gambar_Path" => "default.jpeg",
                 'Status' => 'Aktif'
             ],
+            [
+                "ID_Role" => 1,
+                "ID_Jabatan" => 1,
+                "ID_Organisasi" => 1,
+                "NIP" => 6666,
+                "Nama_Depan" => "User",
+                "Nama_Belakang" => "Lain",
+                "Password" => Hash::make('1234'),
+                "Gambar_Path" => "default.jpeg",
+                'Status' => 'Aktif'
+            ],
         ]);
     }
 }

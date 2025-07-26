@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+
 class Pelayanan extends Model
 {
     protected $table = 'Pelayanan';
     protected $primaryKey = 'ID_Pelayanan';
+     public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = [
         'Perihal',
         'Deskripsi',
@@ -26,6 +29,22 @@ class Pelayanan extends Model
         'Surat_Laporan_Hasil'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $last = static::orderBy('ID_Pelayanan', 'desc')->first();
+            if ($last) {
+                $number = (int) substr($last->ID_Pelayanan, 2);
+                $newNumber = $number + 1;
+            } else {
+                $newNumber = 1;
+            }
+
+            $model->ID_Pelayanan = 'P-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+        });
+    }
     public function User(): BelongsTo{
         return $this -> belongsTo( Organisasi::class, 'ID_User');
     }
