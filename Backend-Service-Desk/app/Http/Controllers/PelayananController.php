@@ -6,7 +6,6 @@ use App\Models\Status;
 use Illuminate\Http\Request;
 use App\Models\Pelayanan;
 use App\Models\User;
-use App\Models\Status;
 
 class PelayananController extends Controller
 {
