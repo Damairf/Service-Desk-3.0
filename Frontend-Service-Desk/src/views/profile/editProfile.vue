@@ -237,7 +237,7 @@ function cancelChanges() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   min-width: 260px;
   max-width: 320px;
   flex: 1;
@@ -269,7 +269,6 @@ function cancelChanges() {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
 }
 .btn.edit {
   background: #2196f3;
@@ -416,6 +415,7 @@ function cancelChanges() {
 .wrapper-btn-edit{
   display: flex;
   justify-content: center;
+  margin-bottom: 2.5rem;
 }
 
 @media (max-width: 900px) {
