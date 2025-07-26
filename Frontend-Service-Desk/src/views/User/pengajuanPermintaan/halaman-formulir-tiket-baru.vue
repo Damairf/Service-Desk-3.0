@@ -13,6 +13,7 @@ onMounted(() => {
 // nerima dari pengajuanPermintaan.vue
 const route = useRoute()
 const layanan = ref(route.query.layanan || '')
+const persyaratan = ref(route.query.persyaratan || '')
 const id_user = localStorage.getItem('ID_User')
 const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
 
@@ -83,7 +84,7 @@ function handleSubmit(){
 
       <div class="info-box">
       <strong>Persyaratan Pelayanan:</strong> <br />
-      <p>Siapkan surat permohonan (khusus untuk layanan infrastruktur), serta gambar atau file pendukung untuk memperjelas pelaporan.</p>
+      <p>{{ persyaratan }}</p>
     </div>
 
       <form @submit.prevent="handleSubmit">
