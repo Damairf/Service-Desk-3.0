@@ -28,12 +28,12 @@ onMounted(() => {
   })
   .then(response => {
     console.log(response)
-    items.value = response.data.map(item => ({
-      ticket: item.ID_Pelayanan,
-      perihal: item.Perihal,
-      pic: item.teknis_pelayanan?.Nama_Depan || '-',
-      date: item.created_at,
-      status: item.status_pelayanan.Nama_Status,
+    items.value = response.data.filter(item => item.status_pelayanan?.Nama_Status === 'Selesai' ).map(item => ({
+        ticket: item.ID_Pelayanan,
+        perihal: item.Perihal,
+        pic: item.teknis_pelayanan?.Nama_Depan || '-',
+        date: item.created_at,
+        status: item.status_pelayanan?.Nama_Status || '-'
     }))
 
   })
@@ -75,6 +75,8 @@ function checkProgress(item) {
     name: 'DetailPermintaan', query: {layanan: item.id}
   })
 }
+
+
 </script>
 
 
