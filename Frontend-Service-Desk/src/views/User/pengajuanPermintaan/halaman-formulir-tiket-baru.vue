@@ -14,7 +14,7 @@ const layanan = ref(route.query.layanan || '')
 const persyaratan = ref(route.query.persyaratan || '')
 const id_user = localStorage.getItem('ID_User')
 const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
-const id_status = 3
+const id_status = 1
 
 const perihal = ref('')
 const deskripsi = ref('')
@@ -83,9 +83,8 @@ async function uploadFiles() {
   }
 }
 
-
-function handleSubmit(){
-  const uploaded = uploadFiles()
+async function handleSubmit(){
+  const uploaded = await uploadFiles()
   if (!uploaded) return
   const token = localStorage.getItem('Token');
   axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
