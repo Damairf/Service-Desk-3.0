@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute , useRouter } from 'vue-router'
+const router = useRouter()
 import axios from 'axios'
+
+
 
 onMounted(() => {
   window.scrollTo(0, 0);
@@ -65,7 +68,7 @@ function handleSubmit(){
   })
   .then(response => {
     console.log(response)
-    console.log("Berhasil")
+    router.push('/permintaanDiproses');
   })
   .catch(error => {
     console.error(error.response?.data || error.message);

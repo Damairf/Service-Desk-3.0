@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 const router = useRouter()
 // Data dan state
 const search = ref('')
@@ -11,12 +12,31 @@ watch(search, () => {
   currentPage.value = 1
 })
 
-const items = ref([
-  { id: 1, ticket: 'sybau', perihal: 'Perihal1', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-  { id: 2, ticket: 'Nomor', perihal: 'Perihal2', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-  { id: 3, ticket: 'Nomor', perihal: 'Perihal3', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-  { id: 4, ticket: 'Nomor', perihal: 'Perihal4', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' }
-])
+const items = ref([])
+
+onMounted(() => {
+  const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/pelayananUser', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    console.log(response)
+    items.value = response.data.map(item => ({
+      ticket: item.ID_Pelayanan,
+      perihal: item.Perihal,
+      pic: item.ID_Teknis,
+      date: item.created_at
+    }))
+
+  })
+  .catch(error => {
+    console.error(error);
+  });
+});
+
+
 
 // Computed
 const filteredItems = computed(() => {
@@ -68,7 +88,7 @@ function checkProgress(item) {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in paginatedItems" :key="item.id">
+          <tr v-for="item in paginatedItems" :key="item.ticket">
             <td>{{ item.ticket }}</td>
             <td>{{ item.perihal }}</td>
             <td>{{ item.date }}</td>
