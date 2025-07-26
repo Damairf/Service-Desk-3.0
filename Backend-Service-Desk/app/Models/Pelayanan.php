@@ -35,4 +35,7 @@ class Pelayanan extends Model
     public function status_pelayanan(): BelongsTo{
         return $this -> belongsTo(Status::class, 'ID_Status');
     }
+    public function teknis_pelayanan(): BelongsTo{
+        return $this -> belongsTo(User::class, 'ID_Teknis');
+    }
 }
