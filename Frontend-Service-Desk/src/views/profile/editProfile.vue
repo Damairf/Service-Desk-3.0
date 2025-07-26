@@ -108,10 +108,12 @@ function handleImageUpload(event) {
       //buat kasih tau ke sidebar
       window.dispatchEvent(new Event('gambar-changed'));
       selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
-      showOverlay.value = false; 
+      showOverlay.value = false;
+      alert('Foto profil berhasil diubah!');
     })
     .catch(function(error) {
-      console.log(error)
+      console.log(error);
+      alert(error.response?.data?.message || 'Terjadi kesalahan saat mengupload foto profil.');
     });
   } else {
     alert('Hanya mendukung gambar PNG atau JPEG')
@@ -121,19 +123,24 @@ function handleImageUpload(event) {
 function removeImage() {
   const token = localStorage.getItem('Token');
   axios.delete('http://127.0.0.1:8000/api/user/profilepict', {
+    data: {
+      ID_User: userID
+    },
     headers: {
       Authorization: 'Bearer ' + token
     }
   })
   .then(response => {
     gambar.value = response.data.nama_file;
-      localStorage.setItem('src_gambar', response.data.nama_file);
-      window.dispatchEvent(new Event('gambar-changed'));
-      selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
-      showOverlay.value = false; 
+    localStorage.setItem('src_gambar', response.data.nama_file);
+    window.dispatchEvent(new Event('gambar-changed'));
+    selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
+    showOverlay.value = false;
+    alert('Foto profil berhasil dihapus!');
   })
   .catch(error => {
     console.error(error);
+    alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus foto profil.');
   });
 }
 </script>

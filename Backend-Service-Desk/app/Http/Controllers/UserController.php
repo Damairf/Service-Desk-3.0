@@ -81,36 +81,74 @@ class UserController extends Controller
 }
 
 public function update_Photo(Request $request){
-    $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
+    try {
+        $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
+        
+        if (!$userId) {
+            return response()->json(['message' => 'User tidak ditemukan'], 404);
+        }
 
-    if ($request->hasFile('Gambar_Path')) {
-        $file = $request->file('Gambar_Path');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('images'), $filename);
-        User::where('ID_User', $userId)->update(['Gambar_Path' => $filename]);
+        if ($request->hasFile('Gambar_Path')) {
+            $user = User::where('ID_User', $userId)->first();
+            
+            // hapus foto lama
+            if ($user && $user->Gambar_Path && $user->Gambar_Path !== 'default.jpeg') {
+                $oldFilePath = public_path('images/' . $user->Gambar_Path);
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath);
+                }
+            }
+            
+            $file = $request->file('Gambar_Path');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('images'), $filename);
+            User::where('ID_User', $userId)->update(['Gambar_Path' => $filename]);
 
+            return response()->json([
+                'message' => 'Upload berhasil',
+                'nama_file' => $filename
+            ]);
+        }
+
+        return response()->json(['message' => 'Tidak ada file dikirim'], 400);
+    } catch (\Exception $e) {
         return response()->json([
-            'message' => 'Upload berhasil',
-            'nama_file' => $filename
-        ]);
+            'message' => 'Terjadi kesalahan saat upload foto',
+            'error' => $e->getMessage()
+        ], 500);
     }
-
-    return response()->json(['message' => 'Tidak ada file dikirim'], 400);
 }
 
     public function delete_Photo(Request $request){
-        $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        User::where('ID_User', $userId)->update(['Gambar_Path' => 'default.jpeg']);
+        try {
+            $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
+            
+            if (!$userId) {
+                return response()->json(['message' => 'User tidak ditemukan'], 404);
+            }
+            
+            $user = User::where('ID_User', $userId)->first();
+            
+            // hapus file foto
+            if ($user && $user->Gambar_Path && $user->Gambar_Path !== 'default.jpeg') {
+                $filePath = public_path('images/' . $user->Gambar_Path);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+            
+            User::where('ID_User', $userId)->update(['Gambar_Path' => 'default.jpeg']);
 
-        $user = User::where('ID_User', $userId)->first();
-        
-        $gambar_path = $user->Gambar_Path;
-
-        return response()->json([
-            'message' => 'Foto dihapus',
-            'nama_file' => $gambar_path
-        ]);
-
+            return response()->json([
+                'message' => 'Foto dihapus',
+                'nama_file' => 'default.jpeg'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menghapus foto',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
     public function update_User(Request $request){
         $userId = $request->route('userId');
