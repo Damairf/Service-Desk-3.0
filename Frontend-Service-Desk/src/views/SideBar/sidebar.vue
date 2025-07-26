@@ -19,7 +19,6 @@ onMounted(() => {
   });
 });
 
-
 const menuItem = ref([])
 const router = useRouter()
 //logout
@@ -109,7 +108,7 @@ if (role.value == 1) {
     </div>
 
     <!-- Tombol Toggle -->
-    <button class="tombol-toggle" @click="toggleSidebar">
+    <button class="tombol-toggle" @click="()=> {toggleSidebar(); toggleOverlay(); toggleOverlay();}">
       ☰
     </button>
 
@@ -122,6 +121,18 @@ if (role.value == 1) {
           @click="toggleOverlay"
         />
     <span class="nama-profile">{{nama_depan}} <br> {{role}}</span>
+    
+    <!-- Profile Dropdown Menu -->
+    <div v-if="tampilinOverlay" class="profile-dropdown">
+      <button class="dropdown-item" @click="() => {toggleOverlay(); toProfile()}">
+        <span class="dropdown-icon">👤</span>
+        <span v-if="isOpen" class="dropdown-text">Profil Saya</span>
+      </button>
+      <button class="dropdown-item" @click="logout()">
+        <span class="dropdown-icon">🚪</span>
+        <span v-if="isOpen" class="dropdown-text">Keluar</span>
+      </button>
+    </div>
     </div>
 
     <!-- Menu -->
@@ -135,11 +146,6 @@ if (role.value == 1) {
       <span v-if="isOpen" class="">{{item.label}}</span>
     </router-link>
   </div>
-  <!-- Overlay -->
-    <div v-if="tampilinOverlay" :class="['menuOverlay', {collapsed: !isOpen}]" ref="overlayRef">
-      <button @click="() => {toggleOverlay(); toProfile()}">Profil Saya</button>
-      <button @click="logout()">Keluar</button>
-    </div>
 </template>
 
 
@@ -149,38 +155,68 @@ if (role.value == 1) {
   transition: all 0.3s ease;
 }
 
-.menuOverlay{
-  position: absolute;
-  left: 13.8rem;
-  top: 13rem;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  z-index: 100;
-  padding: 8px;
-  width: 180px;
-}
-
-.menuOverlay.collapsed {
-  left: 4rem;
-  top: 10rem;
-}
-
-.menuOverlay button{
-  color: black;
-  display: block;
+/* Profile Dropdown Menu */
+.profile-dropdown {
   width: 100%;
-  text-align: left;
-  padding: 8px 12px;
+  background: #07883e;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.7rem;
+  padding-left: 8px;
   border: none;
   background: none;
-  font-size: 14px;
+  color: #ffffff;
+  font-size: 15px;
   cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
 }
 
-.menuOverlay button:hover{
-  background-color: #f0f0f0;
+.dropdown-item:hover {
+  background-color: #077b39;
+}
+
+.dropdown-icon {
+  font-size: 24px;
+  min-width: 20px;
+}
+
+.dropdown-text {
+  font-weight: 500;
+}
+
+/* Responsive untuk sidebar collapsed */
+.sidebar.collapsed .profile-dropdown {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 150px;
+  margin-top: 0;
+  margin-left: 0.5rem;
+  z-index: 1000;
+}
+
+.sidebar.collapsed .dropdown-text {
+  display: block;
 }
 
 .profile{
@@ -190,6 +226,7 @@ if (role.value == 1) {
   background-color: #006920;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .gambar-profile{
