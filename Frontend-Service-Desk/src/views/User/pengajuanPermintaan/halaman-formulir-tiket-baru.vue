@@ -4,8 +4,6 @@ import { useRoute , useRouter } from 'vue-router'
 const router = useRouter()
 import axios from 'axios'
 
-
-
 onMounted(() => {
   window.scrollTo(0, 0);
   });
@@ -15,12 +13,14 @@ const route = useRoute()
 const layanan = ref(route.query.layanan || '')
 const id_user = localStorage.getItem('ID_User')
 const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
+const id_status = 3
 
 const perihal = ref('')
 const deskripsi = ref('')
-const id_status = ref(1)
-const suratDinas = ref('tes surat dinas')
-const lampiran = ref('tes lampiran')
+const suratDinas = ref('')
+const lampiran = ref('')
+const suratDinasPath = ref(null)
+const lampiranPath = ref(null)
 
 // Fungsi untuk menangani perubahan file
 function handleFileChange(e, field) {
@@ -51,16 +51,50 @@ function handleFileChange(e, field) {
   }
 }
 
+async function uploadFiles() {
+  if (!suratDinas.value && !lampiran.value) {
+    alert('Harap unggah semua keperluan');
+    return false;
+  }
+
+  const token = localStorage.getItem('Token');
+  const formData = new FormData();
+  formData.append('surat_dinas', suratDinas.value);
+  formData.append('lampiran', lampiran.value);
+
+  try {
+    const response = await axios.post('http://localhost:8000/api/uploadKeperluan', formData, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    console.log("RESPON DARI UPLOAD:", response.data);
+    suratDinasPath.value = response.data.surat_dinas;
+    lampiranPath.value = response.data.lampiran;
+
+    return true;
+  } catch (error) {
+    console.log(error);
+    alert('Upload gagal: ' + (error.response?.data?.message || error.message));
+    return false;
+  }
+}
+
+
 function handleSubmit(){
+  const uploaded = uploadFiles()
+  if (!uploaded) return
   const token = localStorage.getItem('Token');
   axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
     "ID_User": id_user,
     "ID_Jenis_Pelayanan": id_jenis_pelayanan,
-    "Perihal": perihal.value, // data dummy
-    "Deskripsi": deskripsi.value, // data dummy
-    "ID_Status": id_status.value, // data dummy
-    "Surat_Dinas_Path": suratDinas.value, // data dummy
-    "Lampiran_Path": lampiran.value, // data dummy
+    "ID_Status": id_status,
+    "Perihal": perihal.value,
+    "Deskripsi": deskripsi.value,
+    "Surat_Dinas_Path": suratDinasPath.value,
+    "Lampiran_Path": lampiranPath.value,
    },{
     headers: {
       Authorization: 'Bearer ' + token
@@ -73,6 +107,10 @@ function handleSubmit(){
   .catch(error => {
     console.error(error.response?.data || error.message);
   });
+  console.log("Surat:", suratDinas.value)
+  console.log("Lampiran:", lampiran.value)
+  console.log("Surat:", suratDinasPath.value)
+  console.log("Lampiran:", lampiranPath.value)
 }
 </script>
 

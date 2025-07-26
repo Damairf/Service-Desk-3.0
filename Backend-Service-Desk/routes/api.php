@@ -31,6 +31,7 @@ Route::get('/jenispelayanan',[JenisPelayananController::class, 'getAll_JnsPelaya
 Route::get('/jenispelayanan/{jnspelayananId}',[JenisPelayananController::class, 'findOne_JnsPelayanan']);
 
 Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
+Route::post('/uploadKeperluan',[PelayananController::class, 'uploadKeperluan']);
 Route::put('/pelayanan/tambah/survey/{pelayananId}',[PelayananController::class, 'putSurvey']);
 Route::get('/pelayananUser',[PelayananController::class, 'Pelayanan_byUser']);
 

@@ -111,5 +111,21 @@ class PelayananController extends Controller
         }
         return response()->json($dataPoints);
     }
-    
+    // untuk user mengunggah file
+    public function uploadKeperluan(Request $request)
+    {
+        $request->validate([
+            'surat_dinas' => 'required|file|mimes:pdf|max:8192',
+            'lampiran' => 'required|file|mimes:pdf|max:8192',
+        ]);
+
+        $suratPath = $request->file('surat_dinas')->store('file/Surat-Dinas', 'public');
+        $lampiranPath = $request->file('lampiran')->store('file/lampiran', 'public');
+
+        return response()->json([
+            'message' => 'Berkas berhasil diupload',
+            'surat_dinas' => 'storage/' . $suratPath,
+            'lampiran' => 'storage/' . $lampiranPath,
+        ]);
+    }
 }
