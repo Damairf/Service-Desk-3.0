@@ -15,6 +15,7 @@ import halamanLacak from '../views/User/permintaanDiproses/halaman-lacak.vue'
 import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
 //Riwayat
 import riwayat from '../views/User/Riwayat/riwayat.vue'
+import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
 
 
 // Daftar rute
@@ -39,6 +40,7 @@ const routes = [
       { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi}
     ]
   },
+  { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA},
   { path: '/riwayat', name: 'Riwayat', component: riwayat}
 ]
 
