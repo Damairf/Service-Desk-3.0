@@ -143,6 +143,7 @@ h1 {
   padding: 10px;
   margin-bottom: 40px;
   border: none;
+  color: black;
   border-radius: 13px;
   background-color: #e0e0e0;
 }
@@ -163,14 +164,6 @@ h1 {
 }
 .rounded-table tr:nth-child(even) {
   background-color: #f2f2f2;
-}
-.rounded-table tr:first-child td {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-.rounded-table tr:last-child td {
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
 }
 .pagination {
   margin-top: 20px;
