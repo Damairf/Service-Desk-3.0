@@ -12,6 +12,10 @@ const search = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 10
 
+watch(search, () => {
+  currentPage.value = 1
+})
+
 const items = ref([
   { id: 1, ticket: 'Nomor1', perihal: 'Perihal1', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
   { id: 2, ticket: 'Nomor', perihal: 'Perihal2', date: 'xx-xx-xxxx', pic: 'Nama PIC1', progress: 'Progress' },
