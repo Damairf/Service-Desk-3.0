@@ -16,6 +16,17 @@ class UserSeeder extends Seeder
     {
         DB::table("user")->insert([
             [
+                "ID_Role" => 2,
+                "ID_Jabatan" => 1,
+                "ID_Organisasi" => 1,
+                "ID_Status" => 1,
+                "NIP" => 10299372816328,
+                "Nama_Depan" => "-",
+                "Nama_Belakang" => "-",
+                "Password" => Hash::make('1234'),
+                "Gambar_Path" => "default.jpeg",
+            ],
+            [
                 "ID_Role" => 1,
                 "ID_Jabatan" => 1,
                 "ID_Organisasi" => 1,

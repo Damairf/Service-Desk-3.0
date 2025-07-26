@@ -31,7 +31,7 @@ onMounted(() => {
     items.value = response.data.map(item => ({
       ticket: item.ID_Pelayanan,
       perihal: item.Perihal,
-      pic: item.ID_Teknis,
+      pic: item.teknis_pelayanan.Nama_Depan,
       date: item.created_at
     }))
 

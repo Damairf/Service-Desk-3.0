@@ -23,7 +23,6 @@ class PelayananSeeder extends Seeder
                 "Surat_Dinas_Path" => "Surat Dinas A",
                 "Lampiran_Path" => "Lampiran A",
                 "ID_Teknis" => 4,
-                "ID_Status" => 3,
             ],
             [
                 "ID_User" => 2,
@@ -33,7 +32,6 @@ class PelayananSeeder extends Seeder
                 "Surat_Dinas_Path" => "Surat Dinas B",
                 "Lampiran_Path" => "Lampiran B",
                 "ID_Teknis" => 4,
-                "ID_Status" => 6,
             ],
             [
                 "ID_User" => 3,
@@ -43,7 +41,6 @@ class PelayananSeeder extends Seeder
                 "Surat_Dinas_Path" => "Surat Dinas C",
                 "Lampiran_Path" => "Lampiran C",
                 "ID_Teknis" => 4,
-                "ID_Status" => 7,
             ],
             [
                 "ID_User" => 4,
@@ -53,7 +50,6 @@ class PelayananSeeder extends Seeder
                 "Surat_Dinas_Path" => "Surat Dinas D",
                 "Lampiran_Path" => "Lampiran D",
                 "ID_Teknis" => 4,
-                "ID_Status" => 7,
             ],
         ]);
     }
