@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+//===============USER===============
 // profile
 import profileSaya from '../views/profile/profileSaya.vue'
 import editProfile from '../views/profile/editProfile.vue'
@@ -17,6 +18,8 @@ import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi
 import riwayat from '../views/User/Riwayat/riwayat.vue'
 import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
 
+//===============PENGELOLA===============
+import berandaPengelola from '../views/Pengelola/BerandaPengelola/berandaPengelola.vue'
 
 // Daftar rute
 const routes = [
@@ -26,6 +29,7 @@ const routes = [
   // Halaman Profile
   { path: '/profileSaya', nama: 'ProfileSaya', component: profileSaya },
   { path: '/editProfile', nama: 'EditProfile', component: editProfile},
+  //===============USER===============
   // Halaman Beranda 
   { path: '/beranda', name: 'Beranda', component: beranda },
   // User
@@ -41,7 +45,10 @@ const routes = [
     ]
   },
   { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA},
-  { path: '/riwayat', name: 'Riwayat', component: riwayat}
+  { path: '/riwayat', name: 'Riwayat', component: riwayat},
+
+  //===============PENGELOLA===============
+  { path: '/Beranda-Pengelola', name: 'Beranda-Pengelola', component: berandaPengelola},
 ]
 
 const router = createRouter({
