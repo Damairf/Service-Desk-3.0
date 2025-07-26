@@ -65,6 +65,8 @@ Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
 
 Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 Route::put('/pelayanan/{pelayananId}', [PelayananController::class, 'Verif_Pengelola']);
+Route::get('/pelayananchart',[PelayananController::class, 'pie_chart']);
+
 
 // endpoint unit pelaksana
 

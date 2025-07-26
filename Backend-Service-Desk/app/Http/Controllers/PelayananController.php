@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Status;
 use Illuminate\Http\Request;
 use App\Models\Pelayanan;
 use App\Models\User;
@@ -105,5 +106,18 @@ class PelayananController extends Controller
         $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
         $pelayanans = Pelayanan::with('Jenis_Pelayanan')->where('ID_User', $userId)->get();
         return response()->json($pelayanans);
+    }
+
+    public function pie_chart(){
+        $statusCounts = Pelayanan::select('ID_Status', Status::raw('count(*) as total'))->groupBy('ID_Status')->get();
+        
+        $dataPoints = [];
+        foreach ($statusCounts as $row) {
+            $dataPoints[] = [
+                "label" => "Status " . $row->ID_Status,
+                "y" => $row->total
+            ];
+        }
+        return response()->json($dataPoints);
     }
 }
