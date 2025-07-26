@@ -14,8 +14,6 @@ class StatusSeeder extends Seeder
     public function run(): void
     {
         Status::insert([
-            ["Nama_Status" => "Aktif"],
-            ["Nama_Status" => "Nonaktif"],
             ["Nama_Status" => "Baru"],
             ["Nama_Status" => "Disetujui"],
             ["Nama_Status" => "Ditolak"],

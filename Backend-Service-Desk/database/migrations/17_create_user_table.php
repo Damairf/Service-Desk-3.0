@@ -16,18 +16,17 @@ return new class extends Migration
             $table->unsignedBigInteger('ID_Role')->nullable(false);
             $table->unsignedBigInteger('ID_Jabatan')->nullable(false);
             $table->unsignedBigInteger('ID_Organisasi')->nullable(false);
-            $table->unsignedBigInteger('ID_Status')->nullable(false);
             $table->decimal('NIP', 18, 0)->nullable(false)->unique();
             $table->string('Nama_Depan')->nullable(false);
             $table->string('Nama_Belakang')->nullable(false);
             $table->string('Password')->nullable(false);
             $table->string('Gambar_Path')->default('Tidak ada gambar')->nullable(true)->default('default.jpeg');
+            $table->enum('Status', ['Aktif', 'Tidak Aktif']);
             $table->timestamps();
 
             $table->foreign('ID_Role')->references('ID_Role')->on('reff_role');
             $table->foreign('ID_Jabatan')->references('ID_Jabatan')->on('reff_jabatan');
             $table->foreign('ID_Organisasi')->references('ID_Organisasi')->on('reff_organisasi');
-            $table->foreign('ID_Status')->references('ID_Status')->on('reff_status');
         });
     }
 
