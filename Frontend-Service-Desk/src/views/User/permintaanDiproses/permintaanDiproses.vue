@@ -1,10 +1,18 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 onMounted(() => {
   window.scrollTo(0, 0);
   });
+
+const id_user = localStorage.getItem('ID_User')
+const id_pelayanan = ref('')
+const perihal = ref('')
+const tanggal = ref('')
+const pic = ref('')
+const id_status = ref('')
 
 const router = useRouter()
 // Data dan state
@@ -12,11 +20,31 @@ const search = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 10
 
+onBeforeMount(() => {
+  const token = localStorage.getItem('Token');
+  axios.get(`http://127.0.0.1:8000/api/pelayanan/semua/${id_user}`, {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    console.log(response);
+    id_pelayanan.value = response.data.ID_Pelayanan;
+    perihal.value = response.data.Perihal;
+    pic.value = response.data.ID_Teknis;
+    tanggal.value = response.data.created_at;
+    id_status.value = response.data.ID_Status;
+  })
+  .catch(error => {
+    console.error(error);
+  })
+});
+
 const items = ref([
-  { id: 1, ticket: 'Nomor1', perihal: 'Perihal1', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-  { id: 2, ticket: 'Nomor', perihal: 'Perihal2', date: 'xx-xx-xxxx', pic: 'Nama PIC1', progress: 'Progress' },
-  { id: 3, ticket: 'Nomor', perihal: 'Perihal3', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' },
-  { id: 4, ticket: 'Nomor', perihal: 'Perihal4', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress' }
+  { id: 1, ticket: 'Nomor1', perihal: 'Perihal1', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress', status: 'Status' },
+  { id: 2, ticket: 'Nomor', perihal: 'Perihal2', date: 'xx-xx-xxxx', pic: 'Nama PIC1', progress: 'Progress', status: 'Status' },
+  { id: 3, ticket: 'Nomor', perihal: 'Perihal3', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress', status: 'Status' },
+  { id: 4, ticket: 'Nomor', perihal: 'Perihal4', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress', status: 'Status' }
 ])
 
 // Computed
@@ -66,6 +94,7 @@ function checkProgress(item) {
             <th>Tanggal Laporan</th>
             <th>PIC</th>
             <th>Detail Proses</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -75,6 +104,7 @@ function checkProgress(item) {
             <td>{{ item.date }}</td>
             <td>{{ item.pic }}</td>
             <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progress</a></td>
+            <td>{{ item.status }}</td>
           </tr>
         </tbody>
       </table>

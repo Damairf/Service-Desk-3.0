@@ -20,6 +20,15 @@ class PelayananController extends Controller
         return response()->json($pelayanan);
     }
 
+    public function getByID_User(Request $request){
+        $userId = $request->input('ID_User'); // Ambil ID_User dari input request
+        $pelayanan = Pelayanan::where('ID_User', $userId)->get(); // Ambil semua pelayanan berdasarkan ID_User
+
+        return response([
+            "data" => $pelayanan,
+        ]);
+    }
+
     // hanya untuk role user mengajukan layanan baru
     public function postLayanan(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
