@@ -7,12 +7,10 @@ onMounted(() => {
   window.scrollTo(0, 0);
   });
 
-const id_user = localStorage.getItem('ID_User')
-const id_pelayanan = ref('')
-const perihal = ref('')
-const tanggal = ref('')
-const pic = ref('')
-const id_status = ref('')
+function formatDate(dateString) {
+if (!dateString) return '-';
+return new Date(dateString).toLocaleDateString('id-ID');
+}
 
 const router = useRouter()
 // Data dan state
@@ -20,42 +18,39 @@ const search = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 10
 
+watch(search, () => {
+  currentPage.value = 1
+})
+
+const items = ref([])
+
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
-  axios.get(`http://127.0.0.1:8000/api/pelayanan/semua/${id_user}`, {
+  axios.get('http://127.0.0.1:8000/api/pelayananUser', {
     headers: {
       Authorization: 'Bearer ' + token
     }
   })
   .then(response => {
     console.log(response);
-    id_pelayanan.value = response.data.ID_Pelayanan;
-    perihal.value = response.data.Perihal;
-    pic.value = response.data.ID_Teknis;
-    tanggal.value = response.data.created_at;
-    id_status.value = response.data.ID_Status;
+    items.value = response.data.map(item => ({
+      ticket: item.ID_Pelayanan,
+      perihal: item.Perihal,
+      pic: item.teknis_pelayanan.Nama_Depan,
+      date: item.created_at,
+      status: item.status_pelayanan.Nama_Status,
+    }))
   })
   .catch(error => {
     console.error(error);
   })
 });
 
-watch(search, () => {
-  currentPage.value = 1
-})
-
-const items = ref([
-  { id: 1, ticket: 'Nomor1', perihal: 'Perihal1', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress', status: 'Status' },
-  { id: 2, ticket: 'Nomor', perihal: 'Perihal2', date: 'xx-xx-xxxx', pic: 'Nama PIC1', progress: 'Progress', status: 'Status' },
-  { id: 3, ticket: 'Nomor', perihal: 'Perihal3', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress', status: 'Status' },
-  { id: 4, ticket: 'Nomor', perihal: 'Perihal4', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress', status: 'Status' }
-])
-
 // Computed
 const filteredItems = computed(() => {
   return items.value.filter(item =>
-    item.ticket.toLowerCase().includes(search.value.toLowerCase()) ||
     item.perihal.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.ticket.toLowerCase().includes(search.value.toLowerCase()) ||
     item.pic.toLowerCase().includes(search.value.toLowerCase())
   )
 })
@@ -105,7 +100,7 @@ function checkProgress(item) {
           <tr v-for="item in paginatedItems" :key="item.id">
             <td>{{ item.ticket }}</td>
             <td>{{ item.perihal }}</td>
-            <td>{{ item.date }}</td>
+            <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.pic }}</td>
             <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progress</a></td>
             <td>{{ item.status }}</td>

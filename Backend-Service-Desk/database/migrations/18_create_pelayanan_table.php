@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('Perihal')->nullable(false);
             $table->text('Deskripsi')->nullable(false);
             $table->string('Surat_Dinas_Path')->nullable(false);
-            $table->unsignedBigInteger('ID_Status')->nullable(false);
+            $table->unsignedBigInteger('ID_Status')->nullable(false)->default(3);
             $table->string('Lampiran_Path')->nullable(false);
             $table->unsignedBigInteger('ID_Unit')->nullable(true);
             $table->unsignedBigInteger('ID_Teknis')->nullable(true);
