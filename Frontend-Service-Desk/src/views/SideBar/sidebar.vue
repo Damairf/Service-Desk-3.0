@@ -113,12 +113,11 @@ if (role.value == 1) {
     </button>
 
     <!-- Profile -->
-    <div class="profile">
+    <div class="profile" @click="toggleOverlay">
       <img
           :src="`http://localhost:8000/images/${gambar}`"
           alt="Foto Profil"
           class="gambar-profile"
-          @click="toggleOverlay"
         />
     <span class="nama-profile">{{nama_depan}} <br> {{role}}</span>
     

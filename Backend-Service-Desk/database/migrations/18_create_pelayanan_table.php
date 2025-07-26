@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pelayanan', function (Blueprint $table) {
-            $table->id('ID_Pelayanan');
+            $table->string('ID_Pelayanan', 10)->primary();
             $table->unsignedBigInteger('ID_User')->nullable(false);
             $table->unsignedBigInteger('ID_Jenis_Pelayanan')->nullable(false);
             $table->string('Perihal')->nullable(false);
             $table->text('Deskripsi')->nullable(false);
             $table->string('Surat_Dinas_Path')->nullable(false);
-            $table->unsignedBigInteger('ID_Status')->nullable(false)->default(3);
+            $table->unsignedBigInteger('ID_Status')->nullable(false)->default(1);
             $table->string('Lampiran_Path')->nullable(false);
             $table->unsignedBigInteger('ID_Unit')->nullable(true);
             $table->unsignedBigInteger('ID_Teknis')->nullable(true);

@@ -63,7 +63,7 @@ function openModal(item) {
   selectedItem.value = item
   showModal.value = true
   router.push({
-    name: 'FormulirTiketBaru', query: {layanan: selectedItem.value.Nama_Jenis_Pelayanan}
+    name: 'FormulirTiketBaru', query: {layanan: selectedItem.value.Nama_Jenis_Pelayanan , persyaratan: selectedItem.value.Persyaratan}
   })
   localStorage.setItem('ID_Jenis_Pelayanan', item.ID_Jenis_Pelayanan)
   console.log(item)

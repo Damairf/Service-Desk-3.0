@@ -15,9 +15,6 @@ class Status extends Model
    protected $primaryKey = 'ID_Status';
    protected $fillable = ['Is_Active'];
    
-   public function organisasi(): HasMany{
-      return $this -> hasMany( Organisasi::class, 'ID_Status');
-   }
    public function status_pelayanan(): HasMany{
       return $this -> hasMany( Pelayanan::class, 'ID_Status');
    }
