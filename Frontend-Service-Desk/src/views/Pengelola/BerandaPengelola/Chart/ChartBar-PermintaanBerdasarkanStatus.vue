@@ -1,7 +1,8 @@
 <script setup>
-  import {ref, onMounted} from 'vue'
-  import { Bar, Pie } from 'vue-chartjs';
-  import {
+import { ref, onBeforeMount, computed } from 'vue'
+import axios from 'axios';
+import { Bar } from 'vue-chartjs';
+import {
   Chart as ChartJS,
   Title,
   Tooltip,
@@ -15,26 +16,49 @@
 // Registrasi komponen Chart.js
 ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement, ArcElement)
 
-//Ceritanya Backend
-const labelPermintaanBerdasarkanStatus = ['Baru', 'Proses', 'Selesai', 'Tutup']
-const dataPermintaanBerdasarkanStatus = [120,90,150,110]
-//data fixed jadi cmn ada di FrontEnd
-const warnaChart = ['#4264C2', '#CA4D2D','#F3A33C', '#449533']
+// Ceritanya Backend
+const labelPermintaanBerdasarkanStatus = ref([]);
+const dataPermintaanBerdasarkanStatus = ref([]);
 
-// data dummy Bar
-const permintaanBerdasarkanStatusData = {
-  labels: labelPermintaanBerdasarkanStatus,
+onBeforeMount(async () => {
+  try {
+    const token = localStorage.getItem('Token');
+    const response = await axios.get('http://127.0.0.1:8000/api/pelayananchart', {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    });
+    
+    console.log(response.data);
+    const data = response.data;
+    labelPermintaanBerdasarkanStatus.value = data.map(item => item.status);
+    dataPermintaanBerdasarkanStatus.value = data.map(item => item.total);
+  } catch (error) {
+    console.error('Error fetching chart data:', error);
+    // Fallback data jika API gagal
+    labelPermintaanBerdasarkanStatus.value = ['Baru', 'Disetujui', 'Ditolak', 'Proses', 'Selesai', 'Tutup'];
+    dataPermintaanBerdasarkanStatus.value = [0, 0, 0, 0, 0, 0];
+  }
+});
+
+// data fixed jadi cmn ada di FrontEnd
+const warnaChart = ['#4264C2', '#CA4D2D','#F3A33C', '#449533', '#888888']
+
+// data dummy Bar (computed agar reactive)
+const permintaanBerdasarkanStatusData = computed(() => ({
+  labels: labelPermintaanBerdasarkanStatus.value,
   datasets: [
     {
       label: 'Jumlah Permintaan',
-      data: dataPermintaanBerdasarkanStatus,
+      data: dataPermintaanBerdasarkanStatus.value,
       backgroundColor: warnaChart
     }
   ]
-}
-//bar
+}))
+
+// bar
 const configpermintaanBerdasarkanStatus = {
-    maintainAspectRatio: false,
+  maintainAspectRatio: false,
   responsive: true,
   layout: {
     padding: {

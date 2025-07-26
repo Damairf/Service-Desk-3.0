@@ -34,7 +34,7 @@ onBeforeMount(async () => {
   } catch (error) {
     console.error('Error fetching chart data:', error);
     // Fallback data jika API gagal
-    labelProgressKeseluruhan.value = ['Baru',  'Disetujui',  'Ditolak', 'Proses', 'Selesai', 'Ditolak'];
+    labelProgressKeseluruhan.value = ['Baru',  'Disetujui',  'Ditolak', 'Proses', 'Selesai', 'Tutup'];
     dataProgressKeseluruhan.value = [0, 0, 0, 0];
   }
 });
