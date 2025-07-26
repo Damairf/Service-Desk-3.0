@@ -8,6 +8,11 @@ const search = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 10
 
+function formatDate(dateString) {
+  if (!dateString) return '-';
+  return new Date(dateString).toLocaleDateString('id-ID');
+}
+
 watch(search, () => {
   currentPage.value = 1
 })
@@ -91,7 +96,7 @@ function checkProgress(item) {
           <tr v-for="item in paginatedItems" :key="item.ticket">
             <td>{{ item.ticket }}</td>
             <td>{{ item.perihal }}</td>
-            <td>{{ item.date }}</td>
+            <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.pic }}</td>
             <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progress</a></td>
           </tr>
