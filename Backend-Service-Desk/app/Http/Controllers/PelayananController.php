@@ -91,4 +91,10 @@ class PelayananController extends Controller
 
         return response(["message" => "Laporan hasil ditambahkan", "data" => $updateLaporan]);
     }
+
+    public function Pelayanan_byUser(Request $request){
+        $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan')->where('ID_User', $userId)->get();
+        return response()->json($pelayanans);
+    }
 }
