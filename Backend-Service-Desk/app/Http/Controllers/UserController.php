@@ -128,10 +128,10 @@ public function delete_Photo(Request $request){
             
     User::where('ID_User', $userId)->update(['Gambar_Path' => 'default.jpeg']);
 
-        return response()->json([
-            'message' => 'Foto dihapus',
-            'nama_file' => 'default.jpeg'
-        ]);
+    return response()->json([
+        'message' => 'Foto dihapus',
+        'nama_file' => 'default.jpeg'
+    ]);
         
 }
     public function update_User(Request $request){
