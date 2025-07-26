@@ -152,6 +152,9 @@ if (role.value == 1) {
 <style scoped>
 .nama-profile{
   text-align: center;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  font-weight: 600;
   transition: all 0.3s ease;
 }
 
