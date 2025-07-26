@@ -9,12 +9,7 @@ onMounted(() => {
 
 // buat push layanan ke halaman formulir tiket baru
 const router = useRouter()
-function handleOk() {
-  showModal.value = false
-  router.push({
-    name: 'FormulirTiketBaru', query: {layanan: selectedItem.value.Nama_Jenis_Pelayanan}
-  })
-}
+
 
 const services = ref([])
 const isLoading = ref(true)
@@ -61,6 +56,9 @@ function nextPage() {
 function openModal(item) {
   selectedItem.value = item
   showModal.value = true
+  router.push({
+    name: 'FormulirTiketBaru', query: {layanan: selectedItem.value.Nama_Jenis_Pelayanan}
+  })
   localStorage.setItem('ID_Jenis_Pelayanan', item.ID_Jenis_Pelayanan)
   console.log(item)
 }
@@ -111,19 +109,8 @@ function openModal(item) {
     </div>
 
     <!-- Modal Overlay -->
-    <div v-if="showModal" class="overlay">
-      <div class="overlay-content">
-        <button class="close-btn" @click="showModal = false">×</button>
-        <h3>Pesyaratan</h3>
-        <p>{{ selectedItem.Nama_Jenis_Pelayanan }}</p>
-        <label>
-          <input type="checkbox" v-model="isChecked" />
-          Persetujuan Sudah Lengkap
-        </label>
-        <br />
-        <button class="tombol-ok" :disabled="!isChecked" @click="handleOk">OK</button>
-      </div>
-    </div>
+    
+
   </div>
 </template>
 
