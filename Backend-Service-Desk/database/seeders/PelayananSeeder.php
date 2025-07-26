@@ -22,6 +22,7 @@ class PelayananSeeder extends Seeder
                 "Deskripsi" => "Server error sampai terjadi down",
                 "Surat_Dinas_Path" => "Surat Dinas A",
                 "Lampiran_Path" => "Lampiran A",
+                "ID_Teknis" => 4,
                 "ID_Status" => 3,
             ],
             [
@@ -31,6 +32,7 @@ class PelayananSeeder extends Seeder
                 "Deskripsi" => "Buatkan desain website yang mengusung tema olahraga",
                 "Surat_Dinas_Path" => "Surat Dinas B",
                 "Lampiran_Path" => "Lampiran B",
+                "ID_Teknis" => 4,
                 "ID_Status" => 6,
             ],
             [
@@ -40,6 +42,7 @@ class PelayananSeeder extends Seeder
                 "Deskripsi" => "Buatkan website dengan tenggat waktu 2 minggu",
                 "Surat_Dinas_Path" => "Surat Dinas C",
                 "Lampiran_Path" => "Lampiran C",
+                "ID_Teknis" => 4,
                 "ID_Status" => 7,
             ],
             [
@@ -49,6 +52,7 @@ class PelayananSeeder extends Seeder
                 "Deskripsi" => "Selesaikan masalah yang diberikan",
                 "Surat_Dinas_Path" => "Surat Dinas D",
                 "Lampiran_Path" => "Lampiran D",
+                "ID_Teknis" => 4,
                 "ID_Status" => 7,
             ],
         ]);

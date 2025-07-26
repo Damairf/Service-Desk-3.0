@@ -39,6 +39,7 @@ onBeforeMount(() => {
     console.error(error);
   })
 });
+
 watch(search, () => {
   currentPage.value = 1
 })

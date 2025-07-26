@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pelayanan;
 use App\Models\User;
+use App\Models\Status;
 
 class PelayananController extends Controller
 {
@@ -18,15 +19,6 @@ class PelayananController extends Controller
         $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->get();
 
         return response()->json($pelayanan);
-    }
-
-    public function getByID_User(Request $request){
-        $userId = $request->input('ID_User'); // Ambil ID_User dari input request
-        $pelayanan = Pelayanan::where('ID_User', $userId)->get(); // Ambil semua pelayanan berdasarkan ID_User
-
-        return response([
-            "data" => $pelayanan,
-        ]);
     }
 
     // hanya untuk role user mengajukan layanan baru
@@ -103,7 +95,7 @@ class PelayananController extends Controller
 
     public function Pelayanan_byUser(Request $request){
         $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan')->where('ID_User', $userId)->get();
+        $pelayanans = Pelayanan::with('jenis_pelayanan', 'status_pelayanan', 'teknis_pelayanan')->where('ID_User', $userId)->get();
         return response()->json($pelayanans);
     }
 }
