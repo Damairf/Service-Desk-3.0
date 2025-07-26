@@ -41,6 +41,8 @@ Route::post('/user',[UserController::class, 'createOne_User']);
 Route::get('/user',[UserController::class, 'findAll_User']);
 Route::post('/user',[UserController::class, 'createOne_User']);
 Route::put('/user/{userId}', [UserController::class, 'update_User']);
+Route::get('/userCount',[UserController::class, 'jumlah_User']);
+
 
 Route::get('/role',[RoleController::class, 'findAll_Role']);
 Route::get('/role/{roleId}',[RoleController::class, 'findOne_Role']);
@@ -56,6 +58,8 @@ Route::get('/organisasi/{organisasiId}',[OrganisasiController::class, 'findOne_O
 Route::post('/organisasi',[OrganisasiController::class, 'insertOne_Organisasi']);
 Route::put('/organisasi/{organisasiId}',[OrganisasiController::class, 'updateOne_Organisasi']);
 Route::delete('/organisasi/{organisasiId}',[OrganisasiController::class, 'deleteOne_Organisasi']);
+Route::get('/organisasiCount',[OrganisasiController::class, 'jumlah_Organisasi']);
+
 
 Route::get('/status',[StatusController::class, 'findAll_Status']);
 Route::get('/status/organisasi',[StatusController::class, 'findAll_Organisasi_Status']);
@@ -66,6 +70,8 @@ Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
 Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 Route::put('/pelayanan/{pelayananId}', [PelayananController::class, 'Verif_Pengelola']);
 Route::get('/pelayananchart',[PelayananController::class, 'pie_chart']);
+Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
+
 
 
 // endpoint unit pelaksana

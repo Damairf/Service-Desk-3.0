@@ -13,6 +13,12 @@ class OrganisasiController extends Controller
         return response()->json($organisasis);
     }
 
+    public function jumlah_Organisasi(){
+        $OrganisasiCounts = Organisasi::where('Status', 'Aktif')->count();
+        
+        return response()->json($OrganisasiCounts);
+    }
+
     public function findOne_Organisasi(Request $request){
         $organisasiId = $request->route('organisasiId');
         $jabatan = Organisasi::where('ID_Organisasi', $organisasiId)->with('status')->get();

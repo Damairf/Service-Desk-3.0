@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { ref , onBeforeMount} from 'vue'
+import axios from 'axios'
 import ChartProgressKeseluruhan from './Chart/ChartPie-ProgressKeseluruhan.vue'
 import ChartProgressBulanIni from './Chart/ChartPie-ProgressBulanIni.vue'
 import ChartPermintaanLayanan from './Chart/ChartPie-PermintaanLayanan.vue'
@@ -7,9 +8,48 @@ import ChartBarPermintaanBerdasarkanStatus from './Chart/ChartBar-PermintaanBerd
 import ChartBarPermintaanBerdasarkanPengelolaTeknis from './Chart/ChartBar-PermintaanBerdasarkanPengelolaTeknis.vue'
 import ChartBarPenilaianLayananServiceDesk from './Chart/ChartBar-PenilaianLayananServiceDesk-.vue'
 // ceritanya backend
-const jumlahPermintaanBaru = ref(100)
-const jumlahPenggunaTerdaftar = ref(100)
-const jumlahOrganisasiTerdaftar = ref(100)
+const jumlahPermintaanBaru = ref('')
+const jumlahPenggunaTerdaftar = ref('')
+const jumlahOrganisasiTerdaftar = ref('')
+
+onBeforeMount(() => {
+  const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/userCount', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    jumlahPenggunaTerdaftar.value = (response.data)
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+  axios.get('http://127.0.0.1:8000/api/allPelayanan', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    jumlahPermintaanBaru.value = (response.data)
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+  axios.get('http://127.0.0.1:8000/api/organisasiCount', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    jumlahOrganisasiTerdaftar.value = (response.data)
+  })
+  .catch(error => {
+    console.error(error);
+  });
+});
 </script>
 
 <template>

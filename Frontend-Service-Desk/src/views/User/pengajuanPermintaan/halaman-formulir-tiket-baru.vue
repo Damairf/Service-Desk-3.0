@@ -50,9 +50,7 @@ function handleFileChange(e, field) {
   } else if (field === 'lampiran') {
     lampiran.value = file
   }
-}
 
-async function uploadFiles() {
   if (!suratDinas.value && !lampiran.value) {
     alert('Harap unggah semua keperluan');
     return false;
@@ -64,7 +62,7 @@ async function uploadFiles() {
   formData.append('lampiran', lampiran.value);
 
   try {
-    const response = await axios.post('http://localhost:8000/api/uploadKeperluan', formData, {
+    const response = axios.post('http://localhost:8000/api/uploadKeperluan', formData, {
       headers: {
         Authorization: 'Bearer ' + token,
         'Content-Type': 'multipart/form-data'
@@ -84,8 +82,10 @@ async function uploadFiles() {
 }
 
 
+
+
 function handleSubmit(){
-  const uploaded = uploadFiles()
+  const uploaded = handleFileChange()
   if (!uploaded) return
   const token = localStorage.getItem('Token');
   axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {

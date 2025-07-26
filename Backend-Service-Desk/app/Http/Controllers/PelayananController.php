@@ -112,6 +112,14 @@ class PelayananController extends Controller
         }
         return response()->json($dataPoints);
     }
+
+    public function jumlah_Pelayanan(){
+        $PelayananCounts = Pelayanan::where('ID_Status', 1)->count();
+        
+        return response()->json($PelayananCounts);
+    }
+    
+
     // untuk user mengunggah file
     public function uploadKeperluan(Request $request)
     {

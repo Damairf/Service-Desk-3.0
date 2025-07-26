@@ -60,6 +60,12 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    public function jumlah_User(){
+        $UserCounts = User::where('Status', 'Aktif')->count();
+        
+        return response()->json($UserCounts);
+    }
+
     public function update_Password(Request $request){
         $PasswordLama = $request->PasswordLama;
         $PasswordBaru = $request->PasswordBaru;
