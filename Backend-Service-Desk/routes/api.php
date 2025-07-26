@@ -33,6 +33,8 @@ Route::get('/jenispelayanan/{jnspelayananId}',[JenisPelayananController::class, 
 Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
 Route::put('/pelayanan/tambah/survey/{pelayananId}',[PelayananController::class, 'putSurvey']);
 Route::get('/pelayanan/semua/{userId}',[PelayananController::class, 'getByID_User']);
+Route::get('/pelayananUser',[PelayananController::class, 'Pelayanan_byUser']);
+
 
 // endpoint pengelola
 Route::post('/user',[UserController::class, 'createOne_User']);

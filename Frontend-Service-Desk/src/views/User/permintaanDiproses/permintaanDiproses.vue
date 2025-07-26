@@ -39,6 +39,9 @@ onBeforeMount(() => {
     console.error(error);
   })
 });
+watch(search, () => {
+  currentPage.value = 1
+})
 
 const items = ref([
   { id: 1, ticket: 'Nomor1', perihal: 'Perihal1', date: 'xx-xx-xxxx', pic: 'Nama PIC', progress: 'Progress', status: 'Status' },
