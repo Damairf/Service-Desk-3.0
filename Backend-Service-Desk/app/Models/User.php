@@ -16,10 +16,6 @@ class User extends Model
     {
         return $this->hasMany(Role::class, 'ID_Role'); 
     }
-    public function role_user(): BelongsTo
-    {
-        return $this->belongsTo(Role::class, 'ID_Role'); 
-    }
     public function user_jabatan(): HasMany
     {
         return $this->hasMany(Jabatan::class, 'ID_Jabatan');
