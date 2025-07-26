@@ -41,7 +41,12 @@ function toggleOverlay(){
 // biar bisa buka tutup
 const isOpen = ref(true)
 function toggleSidebar() {
-  isOpen.value = !isOpen.value
+  const newState = !isOpen.value
+  isOpen.value = newState
+  // Dispatch custom event to notify parent components
+  window.dispatchEvent(new CustomEvent('sidebar-toggle', {
+    detail: { isCollapsed: !newState }
+  }))
 }
 //menu items
 if (role.value == 1) {
@@ -141,6 +146,7 @@ if (role.value == 1) {
 <style scoped>
 .nama-profile{
   text-align: center;
+  transition: all 0.3s ease;
 }
 
 .menuOverlay{
@@ -183,6 +189,7 @@ if (role.value == 1) {
   align-items: center;
   background-color: #006920;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .gambar-profile{
@@ -192,6 +199,7 @@ if (role.value == 1) {
   border-radius: 100%;
   margin-top: 0.5rem;
   border: 3px solid #099D49;
+  transition: all 0.3s ease;
 }
 
 .sidebar.collapsed .profile .gambar-profile {
@@ -215,8 +223,8 @@ if (role.value == 1) {
   height: 100vh;
   background: #099D49;
   color: white;
-  width: 220px;
-  transition: width 0.2s ease;
+  width: 16rem;
+  transition: all 0.3s ease;
   /* overflow: hidden; */
   overflow-y: auto; /* Scrollable if content overflows */
   scrollbar-width: none; /* Firefox */
@@ -228,7 +236,7 @@ if (role.value == 1) {
 }
 
 .sidebar.collapsed {
-  width: 60px;
+  width: 50px;
 }
 
 /* Tambahan untuk bungkus logo */
@@ -248,6 +256,7 @@ if (role.value == 1) {
   width: 100%;
   box-sizing: border-box;
   color: white;
+  transition: all 0.3s ease;
 }
 
 .tombol-toggle {
@@ -257,7 +266,7 @@ if (role.value == 1) {
   cursor: pointer;
   padding: 5px;
   font-size: 18px;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
 }
 
 nav {
@@ -274,7 +283,7 @@ nav {
   padding: 8px;
   text-decoration: none;
   color: white;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
 }
 
 .menu-item:hover {
@@ -287,6 +296,7 @@ nav {
 
 .icon {
   font-size: 25px;
+  transition: all 0.3s ease;
 }
 
 .label {

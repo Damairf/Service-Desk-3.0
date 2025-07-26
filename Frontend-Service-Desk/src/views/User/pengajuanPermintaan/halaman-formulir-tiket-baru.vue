@@ -153,8 +153,6 @@ label {
   font-weight: 600;
 }
 
-
-
 input[type="text"],
 select,
 textarea,
@@ -184,7 +182,7 @@ textarea {
 button {
   background-color: #3ba0f3;
   color: white;
-  padding: 0.7rem 2rem;
+  padding: 0.7rem 3rem;
   border: none;
   border-radius: 999px;
   font-weight: bold;
@@ -192,13 +190,23 @@ button {
   cursor: pointer;
   display: block;
   margin: 2rem auto 0;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #53b2ff;
+  box-shadow: 0 4px 8px rgba(59, 160, 243, 0.3);
+}
+
+button:active {
+  box-shadow: 0 2px 4px rgba(51, 141, 214, 0.3);
 }
 
 .info-box {
   background-color: #fff8b1;
   border: 1px solid #e6cc00;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 0px 0px 8px 8px;
   margin-bottom: -0.8rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

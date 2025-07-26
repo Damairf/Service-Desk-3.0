@@ -2,9 +2,17 @@
 import { RouterLink, RouterView } from 'vue-router'
 import Sidebar from '../src/views/SideBar/sidebar.vue';
 import { useRoute } from 'vue-router'
+import { ref, onMounted } from 'vue'
+
 const route = useRoute()
+const isSidebarCollapsed = ref(false)
 
-
+// Listen for sidebar state changes
+onMounted(() => {
+  window.addEventListener('sidebar-toggle', (event) => {
+    isSidebarCollapsed.value = event.detail.isCollapsed
+  })
+})
 </script>
 
 <template>
@@ -12,7 +20,10 @@ const route = useRoute()
         <Sidebar/>
     </div>
     <div class="main-content"
-        :class="{ 'with-sidebar': route.path !== '/login' }">
+        :class="{ 
+          'with-sidebar': route.path !== '/login',
+          'sidebar-collapsed': isSidebarCollapsed && route.path !== '/login'
+        }">
         <RouterView/>
     </div>
 </template>
@@ -33,15 +44,21 @@ html, body, #app {
     z-index: 100;
 }
 
-/* .main-content {
-    margin-left: 250px; 
-    padding: 20px;
-    height: 100vh; Full height
-} */
-
 .with-sidebar {
-    margin-left: 250px; /* Sidebar width */
+    margin-left: 16rem; /* Sidebar width when expanded */
     padding: 20px;
     height: 100vh;
+    transition: margin-left 0.2s ease;
+}
+
+.sidebar-collapsed {
+    margin-left: 50px; /* Sidebar width when collapsed */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .with-sidebar {
+        margin-left: 50px;
+    }
 }
 </style>
