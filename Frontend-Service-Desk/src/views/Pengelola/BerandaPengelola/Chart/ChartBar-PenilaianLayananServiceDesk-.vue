@@ -47,7 +47,7 @@ const configPenilaianLayananServiceDesk = {
     },
     title: {
       display: true,
-      text: "Persentase Berdasarkan Status",
+      text: "Persentase Penilaian Service Desk",
       color: '#000000',
       font: {
         size: 16,
