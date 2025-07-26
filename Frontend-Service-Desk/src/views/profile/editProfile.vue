@@ -1,12 +1,12 @@
 <script setup>
-import { ref, reactive, watch, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
 onMounted(() => {
   window.scrollTo(0, 0);
-  });
+});
 
 const UbahPassword = reactive({
   PasswordBaru: '',
@@ -16,102 +16,66 @@ const UbahPassword = reactive({
 
 const PasswordLama = reactive({
   passwordLama: '',
-  konfirmasiPassword: '',
-  passwordMatch: '',
 })
 
 const showOverlay = ref(false)
-const selectedImage = ref(null)
+const selectedImage = ref(null) // for preview
 const fileInput = ref(null)
+const newImageFile = ref(null) // for upload
 
-watch(() => UbahPassword.KonfirmasiPassword, (newVal) => {
-  UbahPassword.KecocokanPassword = newVal === UbahPassword.PasswordBaru ? 'Cocok' : 'Tidak Cocok'
-})
-
-watch(() => PasswordLama.konfirmasiPassword, (newVal) => {
-  PasswordLama.passwordMatch = newVal === PasswordLama.passwordLama ? 'Cocok' : 'Tidak Cocok'
-})
-
-  const nama_depan = localStorage.getItem('nama_depan')
-  const nama_belakang = localStorage.getItem('nama_belakang')
+const gambar = ref(localStorage.getItem('src_gambar'));
+const imageSrc = computed(() => `http://localhost:8000/images/${gambar.value}?t=${Date.now()}`);
+const previewSrc = computed(() => selectedImage.value || imageSrc.value);
 
 const userID = localStorage.getItem("ID_User");
-function saveChanges() {
-  if (UbahPassword.PasswordBaru !== UbahPassword.KonfirmasiPassword) {
-    alert('Konfirmasi password baru tidak cocok!');
-    return;
-  }
-  const token = localStorage.getItem('Token');
-  axios.put('http://127.0.0.1:8000/api/user/profile', {
-    ID_User: userID,          
-    PasswordLama: PasswordLama.passwordLama, 
-    PasswordBaru: UbahPassword.PasswordBaru
-  },{
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    alert(response.data.message);
-    router.push('/profileSaya')
-    cancelChanges(); 
-
-  })
-  .catch(error => {
-    console.error(error);
-    alert(error.response?.data?.message || "Terjadi kesalahan saat mengubah password.");
-  });
-}
-
-
-
-function cancelChanges() {
-  UbahPassword.PasswordBaru = ''
-  UbahPassword.KonfirmasiPassword = ''
-  UbahPassword.KecocokanPassword = ''
-  PasswordLama.passwordLama = ''
-  router.push('/profileSaya');
-}
 
 function triggerFileInput() {
   fileInput.value?.click()
 }
 
-const gambar = ref(localStorage.getItem('src_gambar'));
-const imageSrc = computed(() => `http://localhost:8000/images/${gambar.value}?t=${Date.now()}`);
-
-function handleImageUpload(event) {
-  const token = localStorage.getItem('Token');
+function handleImageSelect(event) {
   const file = event.target.files[0];
   if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
     selectedImage.value = URL.createObjectURL(file);
-
-    const formData = new FormData();
-    formData.append('Gambar_Path', file);
-    formData.append('ID_User', userID); 
-
-    axios.post('http://127.0.0.1:8000/api/user/profilepict', formData, {
-      headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    .then(function(response){
-      gambar.value = response.data.nama_file;
-      localStorage.setItem('src_gambar', response.data.nama_file);
-      //buat kasih tau ke sidebar
-      window.dispatchEvent(new Event('gambar-changed'));
-      selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
-      showOverlay.value = false;
-      alert('Foto profil berhasil diubah!');
-    })
-    .catch(function(error) {
-      console.log(error);
-      alert(error.response?.data?.message || 'Terjadi kesalahan saat mengupload foto profil.');
-    });
+    newImageFile.value = file;
   } else {
     alert('Hanya mendukung gambar PNG atau JPEG')
+    selectedImage.value = null;
+    newImageFile.value = null;
   }
+}
+
+function uploadSelectedImage() {
+  if (!newImageFile.value) return;
+  const token = localStorage.getItem('Token');
+  const formData = new FormData();
+  formData.append('Gambar_Path', newImageFile.value);
+  formData.append('ID_User', userID);
+  axios.post('http://127.0.0.1:8000/api/user/profilepict', formData, {
+    headers: {
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+  .then(function(response){
+    gambar.value = response.data.nama_file;
+    localStorage.setItem('src_gambar', response.data.nama_file);
+    window.dispatchEvent(new Event('gambar-changed'));
+    selectedImage.value = null;
+    newImageFile.value = null;
+    showOverlay.value = false;
+    alert('Foto profil berhasil diubah!');
+  })
+  .catch(function(error) {
+    console.log(error);
+    alert(error.response?.data?.message || 'Terjadi kesalahan saat mengupload foto profil.');
+  });
+}
+
+function cancelImageChange() {
+  selectedImage.value = null;
+  newImageFile.value = null;
+  showOverlay.value = false;
 }
 
 function removeImage() {
@@ -128,7 +92,8 @@ function removeImage() {
     gambar.value = response.data.nama_file;
     localStorage.setItem('src_gambar', response.data.nama_file);
     window.dispatchEvent(new Event('gambar-changed'));
-    selectedImage.value = `http://localhost:8000/images/${response.data.nama_file}?t=${Date.now()}`;
+    selectedImage.value = null;
+    newImageFile.value = null;
     showOverlay.value = false;
     alert('Foto profil berhasil dihapus!');
   })
@@ -136,6 +101,40 @@ function removeImage() {
     console.error(error);
     alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus foto profil.');
   });
+}
+
+function saveChanges() {
+  if (UbahPassword.PasswordBaru !== UbahPassword.KonfirmasiPassword) {
+    alert('Konfirmasi password baru tidak cocok!');
+    return;
+  }
+  const token = localStorage.getItem('Token');
+  axios.put('http://127.0.0.1:8000/api/user/profile', {
+    ID_User: userID,
+    PasswordLama: PasswordLama.passwordLama,
+    PasswordBaru: UbahPassword.PasswordBaru
+  },{
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    alert(response.data.message);
+    router.push('/profileSaya')
+    cancelChanges();
+  })
+  .catch(error => {
+    console.error(error);
+    alert(error.response?.data?.message || "Terjadi kesalahan saat mengubah password.");
+  });
+}
+
+function cancelChanges() {
+  UbahPassword.PasswordBaru = ''
+  UbahPassword.KonfirmasiPassword = ''
+  UbahPassword.KecocokanPassword = ''
+  PasswordLama.passwordLama = ''
+  router.push('/profileSaya');
 }
 </script>
 
@@ -182,26 +181,31 @@ function removeImage() {
       <!-- Overlay Ubah Foto -->
       <div v-if="showOverlay" class="overlay">
         <div class="overlay-content photo-overlay">
-          <button class="close-btn" @click="showOverlay = false">×</button>
+          <button class="close-btn" @click="cancelImageChange">×</button>
           <h2 class="overlay-title">Ubah Foto Profil</h2>
           <img
             class="photo-preview"
-            :src="imageSrc"
+            :src="previewSrc"
             alt="Preview Foto Profil"
           />
           <input
             type="file"
             ref="fileInput"
-            @change="handleImageUpload($event)"
+            @change="handleImageSelect($event)"
             accept="image/png, image/jpeg"
             style="display: none"
           />
-          <div class="action-buttons">
+          <div class="wrapper-btn-edit">
             <button class="btn edit" @click="triggerFileInput()">
               <i class="fas fa-pen"></i> Pilih Foto
             </button>
-            <button class="btn delete" @click="removeImage">
-              <i class="fas fa-trash"></i> Hapus
+          </div>
+          <div class="action-buttons">
+            <button class="btn save" :disabled="!newImageFile" @click="uploadSelectedImage">
+              <i class="fas fa-save"></i> Simpan
+            </button>
+            <button class="btn cancel" @click="cancelImageChange">
+              <i class="fas fa-times"></i> Batal
             </button>
           </div>
         </div>
@@ -269,6 +273,7 @@ function removeImage() {
 }
 .btn.edit {
   background: #2196f3;
+  align-items: center;
   color: #fff;
 }
 .btn.edit:hover {
@@ -408,6 +413,11 @@ function removeImage() {
   color: #d32f2f;
   transform: scale(1.1);
 }
+.wrapper-btn-edit{
+  display: flex;
+  justify-content: center;
+}
+
 @media (max-width: 900px) {
   .edit-profile-card {
     flex-direction: column;
