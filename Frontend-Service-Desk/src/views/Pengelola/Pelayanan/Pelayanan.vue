@@ -11,14 +11,16 @@ function formatDate(dateString) {
 const layananData = ref([]);
 const sortKey = ref('') 
 const sortOrder = ref(null) 
-
+const nama_depanPengaju = ref('') 
+const nama_belakangPengaju = ref('')
+const jenis_pelayanan = ref('')
+const deskripsi = ref('')
+const surat_dinas = ref('')
 
 //ke halaman detail 
 function lihatDetail(item){
   const token = localStorage.getItem('Token');
-  router.push({
-    name: 'Detail-Pelayanan', query: {layanan: item.noTiket, perihal: item.perihal, tanggal: item.tanggal}
-  })
+  
   const pelayananId = ref(item.noTiket)
   axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
     headers: {
@@ -26,7 +28,25 @@ function lihatDetail(item){
     }
   })
   .then(response => {
-    
+    console.log(response.data)
+    deskripsi.value = response.data.Deskripsi
+    surat_dinas.value = response.data.Surat_Dinas_Path
+    jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
+    nama_depanPengaju.value = response.data.user.Nama_Depan
+    nama_belakangPengaju.value = response.data.user.Nama_Belakang
+    router.push({
+    name: 'Detail-Pelayanan', 
+    query: {
+      layanan: item.noTiket, 
+      perihal: item.perihal, 
+      tanggal: item.tanggal, organisasi: item.organisasi, 
+      nama_depanPengaju: nama_depanPengaju.value, 
+      nama_belakangPengaju: nama_belakangPengaju.value, 
+      jenis_pelayanan: jenis_pelayanan.value,
+      deskripsi: deskripsi.value,
+      surat_dinas: surat_dinas.value
+    }
+  })
     })
   .catch(function(error) {
     console.log(error)
@@ -116,6 +136,8 @@ const paginatedItems = computed(() => {
 watch(search, () => {
   currentPage.value = 1
 })
+
+
 </script>
 
 <template>

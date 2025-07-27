@@ -11,18 +11,19 @@ function formatDate(dateString) {
 
 // === Placeholder variabel backend ===
 
-const layanan = ref(localStorage.getItem('layanan') || 'Nama Layanan')
-const noTiket = ref(localStorage.getItem('no_tiket') || 'Nomor Tiket')
-const pic = ref(localStorage.getItem('pic') || 'Nama PIC')
-const organisasi = ref(localStorage.getItem('organisasi') || 'Asal Dinas')
+const layanan = ref(route.query.jenis_pelayanan || '-')
+const noTiket = ref(route.query.layanan || '-')
+const nama_depan = ref(route.query.nama_depanPengaju || '-')
+const nama_belakang = ref(route.query.nama_belakangPengaju || '-')
+const organisasi = ref(route.query.organisasi || '-')
 const tanggalLaporan = ref(route.query.tanggal || '-')
 const perihal = ref(route.query.perihal || '-')
-const deskripsiUser = ref(localStorage.getItem('deskripsi') || 'woi')
+const deskripsiUser = ref(route.query.deskripsi || '-')
 
-const pdfUrl = ref(null)
-
+const SuratDinas_Path = ref(null)
+const src_SuratDinas = ref(route.query.surat_dinas || '-')
 //  ambil URL dari backend
-pdfUrl.value = 'http://localhost:8000/' + 'storage/file/Surat-Dinas/2EzGoRFZ8Q1DUTTrn7phAmlGxQvKMzGwE1kLX9V0.pdf'
+SuratDinas_Path.value = 'http://localhost:8000/' + `${src_SuratDinas}`
 
 const messages = ref([
   {
@@ -52,7 +53,7 @@ const addMessage = () => {
       <h3>Informasi Umum</h3>
       <div class="info-row"><strong>Layanan</strong> <span>{{ layanan }}</span></div>
       <div class="info-row"><strong>No. Tiket</strong> <span>{{ noTiket }}</span></div>
-      <div class="info-row"><strong>PIC</strong> <span>{{ pic }}</span></div>
+      <div class="info-row"><strong>Pengaju</strong> <span>{{ nama_depan + ' ' + nama_belakang }}</span></div>
       <div class="info-row"><strong>Organisasi</strong> <span>{{ organisasi }}</span></div>
       <div class="info-row"><strong>Tanggal Laporan</strong> <span>{{ formatDate(tanggalLaporan) }}</span></div>
       <div class="info-row"><strong>Perihal</strong> <span>{{ perihal }}</span></div>
@@ -60,9 +61,14 @@ const addMessage = () => {
         <strong>Deskripsi User</strong>
         <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
       </div>
-      <div v-if="pdfUrl">
+      <div v-if="SuratDinas_Path">
+        <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+          Surat Dinas
+        </a>
+      </div>
+      <div v-if="Lampiran_Path">
         <a :href="pdfUrl" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-          Lihat File PDF
+          Lampiran
         </a>
       </div>
     </div>
