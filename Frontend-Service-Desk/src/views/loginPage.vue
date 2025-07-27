@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const router = useRouter()
 
-const NIP = ref('')
+const NIP = ref()
 const Password = ref('')
 
 function login(){
@@ -14,7 +14,7 @@ function login(){
     Password: Password.value
     })
   .then(function(response){
-    const token = response.data.data;
+    const token = response.data.token;
     const user = response.data.data_user;
 
     localStorage.setItem('Token', token);
@@ -28,8 +28,7 @@ function login(){
 
     if (role === 1) {
       router.push('/beranda');
-    } 
-    else if (role === 2){
+    } else if (role === 2){
       router.push('/beranda-Pengelola');
     }
     })
@@ -72,7 +71,6 @@ onMounted(() => {
         <input class="placeholderLgn" v-model="NIP" type="text" placeholder="NIP" />
         <input class="placeholderLgn" v-model="Password" type="password" placeholder="Password" />
         <button class= "login" @click="login">Login</button>
-        <p class= "invalidLogin">{{ message }}</p>
       </div>
     </div>
   </div>

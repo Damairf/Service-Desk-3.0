@@ -29,7 +29,6 @@ function lihatDetail(item){
     }
   })
   .then(response => {
-    console.log(response.data)
     deskripsi.value = response.data.Deskripsi
     surat_dinas.value = response.data.Surat_Dinas_Path
     lampiran.value = response.data.Lampiran_Path

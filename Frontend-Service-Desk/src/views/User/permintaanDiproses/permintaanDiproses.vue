@@ -7,6 +7,9 @@ onMounted(() => {
   window.scrollTo(0, 0);
   });
 
+  
+const isLoading = ref(true)
+
 function formatDate(dateString) {
 if (!dateString) return '-';
 return new Date(dateString).toLocaleDateString('id-ID');
@@ -47,6 +50,9 @@ onBeforeMount(() => {
   .catch(error => {
     console.error(error);
   })
+  .finally(() => {
+  isLoading.value = false;
+  });
 });
 
 // Computed
@@ -93,7 +99,6 @@ function checkProgress(item) {
     }
   })
   .then(response => {
-    console.log(response)
     deskripsi.value = response.data.Deskripsi
     organisasi.value = response.data.user.user_organisasi.Nama_OPD
     surat_dinas.value = response.data.Surat_Dinas_Path
@@ -140,6 +145,7 @@ function checkProgress(item) {
           </tr>
         </thead>
         <tbody>
+          <div class="loading-data" v-if="isLoading">Memuat data...</div>
           <tr v-for="item in paginatedItems" :key="item.id">
             <td>{{ item.ticket }}</td>
             <td>{{ item.perihal }}</td>
@@ -237,5 +243,10 @@ h1 {
 
 .pagination button:not(.active):hover {
   background-color: #f0f0f0;
+}
+
+.loading-data {
+  text-align: center;
+  font-size: 1.1rem;
 }
 </style>
