@@ -35,8 +35,7 @@
           alt="Foto Profil"
           class="profile-img"
         />
-        <div class="name-button">
-          <span class="nama-user">{{namaDepan + " " + namaBelakang}}</span>
+        <div class="button-wrapper">
           <button class="btn-edit" @click="toEdit()">
             ✏️ Edit
           </button>
@@ -115,37 +114,22 @@ html, body {
   height: 200px;
   object-fit: cover;
   border-radius: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   border: 3px solid #ddd;
 }
 
-.name-button {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
+.button-wrapper {
   align-items: center;
-}
-
-.nama-user {
-  background: #fdf1a6;
-  padding: 0.8rem 1.2rem;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: 50px;
-  font-weight: 600;
 }
 
 .btn-edit {
   background: #4CAF50;
   color: white;
   border: none;
-  padding: 0.8rem 0.8rem;
-  border-top-right-radius: 50px;
-  border-bottom-right-radius: 50px;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+  padding: 1rem 3rem;
+  border-radius: 50px;
   font-weight: 600;
+  font-size: large;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0,0,0,0.25);
   transition: transform 0.2s ease;
@@ -153,6 +137,7 @@ html, body {
 
 .btn-edit:hover{
   transform: scale(1.02);
+  background-color: #66BB6A;
 }
 
 .right-column {
