@@ -133,6 +133,22 @@ class PelayananController extends Controller
         return response()->json($dataPoints);
     }
 
+    public function Chart_PelayananTkns(){
+        $TknsCounts = Pelayanan::select('ID_Teknis', User::raw('count(*) as total'))->with([
+        'teknis_pelayanan' => function ($query) {   
+            $query->select('ID_User', 'Nama_Depan');
+         }])->groupBy('ID_Teknis')->get();
+
+        $dataPoints = [];
+        foreach ($TknsCounts as $row) {
+            $dataPoints[] = [
+                "Nama" => $row->teknis_pelayanan->Nama_Depan ?? 'Kosong',
+                "total" => $row->total
+        ];
+        }
+        return response()->json($dataPoints);
+    }
+
     public function jumlah_Pelayanan(){
         $PelayananCounts = Pelayanan::where('ID_Status', 1)->count();
         

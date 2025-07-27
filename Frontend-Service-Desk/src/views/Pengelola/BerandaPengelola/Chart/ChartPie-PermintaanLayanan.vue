@@ -30,7 +30,6 @@ onBeforeMount(async () => {
         Authorization: 'Bearer ' + token
       }
     });
-    console.log(response.data)
     const data = response.data;
     labelPermintaanLayanan.value = data.map(item => item.Jenis_Pelayanan);
     dataPermintaanLayanan.value = data.map(item => item.total);

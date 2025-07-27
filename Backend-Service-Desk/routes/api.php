@@ -72,6 +72,7 @@ Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 Route::put('/pelayanan/{pelayananId}', [PelayananController::class, 'Verif_Pengelola']);
 Route::get('/stsPelayananChart',[PelayananController::class, 'Chart_PelayananSts']);
 Route::get('/jnsPelayananChart',[PelayananController::class, 'Chart_PelayananJns']);
+Route::get('/TknsPelayananChart',[PelayananController::class, 'Chart_PelayananTkns']);
 Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
 
 

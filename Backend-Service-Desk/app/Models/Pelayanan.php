@@ -46,7 +46,7 @@ class Pelayanan extends Model
         });
     }
     public function User(): BelongsTo{
-        return $this -> belongsTo( Organisasi::class, 'ID_User');
+        return $this -> belongsTo( User::class, 'ID_User');
     }
     public function Jenis_Pelayanan(): BelongsTo{
         return $this -> belongsTo( JenisPelayanan::class, 'ID_Jenis_Pelayanan');

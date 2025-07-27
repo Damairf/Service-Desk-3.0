@@ -28,4 +28,8 @@ class User extends Model
     {
         return $this->hasMany(Pelayanan::class, 'ID_Teknis');
     }
+    public function user_pelayanan(): HasMany
+    {
+        return $this->hasMany(Role::class, 'ID_User'); 
+    }
 }

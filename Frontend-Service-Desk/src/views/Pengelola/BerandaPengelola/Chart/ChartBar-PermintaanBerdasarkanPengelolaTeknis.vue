@@ -1,5 +1,6 @@
 <script setup>
-  import {ref, onMounted} from 'vue'
+  import {ref, onMounted, onBeforeMount, computed} from 'vue'
+  import axios from 'axios';
   import { Bar, Pie } from 'vue-chartjs';
   import {
   Chart as ChartJS,
@@ -16,22 +17,38 @@
 ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement, ArcElement)
 
 //Ceritanya Backend
-const labelPermintaanBerdasarkanPengelolaTeknis = ['Ipul1', 'Ipul2', 'Ipul3', 'Ipul4', 'Ipul5', 'Ipul6']
-const dataPermintaanBerdasarkanPengelolaTeknis = [120,90,150,110, 200, 20]
+const labelPermintaanBerdasarkanPengelolaTeknis = ref([]);
+const dataPermintaanBerdasarkanPengelolaTeknis = ref([]);
+
+onBeforeMount(async () => {
+  try {
+    const token = localStorage.getItem('Token');
+    const response = await axios.get('http://127.0.0.1:8000/api/TknsPelayananChart', {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    });
+    const data = response.data;
+    labelPermintaanBerdasarkanPengelolaTeknis.value = data.map(item => item.Nama);
+    dataPermintaanBerdasarkanPengelolaTeknis.value = data.map(item => item.total);
+  } catch (error) {
+  }
+});
+
 //data fixed jadi cmn ada di FrontEnd
 const warnaChart = ['#4264C2', '#CA4D2D', '#F3A33C', '#449533', '#CC557D', '#A83A2D', '#9845A1', '#51AC9A', '#ABAB3B', '#6137C7', '#601861']
 
 // data dummy Bar
-const permintaanBerdasarkanPengelolaTeknisData = {
-  labels: labelPermintaanBerdasarkanPengelolaTeknis,
+const permintaanBerdasarkanPengelolaTeknisData = computed(() => ({
+  labels: labelPermintaanBerdasarkanPengelolaTeknis.value,
   datasets: [
     {
       label: 'Jumlah Permintaan',
-      data: dataPermintaanBerdasarkanPengelolaTeknis,
+      data: dataPermintaanBerdasarkanPengelolaTeknis.value,
       backgroundColor: warnaChart
     }
   ]
-}
+}));
 //bar
 const configpermintaanBerdasarkanPengelolaTeknis = {
     maintainAspectRatio: false,
