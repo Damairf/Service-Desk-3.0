@@ -16,6 +16,7 @@ const nama_belakangPengaju = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const surat_dinas = ref('')
+const lampiran = ref('')
 
 //ke halaman detail 
 function lihatDetail(item){
@@ -31,6 +32,7 @@ function lihatDetail(item){
     console.log(response.data)
     deskripsi.value = response.data.Deskripsi
     surat_dinas.value = response.data.Surat_Dinas_Path
+    lampiran.value = response.data.Lampiran_Path
     jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_depanPengaju.value = response.data.user.Nama_Depan
     nama_belakangPengaju.value = response.data.user.Nama_Belakang
@@ -44,7 +46,8 @@ function lihatDetail(item){
       nama_belakangPengaju: nama_belakangPengaju.value, 
       jenis_pelayanan: jenis_pelayanan.value,
       deskripsi: deskripsi.value,
-      surat_dinas: surat_dinas.value
+      surat_dinas: surat_dinas.value,
+      lampiran: lampiran.value
     }
   })
     })

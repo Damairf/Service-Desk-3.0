@@ -17,6 +17,7 @@ const nama_belakangPengaju = ref(route.query.nama_belakangPengaju || '-')
 const jenis_pelayanan = ref(route.query.jenis_pelayanan || '-')
 const deskripsi = ref(route.query.deskripsi || '-')
 const surat_dinas = ref(route.query.surat_dinas || '-')
+const lampiran = ref(route.query.lampiran || '-')
 const activeTab = ref('tracking')
 const currentStep = ref(0) // buat tau 
 
@@ -40,7 +41,8 @@ const handleTabChange = (tab) => {
         nama_belakangPengaju: nama_belakangPengaju.value, 
         jenis_pelayanan: jenis_pelayanan.value,
         deskripsi: deskripsi.value,
-        surat_dinas: surat_dinas.value
+        surat_dinas: surat_dinas.value,
+        lampiran: lampiran.value
       }
     })
   }

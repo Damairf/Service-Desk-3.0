@@ -22,8 +22,11 @@ const deskripsiUser = ref(route.query.deskripsi || '-')
 
 const SuratDinas_Path = ref(null)
 const src_SuratDinas = ref(route.query.surat_dinas || '-')
+const Lampiran_Path = ref(null)
+const src_Lampiran = ref(route.query.lampiran || '-')
 //  ambil URL dari backend
-SuratDinas_Path.value = 'http://localhost:8000/' + `${src_SuratDinas}`
+SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value
+Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value
 
 const messages = ref([
   {
@@ -67,7 +70,7 @@ const addMessage = () => {
         </a>
       </div>
       <div v-if="Lampiran_Path">
-        <a :href="pdfUrl" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+        <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
           Lampiran
         </a>
       </div>
