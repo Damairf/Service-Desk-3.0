@@ -1,6 +1,8 @@
 <script setup>
 import { ref, computed, watch , onMounted} from 'vue'
 import axios from 'axios';
+
+
 function formatDate(dateString) {
   if (!dateString) return '-';
   return new Date(dateString).toLocaleDateString('id-ID');
@@ -61,7 +63,9 @@ const filteredItems = computed(() => {
     item.perihal.toLowerCase().includes(search.value.toLowerCase()) ||
     item.noTiket.toLowerCase().includes(search.value.toLowerCase()) ||
     item.organisasi.toLowerCase().includes(search.value.toLowerCase()) ||
-    item.teknis.toLowerCase().includes(search.value.toLowerCase())
+    item.teknis.toLowerCase().includes(search.value.toLowerCase()) ||
+    formatDate(item.tanggal).toLowerCase().includes(search.value.toLowerCase()) ||
+    item.status.toLowerCase().includes(search.value.toLowerCase())
   )
 
   if (sortKey.value && sortOrder.value) {
