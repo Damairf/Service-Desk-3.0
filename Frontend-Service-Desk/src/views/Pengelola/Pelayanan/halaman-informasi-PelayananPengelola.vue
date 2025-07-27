@@ -10,6 +10,11 @@ const tanggalLaporan = ref(localStorage.getItem('tanggal_laporan') || 'Tanggal /
 const perihal = ref(localStorage.getItem('perihal') || 'Perihal')
 const deskripsiUser = ref(localStorage.getItem('deskripsi') || '')
 
+const pdfUrl = ref(null)
+
+// Contoh: ambil URL dari backend
+pdfUrl.value = 'http://localhost:8000/' + 'storage/file/Surat-Dinas/2EzGoRFZ8Q1DUTTrn7phAmlGxQvKMzGwE1kLX9V0.pdf'
+
 const messages = ref([
   {
     text: "Halo, bagaimana saya bisa membantu?",
@@ -45,6 +50,9 @@ const addMessage = () => {
       <div class="info-row textarea-row">
         <strong>Deskripsi User</strong>
         <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5"></textarea>
+      </div>
+      <div v-if="pdfUrl">
+        <iframe :src="pdfUrl" width="100%" height="500px"></iframe>
       </div>
     </div>
 
