@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pelayanan;
+use App\Models\Alur;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class JenisPelayanan extends Model
@@ -21,6 +22,6 @@ class JenisPelayanan extends Model
     }
     public function alur_jnsPelayanan():HasMany
     {
-        return $this->hasMany(Pelayanan::class, 'ID_Jenis_Pelayanan'); 
+        return $this->hasMany(Alur::class, 'ID_Jenis_Pelayanan'); 
     }
 }

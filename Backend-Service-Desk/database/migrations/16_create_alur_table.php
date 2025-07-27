@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('alur', function (Blueprint $table) {
             $table->id('ID_Alur');
             $table->unsignedBigInteger('ID_Jenis_Pelayanan')->nullable(false);
-            $table->unsignedBigInteger('ID_Isi Alur')->nullable(false);
+            $table->unsignedBigInteger('ID_Isi_Alur')->nullable(false);
             $table->timestamps();
             
             $table->foreign('ID_Jenis_Pelayanan')->references('ID_Jenis_Pelayanan')->on('reff_jenis_pelayanan');
-            $table->foreign('ID_Isi Alur')->references('ID_Isi Alur')->on('isi_alur');
+            $table->foreign('ID_Isi_Alur')->references('ID_Isi_Alur')->on('isi_alur');
         });
     }
 

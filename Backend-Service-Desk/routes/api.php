@@ -6,6 +6,7 @@ use App\Http\Controllers\JenisPelayananController;
 use App\Http\Controllers\OrganisasiController;
 use App\Http\Controllers\PelayananController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\AlurController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CekToken;
@@ -34,6 +35,7 @@ Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
 Route::post('/uploadKeperluan',[PelayananController::class, 'uploadKeperluan']);
 Route::put('/pelayanan/tambah/survey/{pelayananId}',[PelayananController::class, 'putSurvey']);
 Route::get('/pelayananUser',[PelayananController::class, 'Pelayanan_byUser']);
+Route::get('/alur/jenis_pelayanan/{jnspelId}',[AlurController::class, 'getAll_Alur_JnsPelayanan_byId']);
 
 
 
