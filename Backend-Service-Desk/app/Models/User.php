@@ -16,13 +16,13 @@ class User extends Model
     {
         return $this->belongsTo(Role::class, 'ID_Role'); 
     }
-    public function user_jabatan(): HasMany
+    public function user_jabatan(): BelongsTo
     {
-        return $this->hasMany(Jabatan::class, 'ID_Jabatan');
+        return $this->belongsTo(Jabatan::class, 'ID_Jabatan');
     }
-    public function user_organisasi(): HasMany
+    public function user_organisasi(): BelongsTo
     {
-        return $this->hasMany(Organisasi::class, 'ID_Organisasi');
+        return $this->belongsTo(Organisasi::class, 'ID_Organisasi','ID_Organisasi');
     }
     public function teknis_pelayanan(): HasMany
     {

@@ -34,13 +34,12 @@ onBeforeMount(() => {
     }
   })
   .then(response => {
-    console.log(response)
     nip_user.value = response.data.NIP
-    nama_jabatan.value = response.data.user_jabatan.map(item => item.Nama_Jabatan)
-    nama_organisasi.value = response.data.user_organisasi.map(item => item.Nama_OPD)
+    nama_jabatan.value = response.data.user_jabatan.Nama_Jabatan
+    nama_organisasi.value = response.data.user_organisasi.Nama_OPD
     localStorage.setItem('nip_user', response.data.NIP)
-    localStorage.setItem('nama_jabatan', response.data.user_jabatan.map(item => item.Nama_Jabatan))
-    localStorage.setItem('nama_organisasi', response.data.user_organisasi.map(item => item.Nama_OPD))
+    localStorage.setItem('nama_jabatan', response.data.user_jabatan.Nama_Jabatan)
+    localStorage.setItem('nama_organisasi', response.data.user_organisasi.Nama_OPD)
   })
   .catch(error => {
     console.error(error); 
