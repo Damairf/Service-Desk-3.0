@@ -24,6 +24,17 @@ class PelayananController extends Controller
         return response()->json($pelayanan);
     }
 
+    public function getByID_Pelayanan_Jenis_User($id)
+    {
+        $pelayanan = Pelayanan::select('ID_Pelayanan', 'ID_Jenis_Pelayanan')->find($id);
+
+        if (!$pelayanan) {
+            return response()->json(['message' => 'Pelayanan tidak ditemukan'], 404);
+        }
+
+        return response()->json($pelayanan);
+    }
+
     // hanya untuk role user mengajukan layanan baru
     public function postLayanan(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
