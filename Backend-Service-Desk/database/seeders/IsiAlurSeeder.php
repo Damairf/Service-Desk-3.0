@@ -17,7 +17,6 @@ class IsiAlurSeeder extends Seeder
         DB::table("isi_alur")->insert([
             ["Isi_Bagian_Alur" => "Permintaan Masuk"],
             ["Isi_Bagian_Alur" => "Verifikasi Dokumen"],
-            ["Isi_Bagian_Alur" => "Dokumen Disetujui"],
         ]);
     }
 }
