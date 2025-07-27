@@ -46,13 +46,17 @@ function login(){
 
 const data = ref(null);
 
-onMounted(()=> {
+onMounted(() => {
   console.log("Login Page Mounted");
   const token = localStorage.getItem('Token');
-  if(token) {
-    router.push('/beranda')
+  const role = parseInt(localStorage.getItem('id_role')); // ubah jadi integer
+
+  if (token && role === 1) {
+    router.push('/beranda');
+  } else {
+    router.push('/login');
   }
-})
+});
 </script>
 
 <template>
