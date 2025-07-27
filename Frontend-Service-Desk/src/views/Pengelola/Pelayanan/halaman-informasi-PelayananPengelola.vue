@@ -52,7 +52,9 @@ const addMessage = () => {
         <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5"></textarea>
       </div>
       <div v-if="pdfUrl">
-        <iframe :src="pdfUrl" width="100%" height="500px"></iframe>
+        <a :href="pdfUrl" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+          Lihat File PDF
+        </a>
       </div>
     </div>
 
@@ -76,8 +78,6 @@ const addMessage = () => {
         @keyup.enter="addMessage"
       ></textarea>
 
-      <button class="send-btn" @click="addMessage">Kirim</button>
-      <button class="send-btn" @click="addMessage">Kirim</button>
       <button class="send-btn" @click="addMessage">Kirim</button>
     </div>
   </div>
