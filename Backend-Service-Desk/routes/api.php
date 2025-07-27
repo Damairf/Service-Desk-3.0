@@ -69,7 +69,7 @@ Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
 
 Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 Route::put('/pelayanan/{pelayananId}', [PelayananController::class, 'Verif_Pengelola']);
-Route::get('/pelayananchart',[PelayananController::class, 'pie_chart']);
+Route::get('/pelayananChart',[PelayananController::class, 'Chart_PelayananSts']);
 Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
 
 

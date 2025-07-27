@@ -100,7 +100,7 @@ class PelayananController extends Controller
         return response()->json($pelayanans);
     }
 
-    public function pie_chart(){
+    public function Chart_PelayananSts(){
         $statusCounts = Pelayanan::select('ID_Status' , Status::raw('count(*) as total'))->with([
         'status_pelayanan' => function ($query) {
             $query->select('ID_Status', 'Nama_Status');
@@ -117,6 +117,12 @@ class PelayananController extends Controller
     }
 
     public function jumlah_Pelayanan(){
+        $PelayananCounts = Pelayanan::where('ID_Status', 1)->count();
+        
+        return response()->json($PelayananCounts);
+    }
+
+    public function Permintaan_byPelayanan(){
         $PelayananCounts = Pelayanan::where('ID_Status', 1)->count();
         
         return response()->json($PelayananCounts);

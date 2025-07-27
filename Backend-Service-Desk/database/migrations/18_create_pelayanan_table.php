@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('Lampiran_Path')->nullable(false);
             $table->unsignedBigInteger('ID_Unit')->nullable(true);
             $table->unsignedBigInteger('ID_Teknis')->nullable(true);
-            $table->string('Rating')->nullable(true);
+            $table->enum('Rating', ['1', '2','3', '4', '5'])->nullable(true);
             $table->string('Isi_Survey')->nullable(true);
             $table->string('Surat_Laporan_Hasil')->nullable(true);
             $table->timestamps();

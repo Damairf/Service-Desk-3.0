@@ -16,26 +16,22 @@ import {
 // Registrasi komponen Chart.js
 ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement, ArcElement)
 
-// Ceritanya Backend
+// API
 const labelPermintaanBerdasarkanStatus = ref([]);
 const dataPermintaanBerdasarkanStatus = ref([]);
 
 onBeforeMount(async () => {
   try {
     const token = localStorage.getItem('Token');
-    const response = await axios.get('http://127.0.0.1:8000/api/pelayananchart', {
+    const response = await axios.get('http://127.0.0.1:8000/api/pelayananChart', {
       headers: {
         Authorization: 'Bearer ' + token
       }
     });
-    
-    console.log(response.data);
     const data = response.data;
     labelPermintaanBerdasarkanStatus.value = data.map(item => item.status);
     dataPermintaanBerdasarkanStatus.value = data.map(item => item.total);
   } catch (error) {
-    console.error('Error fetching chart data:', error);
-    // Fallback data jika API gagal
     labelPermintaanBerdasarkanStatus.value = ['Baru', 'Disetujui', 'Ditolak', 'Proses', 'Selesai', 'Tutup'];
     dataPermintaanBerdasarkanStatus.value = [0, 0, 0, 0, 0, 0];
   }

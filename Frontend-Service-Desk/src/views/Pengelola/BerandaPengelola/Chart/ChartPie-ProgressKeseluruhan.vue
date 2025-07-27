@@ -14,28 +14,24 @@
 ChartJS.register(Title, Tooltip, Legend, ArcElement)
 
 //placeholder untuk diskominfo
-// ceritanya backend
+// API
 const labelProgressKeseluruhan = ref([]);
 const dataProgressKeseluruhan = ref([]);
 
 onBeforeMount(async () => {
   try {
     const token = localStorage.getItem('Token');
-    const response = await axios.get('http://127.0.0.1:8000/api/pelayananchart', {
+    const response = await axios.get('http://127.0.0.1:8000/api/pelayananChart', {
       headers: {
         Authorization: 'Bearer ' + token
       }
     });
-    
-    console.log(response.data);
     const data = response.data;
     labelProgressKeseluruhan.value = data.map(item => item.status);
     dataProgressKeseluruhan.value = data.map(item => item.total);
   } catch (error) {
-    console.error('Error fetching chart data:', error);
-    // Fallback data jika API gagal
     labelProgressKeseluruhan.value = ['Baru',  'Disetujui',  'Ditolak', 'Proses', 'Selesai', 'Tutup'];
-    dataProgressKeseluruhan.value = [0, 0, 0, 0];
+    dataProgressKeseluruhan.value = [0, 0, 0, 0, 0, 0];
   }
 });
 
