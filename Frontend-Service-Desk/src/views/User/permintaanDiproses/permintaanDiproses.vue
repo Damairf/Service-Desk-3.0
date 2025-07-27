@@ -36,6 +36,7 @@ onBeforeMount(() => {
     items.value = response.data.filter(item =>
         ['Baru',  'Disetujui', 'Proses'].includes(item.status_pelayanan?.Nama_Status)
       ).map(item => ({
+        id: item.ID_Pelayanan,
         ticket: item.ID_Pelayanan,
         perihal: item.Perihal,
         pic: item.teknis_pelayanan?.Nama_Depan || '-',
@@ -105,7 +106,7 @@ function checkProgress(item) {
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.pic }}</td>
-            <td><a href="#" @click.prevent="checkProgress(item.ticket)" style="color: blue; text-decoration: underline;">Cek Progres</a></td>
+            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progres</a></td>
             <td>{{ item.status }}</td>
           </tr>
         </tbody>
