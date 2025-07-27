@@ -20,6 +20,7 @@ import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASL
 
 //===============PENGELOLA===============
 import berandaPengelola from '../views/Pengelola/BerandaPengelola/berandaPengelola.vue'
+import pelayanan from '../views/Pengelola/Pelayanan/Pelayanan.vue'
 
 // Daftar rute
 const routes = [
@@ -49,6 +50,7 @@ const routes = [
 
   //===============PENGELOLA===============
   { path: '/Beranda-Pengelola', name: 'Beranda-Pengelola', component: berandaPengelola},
+  { path: '/pelayanan', name: 'pelayanan', component: pelayanan},
 ]
 
 const router = createRouter({
