@@ -14,7 +14,7 @@ const layanan = ref(route.query.layanan || '')
 const persyaratan = ref(route.query.persyaratan || '')
 const id_user = localStorage.getItem('ID_User')
 const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
-const id_status = 3
+const id_status = 1
 
 const perihal = ref('')
 const deskripsi = ref('')
@@ -25,93 +25,94 @@ const lampiranPath = ref(null)
 
 // Fungsi untuk menangani perubahan file
 function handleFileChange(e, field) {
-  const file = e.target.files[0]
-  const maxSize = 8 * 1024 * 1024 // 8MB
+const file = e.target.files[0]
+const maxSize = 8 * 1024 * 1024 // 8MB
 
-  if (!file) return
+if (!file) return
 
-  // ❌ Cek tipe file bukan PDF
-  if (file.type !== 'application/pdf') {
-    alert('❌ Hanya file PDF yang diperbolehkan.')
-    e.target.value = ''
-    return
-  }
-
-  // ❌ Cek ukuran file lebih dari 8MB
-  if (file.size > maxSize) {
-    alert('❌ Ukuran file melebihi 8MB. Silakan pilih file yang lebih kecil.')
-    e.target.value = ''
-    return
-  }
-
-  // ✅ Simpan file
-  if (field === 'suratDinas') {
-    suratDinas.value = file
-  } else if (field === 'lampiran') {
-    lampiran.value = file
-  }
-
-  if (!suratDinas.value && !lampiran.value) {
-    alert('Harap unggah semua keperluan');
-    return false;
-  }
-
-  const token = localStorage.getItem('Token');
-  const formData = new FormData();
-  formData.append('surat_dinas', suratDinas.value);
-  formData.append('lampiran', lampiran.value);
-
-  try {
-    const response = axios.post('http://localhost:8000/api/uploadKeperluan', formData, {
-      headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-
-    console.log("RESPON DARI UPLOAD:", response.data);
-    suratDinasPath.value = response.data.surat_dinas;
-    lampiranPath.value = response.data.lampiran;
-
-    return true;
-  } catch (error) {
-    console.log(error);
-    alert('Upload gagal: ' + (error.response?.data?.message || error.message));
-    return false;
-  }
+// ❌ Cek tipe file bukan PDF
+if (file.type !== 'application/pdf') {
+  alert('❌ Hanya file PDF yang diperbolehkan.')
+  e.target.value = ''
+  return
 }
 
+// ❌ Cek ukuran file lebih dari 8MB
+if (file.size > maxSize) {
+  alert('❌ Ukuran file melebihi 8MB. Silakan pilih file yang lebih kecil.')
+  e.target.value = ''
+  return
+}
 
+// ✅ Simpan file
+if (field === 'suratDinas') {
+  suratDinas.value = file
+} else if (field === 'lampiran') {
+  lampiran.value = file
+}
 
+}
 
-function handleSubmit(){
-  const uploaded = handleFileChange()
-  if (!uploaded) return
-  const token = localStorage.getItem('Token');
-  axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
-    "ID_User": id_user,
-    "ID_Jenis_Pelayanan": id_jenis_pelayanan,
-    "ID_Status": id_status,
-    "Perihal": perihal.value,
-    "Deskripsi": deskripsi.value,
-    "Surat_Dinas_Path": suratDinasPath.value,
-    "Lampiran_Path": lampiranPath.value,
-   },{
+async function uploadFiles() {
+if (!suratDinas.value && !lampiran.value) {
+  alert('Harap unggah semua keperluan');
+  return false;
+}
+
+const token = localStorage.getItem('Token');
+const formData = new FormData();
+formData.append('surat_dinas', suratDinas.value);
+formData.append('lampiran', lampiran.value);
+
+try {
+  const response = await axios.post('http://localhost:8000/api/uploadKeperluan', formData, {
     headers: {
-      Authorization: 'Bearer ' + token
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'multipart/form-data'
     }
-  })
-  .then(response => {
-    console.log(response)
-    router.push('/permintaanDiproses');
-  })
-  .catch(error => {
-    console.error(error.response?.data || error.message);
   });
-  console.log("Surat:", suratDinas.value)
-  console.log("Lampiran:", lampiran.value)
-  console.log("Surat:", suratDinasPath.value)
-  console.log("Lampiran:", lampiranPath.value)
+
+  console.log("RESPON DARI UPLOAD:", response.data);
+  suratDinasPath.value = response.data.surat_dinas;
+  lampiranPath.value = response.data.lampiran;
+  return true;
+
+} catch (error) {
+  console.log(error);
+  alert('Upload gagal: ' + (error.response?.data?.message || error.message));
+  return false;
+}
+}
+
+async function handleSubmit(){
+const uploaded = await uploadFiles()
+
+if (!uploaded) return
+const token = localStorage.getItem('Token');
+axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
+  "ID_User": id_user,
+  "ID_Jenis_Pelayanan": id_jenis_pelayanan,
+  "ID_Status": id_status,
+  "Perihal": perihal.value,
+  "Deskripsi": deskripsi.value,
+  "Surat_Dinas_Path": suratDinasPath.value,
+  "Lampiran_Path": lampiranPath.value,
+ },{
+  headers: {
+    Authorization: 'Bearer ' + token
+  }
+})
+.then(response => {
+  console.log(response)
+  router.push('/permintaanDiproses');
+})
+.catch(error => {
+  console.error(error.response?.data || error.message);
+});
+console.log("Surat:", suratDinas.value)
+console.log("Lampiran:", lampiran.value)
+console.log("Surat:", suratDinasPath.value)
+console.log("Lampiran:", lampiranPath.value)
 }
 </script>
 
