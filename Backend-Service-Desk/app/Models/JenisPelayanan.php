@@ -15,11 +15,12 @@ class JenisPelayanan extends Model
         'Persyaratan'
     ];
 
-
     public function pelayanan():HasMany
     {
         return $this->hasMany(Pelayanan::class, 'ID_Jenis_Pelayanan'); 
     }
-
-
+    public function alur_jnsPelayanan():HasMany
+    {
+        return $this->hasMany(Pelayanan::class, 'ID_Jenis_Pelayanan'); 
+    }
 }

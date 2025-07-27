@@ -104,7 +104,7 @@ function checkProgress(item) {
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.pic }}</td>
-            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progress</a></td>
+            <td><a href="#" @click.prevent="checkProgress(item.ticket)" style="color: blue; text-decoration: underline;">Cek Progres</a></td>
             <td>{{ item.status }}</td>
           </tr>
         </tbody>
