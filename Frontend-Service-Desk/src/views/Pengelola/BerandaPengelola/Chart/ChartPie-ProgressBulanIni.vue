@@ -1,5 +1,6 @@
 <script setup>
-  import {ref, onMounted} from 'vue'
+  import {ref, onMounted, computed, onBeforeMount} from 'vue'
+  import axios from 'axios';
   import { Bar, Pie } from 'vue-chartjs';
   import {
   Chart as ChartJS,
@@ -18,22 +19,39 @@ ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement,
 
 //placeholder untuk diskominfo
 // ceritanya backend
-const labelProgressBulanIni = ['Close', 'Selesai']
-const dataProgressBulanIni = [60, 20]
+const labelProgressBulanIni = ref([]);
+const dataProgressBulanIni = ref([]);
+
+onBeforeMount(async () => {
+  try {
+    const token = localStorage.getItem('Token');
+    const response = await axios.get('http://127.0.0.1:8000/api/stsPelayananChart', {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    });
+    const data = response.data;
+    labelProgressBulanIni.value = data.map(item => item.status);
+    dataProgressBulanIni.value = data.map(item => item.total);
+  } catch (error) {
+    labelProgressKeseluruhan.value = ['Baru',  'Disetujui',  'Ditolak', 'Proses', 'Selesai', 'Tutup'];
+    dataProgressKeseluruhan.value = [0, 0, 0, 0, 0, 0];
+  }
+});
 
 //data fixed jadi cmn ada di FrontEnd
 const warnaChart = ['#4264C2', '#CA4D2D']
 //presentasi progress bulan ini
-const progressBulanIniData = {
-  labels: labelProgressBulanIni,
+const progressBulanIniData = computed(() => ({
+  labels: labelProgressBulanIni.value,
   datasets: [
     {
       label: "Presentase Progress",
-      data: dataProgressBulanIni,
+      data: dataProgressBulanIni.value,
       backgroundColor: warnaChart
     }
   ]
-} 
+}));
 
 const configProgressBulanIni = {
   maintainAspectRatio: false,
