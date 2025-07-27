@@ -10,7 +10,10 @@ class Alur extends Model
 {
     protected $table = 'alur';
     protected $primaryKey = 'ID_Alur';
-
+    protected $fillable = [
+        'ID_Jenis_Pelayanan',
+        'ID_Isi_Alur'
+    ];
 
     public function alur_jnsPelayanan():BelongsTo
     {

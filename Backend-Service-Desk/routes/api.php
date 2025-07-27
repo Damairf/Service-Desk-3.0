@@ -77,6 +77,7 @@ Route::get('/jnsPelayananChart',[PelayananController::class, 'Chart_PelayananJns
 Route::get('/TknsPelayananChart',[PelayananController::class, 'Chart_PelayananTkns']);
 Route::get('/ratePelayananChart',[PelayananController::class, 'Chart_PelayananRate']);
 Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
+Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
 
 Route::get('/pdf/{filename}', [PelayananController::class, 'getPdfUrl']);
 
