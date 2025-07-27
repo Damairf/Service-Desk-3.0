@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Status;
+use App\Models\JenisPelayanan;
 use Illuminate\Http\Request;
 use App\Models\Pelayanan;
 use App\Models\User;
@@ -10,7 +11,7 @@ use App\Models\User;
 class PelayananController extends Controller
 {
     public function getAll_Layanan(){
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan')->get();
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')->get();
         return response()->json($pelayanans);
     }
 
@@ -100,7 +101,7 @@ class PelayananController extends Controller
         return response()->json($pelayanans);
     }
 
-    public function pie_chart(){
+    public function Chart_PelayananSts(){
         $statusCounts = Pelayanan::select('ID_Status' , Status::raw('count(*) as total'))->with([
         'status_pelayanan' => function ($query) {
             $query->select('ID_Status', 'Nama_Status');
@@ -110,6 +111,50 @@ class PelayananController extends Controller
         foreach ($statusCounts as $row) {
             $dataPoints[] = [
                 "status" => $row->status_pelayanan->Nama_Status,
+                "total" => $row->total
+        ];
+        }
+        return response()->json($dataPoints);
+    }
+
+    public function Chart_PelayananJns(){
+        $JnsCounts = Pelayanan::select('ID_Jenis_Pelayanan' , JenisPelayanan::raw('count(*) as total'))->with([
+        'Jenis_Pelayanan' => function ($query) {
+            $query->select('ID_Jenis_Pelayanan', 'Nama_Jenis_Pelayanan');
+         }])->groupBy('ID_Jenis_Pelayanan')->get();
+
+        $dataPoints = [];
+        foreach ($JnsCounts as $row) {
+            $dataPoints[] = [
+                "Jenis_Pelayanan" => $row->Jenis_Pelayanan->Nama_Jenis_Pelayanan,
+                "total" => $row->total
+        ];
+        }
+        return response()->json($dataPoints);
+    }
+
+    public function Chart_PelayananTkns(){
+        $TknsCounts = Pelayanan::select('ID_Teknis', User::raw('count(*) as total'))->with([
+        'teknis_pelayanan' => function ($query) {   
+            $query->select('ID_User', 'Nama_Depan');
+         }])->groupBy('ID_Teknis')->get();
+
+        $dataPoints = [];
+        foreach ($TknsCounts as $row) {
+            $dataPoints[] = [
+                "Nama" => $row->teknis_pelayanan->Nama_Depan ?? 'Kosong',
+                "total" => $row->total
+        ];
+        }
+        return response()->json($dataPoints);
+    }
+    public function Chart_PelayananRate(){
+        $RateCounts = Pelayanan::select('Rating', Pelayanan::raw('count(*) as total'))->groupBy('Rating')->get();
+
+        $dataPoints = [];
+        foreach ($RateCounts as $row) {
+            $dataPoints[] = [
+                "Rating" => $row->Rating ?? 'Belum Diisi',
                 "total" => $row->total
         ];
         }
