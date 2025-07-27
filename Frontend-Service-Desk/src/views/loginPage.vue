@@ -48,7 +48,6 @@ function login(){
 const data = ref(null);
 
 onMounted(() => {
-  console.log("Login Page Mounted");
   const token = localStorage.getItem('Token');
   const role = parseInt(localStorage.getItem('id_role'));
 

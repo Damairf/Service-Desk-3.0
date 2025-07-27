@@ -51,6 +51,7 @@ const filteredItems = computed(() => {
   return items.value.filter(item =>
     item.perihal.toLowerCase().includes(search.value.toLowerCase()) ||
     item.ticket.toLowerCase().includes(search.value.toLowerCase()) ||
+    formatDate(item.date).toLowerCase().includes(search.value.toLowerCase()) ||
     item.pic.toLowerCase().includes(search.value.toLowerCase())
   )
 })

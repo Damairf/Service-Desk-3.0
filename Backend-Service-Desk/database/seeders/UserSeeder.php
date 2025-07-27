@@ -73,10 +73,21 @@ class UserSeeder extends Seeder
             [
                 "ID_Role" => 1,
                 "ID_Jabatan" => 1,
-                "ID_Organisasi" => 1,
+                "ID_Organisasi" => 3,
                 "NIP" => 6666,
                 "Nama_Depan" => "User",
                 "Nama_Belakang" => "Lain",
+                "Password" => Hash::make('1234'),
+                "Gambar_Path" => "default.jpeg",
+                'Status' => 'Aktif'
+            ],
+            [
+                "ID_Role" => 4,
+                "ID_Jabatan" => 1,
+                "ID_Organisasi" => 1,
+                "NIP" => 7777,
+                "Nama_Depan" => "Pelaksana",
+                "Nama_Belakang" => "Teknis",
                 "Password" => Hash::make('1234'),
                 "Gambar_Path" => "default.jpeg",
                 'Status' => 'Aktif'

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JenisPelayanan;
 use App\Models\Status;
+use App\Models\JenisPelayanan;
 use Illuminate\Http\Request;
 use App\Models\Pelayanan;
 use App\Models\User;
@@ -166,8 +166,6 @@ class PelayananController extends Controller
         
         return response()->json($PelayananCounts);
     }
-
-    
     
 
     // untuk user mengunggah file

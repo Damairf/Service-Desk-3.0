@@ -85,6 +85,9 @@ try {
 }
 
 async function handleSubmit(){
+
+const confirmSubmit = window.confirm("Apakah Anda yakin ingin mengirim permintaan ini?");
+  if (!confirmSubmit) return;
 const uploaded = await uploadFiles()
 
 if (!uploaded) return
@@ -103,7 +106,6 @@ axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
   }
 })
 .then(response => {
-  console.log(response)
   router.push('/permintaanDiproses');
 })
 .catch(error => {

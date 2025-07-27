@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('isi_alur', function (Blueprint $table) {
-            $table->id('ID_Isi Alur');
+            $table->id('ID_Isi_Alur');
             $table->string('Isi_Bagian_Alur')->nullable(false);
             $table->timestamps();
         });

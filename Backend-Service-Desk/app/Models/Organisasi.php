@@ -14,7 +14,7 @@ class Organisasi extends Model
     protected $primaryKey = 'ID_Organisasi';
     protected $fillable = ['Nama_OPD', 'Induk_OPD', 'Nama_Pengelola', 'No_HP_Pengelola', 'Email', 'ID_Status'];
 
-    public function user_organisasi(): BelongsTo{
-        return $this -> belongsTo(Status::class, "ID_Organisasi");
+    public function user_organisasi(): HasMany{
+        return $this -> hasMany(Status::class, "ID_Organisasi");
     }
 }
