@@ -7,6 +7,25 @@ function formatDate(dateString) {
 }
 
 const layananData = ref([]);
+const sortKey = ref('') 
+const sortOrder = ref(null) 
+
+function toggleSort(key) {
+  if (sortKey.value !== key) {
+    sortKey.value = key
+    sortOrder.value = 'asc'
+  } else {
+    // urutannya: asc -> desc -> unsorted
+    if (sortOrder.value === 'asc') {
+      sortOrder.value = 'desc'
+    } else if (sortOrder.value === 'desc') {
+      sortKey.value = ''
+      sortOrder.value = null
+    } else {
+      sortOrder.value = 'asc'
+    }
+  }
+}
 
 onMounted(() => {
   const token = localStorage.getItem('Token');
@@ -37,13 +56,27 @@ const currentPage = ref(1)
 const itemsPerPage = 10
 
 const filteredItems = computed(() => {
-  return layananData.value.filter(item =>
+  let items = layananData.value.filter(item =>
     item.perihal.toLowerCase().includes(search.value.toLowerCase()) ||
     item.noTiket.toLowerCase().includes(search.value.toLowerCase()) ||
     item.organisasi.toLowerCase().includes(search.value.toLowerCase()) ||
     item.teknis.toLowerCase().includes(search.value.toLowerCase())
   )
+
+  if (sortKey.value && sortOrder.value) {
+    items.sort((a, b) => {
+      const valA = a[sortKey.value]?.toString().toLowerCase()
+      const valB = b[sortKey.value]?.toString().toLowerCase()
+      if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1
+      if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1
+      return 0
+    })
+  }
+
+  return items
 })
+
+
 
 const totalPages = computed(() => {
   return Math.ceil(filteredItems.value.length / itemsPerPage)
@@ -73,7 +106,13 @@ watch(search, () => {
             <th>Organisasi</th>
             <th>Tanggal</th>
             <th>Pelaksana Teknis</th>
-            <th>Status</th>
+            <th @click="toggleSort('status')" class="cursor-pointer">Status
+                <span v-if="sortKey === 'status' || sortOrder === null">
+                <span v-if="sortOrder === 'asc'">🔼</span>
+                <span v-else-if="sortOrder === 'desc'">🔽</span>
+                <span v-else>☰</span>
+              </span>
+            </th>
             <th>Detail Progress</th>
           </tr>
         </thead>
