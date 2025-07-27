@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 
+//Backend
 const layananData = [
   {
     noTiket: "#091212",
@@ -36,6 +37,7 @@ const layananData = [
   },
 ]
 
+// Buat Searching
 const search = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 10
