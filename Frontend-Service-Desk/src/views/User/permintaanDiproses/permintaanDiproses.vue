@@ -145,7 +145,9 @@ function checkProgress(item) {
           </tr>
         </thead>
         <tbody>
-          <div class="loading-data" v-if="isLoading">Memuat data...</div>
+          <tr v-if="isLoading">
+            <td colspan="6" style="text-align: center; padding: 1rem;">Memuat data...</td>
+          </tr>
           <tr v-for="item in paginatedItems" :key="item.id">
             <td>{{ item.ticket }}</td>
             <td>{{ item.perihal }}</td>

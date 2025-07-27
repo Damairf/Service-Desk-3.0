@@ -6,6 +6,7 @@ const router = useRouter()
 // Data dan state
 const search = ref('')
 const currentPage = ref(1)
+const isLoading = ref(true)
 const itemsPerPage = 10
 
 function formatDate(dateString) {
@@ -39,6 +40,9 @@ onMounted(() => {
   })
   .catch(error => {
     console.error(error);
+  })
+  .finally(() => {
+  isLoading.value = false;
   });
 });
 
@@ -96,6 +100,9 @@ function checkProgress(item) {
           </tr>
         </thead>
         <tbody>
+          <tr v-if="isLoading">
+            <td colspan="6" style="text-align: center; padding: 1rem;">Memuat data...</td>
+          </tr>
           <tr v-for="item in paginatedItems" :key="item.ticket">
             <td>{{ item.ticket }}</td>
             <td>{{ item.perihal }}</td>
@@ -193,5 +200,10 @@ h1 {
 
 .pagination button:not(.active):hover {
   background-color: #f0f0f0;
+}
+
+.loading-data {
+  text-align: center;
+  font-size: 1.1rem;
 }
 </style>

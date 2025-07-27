@@ -8,6 +8,7 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString('id-ID');
 }
 
+const isLoading = ref(true)
 const layananData = ref([]);
 const sortKey = ref('') 
 const sortOrder = ref(null) 
@@ -93,6 +94,9 @@ onMounted(() => {
   })
   .catch(error => {
     console.error(error);
+  })
+  .finally(() => {
+  isLoading.value = false;
   });
 });
 
@@ -167,6 +171,9 @@ watch(search, () => {
           </tr>
         </thead>
         <tbody>
+          <tr v-if="isLoading">
+            <td colspan="6" style="text-align: center; padding: 1rem;">Memuat data...</td>
+          </tr>
           <tr v-for="(item, index) in paginatedItems" :key="index">
             <td>{{ item.noTiket }}</td>
             <td>{{ item.perihal }}</td>
@@ -324,5 +331,10 @@ watch(search, () => {
 
 .pagination button:not(.active):hover {
   background-color: #f0f0f0;
+}
+
+.loading-data {
+  text-align: center;
+  font-size: 1.1rem;
 }
 </style>
