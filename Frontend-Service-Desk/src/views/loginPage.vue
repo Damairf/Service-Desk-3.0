@@ -54,8 +54,8 @@ onMounted(() => {
 
   if (token && role === 1) {
     router.push('/beranda');
-  } else {
-    router.push('/login');
+  } else if (token && role === 2){
+    router.push('/beranda-Pengelola');
   }
 });
 </script>
