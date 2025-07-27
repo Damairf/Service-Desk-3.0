@@ -38,7 +38,7 @@ onBeforeMount(() => {
       ).map(item => ({
         ticket: item.ID_Pelayanan,
         perihal: item.Perihal,
-        pic: item.teknis_pelayanan?.Nama_Depan || '-',
+        teknis: item.teknis_pelayanan?.Nama_Depan || '-',
         date: item.created_at,
         status: item.status_pelayanan?.Nama_Status || '-'
     }))
@@ -54,7 +54,7 @@ const filteredItems = computed(() => {
     item.perihal.toLowerCase().includes(search.value.toLowerCase()) ||
     item.ticket.toLowerCase().includes(search.value.toLowerCase()) ||
     formatDate(item.date).toLowerCase().includes(search.value.toLowerCase()) ||
-    item.pic.toLowerCase().includes(search.value.toLowerCase())
+    item.teknis.toLowerCase().includes(search.value.toLowerCase())
   )
 })
 
@@ -73,12 +73,52 @@ watch(filteredItems, () => {
   currentPage.value = 1
 })
 
-// Methods
+const nama_depanPengaju = ref('') 
+const nama_belakangPengaju = ref('')
+const jenis_pelayanan = ref('')
+const deskripsi = ref('')
+const surat_dinas = ref('')
+const lampiran = ref('')
+const organisasi = ref('')
+
+  //ke halaman detail
 function checkProgress(item) {
-  alert(`Checking progress for ticket ${item.ticket}`)
-  router.push({
-    name: 'DetailPermintaan', query: {layanan: item.ticket}
+  const token = localStorage.getItem('Token');
+  
+  const pelayananId = ref(item.ticket)
+  axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
   })
+  .then(response => {
+    console.log(response)
+    deskripsi.value = response.data.Deskripsi
+    organisasi.value = response.data.user.user_organisasi.Nama_OPD
+    surat_dinas.value = response.data.Surat_Dinas_Path
+    lampiran.value = response.data.Lampiran_Path
+    jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
+    nama_depanPengaju.value = response.data.user.Nama_Depan
+    nama_belakangPengaju.value = response.data.user.Nama_Belakang
+    router.push({
+    name: 'DetailPermintaan', 
+    query: {
+      layanan: item.ticket, 
+      perihal: item.perihal, 
+      tanggal: item.date, 
+      nama_depanPengaju: nama_depanPengaju.value, 
+      nama_belakangPengaju: nama_belakangPengaju.value, 
+      jenis_pelayanan: jenis_pelayanan.value,
+      organisasi: organisasi.value,
+      deskripsi: deskripsi.value,
+      surat_dinas: surat_dinas.value,
+      lampiran: lampiran.value
+    }
+  })
+    })
+  .catch(function(error) {
+    console.log(error)
+});
 }
 </script>
 
@@ -93,7 +133,7 @@ function checkProgress(item) {
             <th>No. Tiket</th>
             <th>Perihal</th>
             <th>Tanggal Laporan</th>
-            <th>PIC</th>
+            <th>Pelaksana Teknis</th>
             <th>Detail Proses</th>
             <th>Status</th>
           </tr>
@@ -103,7 +143,7 @@ function checkProgress(item) {
             <td>{{ item.ticket }}</td>
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.date) }}</td>
-            <td>{{ item.pic }}</td>
+            <td>{{ item.teknis }}</td>
             <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progres</a></td>
             <td>{{ item.status }}</td>
           </tr>

@@ -19,7 +19,7 @@ class PelayananController extends Controller
 
     public function getByID_Layanan(Request $request){
         $pelayananId = $request->route('pelayananId');
-        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->with('User', 'Jenis_Pelayanan')->first();
+        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->with('User.user_organisasi', 'Jenis_Pelayanan')->first();
 
         return response()->json($pelayanan);
     }

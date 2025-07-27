@@ -1,14 +1,32 @@
 <script setup>
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+const router = useRouter()
+const route = useRoute()
+
+function formatDate(dateString) {
+  if (!dateString) return '-';
+  return new Date(dateString).toLocaleDateString('id-ID');
+}
+
 
 // === Placeholder variabel backend ===
-const layanan = ref(localStorage.getItem('layanan') || 'Nama Layanan')
-const noTiket = ref(localStorage.getItem('no_tiket') || 'Nomor Tiket')
-const pic = ref(localStorage.getItem('pic') || 'Nama PIC')
-const organisasi = ref(localStorage.getItem('organisasi') || 'Asal Dinas')
-const tanggalLaporan = ref(localStorage.getItem('tanggal_laporan') || 'Tanggal / Waktu')
-const perihal = ref(localStorage.getItem('perihal') || 'Perihal')
-const deskripsiUser = ref(localStorage.getItem('deskripsi') || '')
+const layanan = ref(route.query.jenis_pelayanan || '-')
+const noTiket = ref(route.query.layanan || '-')
+const nama_depan = ref(route.query.nama_depanPengaju || '-')
+const nama_belakang = ref(route.query.nama_belakangPengaju || '-')
+const organisasi = ref(route.query.organisasi || '-')
+const tanggalLaporan = ref(route.query.tanggal || '-')
+const perihal = ref(route.query.perihal || '-')
+const deskripsiUser = ref(route.query.deskripsi || '-')
+
+const SuratDinas_Path = ref(null)
+const src_SuratDinas = ref(route.query.surat_dinas || '-')
+const Lampiran_Path = ref(null)
+const src_Lampiran = ref(route.query.lampiran || '-')
+//  ambil URL dari backend
+SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value
+Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value
 
 const messages = ref([
   {
@@ -38,13 +56,23 @@ const addMessage = () => {
       <h3>Informasi Umum</h3>
       <div class="info-row"><strong>Layanan</strong> <span>{{ layanan }}</span></div>
       <div class="info-row"><strong>No. Tiket</strong> <span>{{ noTiket }}</span></div>
-      <div class="info-row"><strong>PIC</strong> <span>{{ pic }}</span></div>
+      <div class="info-row"><strong>Pengaju</strong> <span>{{ nama_depan + ' ' + nama_belakang }}</span></div>
       <div class="info-row"><strong>Organisasi</strong> <span>{{ organisasi }}</span></div>
-      <div class="info-row"><strong>Tanggal Laporan</strong> <span>{{ tanggalLaporan }}</span></div>
+      <div class="info-row"><strong>Tanggal Laporan</strong> <span>{{ formatDate(tanggalLaporan) }}</span></div>
       <div class="info-row"><strong>Perihal</strong> <span>{{ perihal }}</span></div>
       <div class="info-row textarea-row">
         <strong>Deskripsi User</strong>
         <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5"></textarea>
+        <div v-if="SuratDinas_Path">
+        <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+          Surat Dinas
+        </a>
+      </div>
+      <div v-if="Lampiran_Path">
+        <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+          Lampiran
+        </a>
+      </div>
       </div>
     </div>
 
