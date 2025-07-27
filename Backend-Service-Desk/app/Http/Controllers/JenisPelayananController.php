@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Pelayanan;
 use App\Models\JenisPelayanan;
 use Illuminate\Http\Request;
 
@@ -16,4 +17,8 @@ class JenisPelayananController extends Controller
 
         return response()->json($jnspelayananId);
     }
+
+    
+
+    
 }

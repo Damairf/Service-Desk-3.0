@@ -117,27 +117,29 @@ class PelayananController extends Controller
         return response()->json($dataPoints);
     }
 
+    public function Chart_PelayananJns(){
+        $JnsCounts = Pelayanan::select('ID_Jenis_Pelayanan' , JenisPelayanan::raw('count(*) as total'))->with([
+        'Jenis_Pelayanan' => function ($query) {
+            $query->select('ID_Jenis_Pelayanan', 'Nama_Jenis_Pelayanan');
+         }])->groupBy('ID_Jenis_Pelayanan')->get();
+
+        $dataPoints = [];
+        foreach ($JnsCounts as $row) {
+            $dataPoints[] = [
+                "Jenis_Pelayanan" => $row->Jenis_Pelayanan->Nama_Jenis_Pelayanan,
+                "total" => $row->total
+        ];
+        }
+        return response()->json($dataPoints);
+    }
+
     public function jumlah_Pelayanan(){
         $PelayananCounts = Pelayanan::where('ID_Status', 1)->count();
         
         return response()->json($PelayananCounts);
     }
 
-    public function Chart_PelayananJns(){
-        $JnsCounts = Pelayanan::select('ID_Status' , JenisPelayanan::raw('count(*) as total'))->with([
-        'status_pelayanan' => function ($query) {
-            $query->select('ID_Status', 'Nama_Status');
-         }])->groupBy('ID_Status')->get();
-
-        $dataPoints = [];
-        foreach ($JnsCounts as $row) {
-            $dataPoints[] = [
-                "Pelayanan" => $row->status_pelayanan->Nama_Status,
-                "total" => $row->total
-        ];
-        }
-        return response()->json($JnsCounts);
-    }
+    
     
 
     // untuk user mengunggah file

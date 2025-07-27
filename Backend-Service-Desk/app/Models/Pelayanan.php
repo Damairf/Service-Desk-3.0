@@ -48,8 +48,8 @@ class Pelayanan extends Model
     public function User(): BelongsTo{
         return $this -> belongsTo( Organisasi::class, 'ID_User');
     }
-    public function Jenis_Pelayanan(): HasMany{
-        return $this -> hasMany( JenisPelayanan::class, 'ID_Jenis_Pelayanan');
+    public function Jenis_Pelayanan(): BelongsTo{
+        return $this -> belongsTo( JenisPelayanan::class, 'ID_Jenis_Pelayanan');
     }
     public function status_pelayanan(): BelongsTo{
         return $this -> belongsTo(Status::class, 'ID_Status');
