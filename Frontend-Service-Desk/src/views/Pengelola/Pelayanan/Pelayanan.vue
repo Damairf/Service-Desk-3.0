@@ -1,6 +1,8 @@
 <script setup>
 import { ref, computed, watch , onMounted} from 'vue'
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+const router = useRouter()
 function formatDate(dateString) {
   if (!dateString) return '-';
   return new Date(dateString).toLocaleDateString('id-ID');
@@ -9,6 +11,13 @@ function formatDate(dateString) {
 const layananData = ref([]);
 const sortKey = ref('') 
 const sortOrder = ref(null) 
+
+//ke halaman detail 
+function lihatDetail(item){
+  router.push({
+    name: 'Detail-Pelayanan', query: {layanan: item.noTiket}
+  })
+}
 
 function toggleSort(key) {
   if (sortKey.value !== key) {
@@ -127,7 +136,7 @@ watch(search, () => {
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
             </td>
-            <td><button class="detail-button">Lihat</button></td>
+            <td><button class="detail-button" @click="lihatDetail(item)">Lihat</button></td>
           </tr>
         </tbody>
       </table>

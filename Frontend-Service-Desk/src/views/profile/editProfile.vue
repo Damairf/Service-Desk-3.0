@@ -243,8 +243,8 @@ function cancelChanges() {
   flex: 1;
 }
 .profile-image-large {
-  width: 160px;
-  height: 160px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
   border-radius: 50%;
   background: #d3d3d3;

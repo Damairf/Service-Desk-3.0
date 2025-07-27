@@ -21,6 +21,9 @@ import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASL
 //===============PENGELOLA===============
 import berandaPengelola from '../views/Pengelola/BerandaPengelola/berandaPengelola.vue'
 import pelayanan from '../views/Pengelola/Pelayanan/Pelayanan.vue'
+import detailPelayanan from '../views/Pengelola/Pelayanan/detailPelayanan.vue'
+import halamanLacakPengelola from '../views/Pengelola/Pelayanan/halaman-lacak-PelayananPengelola.vue'
+import halamanInformasiPengelola from '../views/Pengelola/Pelayanan/halaman-informasi-PelayananPengelola.vue'
 
 // Daftar rute
 const routes = [
@@ -51,6 +54,12 @@ const routes = [
   //===============PENGELOLA===============
   { path: '/Beranda-Pengelola', name: 'Beranda-Pengelola', component: berandaPengelola},
   { path: '/pelayanan', name: 'pelayanan', component: pelayanan},
+  { path: '/DetailPelayanan', name: 'Detail-Pelayanan', component: detailPelayanan,
+    children: [
+      { path: 'lacakPengelola', name: 'HalamanLacakPengelola', component: halamanLacakPengelola},
+      { path: 'informasiPengelola', name: 'HalamanInformasiPengelola', component: halamanInformasiPengelola}
+    ]
+  },
 ]
 
 const router = createRouter({
