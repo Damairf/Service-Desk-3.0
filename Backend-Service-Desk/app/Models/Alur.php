@@ -16,6 +16,8 @@ class Alur extends Model
     {
         return $this->belongsTo(JenisPelayanan::class, 'ID_Jenis_Pelayanan'); 
     }
-
-
+    public function isi_alur()
+{
+    return $this->belongsTo(Isi_Alur::class, 'ID_Isi_Alur');
+}
 }
