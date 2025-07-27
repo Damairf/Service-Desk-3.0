@@ -7,6 +7,8 @@ use App\Models\JenisPelayanan;
 use Illuminate\Http\Request;
 use App\Models\Pelayanan;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
+
 
 class PelayananController extends Controller
 {
@@ -185,4 +187,20 @@ class PelayananController extends Controller
             'lampiran' => 'storage/' . $lampiranPath,
         ]);
     }
+
+    public function getPdfUrl($filename)
+{
+    // Cek apakah file benar-benar ada
+    if (!Storage::disk('public')->exists("file/{$filename}")) {
+        return response()->json(['message' => 'File not found.'], 404);
+    }
+
+    // Dapatkan URL publik
+    $url = asset("storage/file/lampiran/{$filename}");
+
+    return response()->json([
+        'filename' => $filename,
+        'url' => $url
+    ]);
+}
 }

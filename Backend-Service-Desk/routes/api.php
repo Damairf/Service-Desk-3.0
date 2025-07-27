@@ -79,6 +79,9 @@ Route::get('/ratePelayananChart',[PelayananController::class, 'Chart_PelayananRa
 Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
 Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
 
+Route::get('/pdf/{filename}', [PelayananController::class, 'getPdfUrl']);
+
+
 
 
 // endpoint unit pelaksana
