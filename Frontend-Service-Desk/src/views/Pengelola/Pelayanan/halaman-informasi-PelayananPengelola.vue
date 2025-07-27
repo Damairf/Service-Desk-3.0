@@ -69,6 +69,8 @@ const addMessage = () => {
       ></textarea>
 
       <button class="send-btn" @click="addMessage">Kirim</button>
+      <button class="send-btn" @click="addMessage">Kirim</button>
+      <button class="send-btn" @click="addMessage">Kirim</button>
     </div>
   </div>
 </template>
