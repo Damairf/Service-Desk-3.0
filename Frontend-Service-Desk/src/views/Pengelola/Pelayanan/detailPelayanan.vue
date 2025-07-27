@@ -8,7 +8,9 @@ onMounted(() => {
   window.scrollTo(0, 0);
   });
 
-const idLayanan = ref(route.query.layanan || '')
+const idLayanan = ref(route.query.layanan || '-')
+const perihal = ref(route.query.perihal || '-')
+const tanggal = ref(route.query.tanggal || '-')
 const activeTab = ref('tracking')
 const currentStep = ref(0) // buat tau 
 
@@ -23,7 +25,7 @@ const handleTabChange = (tab) => {
   } else if (tab === 'informasi') {
     router.push({
       name: 'HalamanInformasiPengelola', 
-      query: {layanan: idLayanan.value}
+      query: {layanan: idLayanan.value, perihal: perihal.value, tanggal: tanggal.value}
     })
   }
 }
