@@ -26,12 +26,15 @@ function login(){
     
     const role = user.ID_Role;
 
-    if (role === 1) {
+    if (token && role === 1) {
       router.push('/beranda');
     } else {
       router.push('/beranda-Pengelola');
     } 
-    })
+    
+
+
+})
 
   .catch(function(error) {
     if (error.response && error.response.status === 401) {
@@ -46,13 +49,6 @@ function login(){
 
 const data = ref(null);
 
-onMounted(()=> {
-  console.log("Login Page Mounted");
-  const token = localStorage.getItem('Token');
-  if(token) {
-    router.push('/beranda')
-  }
-})
 </script>
 
 <template>
