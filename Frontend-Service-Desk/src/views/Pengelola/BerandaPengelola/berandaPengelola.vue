@@ -1,5 +1,5 @@
 <script setup>
-import { ref , onBeforeMount} from 'vue'
+import { ref , onBeforeMount, onMounted} from 'vue'
 import axios from 'axios'
 import ChartProgressKeseluruhan from './Chart/ChartPie-ProgressKeseluruhan.vue'
 import ChartProgressBulanIni from './Chart/ChartPie-ProgressBulanIni.vue'
@@ -7,12 +7,23 @@ import ChartPermintaanLayanan from './Chart/ChartPie-PermintaanLayanan.vue'
 import ChartBarPermintaanBerdasarkanStatus from './Chart/ChartBar-PermintaanBerdasarkanStatus.vue'
 import ChartBarPermintaanBerdasarkanPengelolaTeknis from './Chart/ChartBar-PermintaanBerdasarkanPengelolaTeknis.vue'
 import ChartBarPenilaianLayananServiceDesk from './Chart/ChartBar-PenilaianLayananServiceDesk-.vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 // ceritanya backend
 const jumlahPermintaanBaru = ref('')
 const jumlahPenggunaTerdaftar = ref('')
 const jumlahOrganisasiTerdaftar = ref('')
 
+onMounted(() => {
+  window.scrollTo(0, 0);
+});
 
+onMounted(()=> {
+  const token = localStorage.getItem('Token');
+  if(!token) {
+    router.push('/login')
+  }
+})
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
