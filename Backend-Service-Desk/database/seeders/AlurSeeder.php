@@ -23,10 +23,6 @@ class AlurSeeder extends Seeder
                 "ID_Jenis_Pelayanan" => 1,
                 "ID_Isi_Alur" => 2,
             ],
-            [
-                "ID_Jenis_Pelayanan" => 1,
-                "ID_Isi_Alur" => 3,
-            ],
         ]);
     }
 }
