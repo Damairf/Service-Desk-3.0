@@ -1,41 +1,55 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch , onMounted} from 'vue'
+import axios from 'axios';
+function formatDate(dateString) {
+  if (!dateString) return '-';
+  return new Date(dateString).toLocaleDateString('id-ID');
+}
 
-//Backend
-const layananData = [
-  {
-    noTiket: "#091212",
-    perihal: "Permintaan akses email dinas",
-    organisasi: "Diskominfo",
-    tanggal: "2024-05-01",
-    agen: "Agus Santoso",
-    status: "Buka",
-  },
-  {
-    noTiket: "#091213",
-    perihal: "Permintaan reset password",
-    organisasi: "Dispenda",
-    tanggal: "2024-05-02",
-    agen: "Siti Nur",
-    status: "Diproses",
-  },
-  {
-    noTiket: "#091214",
-    perihal: "Pengajuan akses VPN",
-    organisasi: "Bappeda",
-    tanggal: "2024-05-03",
-    agen: "Joko Widodo",
-    status: "Disetujui",
-  },
-  {
-    noTiket: "#091215",
-    perihal: "Permintaan install aplikasi",
-    organisasi: "BKD",
-    tanggal: "2024-05-04",
-    agen: "Rina Marlina",
-    status: "Ditolak",
-  },
-]
+const layananData = ref([]);
+const sortKey = ref('') 
+const sortOrder = ref(null) 
+
+function toggleSort(key) {
+  if (sortKey.value !== key) {
+    sortKey.value = key
+    sortOrder.value = 'asc'
+  } else {
+    // urutannya: asc -> desc -> unsorted
+    if (sortOrder.value === 'asc') {
+      sortOrder.value = 'desc'
+    } else if (sortOrder.value === 'desc') {
+      sortKey.value = ''
+      sortOrder.value = null
+    } else {
+      sortOrder.value = 'asc'
+    }
+  }
+}
+
+onMounted(() => {
+  const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/pelayanan', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    console.log(response.data);
+    layananData.value = response.data.map(item => ({
+      noTiket: item.ID_Pelayanan,
+      perihal: item.Perihal,
+      teknis: item.teknis_pelayanan?.Nama_Depan || '-',
+      tanggal: item.created_at,
+      organisasi: item.user.user_organisasi.Nama_OPD,
+      status: item.status_pelayanan.Nama_Status,
+    }))
+
+  })
+  .catch(error => {
+    console.error(error);
+  });
+});
 
 // Buat Searching
 const search = ref('')
@@ -43,13 +57,27 @@ const currentPage = ref(1)
 const itemsPerPage = 10
 
 const filteredItems = computed(() => {
-  return layananData.filter(item =>
+  let items = layananData.value.filter(item =>
     item.perihal.toLowerCase().includes(search.value.toLowerCase()) ||
     item.noTiket.toLowerCase().includes(search.value.toLowerCase()) ||
     item.organisasi.toLowerCase().includes(search.value.toLowerCase()) ||
-    item.agen.toLowerCase().includes(search.value.toLowerCase())
+    item.teknis.toLowerCase().includes(search.value.toLowerCase())
   )
+
+  if (sortKey.value && sortOrder.value) {
+    items.sort((a, b) => {
+      const valA = a[sortKey.value]?.toString().toLowerCase()
+      const valB = b[sortKey.value]?.toString().toLowerCase()
+      if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1
+      if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1
+      return 0
+    })
+  }
+
+  return items
 })
+
+
 
 const totalPages = computed(() => {
   return Math.ceil(filteredItems.value.length / itemsPerPage)
@@ -78,8 +106,14 @@ watch(search, () => {
             <th>Perihal</th>
             <th>Organisasi</th>
             <th>Tanggal</th>
-            <th>Agen</th>
-            <th>Status</th>
+            <th>Pelaksana Teknis</th>
+            <th @click="toggleSort('status')" class="cursor-pointer">Status
+                <span v-if="sortKey === 'status' || sortOrder === null">
+                <span v-if="sortOrder === 'asc'">🔼</span>
+                <span v-else-if="sortOrder === 'desc'">🔽</span>
+                <span v-else>☰</span>
+              </span>
+            </th>
             <th>Detail Progress</th>
           </tr>
         </thead>
@@ -88,8 +122,8 @@ watch(search, () => {
             <td>{{ item.noTiket }}</td>
             <td>{{ item.perihal }}</td>
             <td>{{ item.organisasi }}</td>
-            <td>{{ item.tanggal }}</td>
-            <td>{{ item.agen }}</td>
+            <td>{{ formatDate(item.tanggal) }}</td>
+            <td>{{ item.teknis }}</td>
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
             </td>
@@ -173,12 +207,12 @@ watch(search, () => {
   display: inline-block;
 }
 
-.status.buka {
+.status.baru {
   background-color: #e6dcf5;
   color: #6a1b9a;
 }
 
-.status.diproses {
+.status.proses {
   background-color: #f5f5c3;
   color: #aaaa3a;
 }
@@ -191,6 +225,16 @@ watch(search, () => {
 .status.ditolak {
   background-color: #fddede;
   color: #c62828;
+}
+
+.status.selesai {
+  background-color: #fddede;
+  color: #22ff00;
+}
+
+.status.tutup {
+  background-color: #fddede;
+  color: #000000;
 }
 
 .detail-button {

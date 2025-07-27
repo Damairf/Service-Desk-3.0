@@ -20,9 +20,9 @@ class User extends Model
     {
         return $this->hasMany(Jabatan::class, 'ID_Jabatan');
     }
-    public function user_organisasi(): HasMany
+    public function user_organisasi(): BelongsTo
     {
-        return $this->hasMany(Organisasi::class, 'ID_Organisasi');
+        return $this->belongsTo(Organisasi::class, 'ID_Organisasi');
     }
     public function teknis_pelayanan(): HasMany
     {

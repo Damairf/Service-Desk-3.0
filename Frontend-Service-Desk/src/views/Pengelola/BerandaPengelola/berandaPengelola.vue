@@ -13,6 +13,7 @@ const router = useRouter()
 const jumlahPermintaanBaru = ref('')
 const jumlahPenggunaTerdaftar = ref('')
 const jumlahOrganisasiTerdaftar = ref('')
+const isLoading = ref(true)
 
 onMounted(() => {
   window.scrollTo(0, 0);
@@ -49,7 +50,11 @@ onBeforeMount(() => {
   })
   .catch(error => {
     console.error(error);
+  })
+  .finally(() => {
+  isLoading.value = false;
   });
+  
 
   axios.get('http://127.0.0.1:8000/api/organisasiCount', {
     headers: {
@@ -74,6 +79,7 @@ onBeforeMount(() => {
     <p class="label">Permintaan Baru</p>
     <div class="summary-content">
       <div class="icon">📄</div>
+      <div class="loading-data" v-if="isLoading">Memuat data...</div>
       <p class="value">{{ jumlahPermintaanBaru }}</p>
     </div>
   </div>
@@ -81,6 +87,7 @@ onBeforeMount(() => {
     <p class="label">Pengguna Terdaftar</p>
     <div class="summary-content">
       <div class="icon">👤</div>
+      <div class="loading-data" v-if="isLoading">Memuat data...</div>
       <p class="value">{{ jumlahPenggunaTerdaftar }}</p>
     </div>
   </div>
@@ -88,6 +95,7 @@ onBeforeMount(() => {
     <p class="label">Organisasi Terdaftar</p>
     <div class="summary-content">
       <div class="icon">👥</div>
+      <div class="loading-data" v-if="isLoading">Memuat data...</div>
       <p class="value">{{ jumlahOrganisasiTerdaftar }}</p>
     </div>
   </div>
@@ -221,5 +229,10 @@ onBeforeMount(() => {
   color: black;
   font-weight: 600;
   margin-bottom: 12px;
+}
+
+.loading-data {
+  text-align: center;
+  font-size: 1.1rem;
 }
 </style>
