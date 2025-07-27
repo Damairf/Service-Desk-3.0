@@ -12,11 +12,25 @@ const layananData = ref([]);
 const sortKey = ref('') 
 const sortOrder = ref(null) 
 
+
 //ke halaman detail 
 function lihatDetail(item){
+  const token = localStorage.getItem('Token');
   router.push({
-    name: 'Detail-Pelayanan', query: {layanan: item.noTiket}
+    name: 'Detail-Pelayanan', query: {layanan: item.noTiket, perihal: item.perihal, tanggal: item.tanggal}
   })
+  const pelayananId = ref(item.noTiket)
+  axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    
+    })
+  .catch(function(error) {
+    console.log(error)
+});
 }
 
 function toggleSort(key) {

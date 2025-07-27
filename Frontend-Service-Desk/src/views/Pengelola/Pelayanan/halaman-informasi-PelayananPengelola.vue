@@ -1,18 +1,27 @@
 <script setup>
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+const router = useRouter()
+const route = useRoute()
+
+function formatDate(dateString) {
+  if (!dateString) return '-';
+  return new Date(dateString).toLocaleDateString('id-ID');
+}
 
 // === Placeholder variabel backend ===
+
 const layanan = ref(localStorage.getItem('layanan') || 'Nama Layanan')
 const noTiket = ref(localStorage.getItem('no_tiket') || 'Nomor Tiket')
 const pic = ref(localStorage.getItem('pic') || 'Nama PIC')
 const organisasi = ref(localStorage.getItem('organisasi') || 'Asal Dinas')
-const tanggalLaporan = ref(localStorage.getItem('tanggal_laporan') || 'Tanggal / Waktu')
-const perihal = ref(localStorage.getItem('perihal') || 'Perihal')
-const deskripsiUser = ref(localStorage.getItem('deskripsi') || '')
+const tanggalLaporan = ref(route.query.tanggal || '-')
+const perihal = ref(route.query.perihal || '-')
+const deskripsiUser = ref(localStorage.getItem('deskripsi') || 'woi')
 
 const pdfUrl = ref(null)
 
-// Contoh: ambil URL dari backend
+//  ambil URL dari backend
 pdfUrl.value = 'http://localhost:8000/' + 'storage/file/Surat-Dinas/2EzGoRFZ8Q1DUTTrn7phAmlGxQvKMzGwE1kLX9V0.pdf'
 
 const messages = ref([
@@ -45,11 +54,11 @@ const addMessage = () => {
       <div class="info-row"><strong>No. Tiket</strong> <span>{{ noTiket }}</span></div>
       <div class="info-row"><strong>PIC</strong> <span>{{ pic }}</span></div>
       <div class="info-row"><strong>Organisasi</strong> <span>{{ organisasi }}</span></div>
-      <div class="info-row"><strong>Tanggal Laporan</strong> <span>{{ tanggalLaporan }}</span></div>
+      <div class="info-row"><strong>Tanggal Laporan</strong> <span>{{ formatDate(tanggalLaporan) }}</span></div>
       <div class="info-row"><strong>Perihal</strong> <span>{{ perihal }}</span></div>
       <div class="info-row textarea-row">
         <strong>Deskripsi User</strong>
-        <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5"></textarea>
+        <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
       </div>
       <div v-if="pdfUrl">
         <iframe :src="pdfUrl" width="100%" height="500px"></iframe>
