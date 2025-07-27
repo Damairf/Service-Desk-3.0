@@ -23,7 +23,7 @@ const dataPermintaanBerdasarkanStatus = ref([]);
 onBeforeMount(async () => {
   try {
     const token = localStorage.getItem('Token');
-    const response = await axios.get('http://127.0.0.1:8000/api/pelayananChart', {
+    const response = await axios.get('http://127.0.0.1:8000/api/stsPelayananChart', {
       headers: {
         Authorization: 'Bearer ' + token
       }
