@@ -11,12 +11,41 @@ onMounted(() => {
 const idLayanan = ref(route.query.layanan || '')
 const activeTab = ref('tracking')
 const currentStep = ref(0) // buat tau 
-//halaman lacak
-if (activeTab.value == 'tracking'){
+
+// Fungsi untuk menangani perubahan tab
+const handleTabChange = (tab) => {
+  activeTab.value = tab
+  if (tab === 'tracking') {
     router.push({
-    name: 'HalamanLacak', query: {layanan: idLayanan.value}
-  })
+      name: 'HalamanLacak', 
+      query: {layanan: idLayanan.value}
+    })
+  } else if (tab === 'informasi') {
+    router.push({
+      name: 'HalamanInformasi', 
+      query: {layanan: idLayanan.value}
+    })
+  }
 }
+
+// Set default route saat komponen dimount
+onMounted(() => {
+  window.scrollTo(0, 0)
+  handleTabChange(activeTab.value)
+  
+  // Event listener untuk tombol back browser
+  const handlePopState = () => {
+    // Langsung arahkan ke permintaanDiproses
+    router.push({ name: 'PermintaanDiproses' })
+  }
+  
+  window.addEventListener('popstate', handlePopState)
+  
+  // Cleanup event listener saat komponen unmount
+  return () => {
+    window.removeEventListener('popstate', handlePopState)
+  }
+})
 </script>
 
 <template>
@@ -25,13 +54,13 @@ if (activeTab.value == 'tracking'){
     <div class="tabs">
       <div
         :class="['tab', activeTab === 'informasi' ? 'active-tab-info' : 'inactive-tab']"
-        @click="activeTab = 'informasi'"
+        @click="handleTabChange('informasi')"
       >
         Informasi
       </div>
       <div
         :class="['tab', activeTab === 'tracking' ? 'active-tab-track' : 'inactive-tab']"
-        @click="activeTab = 'tracking'"
+        @click="handleTabChange('tracking')"
       >
         Lacak
       </div>
@@ -95,7 +124,7 @@ if (activeTab.value == 'tracking'){
 /* Card */
 .card {
   width: 100%;
-  max-width: 640px;
+  max-width: 660px;
   background-color: white;
   padding: 32px;
   border-radius: 12px;
