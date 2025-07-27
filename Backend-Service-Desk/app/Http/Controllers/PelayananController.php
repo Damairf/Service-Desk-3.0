@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisPelayanan;
 use App\Models\Status;
 use Illuminate\Http\Request;
 use App\Models\Pelayanan;
@@ -122,10 +123,20 @@ class PelayananController extends Controller
         return response()->json($PelayananCounts);
     }
 
-    public function Permintaan_byPelayanan(){
-        $PelayananCounts = Pelayanan::where('ID_Status', 1)->count();
-        
-        return response()->json($PelayananCounts);
+    public function Chart_PelayananJns(){
+        $JnsCounts = Pelayanan::select('ID_Status' , JenisPelayanan::raw('count(*) as total'))->with([
+        'status_pelayanan' => function ($query) {
+            $query->select('ID_Status', 'Nama_Status');
+         }])->groupBy('ID_Status')->get();
+
+        $dataPoints = [];
+        foreach ($JnsCounts as $row) {
+            $dataPoints[] = [
+                "Pelayanan" => $row->status_pelayanan->Nama_Status,
+                "total" => $row->total
+        ];
+        }
+        return response()->json($JnsCounts);
     }
     
 

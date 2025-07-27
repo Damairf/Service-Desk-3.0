@@ -36,6 +36,7 @@ Route::put('/pelayanan/tambah/survey/{pelayananId}',[PelayananController::class,
 Route::get('/pelayananUser',[PelayananController::class, 'Pelayanan_byUser']);
 
 
+
 // endpoint pengelola
 Route::post('/user',[UserController::class, 'createOne_User']);
 Route::get('/user',[UserController::class, 'findAll_User']);
@@ -69,7 +70,8 @@ Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
 
 Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 Route::put('/pelayanan/{pelayananId}', [PelayananController::class, 'Verif_Pengelola']);
-Route::get('/pelayananChart',[PelayananController::class, 'Chart_PelayananSts']);
+Route::get('/stsPelayananChart',[PelayananController::class, 'Chart_PelayananSts']);
+Route::get('/jnsPelayananChart',[PelayananController::class, 'Chart_PelayananJns']);
 Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
 
 

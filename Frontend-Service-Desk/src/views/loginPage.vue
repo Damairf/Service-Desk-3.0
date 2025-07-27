@@ -26,7 +26,7 @@ function login(){
     
     const role = user.ID_Role;
 
-    if (token && role === 1) {
+    if (role === 1) {
       router.push('/beranda');
     } 
     else if (role === 2){
@@ -47,13 +47,17 @@ function login(){
 
 const data = ref(null);
 
-onMounted(()=> {
+onMounted(() => {
   console.log("Login Page Mounted");
   const token = localStorage.getItem('Token');
-  if(token) {
-    router.push('/beranda')
+  const role = parseInt(localStorage.getItem('id_role')); // ubah jadi integer
+
+  if (token && role === 1) {
+    router.push('/beranda');
+  } else if (token && role === 2){
+    router.push('/beranda-Pengelola');
   }
-})
+});
 </script>
 
 <template>
