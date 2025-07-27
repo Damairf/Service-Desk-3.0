@@ -16,6 +16,7 @@ import halamanLacak from '../views/User/permintaanDiproses/halaman-lacak.vue'
 import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
 //Riwayat
 import riwayat from '../views/User/Riwayat/riwayat.vue'
+import detailRiwayat from '../views/User/Riwayat/DetailRiwayat.vue'
 import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
 
 //===============PENGELOLA===============
@@ -50,6 +51,7 @@ const routes = [
   },
   { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA},
   { path: '/riwayat', name: 'Riwayat', component: riwayat},
+  { path: '/detailRiwayat', name: 'DetailRiwayat', component: detailRiwayat },
 
   //===============PENGELOLA===============
   { path: '/Beranda-Pengelola', name: 'Beranda-Pengelola', component: berandaPengelola},

@@ -3,6 +3,7 @@ import { ref , onBeforeMount, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 // buat backend
 import axios from 'axios'
+import LogoServiceDesk from '../../assets/LogoServiceDesk.svg'
 
 const nama_depan = ref(localStorage.getItem('nama_depan'));
 const gambar = ref(localStorage.getItem('src_gambar'));
@@ -63,8 +64,8 @@ if (role.value == 1) {
   { icon: '🏠', label: 'Beranda', to: '/Beranda-Pengelola' },
   { icon: '⚙️', label: 'Pelayanan', to: '/pelayanan' },
   { icon: '🔍', label: 'Lembaga/Organisasi', to: '/lembaga' },
-  { icon: '📁', label: 'referensi', to: '/referensi' },
-  { icon: '📁', label: 'pengguna', to: '/pengguna' },
+  { icon: '📁', label: 'Referensi', to: '/referensi' },
+  { icon: '📁', label: 'Pengguna', to: '/pengguna' },
 ];
 } else if (role.value == 3) {
   role.value = "Unit Pelaksana"
@@ -103,7 +104,7 @@ if (role.value == 1) {
     <div class="logo-wrapper">
       <div class="logo">
         <span v-if="isOpen">Service<br>Desk V3.0</span>
-        <span v-else>🚀</span>
+        <img v-else :src="LogoServiceDesk" alt="Logo" class="sidebar-logo" />
       </div>
     </div>
 
@@ -175,6 +176,13 @@ if (role.value == 1) {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.sidebar-logo {
+  width: 32px;
+  height: 32px;
+  display: block;
+  margin: 0 auto;
 }
 
 .dropdown-item {

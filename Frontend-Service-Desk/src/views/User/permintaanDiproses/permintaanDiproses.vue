@@ -36,6 +36,7 @@ onBeforeMount(() => {
     items.value = response.data.filter(item =>
         ['Baru',  'Disetujui', 'Proses'].includes(item.status_pelayanan?.Nama_Status)
       ).map(item => ({
+        id: item.ID_Pelayanan,
         ticket: item.ID_Pelayanan,
         perihal: item.Perihal,
         teknis: item.teknis_pelayanan?.Nama_Depan || '-',

@@ -71,9 +71,9 @@ watch(filteredItems, () => {
 
 // Methods
 function checkProgress(item) {
-  alert(`Checking progress for ticket ${item.ticket}`)
   router.push({
-    name: 'DetailPermintaan', query: {layanan: item.id}
+    name: 'DetailRiwayat',
+    query: { layanan: item.ticket }
   })
 }
 </script>

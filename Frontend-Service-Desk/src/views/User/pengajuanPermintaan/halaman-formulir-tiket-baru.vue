@@ -133,7 +133,7 @@ console.log("Lampiran:", lampiranPath.value)
         <p class="layanan-display">{{ layanan }}</p>
 
         <label>Perihal</label>
-        <input type="text" v-model="perihal" />
+        <input type="text" v-model="perihal" maxlength="50"/>
 
         <label>Deskripsi</label>
         <textarea v-model="deskripsi" rows="5"></textarea>
