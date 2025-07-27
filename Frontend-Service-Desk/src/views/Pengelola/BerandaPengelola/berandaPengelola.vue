@@ -14,6 +14,9 @@ const jumlahPermintaanBaru = ref('')
 const jumlahPenggunaTerdaftar = ref('')
 const jumlahOrganisasiTerdaftar = ref('')
 const isLoading = ref(true)
+const nip_user = ref('')
+const nama_jabatan = ref('')
+const nama_organisasi = ref('')
 
 onMounted(() => {
   window.scrollTo(0, 0);
@@ -25,6 +28,28 @@ onMounted(()=> {
     router.push('/login')
   }
 })
+
+onBeforeMount(() => {
+  const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/user/profile', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    console.log(response)
+    nip_user.value = response.data.NIP
+    nama_jabatan.value = response.data.user_jabatan.map(item => item.Nama_Jabatan)
+    nama_organisasi.value = response.data.user_organisasi.map(item => item.Nama_OPD)
+    localStorage.setItem('nip_user', response.data.NIP)
+    localStorage.setItem('ID_User', response.data.ID_User)
+    localStorage.setItem('nama_jabatan', response.data.user_jabatan.map(item => item.Nama_Jabatan))
+    localStorage.setItem('nama_organisasi', response.data.user_organisasi.map(item => item.Nama_OPD))
+  })
+  .catch(error => {
+    console.error(error); 
+  });
+});
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');

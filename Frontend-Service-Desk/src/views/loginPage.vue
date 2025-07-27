@@ -50,7 +50,7 @@ const data = ref(null);
 onMounted(() => {
   console.log("Login Page Mounted");
   const token = localStorage.getItem('Token');
-  const role = parseInt(localStorage.getItem('id_role')); // ubah jadi integer
+  const role = parseInt(localStorage.getItem('id_role'));
 
   if (token && role === 1) {
     router.push('/beranda');
