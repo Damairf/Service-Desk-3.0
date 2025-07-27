@@ -148,6 +148,18 @@ class PelayananController extends Controller
         }
         return response()->json($dataPoints);
     }
+    public function Chart_PelayananRate(){
+        $RateCounts = Pelayanan::select('Rating', Pelayanan::raw('count(*) as total'))->groupBy('Rating')->get();
+
+        $dataPoints = [];
+        foreach ($RateCounts as $row) {
+            $dataPoints[] = [
+                "Rating" => $row->Rating ?? 'Belum Diisi',
+                "total" => $row->total
+        ];
+        }
+        return response()->json($dataPoints);
+    }
 
     public function jumlah_Pelayanan(){
         $PelayananCounts = Pelayanan::where('ID_Status', 1)->count();

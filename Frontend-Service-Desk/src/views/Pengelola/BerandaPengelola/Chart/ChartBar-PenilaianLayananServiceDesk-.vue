@@ -1,5 +1,6 @@
 <script setup>
-  import {ref, onMounted} from 'vue'
+  import {ref, onMounted, onBeforeMount, computed} from 'vue'
+  import axios from 'axios';
   import { Bar, Pie } from 'vue-chartjs';
   import {
   Chart as ChartJS,
@@ -16,22 +17,37 @@
 ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement, ArcElement)
 
 //Ceritanya Backend
-const labelPenilaianLayananServiceDesk = ['Rating 5', 'Rating 4', 'Rating 3', 'Rating 2', 'Rating 1', 'Belum Diisi']
-const dataPenilaianLayananServiceDesk = [120,90,150,110, 200, 10]
+const labelPenilaianLayananServiceDesk = ref([]);
+const dataPenilaianLayananServiceDesk = ref([]);
+
+onBeforeMount(async () => {
+  try {
+    const token = localStorage.getItem('Token');
+    const response = await axios.get('http://127.0.0.1:8000/api/ratePelayananChart', {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    });
+    const data = response.data;
+    labelPenilaianLayananServiceDesk.value = data.map(item => item.Rating);
+    dataPenilaianLayananServiceDesk.value = data.map(item => item.total);
+  } catch (error) {
+  }
+});
 //data fixed jadi cmn ada di FrontEnd
-const warnaChart = ['#449533', '#449533', '#F3A33C', '#F3A33C','#CA4D2D', '#999999']
+const warnaChart = ['#449533', '#127593', '#F3A33C', '#F3A33C','#CA4D2D', '#999999']
 
 // data dummy Bar
-const penilaianLayananServiceDeskData = {
-  labels: labelPenilaianLayananServiceDesk,
+const penilaianLayananServiceDeskData = computed(() => ({
+  labels: labelPenilaianLayananServiceDesk.value,
   datasets: [
     {
       label: 'Jumlah Penilaian',
-      data: dataPenilaianLayananServiceDesk,
+      data: dataPenilaianLayananServiceDesk.value,
       backgroundColor: warnaChart
     }
   ]
-}
+}));
 //bar
 const configPenilaianLayananServiceDesk = {
     maintainAspectRatio: false,
