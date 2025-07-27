@@ -78,11 +78,10 @@ watch(filteredItems, () => {
 function checkProgress(item) {
   alert(`Checking progress for ticket ${item.ticket}`)
   router.push({
-    name: 'DetailPermintaan', query: {layanan: item.id}
+    name: 'DetailPermintaan', query: {layanan: item.ticket}
   })
 }
 </script>
-
 
 <template>
   <div class="container">

@@ -7,10 +7,17 @@ use Illuminate\Http\Request;
 
 class AlurController extends Controller
 {
-    public function getAll_Alur_JnsPelayanan_byId(Request $request){
-        $jnspelId = $request->route("jnspelId");
-        $jenis_pelayanan_alur = JenisPelayanan::with("alur_jnsPelayanan.isi_alur")->where('ID_Jenis_Pelayanan', $jnspelId)->get();
-        return response()->json($jenis_pelayanan_alur);
+    public function getAlurByJenisPelayanan($id)
+    {
+        $jenisPelayanan = JenisPelayanan::with('alur_jnsPelayanan.isi_alur')
+            ->where('ID_Jenis_Pelayanan', $id)
+            ->first();
+    
+        if (!$jenisPelayanan) {
+            return response()->json(['message' => 'Jenis Pelayanan tidak ditemukan'], 404);
+        }
+    
+        return response()->json($jenisPelayanan->alur_jnsPelayanan);
     }
     public function postAlur(Request $request){
         $ID_Jenis_Pelayanan = $request->ID_Jenis_Pelayanan;
