@@ -28,9 +28,10 @@ function login(){
 
     if (role === 1) {
       router.push('/beranda');
-    } else {
-      router.push('/beranda-Pengelola');
     } 
+    else if (role === 2){
+      router.push('/beranda-Pengelola');
+    }
     })
 
   .catch(function(error) {
