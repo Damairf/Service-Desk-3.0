@@ -11,7 +11,7 @@ use App\Models\User;
 class PelayananController extends Controller
 {
     public function getAll_Layanan(){
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan')->get();
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')->get();
         return response()->json($pelayanans);
     }
 
