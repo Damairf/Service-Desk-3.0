@@ -8,9 +8,19 @@ const route = useRoute()
 const steps = ref([])
 const idLayanan = ref(route.query.layanan || '')
 
-steps.value = JSON.parse(route.query.steps)
 onMounted(() => {
-  window.scrollTo(0, 0);
+  window.scrollTo(0, 0)
+
+  const savedSteps = localStorage.getItem('steps')
+  if (savedSteps) {
+    try {
+      steps.value = JSON.parse(savedSteps)
+    } catch (e) {
+      console.error('Gagal parse steps dari localStorage:', e)
+    }
+  } else {
+    console.warn('Steps belum ada di localStorage')
+  }
 })
 </script>
 

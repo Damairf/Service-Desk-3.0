@@ -10,19 +10,28 @@ onMounted(() => {
   });
 
 const pelayananId = ref(route.query.layanan || '-')
+const steps = ref([])
 const perihal = ref('') 
 const tanggal = ref('') 
 const nama_depanPengaju = ref('') 
 const nama_belakangPengaju = ref('')
 const jenis_pelayanan = ref('')
-const id_jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
-const steps = ref('')
 const activeTab = ref('tracking')
 const currentStep = ref(0)
+
+onMounted(() => {
+  if (route.query.steps) {
+    try {
+      steps.value = JSON.parse(route.query.steps);
+    } catch (e) {
+      console.error('Gagal parse steps dari query:', e);
+    }
+  }
+});
 
 const token = localStorage.getItem('Token');
 axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
@@ -44,33 +53,15 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
 .catch(function(error) {
   console.log(error)
 });
-
-axios.get(`http://127.0.0.1:8000/api/pelayananUser/${pelayananId.value}`, {
-  headers: { Authorization: 'Bearer ' + token }
-})
-.then(response => {
-  id_jenis_pelayanan.value = response.data.ID_Jenis_Pelayanan;
-  return axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${id_jenis_pelayanan.value}`, {
-    headers: { Authorization: 'Bearer ' + token }
-  });
-})
-.then(response => {
-  console.log('Respons API untuk steps:', response.data);
-  steps.value = response.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
-  console.log('Steps yang dipetakan:', steps.value);
-})
-.catch(error => {
-  console.error('Gagal mengambil steps:', error)
-});
 // Fungsi untuk menangani perubahan tab
 const handleTabChange = (tab) => {
   activeTab.value = tab
   if (tab === 'tracking') {
+    localStorage.setItem('steps', JSON.stringify(steps.value))
     router.push({
       name: 'HalamanLacak', 
       query: {
-        layanan: pelayananId.value,
-        steps: JSON.stringify(steps.value)
+        layanan: pelayananId.value
       }
     })
   } else if (tab === 'informasi') {
