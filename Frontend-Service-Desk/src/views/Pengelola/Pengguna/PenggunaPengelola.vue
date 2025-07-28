@@ -14,7 +14,6 @@ onMounted(() => {
     }
   })
   .then(response => {
-    console.log(response.data)
     daftarPengguna.value = response.data.map(item => ({
       id: item.ID_User,
       nama_depan: item.Nama_Depan,
