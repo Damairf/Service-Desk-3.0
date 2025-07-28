@@ -10,6 +10,7 @@ onMounted(() => {
   });
 
 const pelayananId = ref(route.query.layanan || '-')
+const steps = ref([])
 const perihal = ref('')
 const tanggal = ref('')
 const organisasi = ref('')
@@ -21,6 +22,16 @@ const surat_dinas = ref('')
 const lampiran = ref('')
 const activeTab = ref('tracking')
 const currentStep = ref(0) // buat tau 
+
+onMounted(() => {
+  if (route.query.steps) {
+    try {
+      steps.value = JSON.parse(route.query.steps);
+    } catch (e) {
+      console.error('Gagal parse steps dari query:', e);
+    }
+  }
+});
 
 const token = localStorage.getItem('Token');
 axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
@@ -47,6 +58,7 @@ axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
 const handleTabChange = (tab) => {
   activeTab.value = tab
   if (tab === 'tracking') {
+    localStorage.setItem('steps', JSON.stringify(steps.value))
     router.push({
       name: 'HalamanLacakPengelola', 
       query: {layanan: pelayananId.value}
@@ -166,7 +178,7 @@ onMounted(() => {
 /* Card */
 .card {
   width: 100%;
-  max-width: 660px;
+  max-width: 1100px;
   background-color: white;
   padding: 32px;
   border-radius: 12px;

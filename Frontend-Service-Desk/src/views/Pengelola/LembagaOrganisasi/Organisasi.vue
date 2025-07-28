@@ -115,6 +115,18 @@ function confirmDelete() {
     alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus organisasi.');
   });
 }
+
+function editOrganisasi(user) {
+  router.push({
+    path: '/ubahLembaga',
+    query: {
+      nama_PerangkatDaerah: user.nama_PerangkatDaerah,
+      induk_PerangkatDaerah: user.induk_PerangkatDaerah,
+      email: user.email,
+      status: user.status
+    }
+  })
+}
 </script>
 
 <template>
@@ -144,7 +156,7 @@ function confirmDelete() {
             <td>{{ user.email }}</td>
             <td>{{ user.status }}</td>
             <td>
-              <button class="aksiEdit-btn" title="Edit">Ubah</button>
+              <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(user)">Ubah</button>
               <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
             </td>
           </tr>
