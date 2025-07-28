@@ -1,7 +1,8 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
+import { useRouter } from 'vue-router';
 import axios from 'axios';
-
+const router = useRouter()
 const isLoading = ref(true)
 // === backend ===
 
@@ -103,7 +104,7 @@ function confirmDelete() {
     <div class="user-card">
       <h1 class="title">Data Lembaga/Organisasi</h1>
       <div class="top-actions">
-        <button class="btn tambah">Tambah</button>
+        <button class="btn tambah" @click="router.push('/tambahLembaga')">Tambah</button>
       </div>
       <div class="search-bar">
         <input type="text" placeholder="Cari Lembaga/Organisasi" v-model="search" />
