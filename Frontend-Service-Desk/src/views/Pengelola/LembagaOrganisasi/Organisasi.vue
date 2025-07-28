@@ -1,143 +1,202 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
+import axios from 'axios';
 
-const searchQuery = ref('')
-const currentPage = ref(1)
-const rowsPerPage = 4
-const fileName = ref('')
+const isLoading = ref(true)
+// === backend ===
 
-const rows = ref([
-  { nama: 'Nama', induk: 'Yapping wok', email: 'Emailnya wok', status: 'Aktif' },
-  { nama: 'Nama', induk: 'Yapping wok', email: 'Emailnya wok', status: 'Aktif' },
-  { nama: 'Nama', induk: 'Yapping wok', email: 'Emailnya wok', status: 'Aktif' },
-  { nama: 'Nama', induk: 'Yapping wok', email: 'Emailnya wok', status: 'Aktif' },
-  // ...add more rows as needed
+//datanya
+const dataOrganisasi = ref([
+  { nama_PerangkatDaerah: "Diskominfo", induk_PerangkatDaerah: 'Faler', email: 'Diskominfo@jabar.co.id', status: 'Aktif' },
+  { nama_PerangkatDaerah: "Diskominfo", induk_PerangkatDaerah: 'Budi', email: 'LopJudol@jimel.com', role: 'User', status: 'Aktif' },
+  { nama_PerangkatDaerah: "Diskominfo", induk_PerangkatDaerah: 'Siti', email: 'WowokLopOwi@Korupsi.co.id', role: 'User', status: 'Nonaktif' },
+  { nama_PerangkatDaerah: "Diskominfo", induk_PerangkatDaerah: 'Andi', email: 'akubencigoogle@Wahoo.com', role: 'Admin', status: 'Aktif' },
+  { nama_PerangkatDaerah: "Diskominfo", induk_PerangkatDaerah: 'Citra', email: 'akukangenYahoo@jimel.com', role: 'User', status: 'Aktif' }
 ])
 
-const filteredRows = computed(() =>
-  rows.value.filter(row =>
-    Object.values(row).some(val =>
-      String(val).toLowerCase().includes(searchQuery.value.toLowerCase())
-    )
+//===BACKEND=== (tapi masih murni penggunaPengelola.vue)
+// onMounted(() => {
+//   const token = localStorage.getItem('Token');
+//   axios.get('http://127.0.0.1:8000/api/user', {
+//     headers: {
+//       Authorization: 'Bearer ' + token
+//     }
+//   })
+//   .then(response => {
+//     daftarPengguna.value = response.data.map(item => ({
+//       id: item.ID_User,
+//       nama_depan: item.Nama_Depan,
+//       nama_belakang: item.Nama_Belakang,
+//       role: item.user_role.Nama_Role,
+//       organisasi: item.user_organisasi.Nama_OPD,
+//       status: item.Status
+//     }))
+//   })
+//   .catch(error => {
+//     console.error(error);
+//   })
+//   .finally(() => {
+//   isLoading.value = false;
+//   });
+// });
+
+// === Search & Sort ===
+const search = ref('')
+const sortKey = ref('')
+const sortOrder = ref('asc')
+const currentPage = ref(1)
+const itemsPerPage = 5
+
+const filteredItems = computed(() => {
+  let items = dataOrganisasi.value.filter(item =>
+    item.nama_PerangkatDaerah.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.induk_PerangkatDaerah.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.email.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.status.toLowerCase().includes(search.value.toLowerCase())
   )
-)
 
-const totalPages = computed(() =>
-  Math.ceil(filteredRows.value.length / rowsPerPage)
-)
+  if (sortKey.value) {
+    items.sort((a, b) => {
+      const valA = a[sortKey.value]?.toString().toLowerCase()
+      const valB = b[sortKey.value]?.toString().toLowerCase()
+      if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1
+      if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1
+      return 0
+    })
+  }
 
-const paginatedRows = computed(() => {
-  const start = (currentPage.value - 1) * rowsPerPage
-  return filteredRows.value.slice(start, start + rowsPerPage)
+  return items
+})
+
+const totalPages = computed(() => Math.ceil(filteredItems.value.length / itemsPerPage))
+
+const paginatedItems = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  return filteredItems.value.slice(start, start + itemsPerPage)
 })
 
 function prevPage() {
   if (currentPage.value > 1) currentPage.value--
 }
+
 function nextPage() {
   if (currentPage.value < totalPages.value) currentPage.value++
 }
+
 function goToPage(page) {
   currentPage.value = page
 }
 
-function onFileChange(e) {
-  fileName.value = e.target.files[0]?.name || ''
+watch(search, () => {
+  currentPage.value = 1
+})
+
+// === Modal Delete ===
+const showModal = ref(false)
+const idOrganisasiToDelete = ref(null)
+
+function Delete(user) {
+  idOrganisasiToDelete.value = user 
+  showModal.value = true
 }
-function uploadFile() {
-  alert('Upload logic here')
+function cancelDelete() {
+  showModal.value = false
+  idOrganisasiToDelete.value = null
+}
+function confirmDelete() {
+  dataOrganisasi.value = dataOrganisasi.value.filter(u => u.nama_PerangkatDaerah !== idOrganisasiToDelete.value.nama_PerangkatDaerah)
+  showModal.value = false
+  idOrganisasiToDelete.value = null
 }
 </script>
 
 <template>
-    <div class="page-bg">
-      <h1 class="main-title">Lembaga/<b>Organisasi</b></h1>
-      <div class="data-org-container">
-        <h2 class="section-title">Data Organisasi</h2>
-        <div class="top-actions">
-          <input type="file" @change="onFileChange" />
-          <span class="file-label">{{ fileName || 'Tidak Ada File Terpilih' }}</span>
-          <button class="btn upload" @click="uploadFile">Upload</button>
-          <button class="btn tambah" style="margin-left:auto;">
-            <i class="fas fa-plus-circle"></i> Tambah
-          </button>
-        </div>
-        <div class="search-bar">
-          <i class="fas fa-search"></i>
-          <input type="text" placeholder="Cari" v-model="searchQuery" />
-        </div>
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Nama Perangkat Daerah</th>
-              <th>Induk Perangkat Daerah</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(row, idx) in paginatedRows" :key="idx">
-              <td>{{ row.nama }}</td>
-              <td>{{ row.induk }}</td>
-              <td>{{ row.email }}</td>
-              <td>{{ row.status }}</td>
-              <td>
-                <button class="icon-btn" title="Edit"><i class="fas fa-edit"></i></button>
-                <button class="icon-btn" title="Delete"><i class="fas fa-trash"></i></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="pagination">
-          <button :disabled="currentPage === 1" @click="prevPage">&#60;</button>
-          <button
-            v-for="page in totalPages"
-            :key="page"
-            :class="{ active: currentPage === page }"
-            @click="goToPage(page)"
-          >{{ page }}</button>
-          <button :disabled="currentPage === totalPages" @click="nextPage">&#62;</button>
-        </div>
+  <div class="page-bg">
+    <div class="user-card">
+      <h1 class="title">Data Lembaga/Organisasi</h1>
+      <div class="top-actions">
+        <button class="btn tambah">Tambah</button>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Cari Lembaga/Organisasi" v-model="search" />
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th @click="sortKey = 'nama_PerangkatDaerah'">Nama Perangkat Daerah</th>
+            <th @click="sortKey = 'induk_PerangkatDaerah'">Induk Perangkat Daerah</th>
+            <th @click="sortKey = 'email'">Email</th>
+            <th @click="sortKey = 'status'">Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(user, index) in paginatedItems" :key="index">
+            <td>{{ user.nama_PerangkatDaerah }}</td>
+            <td>{{ user.induk_PerangkatDaerah }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.status }}</td>
+            <td>
+              <button class="aksiEdit-btn" title="Edit">Ubah</button>
+              <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <button :disabled="currentPage === 1" @click="prevPage">&#60;</button>
+        <button
+          v-for="page in totalPages"
+          :key="page"
+          :class="{ active: currentPage === page }"
+          @click="goToPage(page)"
+        >{{ page }}</button>
+        <button :disabled="currentPage === totalPages" @click="nextPage">&#62;</button>
       </div>
     </div>
-  </template>
+  </div>
+
+  <!-- Modal Delete -->
+  <div v-if="showModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Konfirmasi Hapus</h3>
+      <p>
+        Apakah Anda yakin ingin menghapus lembaga <strong>{{ idOrganisasiToDelete.nama_PerangkatDaerah }}</strong>?
+      </p>
+      <div class="modal-actions">
+        <button class="btn danger" @click="confirmDelete()">Ya, hapus</button>
+        <button class="btn" @click="cancelDelete()">Batal</button>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
+/* (CSS sama persis dari kode asli) */
 .page-bg {
   min-height: 100vh;
   background: #f6f0fa;
   padding: 2rem 0;
 }
-.main-title {
-  font-size: 2.4rem;
-  font-weight: bold;
-  margin: 0 0 1.5rem 2.5rem;
-  color: #111;
-  letter-spacing: -1px;
-}
-.data-org-container {
+.user-card {
   background: #fff;
   border-radius: 20px;
   padding: 2rem;
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto 2rem auto;
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
 }
-.section-title {
-  font-size: 1.4rem;
+.title {
+  font-size: 28px;
   font-weight: bold;
-  margin-bottom: 1.2rem;
+  margin-bottom: 20px;
+  color: #333;
 }
 .top-actions {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1.2rem;
-}
-.file-label {
-  margin: 0 0.5rem;
-  color: #333;
 }
 .btn {
   padding: 0.5rem 1.2rem;
@@ -150,17 +209,10 @@ function uploadFile() {
   align-items: center;
   gap: 0.5rem;
 }
-.btn.upload {
-  background: #c14421;
-  color: #fff;
-}
 .btn.tambah {
   background: #009e3c;
   color: #fff;
   margin-left: auto;
-}
-.btn.tambah i {
-  font-size: 1.2rem;
 }
 .search-bar {
   display: flex;
@@ -170,6 +222,7 @@ function uploadFile() {
   padding: 0.5rem 1.2rem;
   margin-bottom: 1.2rem;
   font-size: 1.1rem;
+  color: black;
 }
 .search-bar i {
   margin-right: 0.7rem;
@@ -189,11 +242,14 @@ function uploadFile() {
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 .data-table th, .data-table td {
   padding: 0.8rem 1rem;
   text-align: left;
+}
+.data-table tr:nth-child(even){
+  background-color: #f9f9f9;
 }
 .data-table th {
   background: #d3d3d3;
@@ -202,25 +258,32 @@ function uploadFile() {
 .data-table tr {
   border-bottom: 1px solid #eee;
 }
-.icon-btn {
-  background: #f7f7f7;
+.aksiEdit-btn {
+  background: #2196f3;
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 0.3rem 0.5rem;
   margin-right: 0.2rem;
   cursor: pointer;
   font-size: 1rem;
-  color: #222;
-  transition: background 0.2s, color 0.2s;
+  color: white;
+  transition: background 0.2s;
 }
-.icon-btn:hover {
-  background: #e0e0e0;
-  color: #c14421;
+.aksiEdit-btn:hover { background: #1976d2; }
+.aksiDelete-btn {
+  background: #c14421;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: white;
+  transition: background 0.2s;
 }
+.aksiDelete-btn:hover { background: #a63a1d; }
 .pagination {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 0.5rem;
 }
 .pagination button {
@@ -228,17 +291,33 @@ function uploadFile() {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 0.4rem 1rem;
-  font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s;
 }
-.pagination button.active, .pagination button:focus {
-  background: #2196f3;
-  color: #fff;
-  border: none;
+.pagination button.active { background: #2196f3; color: #fff; border: none; }
+.pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex; justify-content: center; align-items: center;
 }
-.pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.modal-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.modal-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.btn.danger {
+  background: #e53935;
+  color: white;
 }
 </style>
