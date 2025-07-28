@@ -15,30 +15,24 @@ const dataOrganisasi = ref([
 ])
 
 //===BACKEND=== (tapi masih murni penggunaPengelola.vue)
-// onMounted(() => {
-//   const token = localStorage.getItem('Token');
-//   axios.get('http://127.0.0.1:8000/api/user', {
-//     headers: {
-//       Authorization: 'Bearer ' + token
-//     }
-//   })
-//   .then(response => {
-//     daftarPengguna.value = response.data.map(item => ({
-//       id: item.ID_User,
-//       nama_depan: item.Nama_Depan,
-//       nama_belakang: item.Nama_Belakang,
-//       role: item.user_role.Nama_Role,
-//       organisasi: item.user_organisasi.Nama_OPD,
-//       status: item.Status
-//     }))
-//   })
-//   .catch(error => {
-//     console.error(error);
-//   })
-//   .finally(() => {
-//   isLoading.value = false;
-//   });
-// });
+const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/organisasi', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    dataOrganisasi.value = response.data.map(item => ({
+      nama_PerangkatDaerah: item.Nama_OPD,
+      induk_PerangkatDaerah: item.Induk_OPD,
+      email: item.Email,
+      status: item.Status
+    }))
+      
+  })
+  .catch(error => {
+    console.error(error); 
+  });
 
 // === Search & Sort ===
 const search = ref('')
