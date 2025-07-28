@@ -16,7 +16,6 @@ import halamanLacak from '../views/User/permintaanDiproses/halaman-lacak.vue'
 import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
 //Riwayat
 import riwayat from '../views/User/Riwayat/riwayat.vue'
-import detailRiwayat from '../views/User/Riwayat/DetailRiwayat.vue'
 import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
 import detailPermintaanRiwayat from '../views/User/Riwayat/detailPermintaanRiwayat.vue'
 import halamanLacakRiwayat from '../views/User/Riwayat/halaman-lacakRiwayat.vue'
@@ -55,7 +54,6 @@ const routes = [
   },
   { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA},
   { path: '/riwayat', name: 'Riwayat', component: riwayat},
-  { path: '/detailRiwayat', name: 'DetailRiwayat', component: detailRiwayat },
   { path: '/detailPermintaanRiwayat', name: 'DetailPermintaanRiwayat', component: detailPermintaanRiwayat,
     children: [
       {path: 'lacakRiwayat', name: 'HalamanLacakRiwayat', component: halamanLacakRiwayat},
