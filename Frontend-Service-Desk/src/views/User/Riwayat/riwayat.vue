@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch,} from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 const router = useRouter()
@@ -20,7 +20,7 @@ watch(search, () => {
 
 const items = ref([])
 
-onMounted(() => {
+
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/pelayananUser', {
     headers: {
@@ -28,7 +28,6 @@ onMounted(() => {
     }
   })
   .then(response => {
-    console.log(response);
     items.value = response.data.map(item => ({
       ticket: item.ID_Pelayanan,
       perihal: item.Perihal,
@@ -44,7 +43,7 @@ onMounted(() => {
   .finally(() => {
   isLoading.value = false;
   });
-});
+
 
 
 
@@ -76,8 +75,20 @@ watch(filteredItems, () => {
 // Methods
 function checkProgress(item) {
   router.push({
-    name: 'DetailRiwayat',
-    query: { layanan: item.ticket }
+    name: 'DetailPermintaanRiwayat',
+    query: {
+      layanan: item.ticket,
+      perihal: item.perihal,
+      tanggal: item.date,
+      nama_depanPengaju: item.pic, // adjust if you have separate first/last name
+      // nama_belakangPengaju: '', // add if available
+      jenis_pelayanan: '', // add if available
+      organisasi: '', // add if available
+      deskripsi: '', // add if available
+      surat_dinas: '', // add if available
+      lampiran: '', // add if available
+      tab: 'informasi' // to open the Informasi tab by default
+    }
   })
 }
 </script>
