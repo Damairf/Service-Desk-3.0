@@ -178,7 +178,7 @@ onMounted(() => {
 /* Card */
 .card {
   width: 100%;
-  max-width: 660px;
+  max-width: 1100px;
   background-color: white;
   padding: 32px;
   border-radius: 12px;
