@@ -156,7 +156,7 @@ function confirmDelete() {
     <div class="modal-box">
       <h3>Konfirmasi Hapus</h3>
       <p>
-        Apakah Anda yakin ingin menghapus pengguna <strong>{{ idUserToDelete.nama_depan }} {{ idUserToDelete.nama_belakang }}</strong>?
+        Apakah Anda yakin ingin menghapus pengguna <strong>{{ idUserToDelete.nama_depan + ' ' + idUserToDelete.nama_belakang }}</strong>?
       </p>
       <div class="modal-actions">
         <button class="btn danger" @click="confirmDelete()">Ya, hapus</button>
