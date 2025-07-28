@@ -181,6 +181,8 @@ const addMessage = () => {
             {{ option.nama_depan }} {{ option.nama_belakang }}
           </option>
         </select>
+        <h4>Pesan untuk Teknisi</h4>
+        <textarea class="input" v-model="insiden"></textarea>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>
       </div>
       <div class="wrapper-tolak" v-if='pilihan =="Tolak"'>
