@@ -6,13 +6,7 @@ const isLoading = ref(true)
 // === backend ===
 
 //datanya
-const dataOrganisasi = ref([
-  { nama_PerangkatDaerah: "Diskominfo", induk_PerangkatDaerah: 'Faler', email: 'Diskominfo@jabar.co.id', status: 'Aktif' },
-  { nama_PerangkatDaerah: "Diskominfo", induk_PerangkatDaerah: 'Budi', email: 'LopJudol@jimel.com', role: 'User', status: 'Aktif' },
-  { nama_PerangkatDaerah: "Diskominfo", induk_PerangkatDaerah: 'Siti', email: 'WowokLopOwi@Korupsi.co.id', role: 'User', status: 'Nonaktif' },
-  { nama_PerangkatDaerah: "Diskominfo", induk_PerangkatDaerah: 'Andi', email: 'akubencigoogle@Wahoo.com', role: 'Admin', status: 'Aktif' },
-  { nama_PerangkatDaerah: "Diskominfo", induk_PerangkatDaerah: 'Citra', email: 'akukangenYahoo@jimel.com', role: 'User', status: 'Aktif' }
-])
+const dataOrganisasi = ref([])
 
 //===BACKEND=== (tapi masih murni penggunaPengelola.vue)
 const token = localStorage.getItem('Token');
@@ -24,7 +18,7 @@ const token = localStorage.getItem('Token');
   .then(response => {
     dataOrganisasi.value = response.data.map(item => ({
       nama_PerangkatDaerah: item.Nama_OPD,
-      induk_PerangkatDaerah: item.Induk_OPD,
+      induk_PerangkatDaerah: item.induk?.Nama_OPD || '-',
       email: item.Email,
       status: item.Status
     }))

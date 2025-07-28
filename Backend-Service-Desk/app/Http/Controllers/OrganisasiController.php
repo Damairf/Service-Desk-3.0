@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 class OrganisasiController extends Controller
 {
     public function findAll_Organisasi(){
-        $organisasis = Organisasi::select( 'Nama_OPD', 'Induk_OPD', 'Email', 'Status')->get();
+        $organisasis = Organisasi::select('ID_Organisasi', 'ID_Induk_Organisasi','Nama_OPD', 'Email', 'Status')->with(['induk' => function ($query) {
+                $query->select( 'ID_Organisasi','Nama_OPD');
+            }])->get();
         return response()->json($organisasis);
     }
 

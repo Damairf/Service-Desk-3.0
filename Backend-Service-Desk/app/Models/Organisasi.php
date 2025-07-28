@@ -17,4 +17,14 @@ class Organisasi extends Model
     public function user_organisasi(): HasMany{
         return $this -> hasMany(Status::class, "ID_Organisasi");
     }
+
+    public function induk()
+    {
+        return $this->belongsTo(Organisasi::class, 'ID_Induk_Organisasi');
+    }
+
+    public function anak()
+    {
+        return $this->hasMany(Organisasi::class, 'ID_Induk_Organisasi');
+    }
 }
