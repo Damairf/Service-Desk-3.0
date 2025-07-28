@@ -10,7 +10,6 @@ function formatDate(dateString) {
 }
 
 // === Placeholder variabel backend ===
-
 const layanan = ref(route.query.jenis_pelayanan || '-')
 const noTiket = ref(route.query.layanan || '-')
 const nama_depan = ref(route.query.nama_depanPengaju || '-')
@@ -24,6 +23,30 @@ const SuratDinas_Path = ref(null)
 const src_SuratDinas = ref(route.query.surat_dinas || '-')
 const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
+
+const alasanTolak = ref('')
+const pelaksana = ref(['ipul1', 'ipul 2'])
+const pelaksanaTerpilih = ref('')
+
+// Tombol Setuju
+const pilihan = ref('')
+function handlePilihan(klik){
+  pilihan.value = klik
+}
+function handleSelesai() {
+  if (pilihan.value === 'Setuju') {
+    console.log('Setuju dengan pelaksana:', pelaksanaTerpilih.value)
+    test.value = pelaksanaTerpilih.value
+    // kirim ke backend di sini misalnya:
+    // axios.post('/api/setuju', { pelaksana: pelaksanaTerpilih.value })
+  } else if (pilihan.value === 'Tolak') {
+    console.log('Ditolak karena:', alasanTolak.value)
+    test.value = alasanTolak.value
+    // kirim ke backend di sini misalnya:
+    // axios.post('/api/tolak', { alasan: alasanTolak.value })
+  }
+}
+
 //  ambil URL dari backend
 SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value
 Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value
@@ -75,8 +98,8 @@ const addMessage = () => {
         </a>
       </div>
     </div>
-
-    <div class="chat-card">
+    <div class="container-kanan">
+      <div class="chat-card">
       <h3>Chat</h3>
       <div class="chat-content">
         <div
@@ -98,6 +121,33 @@ const addMessage = () => {
 
       <button class="send-btn" @click="addMessage">Kirim</button>
     </div>
+
+    <div class="tinjau-card">
+      <h3>Tinjau Pelayanan</h3>
+      <!-- taro link pdfnya disini -->
+      <div class="wrapper-btn">
+        <button class="btn-setuju" @click="handlePilihan('Setuju')">Setuju</button>
+        <button class="btn-tolak" @click="handlePilihan('Tolak')">Tolak</button>
+      </div>
+      <!-- Setuju  -->
+      <div class='wrapper-setuju'v-if='pilihan == "Setuju"'>
+        <h4>Unit Pelaksana</h4>
+        <select id="status" v-model="pelaksanaTerpilih">
+          <option value="" disabled>Pilih salah satu Pelaksana</option>
+          <option v-for="option in pelaksana" :key="option" :value="option">
+            {{ option }}
+          </option>
+        </select>
+        <button class="btn-selesai" @click="handleSelesai">Selesai</button>
+      </div>
+      <div class="wrapper-tolak" v-if='pilihan =="Tolak"'>
+        <h4>Alasan Ditolak</h4>
+        <textarea class="input" v-model="alasanTolak"></textarea>
+        <button class="btn-selesai" @click="handleSelesai">Selesai</button>
+      </div>
+  </div>
+    </div>
+
   </div>
 </template>
 
@@ -107,14 +157,19 @@ const addMessage = () => {
   gap: 2rem;
   align-items: flex-start;
 }
-
+/* container kanan */
+.container-kanan{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 40%;
+}
 .info-card,
 .chat-card {
   background-color: white;
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  width: 50%;
 }
 
 .info-row {
@@ -215,4 +270,82 @@ const addMessage = () => {
   color: black;
 }
 
+/* tinjau */
+.tinjau-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.wrapper-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-setuju{
+  color: white;
+  background-color: #4CAF50;
+  border-radius: 12px;
+  padding: 0.5rem 2.5rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.btn-setuju:hover{
+  background-color: #66BB6A;
+  transform: scale(1.02);
+}
+.wrapper-setuju {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+select {
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  color: black;
+  background-color: white;
+}
+.btn-tolak{
+  color: white;
+  background-color: #D51518;
+  border-radius: 12px;
+  padding: 0.5rem 2.5rem;
+  border: none;
+  cursor: pointer;
+}
+.btn-tolak:hover{
+  background-color: #E53935;
+  transform: scale(1.02);
+}
+.wrapper-setuju {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-self: flex-start;
+}
+.wrapper-tolak{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.btn-selesai{
+  color: white;
+  background-color: #2BA9E4;
+  border-radius: 12px;
+  padding: 0.5rem 2rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  width: fit-content;         /* <-- biar lebarnya mengikuti konten */
+  align-self: center;     
+}
+.btn-selesai:hover{
+  transform: scale(1.02);
+  background-color: #48B7ED;
+}
 </style>
