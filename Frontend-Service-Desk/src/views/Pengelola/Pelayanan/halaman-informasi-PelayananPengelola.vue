@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios'
 const router = useRouter()
 const route = useRoute()
 
@@ -10,6 +11,7 @@ function formatDate(dateString) {
 }
 
 // === Placeholder variabel backend ===
+const pelayananId = ref(route.query.layanan || '-')
 const layanan = ref(route.query.jenis_pelayanan || '-')
 const noTiket = ref(route.query.layanan || '-')
 const nama_depan = ref(route.query.nama_depanPengaju || '-')
@@ -25,20 +27,57 @@ const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
 
 const alasanTolak = ref('')
-const pelaksana = ref(['ipul1', 'ipul 2'])
-const pelaksanaTerpilih = ref('')
+const pelaksana = ref([])
+const idUnitTerpilih = ref('')
+const idStatus = ref('')
 
 // === Untuk Tombol Setuju ===
 const pilihan = ref('')
 function handlePilihan(klik){
   pilihan.value = klik
 }
+
+const token = localStorage.getItem('Token');
+axios.get('http://127.0.0.1:8000/api/pelayanan/unit', {
+  headers: {
+    Authorization: 'Bearer ' + token
+  }
+})
+.then(response => {
+  console.log(response.data.map(item => item.ID_User))
+  pelaksana.value = response.data.map(item => ({
+    id_user: item.ID_User,
+    nama_depan: item.Nama_Depan,
+    nama_belakang: item.Nama_Belakang
+  }));  
+  idUnitTerpilih.value = '';
+})
+.catch(error => {
+  console.error(error); 
+});
+
 function handleSelesai() {
   if (pilihan.value === 'Setuju') {
-    console.log('Setuju dengan pelaksana:', pelaksanaTerpilih.value)
-    test.value = pelaksanaTerpilih.value
-    // kirim ke backend di sini misalnya:
-    // axios.post('/api/setuju', { pelaksana: pelaksanaTerpilih.value })
+    
+  const token = localStorage.getItem('Token');
+  axios.put(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, 
+  {
+    ID_Unit: idUnitTerpilih.value,
+    ID_Status: 2
+  }
+  , {
+    headers: {
+      Authorization: 'Bearer ' + token,
+    }
+  })
+  .then(function(response){
+   console.log(response)
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
+    console.log('Setuju dengan pelaksana:', idUnitTerpilih.value)
+
   } else if (pilihan.value === 'Tolak') {
     console.log('Ditolak karena:', alasanTolak.value)
     test.value = alasanTolak.value
@@ -132,10 +171,10 @@ const addMessage = () => {
       <!-- Setuju  -->
       <div class='wrapper-setuju'v-if='pilihan == "Setuju"'>
         <h4>Unit Pelaksana</h4>
-        <select id="status" v-model="pelaksanaTerpilih">
-          <option value="" disabled>Pilih salah satu Pelaksana</option>
-          <option v-for="option in pelaksana" :key="option" :value="option">
-            {{ option }}
+        <select id="status" v-model="idUnitTerpilih">
+          <option value="" disabled>Pilih Unit Pelaksana</option>
+          <option v-for="option in pelaksana" :key="option.id_user" :value="option.id_user">
+            {{ option.nama_depan }} {{ option.nama_belakang }}
           </option>
         </select>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>

@@ -200,7 +200,7 @@ class PelayananController extends Controller
     }
 
     public function getPdfUrl($filename)
-{
+    {
     // Cek apakah file benar-benar ada
     if (!Storage::disk('public')->exists("file/{$filename}")) {
         return response()->json(['message' => 'File not found.'], 404);
@@ -213,5 +213,5 @@ class PelayananController extends Controller
         'filename' => $filename,
         'url' => $url
     ]);
-}
+    }
 }

@@ -36,6 +36,7 @@ Route::post('/uploadKeperluan',[PelayananController::class, 'uploadKeperluan']);
 Route::put('/pelayanan/tambah/survey/{pelayananId}',[PelayananController::class, 'putSurvey']);
 Route::get('/pelayananUser',[PelayananController::class, 'Pelayanan_byUser']);
 Route::get('/pelayananUser/{pelayananId}',[PelayananController::class, 'getByID_Pelayanan_Jenis_User']);
+
 Route::get('/alur/jenis_pelayanan/{id}',[AlurController::class, 'getAlurByJenisPelayanan']);
 
 
@@ -46,6 +47,7 @@ Route::get('/user',[UserController::class, 'findAll_User']);
 Route::post('/user',[UserController::class, 'createOne_User']);
 Route::put('/user/{userId}', [UserController::class, 'update_User']);
 Route::get('/userCount',[UserController::class, 'jumlah_User']);
+Route::get('/pelayanan/unit',[UserController::class, 'getUnit']);
 
 
 Route::get('/role',[RoleController::class, 'findAll_Role']);
@@ -72,15 +74,17 @@ Route::get('/status/pelayanan/{statusId}',[StatusController::class, 'findOne_Sta
 Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
 
 Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
-Route::put('/pelayanan/{pelayananId}', [PelayananController::class, 'Verif_Pengelola']);
 Route::get('/stsPelayananChart',[PelayananController::class, 'Chart_PelayananSts']);
 Route::get('/jnsPelayananChart',[PelayananController::class, 'Chart_PelayananJns']);
 Route::get('/TknsPelayananChart',[PelayananController::class, 'Chart_PelayananTkns']);
 Route::get('/ratePelayananChart',[PelayananController::class, 'Chart_PelayananRate']);
 Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
+Route::get('/pdf/{filename}', [PelayananController::class, 'getPdfUrl']);
+Route::put('/pelayanan/{pelayananId}', [PelayananController::class, 'Verif_Pengelola']);
+
+
 Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
 
-Route::get('/pdf/{filename}', [PelayananController::class, 'getPdfUrl']);
 
 
 
