@@ -6,15 +6,20 @@ import { useRoute } from 'vue-router'
 const currentStep = ref(0) // buat tau 
 const route = useRoute()
 const steps = ref([])
+const idLayanan = ref(route.query.layanan || '')
 
 onMounted(() => {
-  window.scrollTo(0, 0);
-  try {
-    steps.value = JSON.parse(route.query.steps)
-    console.log(steps.value)
-    console.log(route.query.steps)
-  } catch (e) {
-    steps.value = []
+  window.scrollTo(0, 0)
+
+  const savedSteps = localStorage.getItem('steps')
+  if (savedSteps) {
+    try {
+      steps.value = JSON.parse(savedSteps)
+    } catch (e) {
+      console.error('Gagal parse steps dari localStorage:', e)
+    }
+  } else {
+    console.warn('Steps belum ada di localStorage')
   }
 })
 </script>

@@ -29,7 +29,7 @@ onMounted(()=> {
   }
 })
 
-onBeforeMount(() => {
+
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/user/profile', {
     headers: {
@@ -47,10 +47,8 @@ onBeforeMount(() => {
   .catch(error => {
     console.error(error); 
   });
-});
 
-onBeforeMount(() => {
-  const token = localStorage.getItem('Token');
+
   axios.get('http://127.0.0.1:8000/api/userCount', {
     headers: {
       Authorization: 'Bearer ' + token
@@ -90,7 +88,6 @@ onBeforeMount(() => {
   .catch(error => {
     console.error(error);
   });
-});
 </script>
 
 <template>

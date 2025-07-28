@@ -10,18 +10,28 @@ onMounted(() => {
   });
 
 const pelayananId = ref(route.query.layanan || '-')
+const steps = ref([])
 const perihal = ref('') 
 const tanggal = ref('') 
 const nama_depanPengaju = ref('') 
 const nama_belakangPengaju = ref('')
 const jenis_pelayanan = ref('')
-const id_jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
 const activeTab = ref(route.query.tab === 'informasi' ? 'informasi' : 'tracking')
 const currentStep = ref(0)
+
+onMounted(() => {
+  if (route.query.steps) {
+    try {
+      steps.value = JSON.parse(route.query.steps);
+    } catch (e) {
+      console.error('Gagal parse steps dari query:', e);
+    }
+  }
+});
 
 const token = localStorage.getItem('Token');
 axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
@@ -49,6 +59,7 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
 const handleTabChange = (tab) => {
   activeTab.value = tab
   if (tab === 'tracking') {
+    localStorage.setItem('steps', JSON.stringify(steps.value))
     router.push({
       name: 'HalamanLacak', 
       query: {
