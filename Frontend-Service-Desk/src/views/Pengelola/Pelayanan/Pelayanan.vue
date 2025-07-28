@@ -19,6 +19,31 @@ const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 
+onMounted(() => {
+  const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/pelayanan', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    layananData.value = response.data.map(item => ({
+      noTiket: item.ID_Pelayanan,
+      perihal: item.Perihal,
+      teknis: item.teknis_pelayanan?.Nama_Depan || '-',
+      tanggal: item.created_at,
+      organisasi: item.user.user_organisasi.Nama_OPD,
+      status: item.status_pelayanan.Nama_Status,
+    }))
+  })
+  .catch(error => {
+    console.error(error);
+  })
+  .finally(() => {
+  isLoading.value = false;
+  });
+});
+
 //ke halaman detail 
 function lihatDetail(item){
   const token = localStorage.getItem('Token');
@@ -72,33 +97,6 @@ function toggleSort(key) {
     }
   }
 }
-
-onMounted(() => {
-  const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/pelayanan', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    console.log(response.data);
-    layananData.value = response.data.map(item => ({
-      noTiket: item.ID_Pelayanan,
-      perihal: item.Perihal,
-      teknis: item.teknis_pelayanan?.Nama_Depan || '-',
-      tanggal: item.created_at,
-      organisasi: item.user.user_organisasi.Nama_OPD,
-      status: item.status_pelayanan.Nama_Status,
-    }))
-
-  })
-  .catch(error => {
-    console.error(error);
-  })
-  .finally(() => {
-  isLoading.value = false;
-  });
-});
 
 // Buat Searching
 const search = ref('')

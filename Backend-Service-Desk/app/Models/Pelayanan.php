@@ -23,6 +23,7 @@ class Pelayanan extends Model
         'ID_User',
         'ID_Jenis_Pelayanan',
         'ID_Unit',
+        'Insiden',
         'ID_Teknis',
         'Rating',
         'Isi_Survey',
