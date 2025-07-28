@@ -62,7 +62,8 @@ function handleSelesai() {
   axios.put(`http://127.0.0.1:8000/api/pelayanan/setuju/${pelayananId.value}`, 
   {
     ID_Unit: idUnitTerpilih.value,
-    ID_Status: 2
+    ID_Status: 2,
+    Insiden: null
   }
   , {
     headers: {

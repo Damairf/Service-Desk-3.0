@@ -1,15 +1,37 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
+import axios from 'axios';
 
 const isLoading = ref(true)
 // === backend ===
-const daftarPengguna = ref([
-  { id: 'U001', nama: 'Wowok1 Wowok', role: 'User', organisasi: 'Yapping', status: 'Aktif' },
-  { id: 'U002', nama: 'Say Full', role: 'Admin', organisasi: 'Yapping', status: 'Aktif' },
-  { id: 'U003', nama: 'Joke Oh we', role: 'User', organisasi: 'Yapping', status: 'Nonaktif' },
-  { id: 'U004', nama: 'Pro Bro oh', role: 'Kepala Dinas', organisasi: 'Banana', status: 'Aktif' },
-  { id: 'U005', nama: 'Banana haTub', role: 'User', organisasi: 'Banana', status: 'Nonaktif' },
-])
+const daftarPengguna = ref([])  
+
+onMounted(() => {
+  const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/user', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    console.log(response.data)
+    daftarPengguna.value = response.data.map(item => ({
+      id: item.ID_User,
+      nama_depan: item.Nama_Depan,
+      nama_belakang: item.Nama_Belakang,
+      role: item.user_role.Nama_Role,
+      organisasi: item.user_organisasi.Nama_OPD,
+      status: item.Status
+    }))
+  })
+  .catch(error => {
+    console.error(error);
+  })
+  .finally(() => {
+  isLoading.value = false;
+  });
+});
+
 // === Buat Search ===
 const search = ref('')
 const sortKey = ref('')
@@ -19,8 +41,8 @@ const itemsPerPage = 10
 
 const filteredItems = computed(() => {
   let items = daftarPengguna.value.filter(item =>
-    item.id.toLowerCase().includes(search.value.toLowerCase()) ||
-    item.nama.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.nama_depan.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.nama_belakang.toLowerCase().includes(search.value.toLowerCase()) ||
     item.role.toLowerCase().includes(search.value.toLowerCase()) ||
     item.organisasi.toLowerCase().includes(search.value.toLowerCase())
   )
@@ -91,7 +113,7 @@ watch(search, () => {
         <tbody>
           <tr v-for="(user, index) in paginatedItems" :key="index">
             <td>{{ user.id }}</td>
-            <td>{{ user.nama }}</td>
+            <td>{{ user.nama_depan + ' ' + user.nama_belakang }}</td>
             <td>{{ user.role }}</td>
             <td>{{ user.organisasi }}</td>
             <td>{{ user.status }}</td>

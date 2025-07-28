@@ -63,15 +63,13 @@ class PelayananController extends Controller
         $pelayananId = $request->route('pelayananId');
         $dataPelayanan = $request->only([
             'ID_Unit',
-            'ID_Status'
+            'ID_Status',
+            'Insiden'
         ]);
 
         $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
 
         $pelayanan->update($dataPelayanan);
-
-        return response(["Pelayanan diverifikasi menjadi " => $pelayanan->fresh()]);
-    
     }
 
     public function tolak(Request $request){
@@ -85,9 +83,6 @@ class PelayananController extends Controller
         $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
 
         $pelayanan->update($dataPelayanan);
-
-        return response(["Pelayanan ditolak menjadi " => $pelayanan->fresh()]);
-    
     }
         
     // hanya untuk role user memberikan survey

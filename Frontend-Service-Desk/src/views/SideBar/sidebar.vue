@@ -6,6 +6,7 @@ import axios from 'axios'
 import LogoServiceDesk from '../../assets/LogoServiceDesk.svg'
 
 const nama_depan = ref(localStorage.getItem('nama_depan'));
+const nama_belakang = ref(localStorage.getItem('nama_belakang'));
 const gambar = ref(localStorage.getItem('src_gambar'));
 const role = ref(localStorage.getItem('id_role'))
 
@@ -16,6 +17,7 @@ onMounted(() => {
   });
   window.addEventListener('sudahLogin', () => {
     nama_depan.value = localStorage.getItem('nama_depan');
+    nama_belakang.value = ref(localStorage.getItem('nama_belakang'));
     gambar.value = localStorage.getItem('src_gambar');
   });
 });
@@ -120,7 +122,7 @@ if (role.value == 1) {
           alt="Foto Profil"
           class="gambar-profile"
         />
-    <span class="nama-profile">{{nama_depan}} <br> {{role}}</span>
+    <span class="nama-profile">{{nama_depan + " " + nama_belakang}} <br> {{role}}</span>
     
     <!-- Profile Dropdown Menu -->
     <div v-if="tampilinOverlay" class="profile-dropdown">
