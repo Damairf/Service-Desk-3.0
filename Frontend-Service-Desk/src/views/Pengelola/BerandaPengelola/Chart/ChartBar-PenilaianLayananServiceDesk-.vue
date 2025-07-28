@@ -35,7 +35,8 @@ onBeforeMount(async () => {
   }
 });
 //data fixed jadi cmn ada di FrontEnd
-const warnaChart = ['#449533', '#127593', '#F3A33C', '#F3A33C','#CA4D2D', '#999999']
+const warnaChart = ['#999999', '#D7263D', '#F46036', '#F3A33C', '#A3C84A', '#449533'];
+
 
 // data dummy Bar
 const penilaianLayananServiceDeskData = computed(() => ({

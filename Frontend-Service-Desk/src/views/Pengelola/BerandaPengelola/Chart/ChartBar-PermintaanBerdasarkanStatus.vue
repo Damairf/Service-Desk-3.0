@@ -38,7 +38,8 @@ onBeforeMount(async () => {
 });
 
 // data fixed jadi cmn ada di FrontEnd
-const warnaChart = ['#4264C2', '#CA4D2D','#F3A33C', '#449533', '#888888']
+const warnaChart = ['#4264C2', '#F3D13C', '#E74C3C', '#F39C12', '#27AE60', '#8E44AD'];
+
 
 // data dummy Bar (computed agar reactive)
 const permintaanBerdasarkanStatusData = computed(() => ({

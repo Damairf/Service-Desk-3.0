@@ -40,7 +40,8 @@ onBeforeMount(async () => {
 });
 
 //data fixed jadi cmn ada di FrontEnd
-const warnaChart = ['#4264C2', '#CA4D2D']
+const warnaChart = ['#4264C2', '#F3D13C', '#E74C3C', '#F39C12', '#27AE60', '#8E44AD'];
+
 //presentasi progress bulan ini
 const progressBulanIniData = computed(() => ({
   labels: labelProgressBulanIni.value,
