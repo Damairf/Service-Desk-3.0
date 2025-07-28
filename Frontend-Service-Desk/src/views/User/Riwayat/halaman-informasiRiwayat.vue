@@ -121,7 +121,6 @@ const messages = ref([
   border-radius: 8px;
   border: 1px solid #ccc;
   resize: vertical;
-  background-color: #e6e6e6;
 }
 
 .chat-content {
@@ -137,8 +136,8 @@ const messages = ref([
 }
 
 .view-only-chat {
-  min-height: 450px;
-  max-height: 450px;
+  min-height: 300px;
+  max-height: 400px;
 }
 
 .message-bubble {

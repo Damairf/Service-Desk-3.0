@@ -1,5 +1,5 @@
 <script setup>
-import { ref , onBeforeUnmount, onMounted, computed } from 'vue'
+import { ref , onBeforeMount, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 // buat backend
 import axios from 'axios'
@@ -36,31 +36,9 @@ function toProfile(){
 
 //ovelay
 const tampilinOverlay = ref(false)
-
-// Refs untuk elemen wrapper
-const profileRef = ref(null)
-
-function toggleOverlay() {
-  tampilinOverlay.value = !tampilinOverlay.value
-}
-
-function handleClickOutside(event) {
-  if (
-    tampilinOverlay.value &&
-    profileRef.value &&
-    !profileRef.value.contains(event.target)
-  ) {
-    tampilinOverlay.value = false
+function toggleOverlay(){
+    tampilinOverlay.value = !tampilinOverlay.value
   }
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
 
 // biar bisa buka tutup
 const isOpen = ref(true)
@@ -138,20 +116,17 @@ if (role.value == 1) {
     </button>
 
     <!-- Profile -->
-    <div class="profile" ref="profileRef" @click="toggleOverlay">
+    <div class="profile" @click="toggleOverlay">
       <img
-        :src="`http://localhost:8000/images/${gambar}`"
-        alt="Foto Profil"
-        class="gambar-profile"
-      />
-    <span class="nama-profile">
-      {{ nama_depan + " " + nama_belakang }} <br />
-      {{ role }}
-    </span>
-
+          :src="`http://localhost:8000/images/${gambar}`"
+          alt="Foto Profil"
+          class="gambar-profile"
+        />
+    <span class="nama-profile">{{nama_depan + " " + nama_belakang}} <br> {{role}}</span>
+    
     <!-- Profile Dropdown Menu -->
     <div v-if="tampilinOverlay" class="profile-dropdown">
-      <button class="dropdown-item" @click="() => { toggleOverlay(); toProfile() }">
+      <button class="dropdown-item" @click="() => {toggleOverlay(); toProfile()}">
         <span class="dropdown-icon">👤</span>
         <span v-if="isOpen" class="dropdown-text">Profil Saya</span>
       </button>
@@ -161,7 +136,6 @@ if (role.value == 1) {
       </button>
     </div>
     </div>
-
 
     <!-- Menu -->
     <router-link
