@@ -29,6 +29,7 @@ import halamanLacakPengelola from '../views/Pengelola/Pelayanan/halaman-lacak-Pe
 import halamanInformasiPengelola from '../views/Pengelola/Pelayanan/halaman-informasi-PelayananPengelola.vue'
 import PenggunaPengelola from '../views/Pengelola/Pengguna/PenggunaPengelola.vue'
 import lembagaOrganisasi from '../views/Pengelola/LembagaOrganisasi/Organisasi.vue'
+import tambahOrganisasi from '../views/Pengelola/LembagaOrganisasi/TambahOrganisasi.vue'
 
 // Daftar rute
 const routes = [
@@ -73,6 +74,7 @@ const routes = [
   },
   { path: '/pengguna', name: 'penggunaPengelola', component: PenggunaPengelola},
   { path: '/lembaga', name: 'lembaga/Organisasi', component: lembagaOrganisasi  },
+  { path: '/tambahLembaga', name: 'TambahLembaga', component:  tambahOrganisasi },
 ]
 
 const router = createRouter({
