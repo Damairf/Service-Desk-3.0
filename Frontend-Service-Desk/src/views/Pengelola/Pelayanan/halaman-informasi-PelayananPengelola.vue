@@ -31,7 +31,7 @@ const idUnitTerpilih = ref('')
 const insiden = ref('')
 
 
-// Tombol Setuju
+// === Untuk Tombol Setuju ===
 const pilihan = ref('')
 function handlePilihan(klik){
   pilihan.value = klik
