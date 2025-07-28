@@ -147,6 +147,7 @@ const handleSubmit = () => {
   font-size: 1rem;
   background: #fafafa;
   transition: border 0.2s;
+  color: black;
 }
 .form-group input:focus,
 .form-group select:focus {
