@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted, onBeforeMount } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -15,7 +15,6 @@ return new Date(dateString).toLocaleDateString('id-ID');
 }
 
 const router = useRouter()
-// Data dan state
 const search = ref('')
 const currentPage = ref(1)
 const itemsPerPage = 10

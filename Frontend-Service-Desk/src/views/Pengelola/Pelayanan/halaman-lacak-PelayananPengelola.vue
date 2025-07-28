@@ -1,24 +1,34 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 // buat import tulisan perihalnya, tapi kyknya mending diammbil dari backendnya
 const idLayanan = ref(route.query.layanan || '')
 const currentStep = ref(0) // buat tau 
+const steps = ref([])
+
+onUnmounted(() => {
+  localStorage.removeItem('steps');
+});
 
 onMounted(() => {
   window.scrollTo(0, 0);
   });
 
-const steps = [
-  'Permintaan Masuk',
-  'Pembuatan Email dan Password Untuk Pengguna',
-  'Pemberian Hasil dan BA',
-  'Validasi Permintaan Layanan',
-  'User Membalas BA dan Survei',
-  'Penutupan Permintaan Layanan',
-  '✓' // Checkmark step terakhir
-]
+  onMounted(() => {
+  window.scrollTo(0, 0)
+
+  const savedSteps = localStorage.getItem('steps')
+  if (savedSteps) {
+    try {
+      steps.value = JSON.parse(savedSteps)
+    } catch (e) {
+      console.error('Gagal parse steps dari localStorage:', e)
+    }
+  } else {
+    console.warn('Steps belum ada di localStorage')
+  }
+})
 </script>
 
 <template>
@@ -34,13 +44,10 @@ const steps = [
         class="circle"
         :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
       >
-        {{ step === '✓' ? '✓' : index + 1 }}
+        {{ index + 1 }}
       </div>
 
-      <div
-        class="step-label"
-        v-if="step !== '✓'"
-      >
+      <div class="step-label">
         {{ step }}
       </div>
     </div>

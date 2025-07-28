@@ -18,6 +18,7 @@ const token = localStorage.getItem('Token');
   })
   .then(response => {
     dataOrganisasi.value = response.data.map(item => ({
+      id_organisasi: item.ID_Organisasi,
       nama_PerangkatDaerah: item.Nama_OPD,
       induk_PerangkatDaerah: item.induk?.Nama_OPD || '-',
       email: item.Email,
@@ -34,7 +35,7 @@ const search = ref('')
 const sortKey = ref('')
 const sortOrder = ref('asc')
 const currentPage = ref(1)
-const itemsPerPage = 5
+const itemsPerPage = 10
 
 const filteredItems = computed(() => {
   let items = dataOrganisasi.value.filter(item =>
@@ -80,22 +81,58 @@ watch(search, () => {
   currentPage.value = 1
 })
 
+
+
 // === Modal Delete ===
 const showModal = ref(false)
 const idOrganisasiToDelete = ref(null)
 
 function Delete(user) {
-  idOrganisasiToDelete.value = user 
+  idOrganisasiToDelete.value = user.id_organisasi
   showModal.value = true
 }
+
 function cancelDelete() {
   showModal.value = false
   idOrganisasiToDelete.value = null
 }
+
 function confirmDelete() {
-  dataOrganisasi.value = dataOrganisasi.value.filter(u => u.nama_PerangkatDaerah !== idOrganisasiToDelete.value.nama_PerangkatDaerah)
+  const token = localStorage.getItem('Token');
+  axios.delete(`http://127.0.0.1:8000/api/organisasi/${idOrganisasiToDelete.value}`, {
+  headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(() => {
+  dataOrganisasi.value = dataOrganisasi.value.filter(
+    org => org.id_organisasi !== idOrganisasiToDelete.value
+  )
   showModal.value = false
   idOrganisasiToDelete.value = null
+})
+
+  .catch(error => {
+    console.error(error);
+    alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus organisasi.');
+  });
+}
+
+const organisasiTerpilih = computed(() =>
+  dataOrganisasi.value.find(item => item.ID_Organisasi === idOrganisasiToDelete.value)
+)
+
+
+function editOrganisasi(user) {
+  router.push({
+    path: '/ubahLembaga',
+    query: {
+      nama_PerangkatDaerah: user.nama_PerangkatDaerah,
+      induk_PerangkatDaerah: user.induk_PerangkatDaerah,
+      email: user.email,
+      status: user.status
+    }
+  })
 }
 </script>
 
@@ -126,7 +163,7 @@ function confirmDelete() {
             <td>{{ user.email }}</td>
             <td>{{ user.status }}</td>
             <td>
-              <button class="aksiEdit-btn" title="Edit">Ubah</button>
+              <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(user)">Ubah</button>
               <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
             </td>
           </tr>
@@ -150,7 +187,7 @@ function confirmDelete() {
     <div class="modal-box">
       <h3>Konfirmasi Hapus</h3>
       <p>
-        Apakah Anda yakin ingin menghapus lembaga <strong>{{ idOrganisasiToDelete.nama_PerangkatDaerah }}</strong>?
+        Apakah Anda yakin ingin menghapus lembaga/organisasi <strong></strong>?
       </p>
       <div class="modal-actions">
         <button class="btn danger" @click="confirmDelete()">Ya, hapus</button>
