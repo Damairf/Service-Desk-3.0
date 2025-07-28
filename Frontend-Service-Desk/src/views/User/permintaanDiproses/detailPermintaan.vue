@@ -69,7 +69,8 @@ const handleTabChange = (tab) => {
     router.push({
       name: 'HalamanLacak', 
       query: {
-        layanan: pelayananId.value
+        layanan: pelayananId.value,
+        steps: JSON.stringify(steps.value)
       }
     })
   } else if (tab === 'informasi') {
