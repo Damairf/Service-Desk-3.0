@@ -1,11 +1,15 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 // buat import tulisan perihalnya, tapi kyknya mending diammbil dari backendnya
 const idLayanan = ref(route.query.layanan || '')
 const currentStep = ref(0) // buat tau 
 const steps = ref([])
+
+onUnmounted(() => {
+  localStorage.removeItem('steps');
+});
 
 onMounted(() => {
   window.scrollTo(0, 0);
