@@ -1,37 +1,22 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios'
 
-const route = useRoute()
 // buat import tulisan perihalnya, tapi kyknya mending diammbil dari backendnya
-const idLayanan = ref(route.query.layanan || '')
-const sets = ref(route.query.id_jenis_pelayanan)
 const currentStep = ref(0) // buat tau 
+const route = useRoute()
 const steps = ref([])
 
 onMounted(() => {
   window.scrollTo(0, 0);
-  });
-
-// onMounted(async () => {
-//   try {
-//     const token = localStorage.getItem('Token');
-    
-//     const pelayananRes = await axios.get(`http://127.0.0.1:8000/api/pelayananUser/${idLayanan.value}`, {
-//       headers: { Authorization: 'Bearer ' + token }
-//     });
-
-//     const ID_Jenis_Pelayanan = pelayananRes.data.ID_Jenis_Pelayanan;
-
-//     const alurRes = await axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${ID_Jenis_Pelayanan}`, {
-//       headers: { Authorization: 'Bearer ' + token }
-//     });
-//     steps.value = alurRes.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
-//   } catch (err) {
-//     console.error(err);
-//   }
-// });
+  try {
+    steps.value = JSON.parse(route.query.steps)
+    console.log(steps.value)
+    console.log(route.query.steps)
+  } catch (e) {
+    steps.value = []
+  }
+})
 </script>
 
 <template>

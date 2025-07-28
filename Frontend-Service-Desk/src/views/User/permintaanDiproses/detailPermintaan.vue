@@ -20,6 +20,7 @@ const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
+const steps = ref('')
 const activeTab = ref('tracking')
 const currentStep = ref(0)
 
@@ -35,7 +36,6 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
   surat_dinas.value = response.data.Surat_Dinas_Path
   lampiran.value = response.data.Lampiran_Path
   jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
-  id_jenis_pelayanan.value = response.data.ID_Jenis_Pelayanan
   nama_depanPengaju.value = response.data.user.Nama_Depan
   nama_belakangPengaju.value = response.data.user.Nama_Belakang
   perihal.value = response.data.Perihal
@@ -45,6 +45,23 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
   console.log(error)
 });
 
+axios.get(`http://127.0.0.1:8000/api/pelayananUser/${pelayananId.value}`, {
+  headers: { Authorization: 'Bearer ' + token }
+})
+.then(response => {
+  id_jenis_pelayanan.value = response.data.ID_Jenis_Pelayanan;
+  return axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${id_jenis_pelayanan.value}`, {
+    headers: { Authorization: 'Bearer ' + token }
+  });
+})
+.then(response => {
+  console.log('Respons API untuk steps:', response.data);
+  steps.value = response.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
+  console.log('Steps yang dipetakan:', steps.value);
+})
+.catch(error => {
+  console.error('Gagal mengambil steps:', error)
+});
 // Fungsi untuk menangani perubahan tab
 const handleTabChange = (tab) => {
   activeTab.value = tab
@@ -52,7 +69,8 @@ const handleTabChange = (tab) => {
     router.push({
       name: 'HalamanLacak', 
       query: {
-        layanan: pelayananId.value
+        layanan: pelayananId.value,
+        steps: JSON.stringify(steps.value)
       }
     })
   } else if (tab === 'informasi') {
