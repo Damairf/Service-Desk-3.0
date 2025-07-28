@@ -30,6 +30,7 @@ const alasanTolak = ref('')
 const pelaksana = ref([])
 const idUnitTerpilih = ref('')
 const idStatus = ref('')
+const untukTeknisi = ref('')
 
 // === Untuk Tombol Setuju ===
 const pilihan = ref('')

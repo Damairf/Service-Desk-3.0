@@ -69,9 +69,7 @@ watch(search, () => {
     <div class="user-card">
       <h1 class="title">Daftar Pengguna</h1>
       <div class="top-actions">
-        <button class="btn tambah">
-          <i class="fas fa-plus-circle"></i> Tambah
-        </button>
+        <button class="btn tambah">Tambah</button>
       </div>
       <div class="search-bar">
         <i class="fas fa-search"></i>
