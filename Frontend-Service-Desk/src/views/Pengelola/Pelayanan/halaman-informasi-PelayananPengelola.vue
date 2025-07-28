@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios'
 const router = useRouter()
 const route = useRoute()
 
@@ -25,7 +26,7 @@ const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
 
 const alasanTolak = ref('')
-const pelaksana = ref(['ipul1', 'ipul 2'])
+const pelaksana = ref([])
 const pelaksanaTerpilih = ref('')
 
 // Tombol Setuju
@@ -33,6 +34,25 @@ const pilihan = ref('')
 function handlePilihan(klik){
   pilihan.value = klik
 }
+
+const token = localStorage.getItem('Token');
+axios.get('http://127.0.0.1:8000/api/pelayanan/setuju', {
+  headers: {
+    Authorization: 'Bearer ' + token
+  }
+})
+.then(response => {
+  console.log(response.data.map(item => item.Nama_Depan))
+  pelaksana.value = response.data.map(item => ({
+    nama_depan: item.Nama_Depan,
+    nama_belakang: item.Nama_Belakang
+  }));  
+  
+})
+.catch(error => {
+  console.error(error); 
+});
+
 function handleSelesai() {
   if (pilihan.value === 'Setuju') {
     console.log('Setuju dengan pelaksana:', pelaksanaTerpilih.value)
@@ -133,9 +153,9 @@ const addMessage = () => {
       <div class='wrapper-setuju'v-if='pilihan == "Setuju"'>
         <h4>Unit Pelaksana</h4>
         <select id="status" v-model="pelaksanaTerpilih">
-          <option value="" disabled>Pilih salah satu Pelaksana</option>
-          <option v-for="option in pelaksana" :key="option" :value="option">
-            {{ option }}
+          <option value="" disabled>Pilih Unit Pelaksana</option>
+          <option v-for="option in pelaksana" :key="option.nama_depan + option.nama_belakang" :value="option">
+            {{ option.nama_depan }} {{ option.nama_belakang }}
           </option>
         </select>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>

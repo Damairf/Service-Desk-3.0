@@ -36,6 +36,7 @@ Route::post('/uploadKeperluan',[PelayananController::class, 'uploadKeperluan']);
 Route::put('/pelayanan/tambah/survey/{pelayananId}',[PelayananController::class, 'putSurvey']);
 Route::get('/pelayananUser',[PelayananController::class, 'Pelayanan_byUser']);
 Route::get('/pelayananUser/{pelayananId}',[PelayananController::class, 'getByID_Pelayanan_Jenis_User']);
+
 Route::get('/alur/jenis_pelayanan/{id}',[AlurController::class, 'getAlurByJenisPelayanan']);
 
 
@@ -78,9 +79,9 @@ Route::get('/jnsPelayananChart',[PelayananController::class, 'Chart_PelayananJns
 Route::get('/TknsPelayananChart',[PelayananController::class, 'Chart_PelayananTkns']);
 Route::get('/ratePelayananChart',[PelayananController::class, 'Chart_PelayananRate']);
 Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
-Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
-
+Route::get('/pelayanan/setuju',[UserController::class, 'setuju']);
 Route::get('/pdf/{filename}', [PelayananController::class, 'getPdfUrl']);
+Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
 
 
 
