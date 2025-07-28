@@ -83,6 +83,24 @@ function goToPage(page) {
 watch(search, () => {
   currentPage.value = 1
 })
+
+// === Modal saat delete ===
+const showModal = ref(false)
+const idUserToDelete = ref(null)
+
+function Delete(user) {
+  idUserToDelete.value = user 
+  showModal.value = true
+}
+function cancelDelete() {
+  showModal.value = false
+  idUserToDelete = null
+}
+function confirmDelete() {
+  daftarPengguna.value = daftarPengguna.value.filter(u => u.id !== idUserToDelete.value.id)
+  showModal = false
+  idUserToDelete = null
+}
 </script>
 
 <template>
@@ -115,9 +133,8 @@ watch(search, () => {
             <td>{{ user.organisasi }}</td>
             <td>{{ user.status }}</td>
             <td>
-              <button class="icon-btn" title="Edit"><i class="fas fa-edit"></i></button>
-              <button class="icon-btn" title="Delete"><i class="fas fa-trash"></i></button>
-              <button class="icon-btn" title="Reset"><i class="fas fa-undo"></i></button>
+              <button class="aksiEdit-btn" title="Edit">Ubah</button>
+              <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
             </td>
           </tr>
         </tbody>
@@ -134,6 +151,20 @@ watch(search, () => {
       </div>
     </div>
   </div>
+  <!-- Overlay buat delete -->
+   <div v-if="showModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Konfirmasi Hapus</h3>
+      <p>
+        Apakah Anda yakin ingin menghapus pengguna <strong>{{ idUserToDelete.nama_depan }} {{ idUserToDelete.nama_belakang }}</strong>?
+      </p>
+      <div class="modal-actions">
+        <button class="btn danger" @click="confirmDelete()">Ya, hapus</button>
+        <button class="btn" @click="cancelDelete()">Batal</button>
+      </div>
+    </div>
+
+   </div>
 </template>
 
 
@@ -237,21 +268,36 @@ watch(search, () => {
 .data-table tr {
   border-bottom: 1px solid #eee;
 }
-.icon-btn {
-  background: #f7f7f7;
+/* tombol aksi */
+.aksiEdit-btn {
+  background: #2196f3;
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 0.3rem 0.5rem;
   margin-right: 0.2rem;
   cursor: pointer;
   font-size: 1rem;
-  color: #222;
+  color: white;
   transition: background 0.2s, color 0.2s;
 }
-.icon-btn:hover {
-  background: #e0e0e0;
-  color: #c14421;
+.aksiEdit-btn:hover {
+  background: #1976d2;
 }
+.aksiDelete-btn {
+  background: #c14421;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  margin-right: 0.2rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: white;
+  transition: background 0.2s, color 0.2s;
+}
+.aksiDelete-btn:hover {
+  background: #a63a1d;
+}
+/* Pengganti Halaman */
 .pagination {
   display: flex;
   justify-content: center;
@@ -275,5 +321,40 @@ watch(search, () => {
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* === Modal=== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.modal-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn.danger {
+  background: #e53935;
+  color: white;
 }
 </style>
