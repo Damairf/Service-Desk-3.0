@@ -75,8 +75,20 @@ watch(filteredItems, () => {
 // Methods
 function checkProgress(item) {
   router.push({
-    name: 'DetailRiwayat',
-    query: { layanan: item.ticket }
+    name: 'DetailPermintaanRiwayat',
+    query: {
+      layanan: item.ticket,
+      perihal: item.perihal,
+      tanggal: item.date,
+      nama_depanPengaju: item.pic, // adjust if you have separate first/last name
+      // nama_belakangPengaju: '', // add if available
+      jenis_pelayanan: '', // add if available
+      organisasi: '', // add if available
+      deskripsi: '', // add if available
+      surat_dinas: '', // add if available
+      lampiran: '', // add if available
+      tab: 'informasi' // to open the Informasi tab by default
+    }
   })
 }
 </script>
