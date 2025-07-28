@@ -63,7 +63,7 @@ function handleSelesai() {
   {
     ID_Unit: idUnitTerpilih.value,
     ID_Status: 2,
-    Insiden: null
+    Insiden: insiden.value
   }
   , {
     headers: {
@@ -181,7 +181,7 @@ const addMessage = () => {
             {{ option.nama_depan }} {{ option.nama_belakang }}
           </option>
         </select>
-        <h4>Pesan untuk Teknisi</h4>
+        <h4>Pesan untuk Unit Pelaksana</h4>
         <textarea class="input" v-model="insiden"></textarea>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>
       </div>
