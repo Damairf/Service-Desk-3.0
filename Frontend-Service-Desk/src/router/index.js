@@ -34,6 +34,7 @@ import detailPelayanan from '../views/Pengelola/Pelayanan/detailPelayanan.vue'
 import halamanLacakPengelola from '../views/Pengelola/Pelayanan/halaman-lacak-PelayananPengelola.vue'
 import halamanInformasiPengelola from '../views/Pengelola/Pelayanan/halaman-informasi-PelayananPengelola.vue'
 import PenggunaPengelola from '../views/Pengelola/Pengguna/PenggunaPengelola.vue'
+import TambahPengguna from '../views/Pengelola/Pengguna/TambahPengguna.vue'
 import lembagaOrganisasi from '../views/Pengelola/LembagaOrganisasi/Organisasi.vue'
 import tambahOrganisasi from '../views/Pengelola/LembagaOrganisasi/TambahOrganisasi.vue'
 import ubahOrganisasi from '../views/Pengelola/LembagaOrganisasi/EditOrganisasi.vue'
@@ -93,6 +94,7 @@ const routes = [
     ]
   },
   { path: '/pengguna', name: 'penggunaPengelola', component: PenggunaPengelola},
+  { path: '/tambahPengguna', name: 'TambahPengguna', component: TambahPengguna},
   { path: '/lembaga', name: 'lembaga/Organisasi', component: lembagaOrganisasi  },
   { path: '/tambahLembaga', name: 'TambahLembaga', component:  tambahOrganisasi },
   { path: '/ubahLembaga', name: 'UbahLembaga', component: ubahOrganisasi},
