@@ -81,6 +81,8 @@ watch(search, () => {
   currentPage.value = 1
 })
 
+
+
 // === Modal Delete ===
 const showModal = ref(false)
 const idOrganisasiToDelete = ref(null)
@@ -115,6 +117,11 @@ function confirmDelete() {
     alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus organisasi.');
   });
 }
+
+const organisasiTerpilih = computed(() =>
+  dataOrganisasi.value.find(item => item.ID_Organisasi === idOrganisasiToDelete.value)
+)
+
 
 function editOrganisasi(user) {
   router.push({
@@ -180,7 +187,7 @@ function editOrganisasi(user) {
     <div class="modal-box">
       <h3>Konfirmasi Hapus</h3>
       <p>
-        Apakah Anda yakin ingin menghapus lembaga <strong>{{ idOrganisasiToDelete.nama_PerangkatDaerah }}</strong>?
+        Apakah Anda yakin ingin menghapus lembaga/organisasi <strong></strong>?
       </p>
       <div class="modal-actions">
         <button class="btn danger" @click="confirmDelete()">Ya, hapus</button>
