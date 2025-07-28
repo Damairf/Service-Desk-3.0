@@ -31,7 +31,7 @@ class OrganisasiController extends Controller
     public function insertOne_Organisasi(Request $request){
         $dataOrganisasi = $request->only([
         'Nama_OPD',
-        'Induk_OPD',
+        'ID_Induk_Organisasi',
         'Nama_Pengelola',
         'No_HP_Pengelola',
         'Email',

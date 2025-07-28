@@ -18,6 +18,7 @@ const token = localStorage.getItem('Token');
   })
   .then(response => {
     dataOrganisasi.value = response.data.map(item => ({
+      id_organisasi: item.ID_Organisasi,
       nama_PerangkatDaerah: item.Nama_OPD,
       induk_PerangkatDaerah: item.induk?.Nama_OPD || '-',
       email: item.Email,
@@ -34,7 +35,7 @@ const search = ref('')
 const sortKey = ref('')
 const sortOrder = ref('asc')
 const currentPage = ref(1)
-const itemsPerPage = 5
+const itemsPerPage = 10
 
 const filteredItems = computed(() => {
   let items = dataOrganisasi.value.filter(item =>
@@ -85,17 +86,34 @@ const showModal = ref(false)
 const idOrganisasiToDelete = ref(null)
 
 function Delete(user) {
-  idOrganisasiToDelete.value = user 
+  idOrganisasiToDelete.value = user.id_organisasi
   showModal.value = true
 }
+
 function cancelDelete() {
   showModal.value = false
   idOrganisasiToDelete.value = null
 }
+
 function confirmDelete() {
-  dataOrganisasi.value = dataOrganisasi.value.filter(u => u.nama_PerangkatDaerah !== idOrganisasiToDelete.value.nama_PerangkatDaerah)
+  const token = localStorage.getItem('Token');
+  axios.delete(`http://127.0.0.1:8000/api/organisasi/${idOrganisasiToDelete.value}`, {
+  headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(() => {
+  dataOrganisasi.value = dataOrganisasi.value.filter(
+    org => org.id_organisasi !== idOrganisasiToDelete.value
+  )
   showModal.value = false
   idOrganisasiToDelete.value = null
+})
+
+  .catch(error => {
+    console.error(error);
+    alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus organisasi.');
+  });
 }
 </script>
 
