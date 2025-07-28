@@ -130,7 +130,10 @@ if (role.value == 1) {
     <span class="nama-profile">{{nama_depan + " " + nama_belakang}} <br> {{role}}</span>
     
     <!-- Profile Dropdown Menu -->
-    <div v-if="tampilinOverlay" class="profile-dropdown">
+    <div v-if="tampilinOverlay" 
+      class="profile-dropdown"
+      :class="{'collapsed': !isOpen}"
+    >
       <button class="dropdown-item" @click="() => {toggleOverlay(); toProfile()}">
         <span class="dropdown-icon">👤</span>
         <span v-if="isOpen" class="dropdown-text">Profil Saya</span>
@@ -172,6 +175,7 @@ if (role.value == 1) {
   align-items: center;
   gap: 10px;
   overflow: hidden;
+  animation: slideDown 0.3s ease;
 }
 
 @keyframes slideDown {
