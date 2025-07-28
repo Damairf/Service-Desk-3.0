@@ -105,8 +105,13 @@ if (role.value == 1) {
     <!-- Logo -->
     <div class="logo-wrapper">
       <div class="logo">
-        <span v-if="isOpen">Service<br>Desk V3.0</span>
-        <img v-else :src="LogoServiceDesk" alt="Logo" class="sidebar-logo" />
+        <template v-if="isOpen">
+          <img :src="LogoServiceDesk" alt="Logo" class="sidebar-logo-large" />
+          <span class="logo-text">Service<br>Desk V3.0</span>
+        </template>
+        <template v-else>
+          <img :src="LogoServiceDesk" alt="Logo" class="sidebar-logo" />
+        </template>
       </div>
     </div>
 
@@ -180,12 +185,20 @@ if (role.value == 1) {
   }
 }
 
+.sidebar-logo-large {
+  width: 65px;
+  height: 65px;
+  transition: all 0.3s ease;
+}
+
 .sidebar-logo {
   width: 32px;
   height: 32px;
   display: block;
   margin: 0 auto;
+  transition: all 0.3s ease;
 }
+
 
 .dropdown-item {
   display: flex;
@@ -300,12 +313,23 @@ if (role.value == 1) {
 .logo {
   font-size: 20px;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 30px 10px;
   width: 100%;
   box-sizing: border-box;
   color: white;
   transition: all 0.3s ease;
+}
+
+.logo-text {
+  display: inline-block;
+  text-align: left;
+  margin-left: 0;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .tombol-toggle {

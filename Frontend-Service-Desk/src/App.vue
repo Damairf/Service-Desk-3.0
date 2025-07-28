@@ -35,6 +35,7 @@ html, body, #app {
   margin: 0;
   padding: 0;
   background: #FAF4FF !important;
+  overflow-x: hidden;
 }
 </style>
 

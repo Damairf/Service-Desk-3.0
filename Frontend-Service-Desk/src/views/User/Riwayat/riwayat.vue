@@ -29,7 +29,9 @@ onMounted(() => {
   })
   .then(response => {
     console.log(response);
-    items.value = response.data.map(item => ({
+    items.value = response.data.filter(item =>
+        ['Tutup', 'Ditolak'].includes(item.status_pelayanan?.Nama_Status)
+      ).map(item => ({
       ticket: item.ID_Pelayanan,
       perihal: item.Perihal,
       pic: item.teknis_pelayanan?.Nama_Depan || '-',

@@ -30,7 +30,7 @@ onMounted(() => {
   .then(response => {
     console.log(response)
     items.value = response.data.filter(item =>
-        ['Selesai', 'Tutup'].includes(item.status_pelayanan?.Nama_Status)
+        ['Selesai'].includes(item.status_pelayanan?.Nama_Status)
       ).map(item => ({
         ticket: item.ID_Pelayanan,
         perihal: item.Perihal,
