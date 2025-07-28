@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const router = useRouter()
+import axios from 'axios'
 const route = useRoute()
 
 function formatDate(dateString) {
@@ -36,6 +37,11 @@ const messages = ref([
   }
 ])
 
+const rating = ref(0)
+const hoverRating = ref(0)
+const reviewText = ref('')
+const reviewSubmitted = ref(false)
+
 const newMessage = ref('')
 
 const addMessage = () => {
@@ -46,6 +52,29 @@ const addMessage = () => {
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     })
     newMessage.value = ''
+  }
+}
+
+const setRating = (newRating) => {
+  rating.value = newRating
+}
+
+const submitReview = async () => {
+  if (rating.value === 0) {
+    alert('Mohon berikan rating bintang terlebih dahulu.')
+    return
+  }
+  try {
+    const token = localStorage.getItem('Token')
+    // Assuming an endpoint exists to post reviews
+    await axios.post(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}/review`, {
+      rating: rating.value,
+      comment: reviewText.value
+    }, { headers: { Authorization: 'Bearer ' + token } })
+    reviewSubmitted.value = true
+  } catch (error) {
+    console.error('Gagal mengirim ulasan:', error)
+    alert('Gagal mengirim ulasan. Silakan coba lagi.')
   }
 }
 </script>
@@ -73,6 +102,31 @@ const addMessage = () => {
           Lampiran
         </a>
       </div>
+      </div>
+
+      <!-- Review Section -->
+      <div class="review-section">
+        <div v-if="!reviewSubmitted">
+          <h4 class="review-title">Beri Ulasan</h4>
+          <div class="star-rating">
+            <span
+              v-for="star in 5"
+              :key="star"
+              class="star"
+              :class="{ 'filled': star <= (hoverRating || rating) }"
+              @mouseover="hoverRating = star"
+              @mouseleave="hoverRating = 0"
+              @click="setRating(star)"
+            >
+              ★
+            </span>
+          </div>
+          <textarea v-model="reviewText" class="review-textarea" placeholder="Bagikan pengalaman Anda..." rows="4"></textarea>
+          <button class="send-btn" @click="submitReview">Kirim Ulasan</button>
+        </div>
+        <div v-else class="thank-you-message">
+          <p>Terima kasih! Ulasan Anda telah kami terima.</p>
+        </div>
       </div>
     </div>
 
@@ -138,7 +192,7 @@ const addMessage = () => {
 }
 
 .textarea-row textarea {
-  width: 100%;
+  width: 97%;
   margin-top: 0.5rem;
   padding: 0.5rem;
   border-radius: 8px;
@@ -185,7 +239,7 @@ const addMessage = () => {
 }
 
 .message {
-  width: 100%;
+  width: 97%;
   border: 1px solid #aaa;
   border-radius: 8px;
   padding: 0.5rem;
@@ -216,4 +270,53 @@ const addMessage = () => {
   color: black;
 }
 
+.review-section {
+  margin-top: 2rem;
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
+}
+
+.review-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.star-rating {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.star {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.review-textarea {
+  width: 95%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.75rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  background-color: white;
+  color: black;
+}
+
+.thank-you-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
 </style>
