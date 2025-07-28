@@ -14,9 +14,15 @@ import permintaanDiproses from '../views/User/permintaanDiproses/permintaanDipro
 import detailPermintaan from '../views/User/permintaanDiproses/detailPermintaan.vue'
 import halamanLacak from '../views/User/permintaanDiproses/halaman-lacak.vue'
 import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
+
+// Hasil Pemenuhan BASLA
+import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
+import detailPermintaanHasil from '../views/User/HasilPemenuhan/detailPermintaanHasil.vue'
+import halamanLacakHasil from '../views/User/HasilPemenuhan/halaman-lacakHasil.vue'
+import halamanInformasiHasil from '../views/User/HasilPemenuhan/halaman-informasiHasil.vue'
+
 //Riwayat
 import riwayat from '../views/User/Riwayat/riwayat.vue'
-import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
 import detailPermintaanRiwayat from '../views/User/Riwayat/detailPermintaanRiwayat.vue'
 import halamanLacakRiwayat from '../views/User/Riwayat/halaman-lacakRiwayat.vue'
 import halamanInformasiRiwayat from '../views/User/Riwayat/halaman-informasiRiwayat.vue'
@@ -37,15 +43,18 @@ const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', name: 'Login', component: Login },
   // Halaman Profile
-  { path: '/profileSaya', nama: 'ProfileSaya', component: profileSaya },
-  { path: '/editProfile', nama: 'EditProfile', component: editProfile},
+  { path: '/profileSaya', name: 'ProfileSaya', component: profileSaya },
+  { path: '/editProfile', name: 'EditProfile', component: editProfile},
   //===============USER===============
   // Halaman Beranda 
   { path: '/beranda', name: 'Beranda', component: beranda },
+ 
   // User
+  
   // Halaman permintaan baru 
   { path: '/permintaanBaru', name: 'PermintaanBaru', component: permintaanBaru},
   { path: '/FormulirTiket', name: 'FormulirTiketBaru', component: HalamanFormulirTiketBaru},
+  
   // Halaman permintaan diproses
   { path: '/permintaanDiproses', name: 'PermintaanDiproses', component: permintaanDiproses },
   { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, 
@@ -54,7 +63,17 @@ const routes = [
       { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi}
     ]
   },
+
+  // Hasil Pemenuhan BASLA
   { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA},
+  { path: '/detailPermintaanHasil', name: 'DetailPermintaanHasil', component: detailPermintaanHasil,
+    children: [
+      {path: 'lacakHasil', name: 'HalamanLacakHasil', component: halamanLacakHasil},
+      {path: 'informasiHasil', name: 'HalamanInformasiHasil', component: halamanInformasiHasil}  
+    ]
+  },
+
+  // Riwayat
   { path: '/riwayat', name: 'Riwayat', component: riwayat},
   { path: '/detailPermintaanRiwayat', name: 'DetailPermintaanRiwayat', component: detailPermintaanRiwayat,
     children: [

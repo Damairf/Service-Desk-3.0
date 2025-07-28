@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+const router = useRouter()
 const route = useRoute()
 
 function formatDate(dateString) {
@@ -34,6 +35,19 @@ const messages = ref([
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }
 ])
+
+const newMessage = ref('')
+
+const addMessage = () => {
+  if (newMessage.value.trim()) {
+    messages.value.push({
+      text: newMessage.value,
+      sender: "User",
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    })
+    newMessage.value = ''
+  }
+}
 </script>
 
 <template>
@@ -64,7 +78,7 @@ const messages = ref([
 
     <div class="chat-card">
       <h3>Chat</h3>
-      <div class="chat-content view-only-chat">
+      <div class="chat-content">
         <div
           v-for="(message, index) in messages"
           :key="index"
@@ -74,6 +88,15 @@ const messages = ref([
           <span class="message-time">{{ message.time }}</span>
         </div>
       </div>
+
+      <textarea
+        v-model="newMessage"
+        class="message"
+        placeholder="Pesan"
+        @keyup.enter="addMessage"
+      ></textarea>
+
+      <button class="send-btn" @click="addMessage">Kirim</button>
     </div>
   </div>
 </template>
@@ -136,11 +159,6 @@ const messages = ref([
   gap: 0.5rem;
 }
 
-.view-only-chat {
-  min-height: 300px;
-  max-height: 400px;
-}
-
 .message-bubble {
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -164,6 +182,33 @@ const messages = ref([
   margin-top: 5px;
   text-align: right;
   opacity: 0.7;
+}
+
+.message {
+  width: 100%;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  padding: 0.5rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  background-color: white;
+  color: black;
+}
+
+.send-btn {
+  background: #006920;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.note {
+  color: #888;
+  font-size: 0.8rem;
+  margin-top: -0.3rem;
 }
 
 .input{

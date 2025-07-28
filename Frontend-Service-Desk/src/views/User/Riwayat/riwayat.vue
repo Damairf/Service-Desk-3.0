@@ -75,6 +75,7 @@ watch(filteredItems, () => {
 
 // Methods
 function checkProgress(item) {
+  alert(`Melihat detail untuk tiket: ${item.ticket}`)
   router.push({
     name: 'DetailPermintaanRiwayat',
     query: {
@@ -120,7 +121,7 @@ function checkProgress(item) {
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.pic }}</td>
-            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progress</a></td>
+            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Lihat Detail</a></td>
             <td>{{ item.status }}</td>
           </tr>
         </tbody>

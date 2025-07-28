@@ -77,9 +77,22 @@ watch(filteredItems, () => {
 
 // Methods
 function checkProgress(item) {
-  alert(`Checking progress for ticket ${item.ticket}`)
+  alert(`Melihat hasil untuk tiket: ${item.ticket}`)
   router.push({
-    name: 'DetailPermintaan', query: {layanan: item.id}
+    name: 'DetailPermintaanHasil',
+    query: {
+      layanan: item.ticket,
+      perihal: item.perihal,
+      tanggal: item.date,
+      nama_depanPengaju: item.pic, // adjust if you have separate first/last name
+      // nama_belakangPengaju: '', // add if available
+      jenis_pelayanan: '', // add if available
+      organisasi: '', // add if available
+      deskripsi: '', // add if available
+      surat_dinas: '', // add if available
+      lampiran: '',
+      tab: 'informasi'
+    }
   })
 }
 
@@ -112,7 +125,7 @@ function checkProgress(item) {
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.pic }}</td>
-            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progress</a></td>
+            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Lihat Hasil</a></td>
             <td>{{ item.status }}</td>
           </tr>
         </tbody>
