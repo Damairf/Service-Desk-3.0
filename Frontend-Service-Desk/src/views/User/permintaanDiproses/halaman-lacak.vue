@@ -6,16 +6,11 @@ import { useRoute } from 'vue-router'
 const currentStep = ref(0) // buat tau 
 const route = useRoute()
 const steps = ref([])
+const idLayanan = ref(route.query.layanan || '')
 
+steps.value = JSON.parse(route.query.steps)
 onMounted(() => {
   window.scrollTo(0, 0);
-  try {
-    steps.value = JSON.parse(route.query.steps)
-    console.log(steps.value)
-    console.log(route.query.steps)
-  } catch (e) {
-    steps.value = []
-  }
 })
 </script>
 
