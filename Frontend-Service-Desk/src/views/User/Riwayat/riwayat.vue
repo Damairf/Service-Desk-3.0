@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch,} from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 const router = useRouter()
@@ -20,7 +20,7 @@ watch(search, () => {
 
 const items = ref([])
 
-onMounted(() => {
+
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/pelayananUser', {
     headers: {
@@ -28,7 +28,6 @@ onMounted(() => {
     }
   })
   .then(response => {
-    console.log(response);
     items.value = response.data.map(item => ({
       ticket: item.ID_Pelayanan,
       perihal: item.Perihal,
@@ -44,7 +43,7 @@ onMounted(() => {
   .finally(() => {
   isLoading.value = false;
   });
-});
+
 
 
 
