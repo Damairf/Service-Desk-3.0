@@ -150,7 +150,7 @@ watch(search, () => {
   <div class="container">
     <div class="card">
       <h1 class="title">Data Pelayanan</h1>
-      <input type="text" v-model="search" placeholder="🔍 Cari" class="search-bar" />
+      <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
       
       <table class="rounded-table">
         <thead>
@@ -229,6 +229,7 @@ watch(search, () => {
   border: none;
   border-radius: 13px;
   background-color: #e0e0e0;
+  color: black;
   font-size: 14px;
 }
 

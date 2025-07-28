@@ -28,7 +28,7 @@ const alasanTolak = ref('')
 const pelaksana = ref(['ipul1', 'ipul 2'])
 const pelaksanaTerpilih = ref('')
 
-// Tombol Setuju
+// === Untuk Tombol Setuju ===
 const pilihan = ref('')
 function handlePilihan(klik){
   pilihan.value = klik
