@@ -59,19 +59,30 @@ class PelayananController extends Controller
     }
 
     // untuk role pengelola memberikan ID Unit Pelaksana
-    public function Verif_Pengelola(Request $request){
+    public function setuju(Request $request){
         $pelayananId = $request->route('pelayananId');
         $dataPelayanan = $request->only([
             'ID_Unit',
-            'ID_Status'
+            'ID_Status',
+            'Insiden'
         ]);
 
         $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
 
         $pelayanan->update($dataPelayanan);
+    }
 
-        return response(["Pelayanan diverifikasi menjadi " => $pelayanan->fresh()]);
-    
+    public function tolak(Request $request){
+        $pelayananId = $request->route('pelayananId');
+        $dataPelayanan = $request->only([
+            'Insiden',
+            'ID_Status',
+            'ID_Unit'
+        ]);
+
+        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
+
+        $pelayanan->update($dataPelayanan);
     }
         
     // hanya untuk role user memberikan survey

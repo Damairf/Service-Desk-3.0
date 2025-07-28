@@ -80,7 +80,8 @@ Route::get('/TknsPelayananChart',[PelayananController::class, 'Chart_PelayananTk
 Route::get('/ratePelayananChart',[PelayananController::class, 'Chart_PelayananRate']);
 Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
 Route::get('/pdf/{filename}', [PelayananController::class, 'getPdfUrl']);
-Route::put('/pelayanan/{pelayananId}', [PelayananController::class, 'Verif_Pengelola']);
+Route::put('/pelayanan/setuju/{pelayananId}', [PelayananController::class, 'setuju']);
+Route::put('/pelayanan/tolak/{pelayananId}', [PelayananController::class, 'tolak']);
 
 
 Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);

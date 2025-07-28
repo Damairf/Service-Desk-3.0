@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted  } from 'vue'
 import { useRoute , useRouter } from 'vue-router'
 const router = useRouter()
 import axios from 'axios'
@@ -7,6 +7,10 @@ import axios from 'axios'
 onMounted(() => {
   window.scrollTo(0, 0);
   });
+
+onUnmounted(() => {
+  localStorage.removeItem('ID_Jenis_Pelayanan');
+});
 
 // nerima dari pengajuanPermintaan.vue
 const route = useRoute()
@@ -111,10 +115,6 @@ axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
 .catch(error => {
   console.error(error.response?.data || error.message);
 });
-console.log("Surat:", suratDinas.value)
-console.log("Lampiran:", lampiran.value)
-console.log("Surat:", suratDinasPath.value)
-console.log("Lampiran:", lampiranPath.value)
 }
 </script>
 

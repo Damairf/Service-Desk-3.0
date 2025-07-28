@@ -26,11 +26,10 @@ const src_SuratDinas = ref(route.query.surat_dinas || '-')
 const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
 
-const alasanTolak = ref('')
 const pelaksana = ref([])
 const idUnitTerpilih = ref('')
-const idStatus = ref('')
-const untukTeknisi = ref('')
+const insiden = ref('')
+
 
 // === Untuk Tombol Setuju ===
 const pilihan = ref('')
@@ -45,7 +44,6 @@ axios.get('http://127.0.0.1:8000/api/pelayanan/unit', {
   }
 })
 .then(response => {
-  console.log(response.data.map(item => item.ID_User))
   pelaksana.value = response.data.map(item => ({
     id_user: item.ID_User,
     nama_depan: item.Nama_Depan,
@@ -61,29 +59,34 @@ function handleSelesai() {
   if (pilihan.value === 'Setuju') {
     
   const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, 
+  axios.put(`http://127.0.0.1:8000/api/pelayanan/setuju/${pelayananId.value}`, 
   {
     ID_Unit: idUnitTerpilih.value,
-    ID_Status: 2
+    ID_Status: 2,
+    Insiden: null
   }
   , {
     headers: {
       Authorization: 'Bearer ' + token,
     }
   })
-  .then(function(response){
-   console.log(response)
-  })
-  .catch(function(error) {
-    console.log(error);
-  });
-    console.log('Setuju dengan pelaksana:', idUnitTerpilih.value)
+  router.push('/pelayanan')
 
   } else if (pilihan.value === 'Tolak') {
-    console.log('Ditolak karena:', alasanTolak.value)
-    test.value = alasanTolak.value
-    // kirim ke backend di sini misalnya:
-    // axios.post('/api/tolak', { alasan: alasanTolak.value })
+
+    const token = localStorage.getItem('Token');
+  axios.put(`http://127.0.0.1:8000/api/pelayanan/tolak/${pelayananId.value}`, 
+  {
+    Insiden: insiden.value,
+    ID_Status: 3,
+    ID_Unit: null
+  }
+  , {
+    headers: {
+      Authorization: 'Bearer ' + token,
+    }
+  })
+  router.push('/pelayanan')
   }
 }
 
@@ -182,7 +185,7 @@ const addMessage = () => {
       </div>
       <div class="wrapper-tolak" v-if='pilihan =="Tolak"'>
         <h4>Alasan Ditolak</h4>
-        <textarea class="input" v-model="alasanTolak"></textarea>
+        <textarea class="input" v-model="insiden"></textarea>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>
       </div>
   </div>

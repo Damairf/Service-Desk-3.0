@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     
     public function findAll_User(){
-        $users = User::get();
+        $users = User::with('user_role', 'user_organisasi')->get();
         return response()->json($users);
     }
     

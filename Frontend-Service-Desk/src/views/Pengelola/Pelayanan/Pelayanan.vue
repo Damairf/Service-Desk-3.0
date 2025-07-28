@@ -12,48 +12,40 @@ const isLoading = ref(true)
 const layananData = ref([]);
 const sortKey = ref('') 
 const sortOrder = ref(null) 
-const nama_depanPengaju = ref('') 
-const nama_belakangPengaju = ref('')
-const jenis_pelayanan = ref('')
-const deskripsi = ref('')
-const surat_dinas = ref('')
-const lampiran = ref('')
 
-//ke halaman detail 
-function lihatDetail(item){
+onMounted(() => {
   const token = localStorage.getItem('Token');
-  
-  const pelayananId = ref(item.noTiket)
-  axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
+  axios.get('http://127.0.0.1:8000/api/pelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
     }
   })
   .then(response => {
-    deskripsi.value = response.data.Deskripsi
-    surat_dinas.value = response.data.Surat_Dinas_Path
-    lampiran.value = response.data.Lampiran_Path
-    jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
-    nama_depanPengaju.value = response.data.user.Nama_Depan
-    nama_belakangPengaju.value = response.data.user.Nama_Belakang
+    layananData.value = response.data.map(item => ({
+      noTiket: item.ID_Pelayanan,
+      perihal: item.Perihal,
+      teknis: item.teknis_pelayanan?.Nama_Depan || '-',
+      tanggal: item.created_at,
+      organisasi: item.user.user_organisasi.Nama_OPD,
+      status: item.status_pelayanan.Nama_Status,
+    }))
+  })
+  .catch(error => {
+    console.error(error);
+  })
+  .finally(() => {
+  isLoading.value = false;
+  });
+});
+
+//ke halaman detail 
+function lihatDetail(item){
+  const pelayananId = ref(item.noTiket)
     router.push({
     name: 'Detail-Pelayanan', 
-    query: {
-      layanan: item.noTiket, 
-      perihal: item.perihal, 
-      tanggal: item.tanggal, organisasi: item.organisasi, 
-      nama_depanPengaju: nama_depanPengaju.value, 
-      nama_belakangPengaju: nama_belakangPengaju.value, 
-      jenis_pelayanan: jenis_pelayanan.value,
-      deskripsi: deskripsi.value,
-      surat_dinas: surat_dinas.value,
-      lampiran: lampiran.value
-    }
+    query: { layanan: item.noTiket }
   })
-    })
-  .catch(function(error) {
-    console.log(error)
-});
+    
 }
 
 function toggleSort(key) {
@@ -72,33 +64,6 @@ function toggleSort(key) {
     }
   }
 }
-
-onMounted(() => {
-  const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/pelayanan', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    console.log(response.data);
-    layananData.value = response.data.map(item => ({
-      noTiket: item.ID_Pelayanan,
-      perihal: item.Perihal,
-      teknis: item.teknis_pelayanan?.Nama_Depan || '-',
-      tanggal: item.created_at,
-      organisasi: item.user.user_organisasi.Nama_OPD,
-      status: item.status_pelayanan.Nama_Status,
-    }))
-
-  })
-  .catch(error => {
-    console.error(error);
-  })
-  .finally(() => {
-  isLoading.value = false;
-  });
-});
 
 // Buat Searching
 const search = ref('')
