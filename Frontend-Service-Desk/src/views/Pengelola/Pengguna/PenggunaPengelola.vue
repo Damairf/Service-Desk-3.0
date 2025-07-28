@@ -106,11 +106,12 @@ function confirmDelete() {
 
 function ubahpengguna(user) {
   router.push({
-    path: '/ubahLembaga',
+    path: '/ubahPengguna',
     query: {
-      nama_PerangkatDaerah: user.nama_PerangkatDaerah,
-      induk_PerangkatDaerah: user.induk_PerangkatDaerah,
-      email: user.email,
+      nama_depan: user.nama_depan,
+      nama_belakang: user.nama_belakang,
+      role: user.role,
+      organisasi: user.organisasi,
       status: user.status
     }
   })
@@ -147,7 +148,7 @@ function ubahpengguna(user) {
             <td>{{ user.organisasi }}</td>
             <td>{{ user.status }}</td>
             <td>
-              <button class="aksiEdit-btn" title="Edit">Ubah</button>
+              <button class="aksiEdit-btn" title="Edit" @click="ubahpengguna(user)">Ubah</button>
               <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
             </td>
           </tr>
