@@ -14,24 +14,24 @@ onMounted(() => {
   window.scrollTo(0, 0);
   });
 
-onMounted(async () => {
-  try {
-    const token = localStorage.getItem('Token');
+// onMounted(async () => {
+//   try {
+//     const token = localStorage.getItem('Token');
     
-    const pelayananRes = await axios.get(`http://127.0.0.1:8000/api/pelayananUser/${idLayanan.value}`, {
-      headers: { Authorization: 'Bearer ' + token }
-    });
+//     const pelayananRes = await axios.get(`http://127.0.0.1:8000/api/pelayananUser/${idLayanan.value}`, {
+//       headers: { Authorization: 'Bearer ' + token }
+//     });
 
-    const ID_Jenis_Pelayanan = pelayananRes.data.ID_Jenis_Pelayanan;
+//     const ID_Jenis_Pelayanan = pelayananRes.data.ID_Jenis_Pelayanan;
 
-    const alurRes = await axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${ID_Jenis_Pelayanan}`, {
-      headers: { Authorization: 'Bearer ' + token }
-    });
-    steps.value = alurRes.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
-  } catch (err) {
-    console.error(err);
-  }
-});
+//     const alurRes = await axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${ID_Jenis_Pelayanan}`, {
+//       headers: { Authorization: 'Bearer ' + token }
+//     });
+//     steps.value = alurRes.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
+//   } catch (err) {
+//     console.error(err);
+//   }
+// });
 </script>
 
 <template>

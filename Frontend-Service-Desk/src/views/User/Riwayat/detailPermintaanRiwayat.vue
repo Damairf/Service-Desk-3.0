@@ -50,15 +50,15 @@ const handleTabChange = (tab) => {
   activeTab.value = tab
   if (tab === 'tracking') {
     router.push({
-      name: 'HalamanLacak', 
+      name: 'HalamanLacakRiwayat', 
       query: {
         layanan: pelayananId.value,
-        tab: 'tracking'
+        tab: 'trackingRiwayat'
       }
     })
   } else if (tab === 'informasi') {
     router.push({
-      name: 'HalamanInformasi', 
+      name: 'HalamanInformasiRiwayat', 
       query: {
         layanan: pelayananId.value,
         perihal: perihal.value, 
@@ -70,7 +70,7 @@ const handleTabChange = (tab) => {
         deskripsi: deskripsi.value,
         surat_dinas: surat_dinas.value,
         lampiran: lampiran.value,
-        tab: 'informasi'
+        tab: 'informasiRiwayat'
       }
     })
   }
