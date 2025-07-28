@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 // === State untuk form ===
 const namaPerangkatDaerah = ref('')
@@ -9,8 +11,15 @@ const nomorHP = ref('')
 const email = ref('')
 const status = ref('')
 
-// === Contoh submit handler (kirim ke backend) ===
-const handleSubmit = () => {
+// === Submit handler (dengan validasi) ===
+function handleSubmit() {
+  // Validasi field wajib
+  if (!namaPerangkatDaerah.value || !email.value || !status.value) {
+    alert('Harap isi semua field yang bertanda *')
+    return
+  }
+
+  // Buat payload
   const payload = {
     namaPerangkatDaerah: namaPerangkatDaerah.value,
     indukPerangkatDaerah: indukPerangkatDaerah.value,
@@ -19,8 +28,24 @@ const handleSubmit = () => {
     email: email.value,
     status: status.value
   }
+
   console.log('Data yang akan dikirim ke backend:', payload)
-  // Contoh: axios.post('/api/organisasi', payload)
+
+  // Contoh request backend (aktifkan jika sudah ada API)
+  // await axios.post('/api/organisasi', payload)
+  alert('Organisasi sudah ditambahkan')
+  // Redirect setelah submit sukses
+  router.push('/lembaga')
+}
+
+// === Reset form ===
+function handleReset() {
+  namaPerangkatDaerah.value = ''
+  indukPerangkatDaerah.value = ''
+  namaPengelola.value = ''
+  nomorHP.value = ''
+  email.value = ''
+  status.value = ''
 }
 </script>
 
@@ -31,6 +56,8 @@ const handleSubmit = () => {
       <div class="form-card-header">
         Formulir Tambah Organisasi
       </div>
+
+      <!-- Form pakai @submit.prevent supaya tidak reload -->
       <form class="form-content" @submit.prevent="handleSubmit">
         <div class="form-note">
           <span class="required-text">Keterangan <span class="red">*</span> Harus Diisi</span>
@@ -73,14 +100,13 @@ const handleSubmit = () => {
 
         <div class="form-actions">
           <button type="submit" class="btn simpan">Simpan</button>
-          <button type="button" class="btn hapus" @click="() => { 
-            namaPerangkatDaerah=''; indukPerangkatDaerah=''; namaPengelola=''; nomorHP=''; email=''; status=''; 
-          }">Hapus</button>
+          <button type="button" class="btn hapus" @click="handleReset">Hapus</button>
         </div>
       </form>
     </div>
   </div>
 </template>
+
 
 
 <style scoped>
