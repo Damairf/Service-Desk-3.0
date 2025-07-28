@@ -7,7 +7,6 @@ onMounted(() => {
   window.scrollTo(0, 0);
   });
 
-  
 const isLoading = ref(true)
 
 function formatDate(dateString) {
@@ -27,7 +26,7 @@ watch(search, () => {
 
 const items = ref([])
 
-onBeforeMount(() => {
+onMounted(() => {
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/pelayananUser', {
     headers: {
@@ -35,7 +34,6 @@ onBeforeMount(() => {
     }
   })
   .then(response => {
-    console.log(response);
     items.value = response.data.filter(item =>
         ['Baru',  'Disetujui', 'Proses'].includes(item.status_pelayanan?.Nama_Status)
       ).map(item => ({
@@ -54,6 +52,15 @@ onBeforeMount(() => {
   isLoading.value = false;
   });
 });
+
+//ke halaman detail 
+function checkProgress(item){
+  const pelayananId = ref(item.ticket)
+    router.push({
+    name: 'DetailPermintaan', 
+    query: { layanan: item.ticket }
+  }) 
+}
 
 // Computed
 const filteredItems = computed(() => {
@@ -80,52 +87,6 @@ watch(filteredItems, () => {
   currentPage.value = 1
 })
 
-const nama_depanPengaju = ref('') 
-const nama_belakangPengaju = ref('')
-const jenis_pelayanan = ref('')
-const deskripsi = ref('')
-const surat_dinas = ref('')
-const lampiran = ref('')
-const organisasi = ref('')
-
-  //ke halaman detail
-function checkProgress(item) {
-  const token = localStorage.getItem('Token');
-  
-  const pelayananId = ref(item.ticket)
-  axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    deskripsi.value = response.data.Deskripsi
-    organisasi.value = response.data.user.user_organisasi.Nama_OPD
-    surat_dinas.value = response.data.Surat_Dinas_Path
-    lampiran.value = response.data.Lampiran_Path
-    jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
-    nama_depanPengaju.value = response.data.user.Nama_Depan
-    nama_belakangPengaju.value = response.data.user.Nama_Belakang
-    router.push({
-    name: 'DetailPermintaan', 
-    query: {
-      layanan: item.ticket, 
-      perihal: item.perihal, 
-      tanggal: item.date, 
-      nama_depanPengaju: nama_depanPengaju.value, 
-      nama_belakangPengaju: nama_belakangPengaju.value, 
-      jenis_pelayanan: jenis_pelayanan.value,
-      organisasi: organisasi.value,
-      deskripsi: deskripsi.value,
-      surat_dinas: surat_dinas.value,
-      lampiran: lampiran.value
-    }
-  })
-    })
-  .catch(function(error) {
-    console.log(error)
-});
-}
 </script>
 
 <template>

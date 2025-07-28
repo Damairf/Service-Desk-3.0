@@ -9,8 +9,8 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString('id-ID');
 }
 
-
 // === Placeholder variabel backend ===
+const pelayananId = ref(route.query.layanan || '-')
 const layanan = ref(route.query.jenis_pelayanan || '-')
 const noTiket = ref(route.query.layanan || '-')
 const nama_depan = ref(route.query.nama_depanPengaju || '-')

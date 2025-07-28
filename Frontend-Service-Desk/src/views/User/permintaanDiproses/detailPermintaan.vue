@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios'
 const router = useRouter()
 const route = useRoute()
 
@@ -8,18 +9,41 @@ onMounted(() => {
   window.scrollTo(0, 0);
   });
 
-const idLayanan = ref(route.query.layanan || '')
-const perihal = ref(route.query.perihal || '-')
-const tanggal = ref(route.query.tanggal || '-')
-const organisasi = ref(route.query.organisasi || '-')
-const nama_depanPengaju = ref(route.query.nama_depanPengaju || '-')
-const nama_belakangPengaju = ref(route.query.nama_belakangPengaju || '-')
-const jenis_pelayanan = ref(route.query.jenis_pelayanan || '-')
-const deskripsi = ref(route.query.deskripsi || '-')
-const surat_dinas = ref(route.query.surat_dinas || '-')
-const lampiran = ref(route.query.lampiran || '-')
+const pelayananId = ref(route.query.layanan || '-')
+const perihal = ref('') 
+const tanggal = ref('') 
+const nama_depanPengaju = ref('') 
+const nama_belakangPengaju = ref('')
+const jenis_pelayanan = ref('')
+const id_jenis_pelayanan = ref('')
+const deskripsi = ref('')
+const surat_dinas = ref('')
+const lampiran = ref('')
+const organisasi = ref('')
 const activeTab = ref('tracking')
-const currentStep = ref(0) // buat tau 
+const currentStep = ref(0)
+
+const token = localStorage.getItem('Token');
+axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
+  headers: {
+    Authorization: 'Bearer ' + token
+  }
+})
+.then(response => {
+  deskripsi.value = response.data.Deskripsi
+  organisasi.value = response.data.user.user_organisasi.Nama_OPD
+  surat_dinas.value = response.data.Surat_Dinas_Path
+  lampiran.value = response.data.Lampiran_Path
+  jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
+  id_jenis_pelayanan.value = response.data.ID_Jenis_Pelayanan
+  nama_depanPengaju.value = response.data.user.Nama_Depan
+  nama_belakangPengaju.value = response.data.user.Nama_Belakang
+  perihal.value = response.data.Perihal
+  tanggal.value = response.data.created_at
+})
+.catch(function(error) {
+  console.log(error)
+});
 
 // Fungsi untuk menangani perubahan tab
 const handleTabChange = (tab) => {
@@ -27,13 +51,15 @@ const handleTabChange = (tab) => {
   if (tab === 'tracking') {
     router.push({
       name: 'HalamanLacak', 
-      query: {layanan: idLayanan.value}
+      query: {
+        layanan: pelayananId.value
+      }
     })
   } else if (tab === 'informasi') {
     router.push({
       name: 'HalamanInformasi', 
       query: {
-        layanan: idLayanan.value,
+        layanan: pelayananId.value,
         perihal: perihal.value, 
         tanggal: tanggal.value, 
         nama_depanPengaju: nama_depanPengaju.value, 
