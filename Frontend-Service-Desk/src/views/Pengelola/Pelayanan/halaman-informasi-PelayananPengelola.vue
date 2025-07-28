@@ -84,14 +84,8 @@ function handleSelesai() {
     headers: {
       Authorization: 'Bearer ' + token,
     }
-  }) .then (response => {
-    console.log(response)
   })
   router.push('/pelayanan')
-    console.log('Ditolak karena:', insiden.value)
-    test.value = insiden.value
-    // kirim ke backend di sini misalnya:
-    // axios.post('/api/tolak', { alasan: alasanTolak.value })
   }
 }
 
