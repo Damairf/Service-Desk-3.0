@@ -112,7 +112,7 @@ function confirmDelete() {
       </div>
       <div class="search-bar">
         <i class="fas fa-search"></i>
-        <input type="text" placeholder="Cari Pengguna" v-model="search" />
+        <input type="text" placeholder="Cari Pengguna" class="search-bar-color" v-model="search" />
       </div>
       <table class="data-table">
         <thead>
@@ -226,11 +226,14 @@ function confirmDelete() {
 .search-bar {
   display: flex;
   align-items: center;
-  background: #e9eff1;
+  background: #e0e0e0;
+  color: black;
   border-radius: 2rem;
   padding: 0.5rem 1.2rem;
   margin-bottom: 1.2rem;
   font-size: 1.1rem;
+}
+.search-bar-color {
   color: black;
 }
 .search-bar i {
