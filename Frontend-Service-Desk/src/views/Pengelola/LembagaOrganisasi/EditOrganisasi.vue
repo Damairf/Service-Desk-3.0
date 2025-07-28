@@ -1,49 +1,128 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute() // untuk ambil params ID organisasi misalnya
+
+// === State form ===
+const namaPerangkatDaerah = ref('')
+const indukPerangkatDaerah = ref('')
+const namaPengelola = ref('')
+const nomorHP = ref('')
+const email = ref('')
+const status = ref('')
+
+// === Ambil data awal ketika halaman dibuka ===
+onMounted(() => {
+  const orgId = route.params.id // contoh: /edit-organisasi/:id
+  console.log('Edit ID:', orgId)
+
+  // === Backend
+
+  // Contoh dummy untuk tes tampilan FE:
+  namaPerangkatDaerah.value = 'Diskominfo'
+  indukPerangkatDaerah.value = 'Setda'
+  namaPengelola.value = 'Budi Santoso'
+  nomorHP.value = '081234567890'
+  email.value = 'budi@diskominfo.id'
+  status.value = 'Aktif'
+})
+
+// === Submit handler (kirim data edit) ===
+function handleSubmit() {
+  // Validasi field wajib
+  if (!namaPerangkatDaerah.value || !email.value || !status.value) {
+    alert('Harap isi semua field yang bertanda *')
+    return
+  }
+
+  // Payload untuk backend
+  const payload = {
+    namaPerangkatDaerah: namaPerangkatDaerah.value,
+    indukPerangkatDaerah: indukPerangkatDaerah.value,
+    namaPengelola: namaPengelola.value,
+    nomorHP: nomorHP.value,
+    email: email.value,
+    status: status.value
+  }
+
+  console.log('Data yang akan diupdate ke backend:', payload)
+
+  // === Backend: update organisasi by ID ===
+  // backend: axios.put(`/api/organisasi/${route.params.id}`, payload)
+
+  alert('Organisasi berhasil diperbarui')
+  router.push('/lembaga') // kembali ke daftar lembaga
+}
+
+// === Reset form ===
+function handleReset() {
+  namaPerangkatDaerah.value = ''
+  indukPerangkatDaerah.value = ''
+  namaPengelola.value = ''
+  nomorHP.value = ''
+  email.value = ''
+  status.value = ''
+}
+</script>
+
 <template>
-    <div class="page-bg">
-      <h1 class="main-title">Edit Organisasi</h1>
-      <div class="form-card">
-        <div class="form-card-header">
-          Formulir Ubah Organisasi
-        </div>
-        <form class="form-content">
-          <div class="form-note">
-            <span class="required-text">Keterangan <span class="red">*</span> Harus Diisi</span>
-          </div>
-          <div class="form-group">
-            <label>Nama Perangkat Daerah<span class="red">*</span></label>
-            <input type="text" placeholder="Nama PD" />
-          </div>
-          <div class="form-group">
-            <label>Induk Perangkat Daerah</label>
-            <select>
-              <option>--Pilih Induk Organisasi--</option>
-              <!-- Add options here -->
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Nama Pengelola</label>
-            <input type="text" />
-          </div>
-          <div class="form-group">
-            <label>Nomor HP. Pengelola</label>
-            <input type="text" />
-          </div>
-          <div class="form-group">
-            <label>Email <span class="red">*</span></label>
-            <input type="email" />
-          </div>
-          <div class="form-group">
-            <label>Status<span class="red">*</span></label>
-            <input type="text" />
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn simpan">Simpan</button>
-            <button type="button" class="btn hapus">Hapus</button>
-          </div>
-        </form>
+  <div class="page-bg">
+    <h1 class="main-title">Edit Organisasi</h1>
+    <div class="form-card">
+      <div class="form-card-header">
+        Formulir Ubah Organisasi
       </div>
+
+      <form class="form-content" @submit.prevent="handleSubmit">
+        <div class="form-note">
+          <span class="required-text">Keterangan <span class="red">*</span> Harus Diisi</span>
+        </div>
+
+        <div class="form-group">
+          <label>Nama Perangkat Daerah<span class="red">*</span></label>
+          <input type="text" placeholder="Nama PD" v-model="namaPerangkatDaerah" />
+        </div>
+
+        <div class="form-group">
+          <label>Induk Perangkat Daerah</label>
+          <select v-model="indukPerangkatDaerah">
+            <option value="">--Pilih Induk Organisasi--</option>
+            <option value="Diskominfo">Diskominfo</option>
+            <option value="BPKAD">BPKAD</option>
+            <option value="Setda">Setda</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Nama Pengelola</label>
+          <input type="text" v-model="namaPengelola" />
+        </div>
+
+        <div class="form-group">
+          <label>Nomor HP. Pengelola</label>
+          <input type="text" v-model="nomorHP" />
+        </div>
+
+        <div class="form-group">
+          <label>Email <span class="red">*</span></label>
+          <input type="email" v-model="email" />
+        </div>
+
+        <div class="form-group">
+          <label>Status<span class="red">*</span></label>
+          <input type="text" v-model="status" />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn simpan">Simpan</button>
+          <button type="button" class="btn hapus" @click="handleReset">Hapus</button>
+        </div>
+      </form>
     </div>
-  </template>
+  </div>
+</template>
 
 <style scoped>
 .page-bg {
