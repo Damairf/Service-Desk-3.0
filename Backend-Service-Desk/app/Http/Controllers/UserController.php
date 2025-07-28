@@ -147,8 +147,8 @@ public function delete_Photo(Request $request){
         return response(["User Diperbarui menjadi " => $user->fresh()]);
     }
 
-    public function setuju(Request $request){
-        $users = User::select('Nama_Depan', 'Nama_Belakang')->whereHas('user_role', function($query) {
+    public function getUnit(Request $request){
+        $users = User::select('ID_User','Nama_Depan', 'Nama_Belakang')->whereHas('user_role', function($query) {
         $query->where('ID_Role', '3');
         })->get();
         return response()->json($users);
