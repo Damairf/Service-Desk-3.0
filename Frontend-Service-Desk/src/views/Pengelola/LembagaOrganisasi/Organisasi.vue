@@ -126,7 +126,7 @@ function confirmDelete() {
             <td>{{ user.email }}</td>
             <td>{{ user.status }}</td>
             <td>
-              <button class="aksiEdit-btn" title="Edit">Ubah</button>
+              <button class="aksiEdit-btn" title="Edit" @click="router.push('/ubahLembaga')">Ubah</button>
               <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
             </td>
           </tr>

@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
-const route = useRoute() // untuk ambil params ID organisasi misalnya
+const route = useRoute() // untuk ambil params ID 
 
 // === State form ===
 const namaPerangkatDaerah = ref('')
