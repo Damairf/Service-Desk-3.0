@@ -97,6 +97,18 @@ function confirmDelete() {
   showModal.value = false
   idOrganisasiToDelete.value = null
 }
+
+function editOrganisasi(user) {
+  router.push({
+    path: '/ubahLembaga',
+    query: {
+      nama_PerangkatDaerah: user.nama_PerangkatDaerah,
+      induk_PerangkatDaerah: user.induk_PerangkatDaerah,
+      email: user.email,
+      status: user.status
+    }
+  })
+}
 </script>
 
 <template>
@@ -126,7 +138,7 @@ function confirmDelete() {
             <td>{{ user.email }}</td>
             <td>{{ user.status }}</td>
             <td>
-              <button class="aksiEdit-btn" title="Edit" @click="router.push('/ubahLembaga')">Ubah</button>
+              <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(user)">Ubah</button>
               <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
             </td>
           </tr>

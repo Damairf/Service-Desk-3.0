@@ -5,14 +5,12 @@ import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute() // untuk ambil params ID 
 
-// === State form ===
-const namaPerangkatDaerah = ref('')
-const indukPerangkatDaerah = ref('')
-const namaPengelola = ref('')
-const nomorHP = ref('')
-const email = ref('')
-const status = ref('')
-
+// ambil dari route organisasi
+const namaPerangkatDaerah = ref(route.query.nama_PerangkatDaerah || '')
+const indukPerangkatDaerah = ref(route.query.induk_PerangkatDaerah || '')
+const email = ref(route.query.email || '')
+const status = ref(route.query.status || '')
+const namaPengelola = ref('') // ambil dari Backend soalnya gk ada di organisasi.vue
 // === Ambil data awal ketika halaman dibuka ===
 onMounted(() => {
   const orgId = route.params.id // contoh: /edit-organisasi/:id
@@ -20,19 +18,12 @@ onMounted(() => {
 
   // === Backend
 
-  // Contoh dummy untuk tes tampilan FE:
-  namaPerangkatDaerah.value = 'Diskominfo'
-  indukPerangkatDaerah.value = 'Setda'
-  namaPengelola.value = 'Budi Santoso'
-  nomorHP.value = '081234567890'
-  email.value = 'budi@diskominfo.id'
-  status.value = 'Aktif'
 })
 
 // === Submit handler (kirim data edit) ===
 function handleSubmit() {
   // Validasi field wajib
-  if (!namaPerangkatDaerah.value || !email.value || !status.value) {
+  if (!nama_PerangkatDaerah.value || !email.value || !status.value) {
     alert('Harap isi semua field yang bertanda *')
     return
   }
@@ -98,11 +89,6 @@ function handleReset() {
         <div class="form-group">
           <label>Nama Pengelola</label>
           <input type="text" v-model="namaPengelola" />
-        </div>
-
-        <div class="form-group">
-          <label>Nomor HP. Pengelola</label>
-          <input type="text" v-model="nomorHP" />
         </div>
 
         <div class="form-group">
@@ -188,6 +174,7 @@ function handleReset() {
   font-size: 1rem;
   background: #fafafa;
   transition: border 0.2s;
+  color: black;
 }
 .form-group input:focus,
 .form-group select:focus {
