@@ -30,15 +30,13 @@ const src_HasilBA = ref(route.query.hasil_BA || '-')
 const HasilSLA_Path = ref(null)
 const src_HasilSLA = ref(route.query.hasil_SLA || '-')
 
-
 const pelaksana = ref([])
 const idUnitTerpilih = ref('')
 const insiden = ref('')
 
-
-// === Untuk Tombol Setuju ===
+// === Untuk Tombol Selesai dan Revisi ===
 const pilihan = ref('')
-function handlePilihan(klik){
+function handlePilihan(klik) {
   pilihan.value = klik
 }
 
@@ -61,41 +59,37 @@ axios.get('http://127.0.0.1:8000/api/pelayanan/unit', {
 });
 
 function handleSelesai() {
-  if (pilihan.value === 'Setuju') {
-    
   const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/pelayanan/setuju/${pelayananId.value}`, 
-  {
-    ID_Unit: idUnitTerpilih.value,
-    ID_Status: 2,
-    Insiden: insiden.value
-  }
-  , {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    }
-  })
-  router.push('/pelayanan')
-
-  } else if (pilihan.value === 'Tolak') {
-
-  const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/pelayanan/tolak/${pelayananId.value}`, 
-  {
-    Insiden: insiden.value,
-    ID_Status: 3,
-    ID_Unit: null
-  }
-  , {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    }
-  })
-  router.push('/pelayanan')
+  if (pilihan.value === 'Selesai') {
+    axios.put(`http://127.0.0.1:8000/api/pelayanan/selesai/${pelayananId.value}`, 
+    {
+      ID_Status: 4, // Adjust ID_Status for 'Selesai' based on your backend
+      Insiden: insiden.value
+    },
+    {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      }
+    })
+    .then(() => router.push('/pelayanan'))
+    .catch(error => console.error('Error updating status to Selesai:', error));
+  } else if (pilihan.value === 'Revisi') {
+    axios.put(`http://127.0.0.1:8000/api/pelayanan/revisi/${pelayananId.value}`, 
+    {
+      ID_Status: 5, // Adjust ID_Status for 'Revisi' based on your backend
+      Insiden: insiden.value
+    },
+    {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      }
+    })
+    .then(() => router.push('/pelayanan'))
+    .catch(error => console.error('Error updating status to Revisi:', error));
   }
 }
 
-//  ambil URL dari backend
+// ambil URL dari backend
 SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value;
 Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value;
 HasilBA_Path.value = 'http://localhost:8000/' + src_HasilBA.value;
@@ -149,83 +143,73 @@ const addMessage = () => {
       <div v-if="SuratDinas_Path" class="file-card">
         <div class="file-header">Surat Dinas (Diurutkan Berdasarkan Waktu Upload)</div>
         <div class="file-content">
-          <span class="file-placeholder">"Nama File"</span>
+          <span class="file-placeholder">"{{ SuratDinaFileName }}"</span>
         </div>
       </div>
       <div v-if="Lampiran_Path" class="file-card">
         <div class="file-header">Lampiran (Diurutkan Berdasarkan Waktu Upload)</div>
         <div class="file-content">
-          <span class="file-placeholder">"Nama File"</span>
+          <span class="file-placeholder">"{{ LampiranFileName }}"</span>
         </div>
       </div>
     </div>
 
     <div class="container-kanan">
       <div class="chat-card">
-      <h3>Chat</h3>
-      <div class="chat-content">
-        <div
-          v-for="(message, index) in messages"
-          :key="index"
-          :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
-        >
-          <span class="message-text">{{ message.text + " " }}</span>
-          <span class="message-time">{{ message.time + " " }}</span>
+        <h3>Chat</h3>
+        <div class="chat-content">
+          <div
+            v-for="(message, index) in messages"
+            :key="index"
+            :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
+          >
+            <span class="message-text">{{ message.text + " " }}</span>
+            <span class="message-time">{{ message.time + " " }}</span>
+          </div>
         </div>
+
+        <textarea
+          v-model="newMessage"
+          class="message"
+          placeholder="Pesan"
+          @keyup.enter="addMessage"
+        ></textarea>
+
+        <button class="send-btn" @click="addMessage">Kirim</button>
       </div>
-
-      <textarea
-        v-model="newMessage"
-        class="message"
-        placeholder="Pesan"
-        @keyup.enter="addMessage"
-      ></textarea>
-
-      <button class="send-btn" @click="addMessage">Kirim</button>
-    </div>
   
       <div v-if="HasilBA_Path" class="file-card">
         <div class="file-header">Hasil BA</div>
         <div class="file-content">
-          <span class="file-placeholder">"Nama File"</span>
+          <span class="file-placeholder">"{{ HasilBAFileName }}"</span>
         </div>
       </div>
 
       <div v-if="HasilSLA_Path" class="file-card">
         <div class="file-header">Hasil SLA</div>
         <div class="file-content">
-          <span class="file-placeholder">"Nama File"</span>
+          <span class="file-placeholder">"{{ HasilSLAFileName }}"</span>
         </div>
       </div>
 
-    <div class="tinjau-card">
-      <h3>Tinjau Pelayanan</h3>
-      <!-- taro link pdfnya disini -->
-      <div class="wrapper-btn">
-        <button class="btn-setuju" @click="handlePilihan('Setuju')">Setuju</button>
-        <button class="btn-tolak" @click="handlePilihan('Tolak')">Tolak</button>
+      <div class="tinjau-card">
+        <h3>Tinjau Pelayanan</h3>
+        <div class="wrapper-btn">
+          <button class="btn-selesai" @click="handlePilihan('Selesai')">Selesai</button>
+          <button class="btn-revisi" @click="handlePilihan('Revisi')">Revisi</button>
+        </div>
+        <div class="wrapper-selesai" v-if="pilihan == 'Selesai'">
+          <h4>Keterangan Selesai</h4>
+          <textarea class="input" v-model="insiden"></textarea>
+          <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
+        </div>
+        <div class="wrapper-revisi" v-if="pilihan == 'Revisi'">
+          <h4>Alasan Butuh Direvisi</h4>
+          <textarea class="input" v-model="insiden"></textarea>
+          <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
+        </div>
       </div>
-      <!-- Setuju  -->
-      <div class='wrapper-setuju'v-if='pilihan == "Setuju"'>
-        <h4>Unit Pelaksana</h4>
-        <select id="status" v-model="idUnitTerpilih">
-          <option value="" disabled>Pilih Unit Pelaksana</option>
-          <option v-for="option in pelaksana" :key="option.id_user" :value="option.id_user">
-            {{ option.nama_depan }} {{ option.nama_belakang }}
-          </option>
-        </select>
-        <h4>Pesan untuk Unit Pelaksana</h4>
-        <textarea class="input" v-model="insiden"></textarea>
-        <button class="btn-selesai" @click="handleSelesai">Selesai</button>
-      </div>
-      <div class="wrapper-revisi" v-if='pilihan =="Revisi"'>
-        <h4>Alasan butuh direvisi</h4>
-        <textarea class="input" v-model="insiden"></textarea>
-        <button class="btn-selesai" @click="handleSelesai">Selesai</button>
-      </div>
-  </div>
     </div>
-
   </div>
 </template>
 
@@ -236,7 +220,7 @@ const addMessage = () => {
   align-items: flex-start;
 }
 /* container kanan */
-.container-kanan{
+.container-kanan {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -344,7 +328,7 @@ const addMessage = () => {
   margin-top: -0.3rem;
 }
 
-.input{
+.input {
   background-color: white;
   color: black;
 }
@@ -357,14 +341,14 @@ const addMessage = () => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.wrapper-btn{
+.wrapper-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
 }
 
-.btn-setuju{
+.btn-selesai {
   color: white;
   background-color: #4CAF50;
   border-radius: 12px;
@@ -373,15 +357,33 @@ const addMessage = () => {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-.btn-setuju:hover{
+.btn-selesai:hover {
   background-color: #66BB6A;
   transform: scale(1.02);
 }
-.wrapper-setuju {
+
+.btn-revisi {
+  color: white;
+  background-color: #FF9800;
+  border-radius: 12px;
+  padding: 0.5rem 2.5rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.btn-revisi:hover {
+  background-color: #FFB74D;
+  transform: scale(1.02);
+}
+
+.wrapper-selesai,
+.wrapper-revisi {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  align-self: flex-start;
 }
+
 select {
   padding: 0.5rem;
   border-radius: 8px;
@@ -389,30 +391,8 @@ select {
   color: black;
   background-color: white;
 }
-.btn-tolak{
-  color: white;
-  background-color: #D51518;
-  border-radius: 12px;
-  padding: 0.5rem 2.5rem;
-  border: none;
-  cursor: pointer;
-}
-.btn-tolak:hover{
-  background-color: #E53935;
-  transform: scale(1.02);
-}
-.wrapper-setuju {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-self: flex-start;
-}
-.wrapper-revisi{
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.btn-selesai{
+
+.btn-confirm {
   color: white;
   background-color: #2BA9E4;
   border-radius: 12px;
@@ -420,10 +400,10 @@ select {
   border: none;
   cursor: pointer;
   transition: transform 0.2s ease;
-  width: fit-content;         /* <-- biar lebarnya mengikuti konten */
-  align-self: center;     
+  width: fit-content;
+  align-self: center;
 }
-.btn-selesai:hover{
+.btn-confirm:hover {
   transform: scale(1.02);
   background-color: #48B7ED;
 }
