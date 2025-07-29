@@ -21,7 +21,7 @@ const tanggalLaporan = ref(route.query.tanggal || '-')
 const perihal = ref(route.query.perihal || '-')
 const deskripsiUser = ref(route.query.deskripsi || '-')
 //pesan dari si pengelola
-const pesanPengelola = ref('wowok love owi')
+const pesanPengelola = ref(route.query.insiden || '-')
 
 const SuratDinas_Path = ref(null)
 const src_SuratDinas = ref(route.query.surat_dinas || '-')
@@ -30,7 +30,6 @@ const src_Lampiran = ref(route.query.lampiran || '-')
 
 const pelaksana = ref([])
 const idUnitTerpilih = ref('')
-const insiden = ref('')
 
 
 // === Untuk Tombol Setuju ===
@@ -40,7 +39,7 @@ function handlePilihan(klik){
 }
 
 const token = localStorage.getItem('Token');
-axios.get('http://127.0.0.1:8000/api/pelayanan/unit', {
+axios.get('http://127.0.0.1:8000/api/pelayanan/teknis', {
   headers: {
     Authorization: 'Bearer ' + token
   }
