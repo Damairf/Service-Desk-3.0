@@ -218,8 +218,8 @@ const addMessage = () => {
         <textarea class="input" v-model="insiden"></textarea>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>
       </div>
-      <div class="wrapper-tolak" v-if='pilihan =="Tolak"'>
-        <h4>Alasan Ditolak</h4>
+      <div class="wrapper-revisi" v-if='pilihan =="Revisi"'>
+        <h4>Alasan butuh direvisi</h4>
         <textarea class="input" v-model="insiden"></textarea>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>
       </div>
@@ -407,7 +407,7 @@ select {
   gap: 0.5rem;
   align-self: flex-start;
 }
-.wrapper-tolak{
+.wrapper-revisi{
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

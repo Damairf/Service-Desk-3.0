@@ -20,6 +20,8 @@ const organisasi = ref(route.query.organisasi || '-')
 const tanggalLaporan = ref(route.query.tanggal || '-')
 const perihal = ref(route.query.perihal || '-')
 const deskripsiUser = ref(route.query.deskripsi || '-')
+//pesan dari si pengelola
+const pesanPengelola = ref('wowok love owi')
 
 const SuratDinas_Path = ref(null)
 const src_SuratDinas = ref(route.query.surat_dinas || '-')
@@ -72,8 +74,10 @@ function handleSelesai() {
   })
   router.push('/pelayanan')
 
-  } else if (pilihan.value === 'Tolak') {
+  } else if (pilihan.value === 'Revisi') {
 
+
+    // mungkin diganti jadi /revisi???
   const token = localStorage.getItem('Token');
   axios.put(`http://127.0.0.1:8000/api/pelayanan/tolak/${pelayananId.value}`, 
   {
@@ -140,6 +144,10 @@ const addMessage = () => {
           Lampiran
         </a>
       </div>
+      <div class="info-row textarea-row">
+        <strong>Pesan dari Pengelola</strong>
+        <textarea class="input" v-model="pesanPengelola" placeholder="Pesan dari Pengelola" rows="5" readonly></textarea>
+      </div>
     </div>
     <div class="container-kanan">
       <div class="chat-card">
@@ -170,23 +178,23 @@ const addMessage = () => {
       <!-- taro link pdfnya disini -->
       <div class="wrapper-btn">
         <button class="btn-setuju" @click="handlePilihan('Setuju')">Setuju</button>
-        <button class="btn-tolak" @click="handlePilihan('Tolak')">Tolak</button>
+        <button class="btn-revisi" @click="handlePilihan('Revisi')">Revisi</button>
       </div>
       <!-- Setuju  -->
       <div class='wrapper-setuju'v-if='pilihan == "Setuju"'>
-        <h4>Unit Pelaksana</h4>
+        <h4>Unit Pelaksana Teknis</h4>
         <select id="status" v-model="idUnitTerpilih">
-          <option value="" disabled>Pilih Unit Pelaksana</option>
+          <option value="" disabled>Pilih Unit Pelaksana Teknis</option>
           <option v-for="option in pelaksana" :key="option.id_user" :value="option.id_user">
             {{ option.nama_depan }} {{ option.nama_belakang }}
           </option>
         </select>
-        <h4>Pesan untuk Unit Pelaksana</h4>
+        <h4>Pesan untuk Unit Pelaksana Teknis</h4>
         <textarea class="input" v-model="insiden"></textarea>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>
       </div>
-      <div class="wrapper-tolak" v-if='pilihan =="Tolak"'>
-        <h4>Alasan Ditolak</h4>
+      <div class="wrapper-revisi" v-if='pilihan =="Revisi"'>
+        <h4>Alasan butuh direvisi</h4>
         <textarea class="input" v-model="insiden"></textarea>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>
       </div>
@@ -356,16 +364,16 @@ select {
   color: black;
   background-color: white;
 }
-.btn-tolak{
+.btn-revisi{
   color: white;
-  background-color: #D51518;
+  background-color: #9b59b6;
   border-radius: 12px;
   padding: 0.5rem 2.5rem;
   border: none;
   cursor: pointer;
 }
-.btn-tolak:hover{
-  background-color: #E53935;
+.btn-revisi:hover{
+  background-color: #8e44ad;
   transform: scale(1.02);
 }
 .wrapper-setuju {
@@ -374,7 +382,7 @@ select {
   gap: 0.5rem;
   align-self: flex-start;
 }
-.wrapper-tolak{
+.wrapper-revisi{
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
