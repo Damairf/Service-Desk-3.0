@@ -57,7 +57,7 @@ if (role.value == 1) {
   { icon: '🏠', label: 'Beranda', to: '/beranda' },
   { icon: '⚙️', label: 'Permintaan Baru', to: '/permintaanBaru' },
   { icon: '🔍', label: 'Permintaan Diproses', to: '/permintaanDiproses' },
-  { icon: '📁', label: 'Hasil Pemenuhan SLA dan BA', to: '/hasilPemenuhanBASLA' },
+  { icon: '📁', label: 'Hasil Pemenuhan BA dan SLA', to: '/hasilPemenuhanBASLA' },
   { icon: '📁', label: 'Riwayat', to: '/riwayat' },
 ];
 } else if (role.value == 2) {
