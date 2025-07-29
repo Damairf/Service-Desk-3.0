@@ -12,12 +12,6 @@ onUnmounted(() => {
 });
 
 onMounted(() => {
-  window.scrollTo(0, 0);
-  });
-
-  onMounted(() => {
-  window.scrollTo(0, 0)
-
   const savedSteps = localStorage.getItem('steps')
   if (savedSteps) {
     try {

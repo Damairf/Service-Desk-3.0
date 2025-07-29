@@ -9,10 +9,6 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString('id-ID');
 }
 
-onMounted(() => {
-  window.scrollTo(0, 0);
-  });
-
 // === Placeholder variabel backend ===
 const pelayananId = ref(route.query.layanan || '-')
 const layanan = ref(route.query.jenis_pelayanan || '-')

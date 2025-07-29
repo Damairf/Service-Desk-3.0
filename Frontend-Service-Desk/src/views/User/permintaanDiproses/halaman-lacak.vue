@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios'
 
 const route = useRoute()
 const idLayanan = ref(route.query.layanan || '')
@@ -14,12 +13,6 @@ onUnmounted(() => {
 });
 
 onMounted(() => {
-  window.scrollTo(0, 0);
-  });
-
-  onMounted(() => {
-  window.scrollTo(0, 0)
-
   const savedSteps = localStorage.getItem('steps')
   if (savedSteps) {
     try {

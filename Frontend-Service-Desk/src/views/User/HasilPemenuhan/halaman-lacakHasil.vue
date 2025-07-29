@@ -10,10 +10,6 @@ const sets = ref(route.query.id_jenis_pelayanan)
 const currentStep = ref(0) // buat tau 
 const steps = ref([])
 
-onMounted(() => {
-  window.scrollTo(0, 0);
-  });
-
 onMounted(async () => {
   try {
     const token = localStorage.getItem('Token');

@@ -5,10 +5,6 @@ import axios from 'axios'
 const router = useRouter()
 const route = useRoute()
 
-onMounted(() => {
-  window.scrollTo(0, 0);
-  });
-
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
 const perihal = ref('')
@@ -84,7 +80,6 @@ const handleTabChange = (tab) => {
 
 // Set default route saat komponen dimount
 onMounted(() => {
-  window.scrollTo(0, 0)
   handleTabChange(activeTab.value)
   
   // Event listener untuk tombol back browser

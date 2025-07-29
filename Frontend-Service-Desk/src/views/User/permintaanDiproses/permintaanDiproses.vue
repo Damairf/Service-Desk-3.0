@@ -3,10 +3,6 @@ import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
-onMounted(() => {
-  window.scrollTo(0, 0);
-  });
-
 const isLoading = ref(true)
 
 function formatDate(dateString) {

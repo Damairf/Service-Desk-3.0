@@ -8,10 +8,6 @@
     router.push('/editProfile')
   }
 
-  onMounted(() => {
-  window.scrollTo(0, 0);
-  });
-
   const namaDepan = localStorage.getItem('nama_depan')
   const namaBelakang = localStorage.getItem('nama_belakang')
   const nip = localStorage.getItem('nip_user')

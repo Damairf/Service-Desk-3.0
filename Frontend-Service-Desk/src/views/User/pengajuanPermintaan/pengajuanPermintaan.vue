@@ -3,10 +3,6 @@ import { ref, computed , onBeforeMount, onMounted , watch} from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router';
 
-onMounted(() => {
-  window.scrollTo(0, 0);
-  });
-
 // buat push layanan ke halaman formulir tiket baru
 const router = useRouter()
 

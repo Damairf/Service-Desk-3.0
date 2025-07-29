@@ -2,10 +2,6 @@
   import { ref, computed, onBeforeMount, onMounted } from 'vue';
   import axios from 'axios'
   import { useRouter } from 'vue-router'
-
-  onMounted(() => {
-  window.scrollTo(0, 0);
-  });
   
   // biar tombolnya bisa berfungsi
    function handleOK(){

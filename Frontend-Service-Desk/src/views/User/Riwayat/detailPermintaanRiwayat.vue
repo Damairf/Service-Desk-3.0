@@ -81,7 +81,6 @@ async function fetchDataAndNavigate() {
 
 // Set default route saat komponen dimount
 onMounted(() => {
-  window.scrollTo(0, 0)
   fetchDataAndNavigate()
   
   // Event listener untuk tombol back browser

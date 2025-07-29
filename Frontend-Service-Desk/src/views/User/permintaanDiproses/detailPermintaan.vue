@@ -88,7 +88,6 @@ const handleTabChange = (tab) => {
 
 // Set default route saat komponen dimount
 onMounted(() => {
-  window.scrollTo(0, 0)
   handleTabChange(activeTab.value)
   
   // Event listener untuk tombol back browser
