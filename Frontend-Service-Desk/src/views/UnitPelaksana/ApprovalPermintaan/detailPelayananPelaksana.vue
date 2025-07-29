@@ -56,7 +56,7 @@ const handleTabChange = (tab) => {
   if (tab === 'tracking') {
     localStorage.setItem('steps', JSON.stringify(steps.value))
     router.push({
-      name: 'HalamanLacakPengelola', 
+      name: 'LacakPelaksana', 
       query: {layanan: pelayananId.value}
     })
   } else if (tab === 'informasi') {
