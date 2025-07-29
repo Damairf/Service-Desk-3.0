@@ -175,13 +175,7 @@ const addMessage = () => {
 
     <div class="tinjau-card">
       <h3>Tinjau Pelayanan</h3>
-      <!-- taro link pdfnya disini -->
-      <div class="wrapper-btn">
-        <button class="btn-setuju" @click="handlePilihan('Setuju')">Setuju</button>
-        <button class="btn-revisi" @click="handlePilihan('Revisi')">Revisi</button>
-      </div>
-      <!-- Setuju  -->
-      <div class='wrapper-setuju'v-if='pilihan == "Setuju"'>
+      <div class='wrapper-setuju'>
         <h4>Unit Pelaksana Teknis</h4>
         <select id="status" v-model="idUnitTerpilih">
           <option value="" disabled>Pilih Unit Pelaksana Teknis</option>
@@ -193,11 +187,7 @@ const addMessage = () => {
         <textarea class="input" v-model="insiden"></textarea>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>
       </div>
-      <div class="wrapper-revisi" v-if='pilihan =="Revisi"'>
-        <h4>Alasan butuh direvisi</h4>
-        <textarea class="input" v-model="insiden"></textarea>
-        <button class="btn-selesai" @click="handleSelesai">Selesai</button>
-      </div>
+
   </div>
     </div>
 
@@ -351,11 +341,6 @@ const addMessage = () => {
 .btn-setuju:hover{
   background-color: #66BB6A;
   transform: scale(1.02);
-}
-.wrapper-setuju {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }
 select {
   padding: 0.5rem;
