@@ -46,6 +46,8 @@ import berandaUnit from '../views/UnitPelaksana/Beranda/BerandaUnit.vue'
 // Approval
 import approval from '../views/UnitPelaksana/ApprovalPermintaan/ApprovalUnit.vue'
 import detailPelayananPelaksana from '../views/UnitPelaksana/ApprovalPermintaan/detailPelayananPelaksana.vue'
+import halamanInformasiApproval from '../views/UnitPelaksana/ApprovalPermintaan/halaman-informasi-PelayananPelaksana.vue'
+import halamanLacakApproval from '../views/UnitPelaksana/ApprovalPermintaan/halaman-lacak-PelayananPelaksana.vue'
 
 // Disposisi
 import disposisi from '../views/UnitPelaksana/DisposisiPermintaan/DisposisiUnit.vue'
@@ -122,7 +124,12 @@ const routes = [
   { path: '/approval', name: 'Approval', component: approval},
   { path: '/disposisi', name: 'Disposisi', component: disposisi},
   //Approval
-  { path: '/detailPelayananPelaksana', name: 'DetailPelayananPelaksana', component: detailPelayananPelaksana},
+  { path: '/detailPelayananPelaksana', name: 'DetailPelayananPelaksana', component: detailPelayananPelaksana,
+    children: [
+      { path: 'informasiApproval', name: 'InformasiPelaksana' , component: halamanInformasiApproval},
+      { path: 'lacakApproval', name:'LacakPelaksana', component: halamanLacakApproval }
+    ]
+  },
   //Disposisi
   { path: '/detailPelayananDisposisi', name: 'DetailPelayananDisposisi', component: detailPelayananDisposisi,
     children: [
