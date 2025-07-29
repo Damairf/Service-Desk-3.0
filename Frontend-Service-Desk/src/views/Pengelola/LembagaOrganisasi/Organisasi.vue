@@ -28,9 +28,11 @@ const token = localStorage.getItem('Token');
   })
   .catch(error => {
     console.error(error); 
-  }).finally(() => {
-  isLoading.value = false;
-});
+  })
+  .finally(() => {
+    isLoading.value = false;
+  });
+
 
 
 // === Search & Sort ===
@@ -165,11 +167,14 @@ function editOrganisasi(item) {
           <tr v-if="isLoading">
             <td colspan="6" style="text-align: center; padding: 1rem;">Memuat data...</td>
           </tr>
-          <tr v-for="(item, index) in paginatedItems" :key="index">
-            <td>{{ item.nama_PerangkatDaerah }}</td>
-            <td>{{ item.induk_PerangkatDaerah }}</td>
-            <td>{{ item.email }}</td>
-            <td>{{ item.status }}</td>
+          <tr v-else-if="filteredItems.length === 0">
+            <td colspan="6" style="text-align: center; padding: 1rem;">Tidak ada lembaga organisasi</td>
+          </tr>
+          <tr v-for="(user, index) in paginatedItems" :key="index">
+            <td>{{ user.nama_PerangkatDaerah }}</td>
+            <td>{{ user.induk_PerangkatDaerah }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.status }}</td>
             <td>
               <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(item)">Ubah</button>
               <button class="aksiDelete-btn" title="Delete" @click="Delete(item)">Hapus</button>

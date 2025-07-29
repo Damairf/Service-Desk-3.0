@@ -88,6 +88,7 @@ html, body {
   font-size: 2rem;
   font-weight: 550;
   color: black;
+  padding-left: 2.5rem;
   margin-bottom: 2rem;
   display: inline-block;
 }
