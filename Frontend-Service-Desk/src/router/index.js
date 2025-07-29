@@ -116,7 +116,7 @@ const routes = [
   { path: '/approval', name: 'Approval', component: approval},
   { path: '/disposisi', name: 'Disposisi', component: disposisi},
   //Approval
-  { path: '/detailPelayananPelaksana', name: 'DetailPelayananPelaksana', component: detailPelayananPelaksana
+  { path: '/detailPelayananPelaksana', name: 'DetailPelayananPelaksana', component: detailPelayananPelaksana,
     children: [
       { path: 'lacakPelaksana', name: 'LacakPelaksana', component: halamanLacakPelaksana}
     ]
