@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
@@ -84,8 +84,8 @@ const addMessage = () => {
           :key="index"
           :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
         >
-          <span class="message-text">{{ message.text }}</span>
-          <span class="message-time">{{ message.time }}</span>
+          <span class="message-text">{{ message.text + " " }}</span>
+          <span class="message-time">{{ message.time + " " }}</span>
         </div>
       </div>
 

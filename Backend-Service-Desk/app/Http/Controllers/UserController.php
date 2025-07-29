@@ -18,28 +18,23 @@ class UserController extends Controller
     }
     
     public function createOne_User(Request $request){
-
-        $Nama_Depan = $request->Nama_Depan;
-        $Nama_Belakang = $request->Nama_Belakang;
-        $NIP = $request->NIP;
-        $Password = Hash::make($request->Password);
-        $ID_Role = $request->ID_Role;
-        $ID_Jabatan = $request->ID_Jabatan;
-        $ID_Status = $request->ID_Status;
-        $ID_Organisasi = $request->ID_Organisasi;
-
-        $newUser = User::create([
-            'Nama_Depan' => $Nama_Depan,
-            'Nama_Belakang' => $Nama_Belakang,
-            'NIP' => $NIP,
-            'Password' => $Password,
-            'ID_Role' => $ID_Role,
-            'ID_Jabatan' => $ID_Jabatan,
-            'ID_Status' => $ID_Status,
-            'ID_Organisasi'=> $ID_Organisasi
+        $dataUser = $request->only([
+        'Nama_Depan',
+        'Nama_Belakang',
+        'NIP',
+        'Gambar_Path',
+        'Password',
+        'ID_Role',
+        'ID_Jabatan',
+        'ID_Organisasi',
+        'Status'
         ]);
+        
+        $dataUser['Password'] = Hash::make($dataUser['Password']);
 
-        return response(["message" => "User ditambahkan", "data" => $newUser]);
+        $user = User::create($dataUser);
+
+        return response()->json([$user->fresh()]);
     }
 
     public function profile(Request $request){

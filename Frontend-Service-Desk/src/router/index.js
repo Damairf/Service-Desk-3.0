@@ -14,9 +14,15 @@ import permintaanDiproses from '../views/User/permintaanDiproses/permintaanDipro
 import detailPermintaan from '../views/User/permintaanDiproses/detailPermintaan.vue'
 import halamanLacak from '../views/User/permintaanDiproses/halaman-lacak.vue'
 import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
+
+// Hasil Pemenuhan BASLA
+import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
+import detailPermintaanHasil from '../views/User/HasilPemenuhan/detailPermintaanHasil.vue'
+import halamanLacakHasil from '../views/User/HasilPemenuhan/halaman-lacakHasil.vue'
+import halamanInformasiHasil from '../views/User/HasilPemenuhan/halaman-informasiHasil.vue'
+
 //Riwayat
 import riwayat from '../views/User/Riwayat/riwayat.vue'
-import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
 import detailPermintaanRiwayat from '../views/User/Riwayat/detailPermintaanRiwayat.vue'
 import halamanLacakRiwayat from '../views/User/Riwayat/halaman-lacakRiwayat.vue'
 import halamanInformasiRiwayat from '../views/User/Riwayat/halaman-informasiRiwayat.vue'
@@ -28,6 +34,8 @@ import detailPelayanan from '../views/Pengelola/Pelayanan/detailPelayanan.vue'
 import halamanLacakPengelola from '../views/Pengelola/Pelayanan/halaman-lacak-PelayananPengelola.vue'
 import halamanInformasiPengelola from '../views/Pengelola/Pelayanan/halaman-informasi-PelayananPengelola.vue'
 import PenggunaPengelola from '../views/Pengelola/Pengguna/PenggunaPengelola.vue'
+import TambahPengguna from '../views/Pengelola/Pengguna/TambahPengguna.vue'
+import UbahPengguna from '../views/Pengelola/Pengguna/UbahPengguna.vue'
 import lembagaOrganisasi from '../views/Pengelola/LembagaOrganisasi/Organisasi.vue'
 import tambahOrganisasi from '../views/Pengelola/LembagaOrganisasi/TambahOrganisasi.vue'
 import ubahOrganisasi from '../views/Pengelola/LembagaOrganisasi/EditOrganisasi.vue'
@@ -38,15 +46,18 @@ const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', name: 'Login', component: Login },
   // Halaman Profile
-  { path: '/profileSaya', nama: 'ProfileSaya', component: profileSaya },
-  { path: '/editProfile', nama: 'EditProfile', component: editProfile},
+  { path: '/profileSaya', name: 'ProfileSaya', component: profileSaya },
+  { path: '/editProfile', name: 'EditProfile', component: editProfile},
   //===============USER===============
   // Halaman Beranda 
   { path: '/beranda', name: 'Beranda', component: beranda },
+ 
   // User
+  
   // Halaman permintaan baru 
   { path: '/permintaanBaru', name: 'PermintaanBaru', component: permintaanBaru},
   { path: '/FormulirTiket', name: 'FormulirTiketBaru', component: HalamanFormulirTiketBaru},
+  
   // Halaman permintaan diproses
   { path: '/permintaanDiproses', name: 'PermintaanDiproses', component: permintaanDiproses },
   { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, 
@@ -55,7 +66,17 @@ const routes = [
       { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi}
     ]
   },
+
+  // Hasil Pemenuhan BASLA
   { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA},
+  { path: '/detailPermintaanHasil', name: 'DetailPermintaanHasil', component: detailPermintaanHasil,
+    children: [
+      {path: 'lacakHasil', name: 'HalamanLacakHasil', component: halamanLacakHasil},
+      {path: 'informasiHasil', name: 'HalamanInformasiHasil', component: halamanInformasiHasil}  
+    ]
+  },
+
+  // Riwayat
   { path: '/riwayat', name: 'Riwayat', component: riwayat},
   { path: '/detailPermintaanRiwayat', name: 'DetailPermintaanRiwayat', component: detailPermintaanRiwayat,
     children: [
@@ -74,6 +95,8 @@ const routes = [
     ]
   },
   { path: '/pengguna', name: 'penggunaPengelola', component: PenggunaPengelola},
+  { path: '/tambahPengguna', name: 'TambahPengguna', component: TambahPengguna},
+  { path: '/ubahPengguna', name: 'UbahPengguna', component: UbahPengguna},
   { path: '/lembaga', name: 'lembaga/Organisasi', component: lembagaOrganisasi  },
   { path: '/tambahLembaga', name: 'TambahLembaga', component:  tambahOrganisasi },
   { path: '/ubahLembaga', name: 'UbahLembaga', component: ubahOrganisasi},
@@ -82,6 +105,9 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 };
+  }
 })
 
 export default router

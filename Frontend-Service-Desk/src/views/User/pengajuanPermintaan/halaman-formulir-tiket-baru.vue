@@ -4,10 +4,6 @@ import { useRoute , useRouter } from 'vue-router'
 const router = useRouter()
 import axios from 'axios'
 
-onMounted(() => {
-  window.scrollTo(0, 0);
-  });
-
 onUnmounted(() => {
   localStorage.removeItem('ID_Jenis_Pelayanan');
 });

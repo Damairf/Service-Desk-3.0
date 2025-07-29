@@ -90,7 +90,7 @@ class UserSeeder extends Seeder
                 "Nama_Belakang" => "Teknis",
                 "Password" => Hash::make('1234'),
                 "Gambar_Path" => "default.jpeg",
-                'Status' => 'Aktif'
+                'Status' => 'Nonaktif'
             ],
         ]);
     }

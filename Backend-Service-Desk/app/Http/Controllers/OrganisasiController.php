@@ -23,7 +23,7 @@ class OrganisasiController extends Controller
 
     public function findOne_Organisasi(Request $request){
         $organisasiId = $request->route('organisasiId');
-        $jabatan = Organisasi::where('ID_Organisasi', $organisasiId)->with('status')->get();
+        $jabatan = Organisasi::select('ID_Organisasi', 'Nama_Pengelola', 'No_HP_Pengelola')->where('ID_Organisasi', $organisasiId)->first();
 
         return response()->json($jabatan);
     }
@@ -31,21 +31,28 @@ class OrganisasiController extends Controller
     public function insertOne_Organisasi(Request $request){
         $dataOrganisasi = $request->only([
         'Nama_OPD',
-        'Induk_OPD',
+        'ID_Induk_Organisasi',
         'Nama_Pengelola',
         'No_HP_Pengelola',
         'Email',
-        'ID_Status'
+        'Status',
         ]);
         
-        Organisasi::insert($dataOrganisasi);
+        $organisasi = Organisasi::create($dataOrganisasi);
 
-        return response("Jabatan Ditambahkan", 201);
+        return response()->json([$organisasi->fresh()]);
     }
 
     public function updateOne_Organisasi(Request $request){
         $organisasiId = $request->route('organisasiId');
-        $dataOrganisasi = $request->all();
+        $dataOrganisasi = $request->only([
+        'Nama_OPD',
+        'ID_Induk_Organisasi',
+        'Nama_Pengelola',
+        'No_HP_Pengelola',
+        'Email',
+        'Status',
+        ]);
 
         $organisasi = Organisasi::where('ID_Organisasi', $organisasiId)->first();
 

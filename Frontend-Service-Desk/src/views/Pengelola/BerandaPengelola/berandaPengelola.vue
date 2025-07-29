@@ -18,10 +18,6 @@ const nip_user = ref('')
 const nama_jabatan = ref('')
 const nama_organisasi = ref('')
 
-onMounted(() => {
-  window.scrollTo(0, 0);
-});
-
 onMounted(()=> {
   const token = localStorage.getItem('Token');
   if(!token) {

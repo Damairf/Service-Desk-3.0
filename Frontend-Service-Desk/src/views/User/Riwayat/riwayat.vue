@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch,} from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 const router = useRouter()
@@ -20,7 +20,7 @@ watch(search, () => {
 
 const items = ref([])
 
-
+onMounted(() => {
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/pelayananUser', {
     headers: {
@@ -28,7 +28,10 @@ const items = ref([])
     }
   })
   .then(response => {
-    items.value = response.data.map(item => ({
+    console.log(response);
+    items.value = response.data.filter(item =>
+        ['Tutup', 'Ditolak'].includes(item.status_pelayanan?.Nama_Status)
+      ).map(item => ({
       ticket: item.ID_Pelayanan,
       perihal: item.Perihal,
       pic: item.teknis_pelayanan?.Nama_Depan || '-',
@@ -43,7 +46,7 @@ const items = ref([])
   .finally(() => {
   isLoading.value = false;
   });
-
+});
 
 
 
@@ -74,6 +77,7 @@ watch(filteredItems, () => {
 
 // Methods
 function checkProgress(item) {
+  alert(`Melihat detail untuk tiket: ${item.ticket}`)
   router.push({
     name: 'DetailPermintaanRiwayat',
     query: {
@@ -114,12 +118,15 @@ function checkProgress(item) {
           <tr v-if="isLoading">
             <td colspan="6" style="text-align: center; padding: 1rem;">Memuat data...</td>
           </tr>
+          <tr v-else-if="filteredItems.length === 0">
+            <td colspan="6" style="text-align: center; padding: 1rem;">Tidak ada riwayat</td>
+          </tr>
           <tr v-for="item in paginatedItems" :key="item.ticket">
             <td>{{ item.ticket }}</td>
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.pic }}</td>
-            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progress</a></td>
+            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Lihat Detail</a></td>
             <td>{{ item.status }}</td>
           </tr>
         </tbody>

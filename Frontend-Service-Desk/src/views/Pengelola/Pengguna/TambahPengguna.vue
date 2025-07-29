@@ -4,18 +4,55 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
-
 // === State untuk form ===
-const namaPerangkatDaerah = ref('')
-const namaPengelola = ref('')
-const nomorHP = ref('')
-const email = ref('')
+const Nama_Depan = ref('')
+const Nama_Belakang = ref('')
+const NIP = ref('')
 const status = ref('')
+const password = ref('')
+
+const pilihanRole = ref([])
+const idRoleTerpilih = ref('')
+
+const pilihanJabatan = ref([])
+const idJabatanTerpilih = ref('')
 
 const pilihanInduk = ref([])
 const idOrganisasiTerpilih = ref('')
 
 const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/role', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+   console.log(response.data)
+   pilihanRole.value = response.data.map(item => ({
+      id_role: item.ID_Role,
+      nama_role: item.Nama_Role
+    }))
+  })
+  .catch(error => {
+    console.error(error); 
+  });
+
+  axios.get('http://127.0.0.1:8000/api/jabatan', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+   console.log(response.data)
+   pilihanJabatan.value = response.data.map(item => ({
+      id_jabatan: item.ID_Jabatan,
+      nama_jabatan: item.Nama_Jabatan
+    }))
+  })
+  .catch(error => {
+    console.error(error); 
+  });
+
   axios.get('http://127.0.0.1:8000/api/organisasi', {
     headers: {
       Authorization: 'Bearer ' + token
@@ -31,36 +68,36 @@ const token = localStorage.getItem('Token');
   .catch(error => {
     console.error(error); 
   });
-
-
-
 // === Submit handler (dengan validasi) ===
 function handleSubmit() {
   // Validasi field wajib
-  if (!namaPerangkatDaerah.value || !email.value || !status.value) {
-    alert('Harap isi semua field yang bertanda *')
+  if (!Nama_Depan.value || !Nama_Belakang.value || !NIP.value || !idRoleTerpilih.value || !idJabatanTerpilih.value || !idOrganisasiTerpilih.value || !status.value || !password.value) {
+    alert('Harap isi semua kolom yang bertanda *')
     return
   }
 
-  if (nomorHP.value.length < 10) {
-  alert("Nomor HP minimal 10 digit")
-  return
+  if (NIP.value.length < 18) {
+    alert("NIP minimal 18 digit")
+    return
+  } else if (NIP.value.length > 18) {
+    alert('NIP maksimal 18 digit')
+    return
   }
 
   // Buat payload
   const payload = {
-    Nama_OPD: namaPerangkatDaerah.value,
-    ID_Induk_Organisasi: idOrganisasiTerpilih.value || null,
-    Nama_Pengelola: namaPengelola.value,
-    No_HP_Pengelola: nomorHP.value,
-    Email: email.value,
+    Nama_Depan: Nama_Depan.value,
+    Nama_Belakang: Nama_Belakang.value,
+    NIP: NIP.value,
+    ID_Role: idRoleTerpilih.value,
+    ID_Jabatan: idJabatanTerpilih.value,
+    ID_Organisasi: idOrganisasiTerpilih.value,
+    Password: password.value,
     Status: status.value
   }
 
-  console.log('Data yang akan dikirim ke backend:', payload)
-
   const token = localStorage.getItem('Token');
-  axios.post(`http://127.0.0.1:8000/api/organisasi`, payload
+  axios.post(`http://127.0.0.1:8000/api/user`, payload
   , {
     headers: {
       Authorization: 'Bearer ' + token,
@@ -71,29 +108,26 @@ function handleSubmit() {
   }) .catch(function(error){
     console.log(error)
   })
-  alert('Organisasi sudah ditambahkan')
-  router.push('/lembaga')
+  alert('Pengguna sudah ditambahkan')
+  router.push('/pengguna')
 }
 
 // === Reset form ===
 function handleReset() {
-  namaPerangkatDaerah.value = ''
-  idOrganisasiTerpilih.value = ''
-  namaPengelola.value = ''
-  nomorHP.value = ''
-  email.value = ''
+  Nama_Belakang.value = ''
+  Nama_Depan.value = ''
+  NIP.value = ''
   status.value = ''
+  password.value = ''
 }
-
-
 </script>
 
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Tambah Organisasi</h1>
+    <h1 class="main-title">Tambah Pengguna</h1>
     <div class="form-card">
       <div class="form-card-header">
-        Formulir Tambah Organisasi
+        Formulir Tambah Pengguna
       </div>
 
       <!-- Form pakai @submit.prevent supaya tidak reload -->
@@ -103,14 +137,52 @@ function handleReset() {
         </div>
 
         <div class="form-group">
-          <label>Nama Perangkat Daerah<span class="red">*</span></label>
-          <input type="text" placeholder="Nama PD" v-model="namaPerangkatDaerah" />
+          <label>Nama Depan<span class="red">*</span></label>
+          <input type="text" placeholder="Nama Depan" v-model="Nama_Depan" />
         </div>
 
         <div class="form-group">
-          <label>Induk Perangkat Daerah</label>
+          <label>Nama Belakang<span class="red">*</span></label>
+          <input type="text" placeholder="Nama Belakang" v-model="Nama_Belakang" />
+        </div>
+
+        <div class="form-group">
+          <label>NIP<span class="red">*</span></label>
+          <input type="text" v-model="NIP" />
+        </div>
+
+        <div class="form-group">
+          <label>Role<span class="red">*</span></label>
+          <select v-model="idRoleTerpilih">
+            <option disabled value="">-- Pilih Role --</option>
+            <option
+              v-for="item in pilihanRole"
+              :key="item.id_role"
+              :value="item.id_role"
+            >
+              {{ item.nama_role }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Jabatan <span class="red">*</span></label>
+          <select v-model="idJabatanTerpilih">
+            <option disabled value="">-- Pilih Jabatan --</option>
+            <option
+              v-for="item in pilihanJabatan"
+              :key="item.id_jabatan"
+              :value="item.id_jabatan"
+            >
+              {{ item.nama_jabatan }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Organisasi <span class="red">*</span></label>
           <select v-model="idOrganisasiTerpilih">
-            <option value="">-- Pilih Perangkat Daerah --</option>
+            <option disabled value="">-- Pilih Perangkat Daerah --</option>
             <option
               v-for="item in pilihanInduk"
               :key="item.id_organisasi"
@@ -122,24 +194,10 @@ function handleReset() {
         </div>
 
         <div class="form-group">
-          <label>Nama Pengelola</label>
-          <input type="text" v-model="namaPengelola" />
+          <label>Password <span class="red">*</span></label>
+          <input type="password" v-model="password" />
         </div>
 
-        <div class="form-group">
-          <label>Nomor HP. Pengelola</label>
-          <input
-            type="text"
-            inputmode="numeric"
-            v-model="nomorHP"
-            @input="nomorHP = $event.target.value.replace(/\D/g, '')"
-          />
-        </div>
-
-        <div class="form-group">
-          <label>Email <span class="red">*</span></label>
-          <input type="email" v-model="email" />
-        </div>
 
         <div class="form-group">
           <label>Status<span class="red">*</span></label>
@@ -148,6 +206,8 @@ function handleReset() {
             <option value="Nonaktif">Nonaktif</option>
           </select>
         </div>
+
+
 
         <div class="form-actions">
           <button type="submit" class="btn simpan">Simpan</button>

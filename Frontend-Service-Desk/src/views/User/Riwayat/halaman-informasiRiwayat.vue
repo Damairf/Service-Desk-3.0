@@ -137,8 +137,8 @@ const messages = ref([
 }
 
 .view-only-chat {
-  min-height: 450px;
-  max-height: 450px;
+  min-height: 300px;
+  max-height: 400px;
 }
 
 .message-bubble {

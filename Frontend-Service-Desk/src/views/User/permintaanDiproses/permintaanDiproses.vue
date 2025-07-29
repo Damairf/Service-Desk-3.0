@@ -1,11 +1,7 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
-
-onMounted(() => {
-  window.scrollTo(0, 0);
-  });
 
 const isLoading = ref(true)
 
@@ -130,6 +126,9 @@ watch(filteredItems, () => {
         <tbody>
           <tr v-if="isLoading">
             <td colspan="6" style="text-align: center; padding: 1rem;">Memuat data...</td>
+          </tr>
+          <tr v-else-if="filteredItems.length === 0">
+            <td colspan="6" style="text-align: center; padding: 1rem;">Tidak ada permintaan</td>
           </tr>
           <tr v-for="item in paginatedItems" :key="item.id">
             <td>{{ item.ticket }}</td>

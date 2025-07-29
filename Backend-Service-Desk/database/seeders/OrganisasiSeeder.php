@@ -53,7 +53,7 @@ class OrganisasiSeeder extends Seeder
                 "Nama_Pengelola" => "Pengelola 5",
                 "No_HP_Pengelola" => "081234567890",
                 "Email" => "pengelola5@gmail.com",
-                'Status' => 'Tidak Aktif'
+                'Status' => 'Nonaktif'
             ],
         ]);
     }

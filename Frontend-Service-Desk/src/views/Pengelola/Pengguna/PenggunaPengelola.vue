@@ -1,5 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 import axios from 'axios';
 
 const isLoading = ref(true)
@@ -101,6 +103,19 @@ function confirmDelete() {
   showModal = false
   idUserToDelete = null
 }
+
+function ubahpengguna(user) {
+  router.push({
+    path: '/ubahPengguna',
+    query: {
+      nama_depan: user.nama_depan,
+      nama_belakang: user.nama_belakang,
+      role: user.role,
+      organisasi: user.organisasi,
+      status: user.status
+    }
+  })
+}
 </script>
 
 <template>
@@ -108,7 +123,7 @@ function confirmDelete() {
     <div class="user-card">
       <h1 class="title">Daftar Pengguna</h1>
       <div class="top-actions">
-        <button class="btn tambah">Tambah</button>
+        <button class="btn tambah" @click="router.push('TambahPengguna')">Tambah</button>
       </div>
       <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
       <table class="data-table">
@@ -123,6 +138,12 @@ function confirmDelete() {
           </tr>
         </thead>
         <tbody>
+          <tr v-if="isLoading">
+            <td colspan="6" style="text-align: center; padding: 1rem;">Memuat data...</td>
+          </tr>
+          <tr v-else-if="filteredItems.length === 0">
+            <td colspan="6" style="text-align: center; padding: 1rem;">Tidak ada user terdaftar</td>
+          </tr>
           <tr v-for="(user, index) in paginatedItems" :key="index">
             <td>{{ user.id }}</td>
             <td>{{ user.nama_depan + ' ' + user.nama_belakang }}</td>
