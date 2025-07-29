@@ -74,7 +74,7 @@ function handleSelesai() {
 
   } else if (pilihan.value === 'Tolak') {
 
-    const token = localStorage.getItem('Token');
+  const token = localStorage.getItem('Token');
   axios.put(`http://127.0.0.1:8000/api/pelayanan/tolak/${pelayananId.value}`, 
   {
     Insiden: insiden.value,
