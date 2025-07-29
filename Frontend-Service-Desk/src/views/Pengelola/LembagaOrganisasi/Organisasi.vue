@@ -193,7 +193,7 @@ function lihatOrganisasi(item) {
               <div class="wrapper-aksiBtn">
                 <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(item)">Ubah</button>
                 <button class="aksiDelete-btn" title="Delete" @click="Delete(item)">Hapus</button>
-                <button class="aksiLihat-btn" @click="lihatOrganisasi(item)">Lihat</button>
+                <button class="aksiLihat-btn" @click="lihatOrganisasi(item)">Detail</button>
               </div>
             </td>
           </tr>
