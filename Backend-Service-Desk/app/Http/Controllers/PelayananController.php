@@ -20,7 +20,15 @@ class PelayananController extends Controller
     public function getPelayananUnit(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
         $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
-        ->where('ID_Unit', $ID_User)
+        ->where('ID_Unit', $ID_User)->whereNull('ID_Teknis')
+        ->get();
+        return response()->json($pelayanans);
+    }
+
+    public function getDisposisiUnit(Request $request){
+        $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
+        ->where('ID_Unit', $ID_User)->whereNotNull('ID_Teknis')
         ->get();
         return response()->json($pelayanans);
     }
@@ -91,6 +99,20 @@ class PelayananController extends Controller
         $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
 
         $pelayanan->update($dataPelayanan);
+    }
+
+    public function disposisi(Request $request){
+        $pelayananId = $request->route('pelayananId');
+        $dataPelayanan = $request->only([
+            'ID_Teknis',
+            'ID_Status'
+        ]);
+
+        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
+
+        $pelayanan->update($dataPelayanan);
+
+        return response()->json($pelayanan);
     }
         
     // hanya untuk role user memberikan survey

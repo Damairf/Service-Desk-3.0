@@ -11,7 +11,7 @@ function formatDate(dateString) {
 }
 
 // === Placeholder variabel backend ===
-const pelayananId = ref(route.query.layanan || '-')
+const pelayananId = ref(route.query.layanan)
 const layanan = ref(route.query.jenis_pelayanan || '-')
 const noTiket = ref(route.query.layanan || '-')
 const nama_depan = ref(route.query.nama_depanPengaju || '-')

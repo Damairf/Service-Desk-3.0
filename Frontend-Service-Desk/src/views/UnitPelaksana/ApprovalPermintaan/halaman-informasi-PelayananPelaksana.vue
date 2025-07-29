@@ -29,7 +29,7 @@ const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
 
 const pelaksana = ref([])
-const idUnitTerpilih = ref('')
+const idTeknisTerpilih = ref('')
 
 
 // === Untuk Tombol Setuju ===
@@ -50,48 +50,26 @@ axios.get('http://127.0.0.1:8000/api/pelayanan/teknis', {
     nama_depan: item.Nama_Depan,
     nama_belakang: item.Nama_Belakang
   }));  
-  idUnitTerpilih.value = '';
 })
 .catch(error => {
   console.error(error); 
 });
 
 function handleSelesai() {
-  if (pilihan.value === 'Setuju') {
-    
+
   const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/pelayanan/setuju/${pelayananId.value}`, 
+  axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
   {
-    ID_Unit: idUnitTerpilih.value,
-    ID_Status: 2,
-    Insiden: insiden.value
+    ID_Teknis: idTeknisTerpilih.value,
+    ID_Status: 4,
   }
   , {
     headers: {
       Authorization: 'Bearer ' + token,
     }
   })
-  router.push('/pelayanan')
-
-  } else if (pilihan.value === 'Revisi') {
-
-
-    // mungkin diganti jadi /revisi???
-  const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/pelayanan/tolak/${pelayananId.value}`, 
-  {
-    Insiden: insiden.value,
-    ID_Status: 3,
-    ID_Unit: null
-  }
-  , {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    }
-  })
-  router.push('/pelayanan')
-  }
-}
+  router.push('/Approval')
+} 
 
 //  ambil URL dari backend
 SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value
@@ -176,7 +154,7 @@ const addMessage = () => {
       <h3>Tinjau Pelayanan</h3>
       <div class='wrapper-setuju'>
         <h4>Unit Pelaksana Teknis</h4>
-        <select id="status" v-model="idUnitTerpilih">
+        <select id="status" v-model="idTeknisTerpilih">
           <option value="" disabled>Pilih Unit Pelaksana Teknis</option>
           <option v-for="option in pelaksana" :key="option.id_user" :value="option.id_user">
             {{ option.nama_depan }} {{ option.nama_belakang }}
