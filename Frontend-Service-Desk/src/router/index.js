@@ -44,6 +44,7 @@ import ubahOrganisasi from '../views/Pengelola/LembagaOrganisasi/EditOrganisasi.
 import berandaUnit from '../views/UnitPelaksana/Beranda/BerandaUnit.vue'
 import approval from '../views/UnitPelaksana/ApprovalPermintaan/ApprovalUnit.vue'
 import disposisi from '../views/UnitPelaksana/DisposisiPermintaan/DisposisiUnit.vue'
+import detailPelayananPelaksana from '../views/UnitPelaksana/ApprovalPermintaan/detailPelayananPelaksana.vue'
 
 // Daftar rute
 const routes = [
@@ -113,6 +114,8 @@ const routes = [
   { path: '/berandaUnit', name: 'BerandaUnit', component: berandaUnit},
   { path: '/approval', name: 'Approval', component: approval},
   { path: '/disposisi', name: 'Disposisi', component: disposisi},
+  //Approval
+  { path: '/detailPelayananPelaksana', name: 'DetailPelayananPelaksana', component: detailPelayananPelaksana},
 ]
 
 
