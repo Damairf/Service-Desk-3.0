@@ -17,6 +17,9 @@ const namaPengelola = ref('')
 const pilihanInduk = ref([])
 const idOrganisasiTerpilih = ref(route.query.id_induk_organisasi || '')
 
+// buat lihat doang
+const readonlyMode = ref(route.query.viewOnly === 'true')
+
 const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/organisasi', {
     headers: {
@@ -102,12 +105,12 @@ function handleReset() {
 
         <div class="form-group">
           <label>Nama Perangkat Daerah<span class="red">*</span></label>
-          <input type="text" placeholder="Nama PD" v-model="namaPerangkatDaerah" />
+          <input type="text" placeholder="Nama PD" v-model="namaPerangkatDaerah" :readonly="readonlyMode" />
         </div>
 
         <div class="form-group">
           <label>Induk Perangkat Daerah</label>
-          <select v-model="idOrganisasiTerpilih">
+          <select v-model="idOrganisasiTerpilih" :disabled="readonlyMode">
             <option value="">-- Pilih Perangkat Daerah --</option>
             <option
               v-for="item in pilihanInduk"
@@ -121,7 +124,7 @@ function handleReset() {
 
         <div class="form-group">
           <label>Nama Pengelola<span class="red">*</span></label>
-          <input type="text" v-model="namaPengelola" />
+          <input type="text" v-model="namaPengelola" :readonly="readonlyMode" />
         </div>
 
         <div class="form-group">
@@ -131,23 +134,24 @@ function handleReset() {
             inputmode="numeric"
             v-model="nomorHP"
             @input="nomorHP = $event.target.value.replace(/\D/g, '')"
+            :readonly="readonlyMode"
           />
         </div>
 
         <div class="form-group">
           <label>Email <span class="red">*</span></label>
-          <input type="email" v-model="email" />
+          <input type="email" v-model="email" :readonly="readonlyMode" />
         </div>
 
         <div class="form-group">
           <label>Status<span class="red">*</span></label>
-          <select v-model="status">
+          <select v-model="status" :disabled="readonlyMode">
             <option value="Aktif">Aktif</option>
             <option value="Nonaktif">Nonaktif</option>
           </select>
         </div>
 
-        <div class="form-actions">
+        <div class="form-actions" v-if="!readonlyMode">
           <button type="submit" class="btn simpan">Simpan</button>
           <button type="button" class="btn hapus" @click="handleReset">Hapus</button>
         </div>

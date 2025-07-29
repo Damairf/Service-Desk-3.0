@@ -141,6 +141,20 @@ function editOrganisasi(item) {
     }
   })
 }
+function lihatOrganisasi(item) {
+  router.push({
+    path: '/ubahLembaga',
+    query: {
+      id_organisasi: item.id_organisasi,
+      id_induk_organisasi: item.id_induk_organisasi,
+      nama_PerangkatDaerah: item.nama_PerangkatDaerah,
+      idOrganisasi: item.induk_PerangkatDaerah,
+      email: item.email,
+      status: item.status,
+      viewOnly: 'true'
+    }
+  })
+}
 </script>
 
 <template>
@@ -176,8 +190,11 @@ function editOrganisasi(item) {
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
             </td>
             <td>
-              <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(item)">Ubah</button>
-              <button class="aksiDelete-btn" title="Delete" @click="Delete(item)">Hapus</button>
+              <div class="wrapper-aksiBtn">
+                <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(item)">Ubah</button>
+                <button class="aksiDelete-btn" title="Delete" @click="Delete(item)">Hapus</button>
+                <button class="aksiLihat-btn" @click="lihatOrganisasi(item)">Lihat</button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -313,6 +330,19 @@ function editOrganisasi(item) {
   transition: background 0.2s;
 }
 .aksiDelete-btn:hover { background: #a63a1d; }
+.aksiLihat-btn{
+  background: #6c757d;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  font-size: 14px;
+  color: white;
+  transition: background 0.2s;
+}
+.aksiLihat-btn:hover{
+  background: #5a6268;
+}
 .pagination {
   display: flex;
   justify-content: center;
