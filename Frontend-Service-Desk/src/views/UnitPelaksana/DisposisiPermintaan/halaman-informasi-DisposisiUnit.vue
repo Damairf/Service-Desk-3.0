@@ -20,26 +20,28 @@ const organisasi = ref(route.query.organisasi || '-')
 const tanggalLaporan = ref(route.query.tanggal || '-')
 const perihal = ref(route.query.perihal || '-')
 const deskripsiUser = ref(route.query.deskripsi || '-')
-//pesan dari si pengelola
-const pesanPengelola = ref(route.query.insiden || '-')
 
 const SuratDinas_Path = ref(null)
 const src_SuratDinas = ref(route.query.surat_dinas || '-')
 const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
+const HasilBA_Path = ref(null)
+const src_HasilBA = ref(route.query.hasil_BA || '-')
+const HasilSLA_Path = ref(null)
+const src_HasilSLA = ref(route.query.hasil_SLA || '-')
 
 const pelaksana = ref([])
 const idUnitTerpilih = ref('')
+const insiden = ref('')
 
-
-// === Untuk Tombol Setuju ===
+// === Untuk Tombol Selesai dan Revisi ===
 const pilihan = ref('')
-function handlePilihan(klik){
+function handlePilihan(klik) {
   pilihan.value = klik
 }
 
 const token = localStorage.getItem('Token');
-axios.get('http://127.0.0.1:8000/api/pelayanan/teknis', {
+axios.get('http://127.0.0.1:8000/api/pelayanan/unit', {
   headers: {
     Authorization: 'Bearer ' + token
   }
@@ -57,45 +59,50 @@ axios.get('http://127.0.0.1:8000/api/pelayanan/teknis', {
 });
 
 function handleSelesai() {
-  if (pilihan.value === 'Setuju') {
-    
   const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/pelayanan/setuju/${pelayananId.value}`, 
-  {
-    ID_Unit: idUnitTerpilih.value,
-    ID_Status: 2,
-    Insiden: insiden.value
-  }
-  , {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    }
-  })
-  router.push('/pelayanan')
-
+  if (pilihan.value === 'Selesai') {
+    axios.put(`http://127.0.0.1:8000/api/pelayanan/selesai/${pelayananId.value}`, 
+    {
+      ID_Status: 4, // Adjust ID_Status for 'Selesai' based on your backend
+      Insiden: insiden.value
+    },
+    {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      }
+    })
+    .then(() => router.push('/pelayanan'))
+    .catch(error => console.error('Error updating status to Selesai:', error));
   } else if (pilihan.value === 'Revisi') {
-
-
-    // mungkin diganti jadi /revisi???
-  const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/pelayanan/tolak/${pelayananId.value}`, 
-  {
-    Insiden: insiden.value,
-    ID_Status: 3,
-    ID_Unit: null
-  }
-  , {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    }
-  })
-  router.push('/pelayanan')
+    axios.put(`http://127.0.0.1:8000/api/pelayanan/revisi/${pelayananId.value}`, 
+    {
+      ID_Status: 5, // Adjust ID_Status for 'Revisi' based on your backend
+      Insiden: insiden.value
+    },
+    {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      }
+    })
+    .then(() => router.push('/pelayanan'))
+    .catch(error => console.error('Error updating status to Revisi:', error));
   }
 }
 
-//  ambil URL dari backend
-SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value
-Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value
+// ambil URL dari backend
+SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value;
+Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value;
+HasilBA_Path.value = 'http://localhost:8000/' + src_HasilBA.value;
+HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value;
+
+function getFileName(path) {
+  return path.split('/').pop() || "Nama File";
+}
+
+const SuratDinaFileName = getFileName(SuratDinas_Path.value);
+const LampiranFileName = getFileName(Lampiran_Path.value);
+const HasilBAFileName = getFileName(HasilBA_Path.value);
+const HasilSLAFileName = getFileName(HasilSLA_Path.value);
 
 const messages = ref([
   {
@@ -133,63 +140,76 @@ const addMessage = () => {
         <strong>Deskripsi User</strong>
         <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
       </div>
-      <div v-if="SuratDinas_Path">
-        <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-          Surat Dinas
-        </a>
+      <div v-if="SuratDinas_Path" class="file-card">
+        <div class="file-header">Surat Dinas (Diurutkan Berdasarkan Waktu Upload)</div>
+        <div class="file-content">
+          <span class="file-placeholder">"{{ SuratDinaFileName }}"</span>
+        </div>
       </div>
-      <div v-if="Lampiran_Path">
-        <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-          Lampiran
-        </a>
-      </div>
-      <div class="info-row textarea-row">
-        <strong>Pesan dari Pengelola</strong>
-        <textarea class="input" v-model="pesanPengelola" placeholder="Pesan dari Pengelola" rows="5" readonly></textarea>
+      <div v-if="Lampiran_Path" class="file-card">
+        <div class="file-header">Lampiran (Diurutkan Berdasarkan Waktu Upload)</div>
+        <div class="file-content">
+          <span class="file-placeholder">"{{ LampiranFileName }}"</span>
+        </div>
       </div>
     </div>
+
     <div class="container-kanan">
       <div class="chat-card">
-      <h3>Chat</h3>
-      <div class="chat-content">
-        <div
-          v-for="(message, index) in messages"
-          :key="index"
-          :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
-        >
-          <span class="message-text">{{ message.text + " " }}</span>
-          <span class="message-time">{{ message.time + " " }}</span>
+        <h3>Chat</h3>
+        <div class="chat-content">
+          <div
+            v-for="(message, index) in messages"
+            :key="index"
+            :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
+          >
+            <span class="message-text">{{ message.text + " " }}</span>
+            <span class="message-time">{{ message.time + " " }}</span>
+          </div>
+        </div>
+
+        <textarea
+          v-model="newMessage"
+          class="message"
+          placeholder="Pesan"
+          @keyup.enter="addMessage"
+        ></textarea>
+
+        <button class="send-btn" @click="addMessage">Kirim</button>
+      </div>
+  
+      <div v-if="HasilBA_Path" class="file-card">
+        <div class="file-header">Hasil BA</div>
+        <div class="file-content">
+          <span class="file-placeholder">"{{ HasilBAFileName }}"</span>
         </div>
       </div>
 
-      <textarea
-        v-model="newMessage"
-        class="message"
-        placeholder="Pesan"
-        @keyup.enter="addMessage"
-      ></textarea>
-
-      <button class="send-btn" @click="addMessage">Kirim</button>
-    </div>
-
-    <div class="tinjau-card">
-      <h3>Tinjau Pelayanan</h3>
-      <div class='wrapper-setuju'>
-        <h4>Unit Pelaksana Teknis</h4>
-        <select id="status" v-model="idUnitTerpilih">
-          <option value="" disabled>Pilih Unit Pelaksana Teknis</option>
-          <option v-for="option in pelaksana" :key="option.id_user" :value="option.id_user">
-            {{ option.nama_depan }} {{ option.nama_belakang }}
-          </option>
-        </select>
-        <h4>Pesan untuk Unit Pelaksana Teknis</h4>
-        <textarea class="input" v-model="insiden"></textarea>
-        <button class="btn-selesai" @click="handleSelesai">Selesai</button>
+      <div v-if="HasilSLA_Path" class="file-card">
+        <div class="file-header">Hasil SLA</div>
+        <div class="file-content">
+          <span class="file-placeholder">"{{ HasilSLAFileName }}"</span>
+        </div>
       </div>
 
-  </div>
+      <div class="tinjau-card">
+        <h3>Tinjau Pelayanan</h3>
+        <div class="wrapper-btn">
+          <button class="btn-selesai" @click="handlePilihan('Selesai')">Selesai</button>
+          <button class="btn-revisi" @click="handlePilihan('Revisi')">Revisi</button>
+        </div>
+        <div class="wrapper-selesai" v-if="pilihan == 'Selesai'">
+          <h4>Keterangan Selesai</h4>
+          <textarea class="input" v-model="insiden"></textarea>
+          <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
+        </div>
+        <div class="wrapper-revisi" v-if="pilihan == 'Revisi'">
+          <h4>Alasan Butuh Direvisi</h4>
+          <textarea class="input" v-model="insiden"></textarea>
+          <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
+        </div>
+      </div>
     </div>
-
   </div>
 </template>
 
@@ -200,7 +220,7 @@ const addMessage = () => {
   align-items: flex-start;
 }
 /* container kanan */
-.container-kanan{
+.container-kanan {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -308,7 +328,7 @@ const addMessage = () => {
   margin-top: -0.3rem;
 }
 
-.input{
+.input {
   background-color: white;
   color: black;
 }
@@ -321,14 +341,14 @@ const addMessage = () => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.wrapper-btn{
+.wrapper-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
 }
 
-.btn-setuju{
+.btn-selesai {
   color: white;
   background-color: #4CAF50;
   border-radius: 12px;
@@ -337,10 +357,33 @@ const addMessage = () => {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-.btn-setuju:hover{
+.btn-selesai:hover {
   background-color: #66BB6A;
   transform: scale(1.02);
 }
+
+.btn-revisi {
+  color: white;
+  background-color: #FF9800;
+  border-radius: 12px;
+  padding: 0.5rem 2.5rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.btn-revisi:hover {
+  background-color: #FFB74D;
+  transform: scale(1.02);
+}
+
+.wrapper-selesai,
+.wrapper-revisi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-self: flex-start;
+}
+
 select {
   padding: 0.5rem;
   border-radius: 8px;
@@ -348,30 +391,8 @@ select {
   color: black;
   background-color: white;
 }
-.btn-revisi{
-  color: white;
-  background-color: #9b59b6;
-  border-radius: 12px;
-  padding: 0.5rem 2.5rem;
-  border: none;
-  cursor: pointer;
-}
-.btn-revisi:hover{
-  background-color: #8e44ad;
-  transform: scale(1.02);
-}
-.wrapper-setuju {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-self: flex-start;
-}
-.wrapper-revisi{
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.btn-selesai{
+
+.btn-confirm {
   color: white;
   background-color: #2BA9E4;
   border-radius: 12px;
@@ -379,11 +400,42 @@ select {
   border: none;
   cursor: pointer;
   transition: transform 0.2s ease;
-  width: fit-content;         /* <-- biar lebarnya mengikuti konten */
-  align-self: center;     
+  width: fit-content;
+  align-self: center;
 }
-.btn-selesai:hover{
+.btn-confirm:hover {
   transform: scale(1.02);
   background-color: #48B7ED;
+}
+
+.file-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.file-header {
+  font-weight: bold;
+  color: #2196f3;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.file-content {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-placeholder {
+  color: #2196f3;
+  font-style: italic;
 }
 </style>

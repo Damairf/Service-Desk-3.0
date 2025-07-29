@@ -61,7 +61,7 @@ function lihatDetail(item){
   const pelayananId = ref(item.noTiket)
   const stepString = JSON.stringify(steps.value);
     router.push({
-    name: 'Detail-Pelayanan', 
+    name: 'DetailPelayananDisposisi', 
     query: {
       layanan: item.noTiket,
       steps: stepString,
@@ -136,7 +136,7 @@ watch(search, () => {
 <template>
   <div class="container">
     <div class="card">
-      <h1 class="title">Data Pelayanan</h1>
+      <h1 class="title">Disposisi Pelayanan</h1>
       <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
       
       <table class="rounded-table">

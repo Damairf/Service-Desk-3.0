@@ -42,11 +42,16 @@ import ubahOrganisasi from '../views/Pengelola/LembagaOrganisasi/EditOrganisasi.
 
 //===============UNIT PELAKSANA===============
 import berandaUnit from '../views/UnitPelaksana/Beranda/BerandaUnit.vue'
+
+// Approval
 import approval from '../views/UnitPelaksana/ApprovalPermintaan/ApprovalUnit.vue'
-import disposisi from '../views/UnitPelaksana/DisposisiPermintaan/DisposisiUnit.vue'
 import detailPelayananPelaksana from '../views/UnitPelaksana/ApprovalPermintaan/detailPelayananPelaksana.vue'
-import halamanLacakPelaksana from '../views/UnitPelaksana/ApprovalPermintaan/halaman-lacak-PelayananPelaksana.vue'
-import halamanInformasiPelaksana from '../views/UnitPelaksana/ApprovalPermintaan/halaman-informasi-PelayananPelaksana.vue'
+
+// Disposisi
+import disposisi from '../views/UnitPelaksana/DisposisiPermintaan/DisposisiUnit.vue'
+import halamanLacakDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/halaman-lacak-DisposisiUnit.vue'
+import halamanInformasiDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/halaman-informasi-DisposisiUnit.vue'
+import detailPelayananDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/detailPelayananDisposisi.vue'
 
 // Daftar rute
 const routes = [
@@ -117,10 +122,12 @@ const routes = [
   { path: '/approval', name: 'Approval', component: approval},
   { path: '/disposisi', name: 'Disposisi', component: disposisi},
   //Approval
-  { path: '/detailPelayananPelaksana', name: 'DetailPelayananPelaksana', component: detailPelayananPelaksana,
+  { path: '/detailPelayananPelaksana', name: 'DetailPelayananPelaksana', component: detailPelayananPelaksana},
+  //Disposisi
+  { path: '/detailPelayananDisposisi', name: 'DetailPelayananDisposisi', component: detailPelayananDisposisi,
     children: [
-      { path: 'lacakPelaksana', name: 'LacakPelaksana', component: halamanLacakPelaksana},
-      { path: 'informasiPelaksana', name: 'InformasiPelaksana', component: halamanInformasiPelaksana}
+      { path: 'lacakDisposisi', name: 'HalamanLacakDisposisi', component: halamanLacakDisposisi},
+      { path: 'informasiDisposisi', name: 'HalamanInformasiDisposisi', component: halamanInformasiDisposisi}
     ]
   },
 ]
