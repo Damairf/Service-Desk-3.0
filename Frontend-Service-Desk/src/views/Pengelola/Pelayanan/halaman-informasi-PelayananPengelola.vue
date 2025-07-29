@@ -244,6 +244,7 @@ const addMessage = () => {
   border-radius: 8px;
   border: 1px solid #ccc;
   resize: vertical;
+  background-color: #e6e6e6;
 }
 
 .chat-content {

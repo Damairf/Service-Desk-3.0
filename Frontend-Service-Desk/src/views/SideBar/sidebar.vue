@@ -72,9 +72,8 @@ if (role.value == 1) {
 } else if (role.value == 3) {
   role.value = "Unit Pelaksana"
   menuItem.value = [
-  { icon: '🏠', label: 'Beranda', to: '/beranda' },
+  { icon: '🏠', label: 'Beranda', to: '/berandaUnit' },
   { icon: '⚙️', label: 'Approval Permintaan Layanan', to: '/approval' },
-  { icon: '🔍', label: 'Lembaga/Organisasi', to: '/lembaga' },
   { icon: '📁', label: 'Disposisi Permintaan Layanan', to: '/disposisi' },
 ];
 } else if (role.value == 4) {

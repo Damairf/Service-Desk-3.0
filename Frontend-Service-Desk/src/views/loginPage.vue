@@ -30,6 +30,8 @@ function login(){
       router.push('/beranda');
     } else if (role === 2){
       router.push('/beranda-Pengelola');
+    } else if (role === 3){
+      router.push('/berandaUnit');
     }
     })
 

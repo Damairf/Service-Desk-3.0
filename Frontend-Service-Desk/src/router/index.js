@@ -40,6 +40,11 @@ import lembagaOrganisasi from '../views/Pengelola/LembagaOrganisasi/Organisasi.v
 import tambahOrganisasi from '../views/Pengelola/LembagaOrganisasi/TambahOrganisasi.vue'
 import ubahOrganisasi from '../views/Pengelola/LembagaOrganisasi/EditOrganisasi.vue'
 
+//===============UNIT PELAKSANA===============
+import berandaUnit from '../views/UnitPelaksana/Beranda/BerandaUnit.vue'
+import approval from '../views/UnitPelaksana/ApprovalPermintaan/ApprovalUnit.vue'
+import disposisi from '../views/UnitPelaksana/DisposisiPermintaan/DisposisiUnit.vue'
+
 // Daftar rute
 const routes = [
   // Login page
@@ -100,7 +105,16 @@ const routes = [
   { path: '/lembaga', name: 'lembaga/Organisasi', component: lembagaOrganisasi  },
   { path: '/tambahLembaga', name: 'TambahLembaga', component:  tambahOrganisasi },
   { path: '/ubahLembaga', name: 'UbahLembaga', component: ubahOrganisasi},
+
+    
+  //===============UNIT PELAKSANA===============
+
+  //Beranda Unit Pelaksana
+  { path: '/berandaUnit', name: 'BerandaUnit', component: berandaUnit},
+  { path: '/approval', name: 'Approval', component: approval},
+  { path: '/disposisi', name: 'Disposisi', component: disposisi},
 ]
+
 
 const router = createRouter({
   history: createWebHistory(),
