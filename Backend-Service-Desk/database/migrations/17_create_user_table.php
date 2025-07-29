@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('Nama_Belakang')->nullable(false);
             $table->string('Password')->nullable(false);
             $table->string('Gambar_Path')->default('Tidak ada gambar')->nullable(true)->default('default.jpeg');
-            $table->enum('Status', ['Aktif', 'Tidak Aktif']);
+            $table->enum('Status', ['Aktif', 'Nonaktif'])->default('Aktif');
             $table->timestamps();
 
             $table->foreign('ID_Role')->references('ID_Role')->on('reff_role');

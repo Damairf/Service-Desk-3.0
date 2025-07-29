@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('Nama_Pengelola')->nullable(false);
             $table->string('No_HP_Pengelola')->nullable(false);
             $table->string('Email')->nullable(false);
-            $table->enum('Status', ['Aktif', 'Tidak Aktif']);
+            $table->enum('Status', ['Aktif', 'Nonaktif'])->default('Aktif');
             $table->timestamps();
 
             $table->foreign('ID_Induk_Organisasi')->references('ID_Organisasi')->on('reff_organisasi')->nullOnDelete();

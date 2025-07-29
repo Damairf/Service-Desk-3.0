@@ -203,7 +203,7 @@ function handleReset() {
           <label>Status<span class="red">*</span></label>
           <select v-model="status">
             <option value="Aktif">Aktif</option>
-            <option value="Tidak Aktif">Tidak Aktif</option>
+            <option value="Nonaktif">Nonaktif</option>
           </select>
         </div>
 
