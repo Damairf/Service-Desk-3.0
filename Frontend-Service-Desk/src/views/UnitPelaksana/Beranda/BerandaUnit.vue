@@ -3,6 +3,10 @@
   import axios from 'axios'
   import { useRouter } from 'vue-router'
   
+  //Chart
+  import ChartProgressKeseluruhan from '../../Pengelola/BerandaPengelola/Chart/ChartPie-ProgressKeseluruhan.vue'
+  import ChartProgressBulanIni from '../../Pengelola/BerandaPengelola/Chart/ChartPie-ProgressBulanIni.vue'
+
   // biar tombolnya bisa berfungsi
    function handleOK(){
     selectMenu('ApprovalPermintaan')
@@ -64,6 +68,19 @@ onBeforeMount(() => {
           <img src="../../../../public/Disposisi.svg" alt="Disposisi Permintaan">
           <h3>Disposisi Permintaan</h3>
           <button class="lacak" @click="router.push('/disposisi')">Disposisi</button>
+        </div>
+      </div>
+
+      <div class="box-row">
+        <div class="chart-box">
+          <div class="chart-container">
+            <ChartProgressKeseluruhan />
+              </div>
+          </div>
+        <div class="chart-box">
+          <div class="chart-container">
+            <ChartProgressBulanIni />
+          </div>
         </div>
       </div>
       </div>
@@ -174,4 +191,43 @@ onBeforeMount(() => {
     transform: scale(1.02);
     background-color: #52AE6E;
   }
+
+  
+.chart-box {
+  flex: 1;
+  min-width: 250px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.chart-container {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bar-chart-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.chart-full {
+  width: 100%;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.chart-title {
+  color: black;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
     </style>
