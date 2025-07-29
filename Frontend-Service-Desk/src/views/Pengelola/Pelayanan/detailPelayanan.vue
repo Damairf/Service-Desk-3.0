@@ -152,6 +152,8 @@ onMounted(() => {
   flex-direction: column;
   align-items: flex-start;
   padding: 32px;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* Tabs */
