@@ -110,10 +110,7 @@ function confirmDelete() {
       <div class="top-actions">
         <button class="btn tambah">Tambah</button>
       </div>
-      <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="Cari Pengguna" class="search-bar-color" v-model="search" />
-      </div>
+      <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
       <table class="data-table">
         <thead>
           <tr>
@@ -131,10 +128,14 @@ function confirmDelete() {
             <td>{{ user.nama_depan + ' ' + user.nama_belakang }}</td>
             <td>{{ user.role }}</td>
             <td>{{ user.organisasi }}</td>
-            <td>{{ user.status }}</td>
             <td>
-              <button class="aksiEdit-btn" title="Edit">Ubah</button>
-              <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
+              <span :class="['status', user.status.toLowerCase()]">{{ user.status }}</span>
+            </td>
+            <td>
+              <div class="wrapper-aksiBtn">
+                <button class="aksiEdit-btn" title="Edit">Ubah</button>
+                <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -224,14 +225,15 @@ function confirmDelete() {
 }
 
 .search-bar {
-  display: flex;
-  align-items: center;
-  background: #e0e0e0;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 13px;
+  background-color: #e0e0e0;
   color: black;
-  border-radius: 2rem;
-  padding: 0.5rem 1.2rem;
-  margin-bottom: 1.2rem;
-  font-size: 1.1rem;
+  font-size: 14px;
+  outline: none;
 }
 .search-bar-color {
   color: black;
@@ -249,29 +251,32 @@ function confirmDelete() {
 }
 .data-table {
   width: 100%;
-  border-collapse: collapse;
-  background: #fff;
+  border-collapse: separate;
+  border-spacing: 0;
   border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  font-size: 14px;
 }
 .data-table th, .data-table td {
-  padding: 0.8rem 1rem;
+  padding: 12px;
   text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 .data-table tr:nth-child(even){
   background-color: #f9f9f9;
 }
 
 .data-table th {
-  background: #d3d3d3;
-  font-weight: 600;
+  background-color: #f1f1f1;
 }
 .data-table tr {
   border-bottom: 1px solid #eee;
 }
 /* tombol aksi */
+.wrapper-aksiBtn{
+  display: flex;
+  gap: 3px;
+}
 .aksiEdit-btn {
   background: #2196f3;
   border: 1px solid #ccc;
@@ -279,7 +284,7 @@ function confirmDelete() {
   padding: 0.3rem 0.5rem;
   margin-right: 0.2rem;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 14px;
   color: white;
   transition: background 0.2s, color 0.2s;
 }
@@ -293,7 +298,7 @@ function confirmDelete() {
   padding: 0.3rem 0.5rem;
   margin-right: 0.2rem;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 14px;
   color: white;
   transition: background 0.2s, color 0.2s;
 }
@@ -306,6 +311,7 @@ function confirmDelete() {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  margin-top: 20px;
 }
 .pagination button {
   background: #fff;
@@ -359,5 +365,22 @@ function confirmDelete() {
 .btn.danger {
   background: #e53935;
   color: white;
+}
+/* === Warna Status === */
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+  text-transform: capitalize;
+}
+.status.aktif {
+  background-color: #e6dcf5;
+  color: #6a1b9a;
+}
+.status.nonaktif {
+  background-color: #fff9c4;
+  color: #e53935;
 }
 </style>

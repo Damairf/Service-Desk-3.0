@@ -118,9 +118,7 @@ function editOrganisasi(user) {
       <div class="top-actions">
         <button class="btn tambah" @click="router.push('/tambahLembaga')">Tambah</button>
       </div>
-      <div class="search-bar">
-        <input type="text" placeholder="Cari Lembaga/Organisasi" v-model="search" />
-      </div>
+      <input type="text" v-model="search" placeholder="Cari Lembaga/Organisasi" class="search-bar" />
       <table class="data-table">
         <thead>
           <tr>
@@ -138,8 +136,10 @@ function editOrganisasi(user) {
             <td>{{ user.email }}</td>
             <td>{{ user.status }}</td>
             <td>
-              <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(user)">Ubah</button>
-              <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
+              <div class="wrapper-aksiBtn">
+                <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(user)">Ubah</button>
+                <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -216,48 +216,41 @@ function editOrganisasi(user) {
   margin-left: auto;
 }
 .search-bar {
-  display: flex;
-  align-items: center;
-  background: #e9eff1;
-  border-radius: 2rem;
-  padding: 0.5rem 1.2rem;
-  margin-bottom: 1.2rem;
-  font-size: 1.1rem;
-  color: black;
-}
-.search-bar i {
-  margin-right: 0.7rem;
-  color: #888;
-}
-.search-bar input {
-  border: none;
-  background: transparent;
-  outline: none;
   width: 100%;
-  font-size: 1.1rem;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 13px;
+  background-color: #e0e0e0;
+  color: black;
+  font-size: 14px;
 }
 .data-table {
   width: 100%;
-  border-collapse: collapse;
-  background: #fff;
+  border-collapse: separate;
+  border-spacing: 0;
   border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  font-size: 14px;
 }
 .data-table th, .data-table td {
-  padding: 0.8rem 1rem;
+  padding: 12px;
   text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 .data-table tr:nth-child(even){
   background-color: #f9f9f9;
 }
 .data-table th {
-  background: #d3d3d3;
-  font-weight: 600;
+  background-color: #f1f1f1;
 }
 .data-table tr {
   border-bottom: 1px solid #eee;
+}
+/* Tombol aksi */
+.wrapper-aksiBtn{
+  display: flex;
+  gap: 3px;
 }
 .aksiEdit-btn {
   background: #2196f3;
@@ -286,6 +279,7 @@ function editOrganisasi(user) {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
+  margin-top: 20px;
 }
 .pagination button {
   background: #fff;
