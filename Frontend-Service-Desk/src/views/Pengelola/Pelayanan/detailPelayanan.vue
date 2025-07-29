@@ -70,7 +70,7 @@ const handleTabChange = (tab) => {
   if (tab === 'tracking') {
     if (steps.value.length > 0) {
       router.push({
-        name: 'HalamanLacak',
+        name: 'HalamanLacakPengelola',
         query: {
           layanan: pelayananId.value,
           tab: 'tracking',
@@ -92,7 +92,8 @@ const handleTabChange = (tab) => {
         jenis_pelayanan: jenis_pelayanan.value,
         deskripsi: deskripsi.value,
         surat_dinas: surat_dinas.value,
-        lampiran: lampiran.value
+        lampiran: lampiran.value,
+        tab: 'informasi',
       }
     });
   }
