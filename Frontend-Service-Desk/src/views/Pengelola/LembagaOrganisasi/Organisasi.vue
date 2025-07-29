@@ -30,7 +30,7 @@ const token = localStorage.getItem('Token');
   })
   .finally(() => {
     isLoading.value = false;
-  })
+  });
 
 
 // === Search & Sort ===
@@ -160,12 +160,6 @@ function editOrganisasi(user) {
           </tr>
         </thead>
         <tbody>
-          <tr v-if="isLoading">
-            <td colspan="6" style="text-align: center; padding: 1rem;">Memuat data...</td>
-          </tr>
-          <tr v-else-if="filteredItems.length === 0">
-            <td colspan="6" style="text-align: center; padding: 1rem;">Tidak ada lembaga organisasi</td>
-          </tr>
           <tr v-for="(user, index) in paginatedItems" :key="index">
             <td>{{ user.nama_PerangkatDaerah }}</td>
             <td>{{ user.induk_PerangkatDaerah }}</td>
