@@ -104,7 +104,7 @@ if (role.value == 1) {
   <div :class="['sidebar', { collapsed: !isOpen }]">
     <!-- Logo -->
     <div class="logo-wrapper">
-      <div class="logo">
+      <div :class="['logo', { collapsed: !isOpen }]">
         <template v-if="isOpen">
           <img :src="LogoServiceDesk" alt="Logo" class="sidebar-logo-large" />
           <span class="logo-text">Service<br>Desk V3.0</span>
@@ -175,7 +175,6 @@ if (role.value == 1) {
   align-items: center;
   gap: 10px;
   overflow: hidden;
-  animation: slideDown 0.3s ease;
 }
 
 @keyframes slideDown {
@@ -305,6 +304,10 @@ if (role.value == 1) {
   width: 50px;
 }
 
+.logo.collapsed {
+  padding: 30px 10px;
+}
+
 /* Tambahan untuk bungkus logo */
 .logo-wrapper {
   width: 100%;
@@ -321,7 +324,7 @@ if (role.value == 1) {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 30px 10px;
+  padding: 30px 30px 30px 10px;
   width: 100%;
   box-sizing: border-box;
   color: white;
