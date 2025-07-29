@@ -1,5 +1,5 @@
 <script setup>
-import { ref , onBeforeMount, onMounted, computed } from 'vue'
+import { ref , onBeforeUnmount, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 // buat backend
 import axios from 'axios'
@@ -9,6 +9,8 @@ const nama_depan = ref(localStorage.getItem('nama_depan'));
 const nama_belakang = ref(localStorage.getItem('nama_belakang'));
 const gambar = ref(localStorage.getItem('src_gambar'));
 const role = ref(localStorage.getItem('id_role'))
+
+const profileRef = ref(null)
 
 // biar auto update
 onMounted(() => {
@@ -21,6 +23,32 @@ onMounted(() => {
     gambar.value = localStorage.getItem('src_gambar');
   });
 });
+
+const tampilinOverlay = ref(false)
+
+// Refs untuk elemen wrapper
+
+function toggleOverlay() {
+  tampilinOverlay.value = !tampilinOverlay.value
+}
+
+function handleClickOutside(event) {
+  if (
+    tampilinOverlay.value &&
+    profileRef.value &&
+    !profileRef.value.contains(event.target)
+  ) {
+    tampilinOverlay.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 
 const menuItem = ref([])
 const router = useRouter()
@@ -35,10 +63,6 @@ function toProfile(){
   }
 
 //ovelay
-const tampilinOverlay = ref(false)
-function toggleOverlay(){
-    tampilinOverlay.value = !tampilinOverlay.value
-  }
 
 // biar bisa buka tutup
 const isOpen = ref(true)
@@ -120,7 +144,7 @@ if (role.value == 1) {
     </button>
 
     <!-- Profile -->
-    <div class="profile" @click="toggleOverlay">
+    <div class="profile" ref="profileRef" @click="toggleOverlay">
       <img
           :src="`http://localhost:8000/images/${gambar}`"
           alt="Foto Profil"
