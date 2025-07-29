@@ -1,94 +1,83 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 const router = useRouter()
-const route = useRoute() // untuk ambil params ID 
 
-// ambil dari route organisasi
-const namaPerangkatDaerah = ref(route.query.nama_PerangkatDaerah || '')
-const indukPerangkatDaerah = ref(route.query.induk_PerangkatDaerah || '')
-const email = ref(route.query.email || '')
-const status = ref(route.query.status || '')
-const namaPengelola = ref('') // ambil dari Backend soalnya gk ada di organisasi.vue
-// === Ambil data awal ketika halaman dibuka ===
-onMounted(() => {
-  const orgId = route.params.id // contoh: /edit-organisasi/:id
-  console.log('Edit ID:', orgId)
+// === State untuk form ===
+const Nama_Depan = ref('')
+const Nama_Belakang = ref('')
+const NIP = ref('')
+const nomorHP = ref('')
+const email = ref('')
 
-  // === Backend
-
-})
-
-// === Submit handler (kirim data edit) ===
+// === Submit handler (dengan validasi) ===
 function handleSubmit() {
   // Validasi field wajib
-  if (!nama_PerangkatDaerah.value || !email.value || !status.value) {
+  if (!Nama_Belakang.value || !Nama_Belakang.value || !NIP.value || !email.value) {
     alert('Harap isi semua field yang bertanda *')
     return
   }
 
-  // Payload untuk backend
+  // Buat payload
   const payload = {
-    namaPerangkatDaerah: namaPerangkatDaerah.value,
-    indukPerangkatDaerah: indukPerangkatDaerah.value,
-    namaPengelola: namaPengelola.value,
+    Nama_Belakang: Nama_Belakang.value,
+    Nama_Depan: Nama_Depan.value,
+    NIP: NIP.value,
     nomorHP: nomorHP.value,
-    email: email.value,
-    status: status.value
+    email: email.value
   }
 
-  console.log('Data yang akan diupdate ke backend:', payload)
+  console.log('Data yang akan dikirim ke backend:', payload)
 
-  // === Backend: update organisasi by ID ===
-  // backend: axios.put(`/api/organisasi/${route.params.id}`, payload)
-
-  alert('Organisasi berhasil diperbarui')
-  router.push('/lembaga') // kembali ke daftar lembaga
+  // Contoh request backend (aktifkan jika sudah ada API)
+  // await axios.post('/api/organisasi', payload)
+  alert('Pengguna sudah ditambahkan')
+  // Redirect setelah submit sukses
+  router.push('/pengguna')
 }
 
 // === Reset form ===
 function handleReset() {
-  namaPerangkatDaerah.value = ''
-  indukPerangkatDaerah.value = ''
-  namaPengelola.value = ''
+  Nama_Belakang.value = ''
+  Nama_Depan.value = ''
+  NIP.value = ''
   nomorHP.value = ''
   email.value = ''
-  status.value = ''
 }
 </script>
 
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Edit Organisasi</h1>
+    <h1 class="main-title">Tambah Pengguna</h1>
     <div class="form-card">
       <div class="form-card-header">
-        Formulir Ubah Organisasi
+        Formulir Tambah Pengguna
       </div>
 
+      <!-- Form pakai @submit.prevent supaya tidak reload -->
       <form class="form-content" @submit.prevent="handleSubmit">
         <div class="form-note">
           <span class="required-text">Keterangan <span class="red">*</span> Harus Diisi</span>
         </div>
 
         <div class="form-group">
-          <label>Nama Perangkat Daerah<span class="red">*</span></label>
-          <input type="text" placeholder="Nama PD" v-model="namaPerangkatDaerah" />
+          <label>Nama Depan<span class="red">*</span></label>
+          <input type="text" placeholder="Nama Depan" v-model="Nama_Depan" />
         </div>
 
         <div class="form-group">
-          <label>Induk Perangkat Daerah</label>
-          <select v-model="indukPerangkatDaerah">
-            <option value="">--Pilih Induk Organisasi--</option>
-            <option value="Diskominfo">Diskominfo</option>
-            <option value="BPKAD">BPKAD</option>
-            <option value="Setda">Setda</option>
-          </select>
+          <label>Nama Belakang<span class="red">*</span></label>
+          <input type="text" placeholder="Nama Belakang" v-model="Nama_Belakang" />
         </div>
 
         <div class="form-group">
-          <label>Nama Pengelola</label>
-          <input type="text" v-model="namaPengelola" />
+          <label>NIP<span class="red">*</span></label>
+          <input type="text" v-model="NIP" />
+        </div>
+
+        <div class="form-group">
+          <label>Nomor HP.</label>
+          <input type="text" v-model="nomorHP" />
         </div>
 
         <div class="form-group">
@@ -96,19 +85,16 @@ function handleReset() {
           <input type="email" v-model="email" />
         </div>
 
-        <div class="form-group">
-          <label>Status<span class="red">*</span></label>
-          <input type="text" v-model="status" />
-        </div>
-
         <div class="form-actions">
-          <button type="submit" class="btn simpan">Simpan</button>
+          <button type="submit" class="btn ubah">Simpan</button>
           <button type="button" class="btn hapus" @click="handleReset">Hapus</button>
         </div>
       </form>
     </div>
   </div>
 </template>
+
+
 
 <style scoped>
 .page-bg {
@@ -197,10 +183,10 @@ function handleReset() {
   color: #fff;
   transition: background 0.2s;
 }
-.btn.simpan {
+.btn.ubah {
   background: #2da8e2;
 }
-.btn.simpan:hover {
+.btn.ubah:hover {
   background: #1976d2;
 }
 .btn.hapus {

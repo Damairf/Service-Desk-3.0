@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+const router = useRouter()
+import axios from 'axios'
 const route = useRoute()
 
 function formatDate(dateString) {
@@ -34,6 +36,47 @@ const messages = ref([
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }
 ])
+
+const rating = ref(0)
+const hoverRating = ref(0)
+const reviewText = ref('')
+const reviewSubmitted = ref(false)
+
+const newMessage = ref('')
+
+const addMessage = () => {
+  if (newMessage.value.trim()) {
+    messages.value.push({
+      text: newMessage.value,
+      sender: "User",
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    })
+    newMessage.value = ''
+  }
+}
+
+const setRating = (newRating) => {
+  rating.value = newRating
+}
+
+const submitReview = async () => {
+  if (rating.value === 0) {
+    alert('Mohon berikan rating bintang terlebih dahulu.')
+    return
+  }
+  try {
+    const token = localStorage.getItem('Token')
+    // Assuming an endpoint exists to post reviews
+    await axios.post(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}/review`, {
+      rating: rating.value,
+      comment: reviewText.value
+    }, { headers: { Authorization: 'Bearer ' + token } })
+    reviewSubmitted.value = true
+  } catch (error) {
+    console.error('Gagal mengirim ulasan:', error)
+    alert('Gagal mengirim ulasan. Silakan coba lagi.')
+  }
+}
 </script>
 
 <template>
@@ -60,11 +103,36 @@ const messages = ref([
         </a>
       </div>
       </div>
+
+      <!-- Review Section -->
+      <div class="review-section">
+        <div v-if="!reviewSubmitted">
+          <h4 class="review-title">Beri Ulasan</h4>
+          <div class="star-rating">
+            <span
+              v-for="star in 5"
+              :key="star"
+              class="star"
+              :class="{ 'filled': star <= (hoverRating || rating) }"
+              @mouseover="hoverRating = star"
+              @mouseleave="hoverRating = 0"
+              @click="setRating(star)"
+            >
+              ★
+            </span>
+          </div>
+          <textarea v-model="reviewText" class="review-textarea" placeholder="Bagikan pengalaman Anda..." rows="4"></textarea>
+          <button class="send-btn" @click="submitReview">Kirim Ulasan</button>
+        </div>
+        <div v-else class="thank-you-message">
+          <p>Terima kasih! Ulasan Anda telah kami terima.</p>
+        </div>
+      </div>
     </div>
 
     <div class="chat-card">
       <h3>Chat</h3>
-      <div class="chat-content view-only-chat">
+      <div class="chat-content">
         <div
           v-for="(message, index) in messages"
           :key="index"
@@ -74,6 +142,15 @@ const messages = ref([
           <span class="message-time">{{ message.time }}</span>
         </div>
       </div>
+
+      <textarea
+        v-model="newMessage"
+        class="message"
+        placeholder="Pesan"
+        @keyup.enter="addMessage"
+      ></textarea>
+
+      <button class="send-btn" @click="addMessage">Kirim</button>
     </div>
   </div>
 </template>
@@ -115,7 +192,7 @@ const messages = ref([
 }
 
 .textarea-row textarea {
-  width: 100%;
+  width: 97%;
   margin-top: 0.5rem;
   padding: 0.5rem;
   border-radius: 8px;
@@ -134,11 +211,6 @@ const messages = ref([
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.view-only-chat {
-  min-height: 300px;
-  max-height: 400px;
 }
 
 .message-bubble {
@@ -166,9 +238,85 @@ const messages = ref([
   opacity: 0.7;
 }
 
+.message {
+  width: 97%;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  padding: 0.5rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  background-color: white;
+  color: black;
+}
+
+.send-btn {
+  background: #006920;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.note {
+  color: #888;
+  font-size: 0.8rem;
+  margin-top: -0.3rem;
+}
+
 .input{
   background-color: white;
   color: black;
 }
 
+.review-section {
+  margin-top: 2rem;
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
+}
+
+.review-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.star-rating {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.star {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.review-textarea {
+  width: 95%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.75rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  background-color: white;
+  color: black;
+}
+
+.thank-you-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
 </style>

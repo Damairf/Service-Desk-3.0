@@ -1,5 +1,5 @@
 <script setup>
-import { ref , onBeforeUnmount, onMounted, computed } from 'vue'
+import { ref , onBeforeMount, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 // buat backend
 import axios from 'axios'
@@ -36,31 +36,9 @@ function toProfile(){
 
 //ovelay
 const tampilinOverlay = ref(false)
-
-// Refs untuk elemen wrapper
-const profileRef = ref(null)
-
-function toggleOverlay() {
-  tampilinOverlay.value = !tampilinOverlay.value
-}
-
-function handleClickOutside(event) {
-  if (
-    tampilinOverlay.value &&
-    profileRef.value &&
-    !profileRef.value.contains(event.target)
-  ) {
-    tampilinOverlay.value = false
+function toggleOverlay(){
+    tampilinOverlay.value = !tampilinOverlay.value
   }
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('click', handleClickOutside)
-})
 
 // biar bisa buka tutup
 const isOpen = ref(true)
@@ -127,8 +105,13 @@ if (role.value == 1) {
     <!-- Logo -->
     <div class="logo-wrapper">
       <div class="logo">
-        <span v-if="isOpen">Service<br>Desk V3.0</span>
-        <img v-else :src="LogoServiceDesk" alt="Logo" class="sidebar-logo" />
+        <template v-if="isOpen">
+          <img :src="LogoServiceDesk" alt="Logo" class="sidebar-logo-large" />
+          <span class="logo-text">Service<br>Desk V3.0</span>
+        </template>
+        <template v-else>
+          <img :src="LogoServiceDesk" alt="Logo" class="sidebar-logo" />
+        </template>
       </div>
     </div>
 
@@ -138,20 +121,20 @@ if (role.value == 1) {
     </button>
 
     <!-- Profile -->
-    <div class="profile" ref="profileRef" @click="toggleOverlay">
+    <div class="profile" @click="toggleOverlay">
       <img
-        :src="`http://localhost:8000/images/${gambar}`"
-        alt="Foto Profil"
-        class="gambar-profile"
-      />
-    <span class="nama-profile">
-      {{ nama_depan + " " + nama_belakang }} <br />
-      {{ role }}
-    </span>
-
+          :src="`http://localhost:8000/images/${gambar}`"
+          alt="Foto Profil"
+          class="gambar-profile"
+        />
+    <span class="nama-profile">{{nama_depan + " " + nama_belakang}} <br> {{role}}</span>
+    
     <!-- Profile Dropdown Menu -->
-    <div v-if="tampilinOverlay" class="profile-dropdown">
-      <button class="dropdown-item" @click="() => { toggleOverlay(); toProfile() }">
+    <div v-if="tampilinOverlay" 
+      class="profile-dropdown"
+      :class="{'collapsed': !isOpen}"
+    >
+      <button class="dropdown-item" @click="() => {toggleOverlay(); toProfile()}">
         <span class="dropdown-icon">👤</span>
         <span v-if="isOpen" class="dropdown-text">Profil Saya</span>
       </button>
@@ -161,7 +144,6 @@ if (role.value == 1) {
       </button>
     </div>
     </div>
-
 
     <!-- Menu -->
     <router-link
@@ -193,6 +175,7 @@ if (role.value == 1) {
   align-items: center;
   gap: 10px;
   overflow: hidden;
+  animation: slideDown 0.3s ease;
 }
 
 @keyframes slideDown {
@@ -206,12 +189,20 @@ if (role.value == 1) {
   }
 }
 
+.sidebar-logo-large {
+  width: 65px;
+  height: 65px;
+  transition: all 0.3s ease;
+}
+
 .sidebar-logo {
   width: 32px;
   height: 32px;
   display: block;
   margin: 0 auto;
+  transition: all 0.3s ease;
 }
+
 
 .dropdown-item {
   display: flex;
@@ -326,12 +317,23 @@ if (role.value == 1) {
 .logo {
   font-size: 20px;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   padding: 30px 10px;
   width: 100%;
   box-sizing: border-box;
   color: white;
   transition: all 0.3s ease;
+}
+
+.logo-text {
+  display: inline-block;
+  text-align: left;
+  margin-left: 0;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .tombol-toggle {

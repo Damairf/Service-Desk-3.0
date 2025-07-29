@@ -1,5 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 import axios from 'axios';
 
 const isLoading = ref(true)
@@ -101,6 +103,19 @@ function confirmDelete() {
   showModal = false
   idUserToDelete = null
 }
+
+function ubahpengguna(user) {
+  router.push({
+    path: '/ubahPengguna',
+    query: {
+      nama_depan: user.nama_depan,
+      nama_belakang: user.nama_belakang,
+      role: user.role,
+      organisasi: user.organisasi,
+      status: user.status
+    }
+  })
+}
 </script>
 
 <template>
@@ -108,7 +123,7 @@ function confirmDelete() {
     <div class="user-card">
       <h1 class="title">Daftar Pengguna</h1>
       <div class="top-actions">
-        <button class="btn tambah">Tambah</button>
+        <button class="btn tambah" @click="router.push('TambahPengguna')">Tambah</button>
       </div>
       <div class="search-bar">
         <i class="fas fa-search"></i>
@@ -133,7 +148,7 @@ function confirmDelete() {
             <td>{{ user.organisasi }}</td>
             <td>{{ user.status }}</td>
             <td>
-              <button class="aksiEdit-btn" title="Edit">Ubah</button>
+              <button class="aksiEdit-btn" title="Edit" @click="ubahpengguna(user)">Ubah</button>
               <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
             </td>
           </tr>
