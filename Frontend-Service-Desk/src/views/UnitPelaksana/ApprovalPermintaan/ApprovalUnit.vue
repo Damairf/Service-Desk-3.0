@@ -26,8 +26,15 @@ onMounted(() => {
       noTiket: item.ID_Pelayanan,
       jenis: item.ID_Jenis_Pelayanan,
       perihal: item.Perihal,
+<<<<<<< HEAD
       tanggal: item.created_at,
       organisasi: item.user.user_organisasi.Nama_OPD,
+=======
+      teknis: item.teknis_pelayanan?.Nama_Depan || '-',
+      tanggal: item.created_at,
+      organisasi: item.user.user_organisasi.Nama_OPD,
+      status: item.status_pelayanan.Nama_Status,
+>>>>>>> bb3b6ba54d60390a4f68d7a5785c9af7047808ab
     }))
     if (layananData.value.length > 0) {
       const jenis = layananData.value[0].jenis;
@@ -60,7 +67,11 @@ function lihatDetail(item){
   const pelayananId = ref(item.noTiket)
   const stepString = JSON.stringify(steps.value);
     router.push({
+<<<<<<< HEAD
     name: 'DetailPelayananPelaksana', 
+=======
+    name: 'Detail-Pelayanan', 
+>>>>>>> bb3b6ba54d60390a4f68d7a5785c9af7047808ab
     query: {
       layanan: item.noTiket,
       steps: stepString
@@ -96,7 +107,13 @@ const filteredItems = computed(() => {
     item.perihal.toLowerCase().includes(search.value.toLowerCase()) ||
     item.noTiket.toLowerCase().includes(search.value.toLowerCase()) ||
     item.organisasi.toLowerCase().includes(search.value.toLowerCase()) ||
+<<<<<<< HEAD
     formatDate(item.tanggal).toLowerCase().includes(search.value.toLowerCase())
+=======
+    item.teknis.toLowerCase().includes(search.value.toLowerCase()) ||
+    formatDate(item.tanggal).toLowerCase().includes(search.value.toLowerCase()) ||
+    item.status.toLowerCase().includes(search.value.toLowerCase())
+>>>>>>> bb3b6ba54d60390a4f68d7a5785c9af7047808ab
   )
 
   if (sortKey.value && sortOrder.value) {
@@ -133,7 +150,11 @@ watch(search, () => {
 <template>
   <div class="container">
     <div class="card">
+<<<<<<< HEAD
       <h1 class="title">Persetujuan Pelayanan</h1>
+=======
+      <h1 class="title">Data Pelayanan</h1>
+>>>>>>> bb3b6ba54d60390a4f68d7a5785c9af7047808ab
       <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
       
       <table class="rounded-table">
@@ -143,6 +164,17 @@ watch(search, () => {
             <th>Perihal</th>
             <th>Organisasi</th>
             <th>Tanggal</th>
+<<<<<<< HEAD
+=======
+            <th>Pelaksana Teknis</th>
+            <th @click="toggleSort('status')" class="cursor-pointer">Status
+                <span v-if="sortKey === 'status' || sortOrder === null">
+                <span v-if="sortOrder === 'asc'">🔼</span>
+                <span v-else-if="sortOrder === 'desc'">🔽</span>
+                <span v-else>☰</span>
+              </span>
+            </th>
+>>>>>>> bb3b6ba54d60390a4f68d7a5785c9af7047808ab
             <th>Detail Progress</th>
           </tr>
         </thead>
@@ -158,6 +190,13 @@ watch(search, () => {
             <td>{{ item.perihal }}</td>
             <td>{{ item.organisasi }}</td>
             <td>{{ formatDate(item.tanggal) }}</td>
+<<<<<<< HEAD
+=======
+            <td>{{ item.teknis }}</td>
+            <td>
+              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+            </td>
+>>>>>>> bb3b6ba54d60390a4f68d7a5785c9af7047808ab
             <td><button class="detail-button" @click="lihatDetail(item)">Lihat</button></td>
           </tr>
         </tbody>
@@ -231,6 +270,47 @@ watch(search, () => {
   background-color: #f9f9f9;
 }
 
+<<<<<<< HEAD
+=======
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.status.baru {
+  background-color: #e6dcf5;
+  color: #6a1b9a;
+}
+
+.status.proses {
+  background-color: #f5f5c3;
+  color: #aaaa3a;
+}
+
+.status.disetujui {
+  background-color: #c7f5d9;
+  color: #2e7d32;
+}
+
+.status.ditolak {
+  background-color: #fddede;
+  color: #c62828;
+}
+
+.status.selesai {
+  background-color: #fddede;
+  color: #22ff00;
+}
+
+.status.tutup {
+  background-color: #fddede;
+  color: #000000;
+}
+
+>>>>>>> bb3b6ba54d60390a4f68d7a5785c9af7047808ab
 .detail-button {
   background: none;
   border: none;
