@@ -5,10 +5,6 @@ import axios from 'axios'
 const router = useRouter()
 const route = useRoute()
 
-onMounted(() => {
-  window.scrollTo(0, 0);
-  });
-
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
 const perihal = ref('') 
@@ -16,6 +12,7 @@ const tanggal = ref('')
 const nama_depanPengaju = ref('') 
 const nama_belakangPengaju = ref('')
 const jenis_pelayanan = ref('')
+
 const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
@@ -40,51 +37,104 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
   }
 })
 .then(response => {
+  // console.log(response)
+  const id_jenis_pelayanan = ref(null)
   deskripsi.value = response.data.Deskripsi
   organisasi.value = response.data.user.user_organisasi.Nama_OPD
   surat_dinas.value = response.data.Surat_Dinas_Path
   lampiran.value = response.data.Lampiran_Path
   jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
+  id_jenis_pelayanan.value = response.data.ID_Jenis_Pelayanan
   nama_depanPengaju.value = response.data.user.Nama_Depan
   nama_belakangPengaju.value = response.data.user.Nama_Belakang
   perihal.value = response.data.Perihal
   tanggal.value = response.data.created_at
+
+
+  axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${id_jenis_pelayanan.value}`, {
+        headers: { Authorization: 'Bearer ' + token }
+      })
+      .then(response => {
+        console.log(response.data)
+        steps.value = response.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
+        handleTabChange(activeTab.value)
+      })
+      .catch(error => {
+        console.error('Gagal mengambil steps:', error);
+      })
 })
 .catch(function(error) {
   console.log(error)
 });
 
 // Fungsi untuk menangani perubahan tab
-const handleTabChange = (tab) => {
-  activeTab.value = tab
+const handleTabChange = async (tab) => {
+  activeTab.value = tab;
+
   if (tab === 'tracking') {
-    localStorage.setItem('steps', JSON.stringify(steps.value))
+    // Jika steps sudah tersedia, tidak perlu fetch lagi
+    if (steps.value.length > 0) {
+      router.push({
+        name: 'HalamanLacak',
+        query: {
+          layanan: pelayananId.value,
+          tab: 'tracking',
+          steps: JSON.stringify(steps.value), 
+        }
+      });
+      return;
+    }
+
+    // try {
+    //   // Ambil ID Jenis Pelayanan
+    //   const response = await axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
+    //     headers: { Authorization: 'Bearer ' + token },
+    //   });
+
+    //   // Simpan sebagai integer, dan assign
+    //   id_jenis_pelayanan.value = parseInt(response.data.ID_Jenis_Pelayanan);
+
+    //   // Ambil steps hanya jika belum ada
+    //   const alurResponse = await axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${id_jenis_pelayanan.value}`, {
+    //     headers: { Authorization: 'Bearer ' + token },
+    //   });
+
+    //   steps.value = alurResponse.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
+
+
+    //   router.push({
+    //     name: 'HalamanLacak',
+    //     query: {
+    //       layanan: pelayananId.value,
+    //       tab: 'tracking'
+    //     }
+    //   });
+
+    // } catch (error) {
+    //   console.error('Gagal mengambil data alur:', error);
+    // }
+  }
+
+  else if (tab === 'informasi') {
     router.push({
-      name: 'HalamanLacak', 
+      name: 'HalamanInformasi',
       query: {
         layanan: pelayananId.value,
-        tab: 'tracking'
-      }
-    })
-  } else if (tab === 'informasi') {
-    router.push({
-      name: 'HalamanInformasi', 
-      query: {
-        layanan: pelayananId.value,
-        perihal: perihal.value, 
-        tanggal: tanggal.value, 
-        nama_depanPengaju: nama_depanPengaju.value, 
-        nama_belakangPengaju: nama_belakangPengaju.value, 
+        perihal: perihal.value,
+        tanggal: tanggal.value,
+        nama_depanPengaju: nama_depanPengaju.value,
+        nama_belakangPengaju: nama_belakangPengaju.value,
         jenis_pelayanan: jenis_pelayanan.value,
         organisasi: organisasi.value,
         deskripsi: deskripsi.value,
         surat_dinas: surat_dinas.value,
         lampiran: lampiran.value,
-        tab: 'informasi'
+        tab: 'informasi',
       }
-    })
+    });
   }
-}
+};
+
 
 // Set default route saat komponen dimount
 onMounted(() => {

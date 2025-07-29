@@ -4,45 +4,78 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const idLayanan = ref(route.query.layanan || '')
-const sets = ref(route.query.id_jenis_pelayanan)
 const currentStep = ref(0) // buat tau 
 const steps = ref([])
+const fakeLoading = ref(true)
 
-onUnmounted(() => {
-  localStorage.removeItem('steps');
-});
+// onUnmounted(() => {
+  // if (route.name !== 'HalamanLacak' && route.name !== 'HalamanInformasi') {
+    // localStorage.removeItem('steps');
+  // }
+// });
+
 
 onMounted(() => {
-  const savedSteps = localStorage.getItem('steps')
-  if (savedSteps) {
-    try {
-      steps.value = JSON.parse(savedSteps)
-    } catch (e) {
-      console.error('Gagal parse steps dari localStorage:', e)
+  // Tampilkan loading segera
+  fakeLoading.value = true
+
+  // Proses steps setelah loading ditampilkan
+  setTimeout(() => {
+    const stepsParam = route.query.steps
+    if (stepsParam) {
+      try {
+        steps.value = JSON.parse(stepsParam)
+        console.log('berhasil', steps.value)
+      } catch (e) {
+        console.error('Gagal parse steps dari query:', e)
+      }
     }
-  } else {
-    console.warn('Steps belum ada di localStorage')
-  }
+    fakeLoading.value = false
+  }, 500) // loading ditampilkan selama 0.5 detik
 })
+
+
+
+// onMounted(() => {
+//   setTimeout(() => {
+//     fakeLoading.value = false
+//   }, 1500)
+
+//   const savedSteps = localStorage.getItem('steps')
+//   if (savedSteps) {
+//     try {
+//       steps.value = JSON.parse(savedSteps)
+//     } catch (e) {
+//       console.error('Gagal parse steps dari localStorage:', e)
+//     }
+//   } else {
+//     console.warn('Steps belum ada di localStorage')
+//   }
+// })
 </script>
 
 <template>
-  <h2 class="card-title">Detail Progress<br>{{ idLayanan }}</h2>
-  <div class="step-wrapper">
-    <div
-      v-for="(step, index) in steps"
-      :key="index"
-      class="step-row"
-    >
+  <div v-if="fakeLoading" style="text-align: center; padding: 1rem;">
+    <h4>Memuat data</h4>
+  </div>
+  <div v-else>
+    <h2 class="card-title">Detail Progress<br>{{ idLayanan }}</h2>
+    <div class="step-wrapper">
       <div
-        class="circle"
-        :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
+        v-for="(step, index) in steps"
+        :key="index"
+        class="step-row"
       >
-      {{ index + 1 }}
-    </div>
+        <div
+          class="circle"
+          :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
+        >
+          {{ index + 1 }}
+        </div>
 
-      <div class="step-label">
-        {{ step }}
+        <div class="step-label">
+          {{ step }}
+        </div>
       </div>
     </div>
   </div>
@@ -166,8 +199,8 @@ onMounted(() => {
 }
 
 .step-label {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   color: #1f2937;
 }
 </style>

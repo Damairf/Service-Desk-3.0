@@ -32,7 +32,7 @@ class JenisPelayananSeeder extends Seeder
                 "Persyaratan" => "Harus sudah memiliki website"
             ],
             [
-                "Nama_Jenis_Pelayanan" => "Pembuatan desain logo",
+                "Nama_Jenis_Pelayanan" => "Pembuatan Desain Logo",
                 "Persyaratan" => "Memiliki konsep logo"
             ],
         ]);
