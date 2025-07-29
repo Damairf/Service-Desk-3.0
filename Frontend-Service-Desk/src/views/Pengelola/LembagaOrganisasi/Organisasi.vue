@@ -172,12 +172,12 @@ function editOrganisasi(item) {
             <td>{{ item.nama_PerangkatDaerah }}</td>
             <td>{{ item.induk_PerangkatDaerah }}</td>
             <td>{{ item.email }}</td>
-            <td>{{ item.status }}</td>
             <td>
-              <div class="wrapper-aksiBtn">
-                <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(user)">Ubah</button>
-                <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
-              </div>
+              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+            </td>
+            <td>
+              <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(item)">Ubah</button>
+              <button class="aksiDelete-btn" title="Delete" @click="Delete(item)">Hapus</button>
             </td>
           </tr>
         </tbody>
@@ -297,7 +297,7 @@ function editOrganisasi(item) {
   padding: 0.3rem 0.5rem;
   margin-right: 0.2rem;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 14px;
   color: white;
   transition: background 0.2s;
 }
@@ -308,7 +308,7 @@ function editOrganisasi(item) {
   border-radius: 6px;
   padding: 0.3rem 0.5rem;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 14px;
   color: white;
   transition: background 0.2s;
 }
@@ -352,5 +352,22 @@ function editOrganisasi(item) {
 .btn.danger {
   background: #e53935;
   color: white;
+}
+/* === Warna Status === */
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+  text-transform: capitalize;
+}
+.status.aktif {
+  background-color: #e6dcf5;
+  color: #6a1b9a;
+}
+.status.nonaktif {
+  background-color: #fff9c4;
+  color: #e53935;
 }
 </style>
