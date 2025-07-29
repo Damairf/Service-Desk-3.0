@@ -48,12 +48,16 @@ onBeforeMount(() => {
   <template>
       <div class="container" >
         <div class="greet">
-        <h1>Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
-      </div>
+          <h1>Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
+          <p>
+            Apa yang ingin dilaksanakan hari ini?
+          </p>
+        </div>
       <div class="boxHolder">
         <div class="box" @click="router.push('/approval')">
           <img src="../../../../public/Approval.svg" alt="Persetujuan Permintaan">
           <h3>Persetujuan Permintaan</h3>
+          <p>Setujui permintaan pelayanan yang diajui kepada Diskominfo Jabar</p>
           <button class="tambah" @click="router.push('/approval')">Persetujuan</button>
         </div>
         <div class="box" @click="router.push('/diposisi')">
