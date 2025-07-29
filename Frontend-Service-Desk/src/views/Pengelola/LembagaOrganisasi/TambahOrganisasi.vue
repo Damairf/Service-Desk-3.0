@@ -1,15 +1,37 @@
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
+
 // === State untuk form ===
 const namaPerangkatDaerah = ref('')
-const indukPerangkatDaerah = ref('')
 const namaPengelola = ref('')
 const nomorHP = ref('')
 const email = ref('')
 const status = ref('')
+
+const pilihanInduk = ref([])
+const idOrganisasiTerpilih = ref('')
+
+const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/organisasi', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+   console.log(response.data)
+   pilihanInduk.value = response.data.map(item => ({
+      id_organisasi: item.ID_Organisasi,
+      nama_PerangkatDaerah: item.Nama_OPD
+    }))
+  })
+  .catch(error => {
+    console.error(error); 
+  });
+
 
 // === Submit handler (dengan validasi) ===
 function handleSubmit() {
@@ -21,27 +43,36 @@ function handleSubmit() {
 
   // Buat payload
   const payload = {
-    namaPerangkatDaerah: namaPerangkatDaerah.value,
-    indukPerangkatDaerah: indukPerangkatDaerah.value,
-    namaPengelola: namaPengelola.value,
-    nomorHP: nomorHP.value,
-    email: email.value,
-    status: status.value
+    Nama_OPD: namaPerangkatDaerah.value,
+    ID_Induk_Organisasi: idOrganisasiTerpilih.value,
+    Nama_Pengelola: namaPengelola.value,
+    No_HP_Pengelola: nomorHP.value,
+    Email: email.value,
+    Status: status.value
   }
 
   console.log('Data yang akan dikirim ke backend:', payload)
 
-  // Contoh request backend (aktifkan jika sudah ada API)
-  // await axios.post('/api/organisasi', payload)
+  const token = localStorage.getItem('Token');
+  axios.post(`http://127.0.0.1:8000/api/organisasi`, payload
+  , {
+    headers: {
+      Authorization: 'Bearer ' + token,
+    }
+  })
+  .then(function(response){
+    console.log(response)
+  }) .catch(function(error){
+    console.log(error)
+  })
   alert('Organisasi sudah ditambahkan')
-  // Redirect setelah submit sukses
   router.push('/lembaga')
 }
 
 // === Reset form ===
 function handleReset() {
   namaPerangkatDaerah.value = ''
-  indukPerangkatDaerah.value = ''
+  idOrganisasiTerpilih.value = ''
   namaPengelola.value = ''
   nomorHP.value = ''
   email.value = ''
@@ -70,11 +101,15 @@ function handleReset() {
 
         <div class="form-group">
           <label>Induk Perangkat Daerah</label>
-          <select v-model="indukPerangkatDaerah">
-            <option value="">--Pilih Induk Organisasi--</option>
-            <option value="Diskominfo">Diskominfo</option>
-            <option value="BPKAD">BPKAD</option>
-            <option value="Setda">Setda</option>
+          <select v-model="idOrganisasiTerpilih">
+            <option disabled value="">-- Pilih Perangkat Daerah --</option>
+            <option
+              v-for="item in pilihanInduk"
+              :key="item.id_organisasi"
+              :value="item.id_organisasi"
+            >
+              {{ item.nama_PerangkatDaerah }}
+            </option>
           </select>
         </div>
 
@@ -95,7 +130,10 @@ function handleReset() {
 
         <div class="form-group">
           <label>Status<span class="red">*</span></label>
-          <input type="text" v-model="status" />
+          <select v-model="status">
+            <option value="Aktif">Aktif</option>
+            <option value="Tidak Aktif">Tidak Aktif</option>
+          </select>
         </div>
 
         <div class="form-actions">

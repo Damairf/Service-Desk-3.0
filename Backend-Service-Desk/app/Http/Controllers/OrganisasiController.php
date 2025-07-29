@@ -35,12 +35,12 @@ class OrganisasiController extends Controller
         'Nama_Pengelola',
         'No_HP_Pengelola',
         'Email',
-        'ID_Status'
+        'Status'
         ]);
         
-        Organisasi::insert($dataOrganisasi);
+        $organisasi = Organisasi::create($dataOrganisasi);
 
-        return response("Jabatan Ditambahkan", 201);
+        return response()->json([$organisasi->fresh()]);
     }
 
     public function updateOne_Organisasi(Request $request){
