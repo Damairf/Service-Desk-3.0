@@ -17,6 +17,7 @@ const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const activeTab = ref('tracking')
+const insiden = ref('')
 const currentStep = ref(0) // buat tau 
 
 onMounted(() => {
@@ -45,6 +46,7 @@ axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
     organisasi.value = response.data.user.user_organisasi.Nama_OPD
     perihal.value = response.data.Perihal
     tanggal.value = response.data.created_at
+    insiden.value = response.data.Insiden
     })
   .catch(function(error) {
     console.log(error)
@@ -72,7 +74,8 @@ const handleTabChange = (tab) => {
         jenis_pelayanan: jenis_pelayanan.value,
         deskripsi: deskripsi.value,
         surat_dinas: surat_dinas.value,
-        lampiran: lampiran.value
+        lampiran: lampiran.value,
+        insiden: insiden.value
       }
     })
   }

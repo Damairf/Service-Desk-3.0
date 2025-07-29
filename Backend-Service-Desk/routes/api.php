@@ -92,7 +92,7 @@ Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
 
 // endpoint unit pelaksana
 Route::get('/unit/pelayanan/',[PelayananController::class, 'getPelayananUnit']);
-
+Route::get('/pelayanan/teknis',[UserController::class, 'getTeknis']);
 
 // endpoint pelaksana teknis
 Route::put('/pelayanan/tambah/hasil/{pelayananId}',[PelayananController::class, 'putLaporan_Hasil']);
