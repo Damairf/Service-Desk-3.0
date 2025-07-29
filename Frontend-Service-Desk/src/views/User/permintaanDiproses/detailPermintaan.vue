@@ -53,6 +53,7 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
       })
       .then(response => {
         steps.value = response.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
+        console.log(steps.value)
         handleTabChange(activeTab.value)
       })
       .catch(error => {
@@ -98,7 +99,6 @@ const handleTabChange = async (tab) => {
     });
   }
 };
-
 
 // Set default route saat komponen dimount
 onMounted(() => {

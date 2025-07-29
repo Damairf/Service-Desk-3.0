@@ -9,7 +9,6 @@ const steps = ref([])
 
 onMounted(() => {
   // Proses steps setelah loading ditampilkan
-  setTimeout(() => {
     const stepsParam = route.query.steps
     if (stepsParam) {
       try {
@@ -18,7 +17,6 @@ onMounted(() => {
         console.error('Gagal parse steps dari query:', e)
       }
     }
-  })
 })
 </script>
 
@@ -33,12 +31,18 @@ onMounted(() => {
       >
         <div
           class="circle"
-          :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
+          :class="[
+            index === 0 || index === 1 ? 'circle-blue' : '',
+            index < currentStep ? 'circle-active' : 'circle-inactive'
+          ]"
         >
           {{ index + 1 }}
         </div>
 
-        <div class="step-label">
+        <div
+        class="step-label"
+          :class="(index === 0 || index === 1) ? 'label-blue' : ''"
+        >
           {{ step }}
         </div>
       </div>
@@ -167,5 +171,14 @@ onMounted(() => {
   font-size: 16px;
   font-weight: 600;
   color: #1f2937;
+}
+
+.circle-blue {
+  background-color: #0185DA !important;
+  color: white;
+}
+
+.label-blue {
+  color: #0185DA !important;
 }
 </style>
