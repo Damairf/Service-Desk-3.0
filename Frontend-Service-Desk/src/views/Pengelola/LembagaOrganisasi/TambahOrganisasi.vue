@@ -33,6 +33,7 @@ const token = localStorage.getItem('Token');
   });
 
 
+
 // === Submit handler (dengan validasi) ===
 function handleSubmit() {
   // Validasi field wajib
@@ -41,10 +42,15 @@ function handleSubmit() {
     return
   }
 
+  if (nomorHP.value.length < 10) {
+  alert("Nomor HP minimal 10 digit")
+  return
+  }
+
   // Buat payload
   const payload = {
     Nama_OPD: namaPerangkatDaerah.value,
-    ID_Induk_Organisasi: idOrganisasiTerpilih.value,
+    ID_Induk_Organisasi: idOrganisasiTerpilih.value || null,
     Nama_Pengelola: namaPengelola.value,
     No_HP_Pengelola: nomorHP.value,
     Email: email.value,
@@ -78,6 +84,8 @@ function handleReset() {
   email.value = ''
   status.value = ''
 }
+
+
 </script>
 
 <template>
@@ -102,7 +110,7 @@ function handleReset() {
         <div class="form-group">
           <label>Induk Perangkat Daerah</label>
           <select v-model="idOrganisasiTerpilih">
-            <option disabled value="">-- Pilih Perangkat Daerah --</option>
+            <option value="">-- Pilih Perangkat Daerah --</option>
             <option
               v-for="item in pilihanInduk"
               :key="item.id_organisasi"
@@ -120,7 +128,12 @@ function handleReset() {
 
         <div class="form-group">
           <label>Nomor HP. Pengelola</label>
-          <input type="text" v-model="nomorHP" />
+          <input
+            type="text"
+            inputmode="numeric"
+            v-model="nomorHP"
+            @input="nomorHP = $event.target.value.replace(/\D/g, '')"
+          />
         </div>
 
         <div class="form-group">

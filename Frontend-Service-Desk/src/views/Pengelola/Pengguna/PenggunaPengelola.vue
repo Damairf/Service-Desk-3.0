@@ -141,6 +141,9 @@ function ubahpengguna(user) {
           </tr>
         </thead>
         <tbody>
+          <tr v-if="isLoading">
+            <td colspan="6" style="text-align: center; padding: 1rem;">Memuat data...</td>
+          </tr>
           <tr v-for="(user, index) in paginatedItems" :key="index">
             <td>{{ user.id }}</td>
             <td>{{ user.nama_depan + ' ' + user.nama_belakang }}</td>
