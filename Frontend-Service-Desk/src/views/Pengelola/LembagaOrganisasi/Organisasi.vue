@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 const router = useRouter()
@@ -10,6 +10,12 @@ const isLoading = ref(true)
 const dataOrganisasi = ref([])
 
 //===BACKEND=== (tapi masih murni penggunaPengelola.vue)
+onBeforeMount(() => {
+  fetchDataOrganisasi();
+});
+
+
+const fetchDataOrganisasi = () => {
 const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/organisasi', {
     headers: {
@@ -32,6 +38,8 @@ const token = localStorage.getItem('Token');
   .finally(() => {
     isLoading.value = false;
   });
+}
+
 
 
 
@@ -110,9 +118,7 @@ function confirmDelete() {
     }
   })
   .then(() => {
-  dataOrganisasi.value = dataOrganisasi.value.filter(
-    org => org.id_organisasi !== idOrganisasiToDelete.value
-  )
+  fetchDataOrganisasi();
   showModal.value = false
   idOrganisasiToDelete.value = null
 })

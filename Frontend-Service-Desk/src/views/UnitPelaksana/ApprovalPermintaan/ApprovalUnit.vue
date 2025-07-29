@@ -133,11 +133,7 @@ watch(search, () => {
 <template>
   <div class="container">
     <div class="card">
-<<<<<<< HEAD
       <h1 class="title">Persetujuan Pelayanan</h1>
-=======
-      <h1 class="title">Data Pelayanan</h1>
->>>>>>> bb3b6ba54d60390a4f68d7a5785c9af7047808ab
       <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
       
       <table class="rounded-table">
