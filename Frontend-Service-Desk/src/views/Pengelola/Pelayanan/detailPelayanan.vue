@@ -16,7 +16,7 @@ const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
-const activeTab = ref('tracking')
+const activeTab = ref(route.query.tab === 'informasi' ? 'informasi' : 'tracking')
 const currentStep = ref(0) // buat tau 
 
 onMounted(() => {
@@ -36,15 +36,28 @@ axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
     }
   })
   .then(response => {
+    const id_jenis_pelayanan = ref(null)
     deskripsi.value = response.data.Deskripsi
     surat_dinas.value = response.data.Surat_Dinas_Path
     lampiran.value = response.data.Lampiran_Path
     jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
+    id_jenis_pelayanan.value = response.data.ID_Jenis_Pelayanan
     nama_depanPengaju.value = response.data.user.Nama_Depan
     nama_belakangPengaju.value = response.data.user.Nama_Belakang
     organisasi.value = response.data.user.user_organisasi.Nama_OPD
     perihal.value = response.data.Perihal
     tanggal.value = response.data.created_at
+
+    axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${id_jenis_pelayanan.value}`, {
+        headers: { Authorization: 'Bearer ' + token }
+      })
+      .then(response => {
+        steps.value = response.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
+        handleTabChange(activeTab.value)
+      })
+      .catch(error => {
+        console.error('Gagal mengambil steps:', error);
+      })
     })
   .catch(function(error) {
     console.log(error)
@@ -52,16 +65,23 @@ axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
 
 // Fungsi untuk menangani perubahan tab
 const handleTabChange = (tab) => {
-  activeTab.value = tab
+  activeTab.value = tab;
+
   if (tab === 'tracking') {
-    localStorage.setItem('steps', JSON.stringify(steps.value))
-    router.push({
-      name: 'HalamanLacakPengelola', 
-      query: {layanan: pelayananId.value}
-    })
+    if (steps.value.length > 0) {
+      router.push({
+        name: 'HalamanLacak',
+        query: {
+          layanan: pelayananId.value,
+          tab: 'tracking',
+          steps: JSON.stringify(steps.value), 
+        }
+      });
+      return;
+    }
   } else if (tab === 'informasi') {
     router.push({
-      name: 'HalamanInformasiPengelola', 
+      name: 'HalamanInformasiPengelola',
       query: {
         layanan: pelayananId.value, 
         perihal: perihal.value, 
@@ -74,9 +94,9 @@ const handleTabChange = (tab) => {
         surat_dinas: surat_dinas.value,
         lampiran: lampiran.value
       }
-    })
+    });
   }
-}
+};
 
 // Set default route saat komponen dimount
 onMounted(() => {

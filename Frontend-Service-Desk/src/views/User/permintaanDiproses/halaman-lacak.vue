@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -7,13 +7,6 @@ const idLayanan = ref(route.query.layanan || '')
 const currentStep = ref(0) // buat tau 
 const steps = ref([])
 const fakeLoading = ref(true)
-
-// onUnmounted(() => {
-  // if (route.name !== 'HalamanLacak' && route.name !== 'HalamanInformasi') {
-    // localStorage.removeItem('steps');
-  // }
-// });
-
 
 onMounted(() => {
   // Tampilkan loading segera
@@ -25,7 +18,6 @@ onMounted(() => {
     if (stepsParam) {
       try {
         steps.value = JSON.parse(stepsParam)
-        console.log('berhasil', steps.value)
       } catch (e) {
         console.error('Gagal parse steps dari query:', e)
       }
@@ -33,25 +25,6 @@ onMounted(() => {
     fakeLoading.value = false
   }, 500) // loading ditampilkan selama 0.5 detik
 })
-
-
-
-// onMounted(() => {
-//   setTimeout(() => {
-//     fakeLoading.value = false
-//   }, 1500)
-
-//   const savedSteps = localStorage.getItem('steps')
-//   if (savedSteps) {
-//     try {
-//       steps.value = JSON.parse(savedSteps)
-//     } catch (e) {
-//       console.error('Gagal parse steps dari localStorage:', e)
-//     }
-//   } else {
-//     console.warn('Steps belum ada di localStorage')
-//   }
-// })
 </script>
 
 <template>

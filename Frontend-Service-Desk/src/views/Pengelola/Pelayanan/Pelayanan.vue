@@ -12,7 +12,6 @@ const isLoading = ref(true)
 const layananData = ref([]);
 const sortKey = ref('') 
 const sortOrder = ref(null) 
-const steps = ref('')
 
 onMounted(() => {
   const token = localStorage.getItem('Token');
@@ -31,23 +30,6 @@ onMounted(() => {
       organisasi: item.user.user_organisasi.Nama_OPD,
       status: item.status_pelayanan.Nama_Status,
     }))
-    if (layananData.value.length > 0) {
-      const jenis = layananData.value[0].jenis;
-
-      // ambil alur berdasarkan jenis
-      axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${jenis}`, {
-        headers: { Authorization: 'Bearer ' + token }
-      })
-      .then(response => {
-        steps.value = response.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
-        localStorage.setItem('steps', JSON.stringify(steps.value)) // simpan jika mau
-      })
-      .catch(error => {
-        console.error('Gagal mengambil steps:', error);
-      });
-    } else {
-      console.warn('Data items kosong, tidak bisa ambil jenis pelayanan');
-    }
   })
   .catch(error => {
     console.error('Gagal mengambil data pelayanan:', error);
@@ -60,12 +42,10 @@ onMounted(() => {
 //ke halaman detail 
 function lihatDetail(item){
   const pelayananId = ref(item.noTiket)
-  const stepString = JSON.stringify(steps.value);
     router.push({
     name: 'Detail-Pelayanan', 
     query: {
-      layanan: item.noTiket,
-      steps: stepString
+      layanan: item.noTiket
     }
   })
     

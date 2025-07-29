@@ -12,7 +12,6 @@ const tanggal = ref('')
 const nama_depanPengaju = ref('') 
 const nama_belakangPengaju = ref('')
 const jenis_pelayanan = ref('')
-
 const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
@@ -37,7 +36,6 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
   }
 })
 .then(response => {
-  // console.log(response)
   const id_jenis_pelayanan = ref(null)
   deskripsi.value = response.data.Deskripsi
   organisasi.value = response.data.user.user_organisasi.Nama_OPD
@@ -50,12 +48,10 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
   perihal.value = response.data.Perihal
   tanggal.value = response.data.created_at
 
-
   axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${id_jenis_pelayanan.value}`, {
         headers: { Authorization: 'Bearer ' + token }
       })
       .then(response => {
-        console.log(response.data)
         steps.value = response.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
         handleTabChange(activeTab.value)
       })
@@ -72,7 +68,6 @@ const handleTabChange = async (tab) => {
   activeTab.value = tab;
 
   if (tab === 'tracking') {
-    // Jika steps sudah tersedia, tidak perlu fetch lagi
     if (steps.value.length > 0) {
       router.push({
         name: 'HalamanLacak',
@@ -84,38 +79,7 @@ const handleTabChange = async (tab) => {
       });
       return;
     }
-
-    // try {
-    //   // Ambil ID Jenis Pelayanan
-    //   const response = await axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
-    //     headers: { Authorization: 'Bearer ' + token },
-    //   });
-
-    //   // Simpan sebagai integer, dan assign
-    //   id_jenis_pelayanan.value = parseInt(response.data.ID_Jenis_Pelayanan);
-
-    //   // Ambil steps hanya jika belum ada
-    //   const alurResponse = await axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${id_jenis_pelayanan.value}`, {
-    //     headers: { Authorization: 'Bearer ' + token },
-    //   });
-
-    //   steps.value = alurResponse.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
-
-
-    //   router.push({
-    //     name: 'HalamanLacak',
-    //     query: {
-    //       layanan: pelayananId.value,
-    //       tab: 'tracking'
-    //     }
-    //   });
-
-    // } catch (error) {
-    //   console.error('Gagal mengambil data alur:', error);
-    // }
-  }
-
-  else if (tab === 'informasi') {
+  } else if (tab === 'informasi') {
     router.push({
       name: 'HalamanInformasi',
       query: {

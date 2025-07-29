@@ -4,49 +4,52 @@ import { useRoute } from 'vue-router'
 import axios from 'axios'
 
 const route = useRoute()
-// buat import tulisan perihalnya, tapi kyknya mending diammbil dari backendnya
 const idLayanan = ref(route.query.layanan || '')
-const sets = ref(route.query.id_jenis_pelayanan)
 const currentStep = ref(0) // buat tau 
 const steps = ref([])
+const fakeLoading = ref(true)
 
-onMounted(async () => {
-  try {
-    const token = localStorage.getItem('Token');
-    
-    const pelayananRes = await axios.get(`http://127.0.0.1:8000/api/pelayananUser/${idLayanan.value}`, {
-      headers: { Authorization: 'Bearer ' + token }
-    });
+onMounted(() => {
+  // Tampilkan loading segera
+  fakeLoading.value = true
 
-    const ID_Jenis_Pelayanan = pelayananRes.data.ID_Jenis_Pelayanan;
-
-    const alurRes = await axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${ID_Jenis_Pelayanan}`, {
-      headers: { Authorization: 'Bearer ' + token }
-    });
-    steps.value = alurRes.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
-  } catch (err) {
-    console.error(err);
-  }
-});
+  // Proses steps setelah loading ditampilkan
+  setTimeout(() => {
+    const stepsParam = route.query.steps
+    if (stepsParam) {
+      try {
+        steps.value = JSON.parse(stepsParam)
+      } catch (e) {
+        console.error('Gagal parse steps dari query:', e)
+      }
+    }
+    fakeLoading.value = false
+  }, 500) // loading ditampilkan selama 0.5 detik
+})
 </script>
 
 <template>
-  <h2 class="card-title">Detail Progress<br>{{ idLayanan }}</h2>
-  <div class="step-wrapper">
-    <div
-      v-for="(step, index) in steps"
-      :key="index"
-      class="step-row"
-    >
+  <div v-if="fakeLoading" style="text-align: center; padding: 1rem;">
+    <h4>Memuat data</h4>
+  </div>
+  <div v-else>
+    <h2 class="card-title">Detail Progress<br>{{ idLayanan }}</h2>
+    <div class="step-wrapper">
       <div
-        class="circle"
-        :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
+        v-for="(step, index) in steps"
+        :key="index"
+        class="step-row"
       >
-      {{ index + 1 }}
-    </div>
+        <div
+          class="circle"
+          :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
+        >
+          {{ index + 1 }}
+        </div>
 
-      <div class="step-label">
-        {{ step }}
+        <div class="step-label">
+          {{ step }}
+        </div>
       </div>
     </div>
   </div>
