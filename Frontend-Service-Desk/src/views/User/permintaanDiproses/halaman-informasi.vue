@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
@@ -8,6 +8,10 @@ function formatDate(dateString) {
   if (!dateString) return '-';
   return new Date(dateString).toLocaleDateString('id-ID');
 }
+
+onMounted(() => {
+  window.scrollTo(0, 0);
+  });
 
 // === Placeholder variabel backend ===
 const pelayananId = ref(route.query.layanan || '-')

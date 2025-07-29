@@ -45,7 +45,6 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
   surat_dinas.value = response.data.Surat_Dinas_Path
   lampiran.value = response.data.Lampiran_Path
   jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
-  id_jenis_pelayanan.value = response.data.ID_Jenis_Pelayanan
   nama_depanPengaju.value = response.data.user.Nama_Depan
   nama_belakangPengaju.value = response.data.user.Nama_Belakang
   perihal.value = response.data.Perihal
