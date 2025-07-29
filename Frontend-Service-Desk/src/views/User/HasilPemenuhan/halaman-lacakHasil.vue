@@ -7,12 +7,8 @@ const route = useRoute()
 const idLayanan = ref(route.query.layanan || '')
 const currentStep = ref(0) // buat tau 
 const steps = ref([])
-const fakeLoading = ref(true)
 
 onMounted(() => {
-  // Tampilkan loading segera
-  fakeLoading.value = true
-
   // Proses steps setelah loading ditampilkan
   setTimeout(() => {
     const stepsParam = route.query.steps
@@ -23,16 +19,12 @@ onMounted(() => {
         console.error('Gagal parse steps dari query:', e)
       }
     }
-    fakeLoading.value = false
-  }, 500) // loading ditampilkan selama 0.5 detik
+  })
 })
 </script>
 
 <template>
-  <div v-if="fakeLoading" style="text-align: center; padding: 1rem;">
-    <h4>Memuat data</h4>
-  </div>
-  <div v-else>
+  <div>
     <h2 class="card-title">Detail Progress<br>{{ idLayanan }}</h2>
     <div class="step-wrapper">
       <div
