@@ -57,32 +57,25 @@ onBeforeMount(() => {
             Apa yang ingin dilaksanakan hari ini?
           </p>
         </div>
-      <div class="boxHolder">
-        <div class="box" @click="router.push('/approval')">
-          <img src="../../../../public/Approval.svg" alt="Persetujuan Permintaan">
-          <h3>Persetujuan Permintaan</h3>
-          <p>Setujui permintaan pelayanan yang diajui kepada Diskominfo Jabar</p>
-          <button class="tambah" @click="router.push('/approval')">Persetujuan</button>
-        </div>
-        <div class="box" @click="router.push('/diposisi')">
-          <img src="../../../../public/Disposisi.svg" alt="Disposisi Permintaan">
-          <h3>Disposisi Permintaan</h3>
-          <button class="lacak" @click="router.push('/disposisi')">Disposisi</button>
-        </div>
-      </div>
-
-      <div class="box-row">
-        <div class="chart-box">
-          <div class="chart-container">
-            <ChartProgressKeseluruhan />
-              </div>
+        <div class="boxHolder">
+          <div class="box" @click="router.push('/approval')">
+            <img src="../../../../public/Approval.svg" alt="Persetujuan Permintaan">
+            <h3>Persetujuan Permintaan</h3>
+            <p>Setujui permintaan pelayanan yang diajui kepada Diskominfo Jabar</p>
+            <button class="tambah" @click="router.push('/approval')">Persetujuan</button>
           </div>
-        <div class="chart-box">
-          <div class="chart-container">
+          <div class="box" @click="router.push('/diposisi')">
+            <img src="../../../../public/Disposisi.svg" alt="Disposisi Permintaan">
+            <h3>Disposisi Permintaan</h3>
+            <button class="lacak" @click="router.push('/disposisi')">Disposisi</button>
+          </div>
+          <div class="box">
+            <ChartProgressKeseluruhan />
+          </div>
+          <div class="box">
             <ChartProgressBulanIni />
           </div>
         </div>
-      </div>
       </div>
     </template>
     
@@ -128,7 +121,7 @@ onBeforeMount(() => {
     .box {
       background-color: white;
       width: 100%;
-      max-width: 30rem;
+      max-width: 35rem;
       min-width: 250px;
       height: 30rem;
       border-radius: 8px;
