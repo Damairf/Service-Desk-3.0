@@ -12,7 +12,7 @@ class Organisasi extends Model
     use HasFactory;
     protected $table = 'reff_organisasi';
     protected $primaryKey = 'ID_Organisasi';
-    protected $fillable = ['Nama_OPD', 'ID_Induk_Organisasi', 'Nama_Pengelola', 'No_HP_Pengelola', 'Email', 'ID_Status'];
+    protected $fillable = ['Nama_OPD', 'ID_Induk_Organisasi', 'Nama_Pengelola', 'No_HP_Pengelola', 'Email', 'Status'];
 
     public function user_organisasi(): HasMany{
         return $this -> hasMany(Status::class, "ID_Organisasi");

@@ -20,6 +20,7 @@ const token = localStorage.getItem('Token');
     dataOrganisasi.value = response.data.map(item => ({
       id_organisasi: item.ID_Organisasi,
       nama_PerangkatDaerah: item.Nama_OPD,
+      id_induk_organisasi: item?.ID_Induk_Organisasi || null,
       induk_PerangkatDaerah: item.induk?.Nama_OPD || '-',
       email: item.Email,
       status: item.Status
@@ -89,8 +90,8 @@ watch(search, () => {
 const showModal = ref(false)
 const idOrganisasiToDelete = ref(null)
 
-function Delete(user) {
-  idOrganisasiToDelete.value = user.id_organisasi
+function Delete(item) {
+  idOrganisasiToDelete.value = item.id_organisasi
   showModal.value = true
 }
 
@@ -125,14 +126,16 @@ const organisasiTerpilih = computed(() =>
 )
 
 
-function editOrganisasi(user) {
+function editOrganisasi(item) {
   router.push({
     path: '/ubahLembaga',
     query: {
-      nama_PerangkatDaerah: user.nama_PerangkatDaerah,
-      induk_PerangkatDaerah: user.induk_PerangkatDaerah,
-      email: user.email,
-      status: user.status
+      id_organisasi: item.id_organisasi,
+      id_induk_organisasi: item.id_induk_organisasi,
+      nama_PerangkatDaerah: item.nama_PerangkatDaerah,
+      idOrganisasi: item.induk_PerangkatDaerah,
+      email: item.email,
+      status: item.status
     }
   })
 }
@@ -162,14 +165,14 @@ function editOrganisasi(user) {
           <tr v-if="isLoading">
             <td colspan="6" style="text-align: center; padding: 1rem;">Memuat data...</td>
           </tr>
-          <tr v-for="(user, index) in paginatedItems" :key="index">
-            <td>{{ user.nama_PerangkatDaerah }}</td>
-            <td>{{ user.induk_PerangkatDaerah }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.status }}</td>
+          <tr v-for="(item, index) in paginatedItems" :key="index">
+            <td>{{ item.nama_PerangkatDaerah }}</td>
+            <td>{{ item.induk_PerangkatDaerah }}</td>
+            <td>{{ item.email }}</td>
+            <td>{{ item.status }}</td>
             <td>
-              <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(user)">Ubah</button>
-              <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
+              <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(item)">Ubah</button>
+              <button class="aksiDelete-btn" title="Delete" @click="Delete(item)">Hapus</button>
             </td>
           </tr>
         </tbody>

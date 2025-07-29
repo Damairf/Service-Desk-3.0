@@ -1,42 +1,71 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
+
 
 const router = useRouter()
 const route = useRoute() // untuk ambil params ID 
 
 // ambil dari route organisasi
-const namaPerangkatDaerah = ref(route.query.nama_PerangkatDaerah || '')
-const indukPerangkatDaerah = ref(route.query.induk_PerangkatDaerah || '')
+const id_organisasi = ref(route.query.id_organisasi)
+const namaPerangkatDaerah = ref(route.query.nama_PerangkatDaerah)
 const email = ref(route.query.email || '')
 const status = ref(route.query.status || '')
-const namaPengelola = ref('') // ambil dari Backend soalnya gk ada di organisasi.vue
-// === Ambil data awal ketika halaman dibuka ===
-onMounted(() => {
-  const orgId = route.params.id // contoh: /edit-organisasi/:id
-  console.log('Edit ID:', orgId)
+const nomorHP = ref('')
+const namaPengelola = ref('')
+const pilihanInduk = ref([])
+const idOrganisasiTerpilih = ref(route.query.id_induk_organisasi || '')
 
-  // === Backend
+const token = localStorage.getItem('Token');
+  axios.get('http://127.0.0.1:8000/api/organisasi', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+   pilihanInduk.value = response.data.map(item => ({
+      id_organisasi: item.ID_Organisasi,
+      nama_PerangkatDaerah: item.Nama_OPD
+    }))
+  })
+  .catch(error => {
+    console.error(error); 
+  });
 
-})
+  axios.get(`http://127.0.0.1:8000/api/organisasi/${id_organisasi.value}` , {
+    headers: {
+      Authorization: 'Bearer ' + token,
+    }
+  }) .then(response => {
+    namaPengelola.value = response.data.Nama_Pengelola,
+    nomorHP.value= response.data.No_HP_Pengelola
+  })
 
 // === Submit handler (kirim data edit) ===
 function handleSubmit() {
   // Validasi field wajib
-  if (!nama_PerangkatDaerah.value || !email.value || !status.value) {
+  if ( !email.value || !status.value || !namaPerangkatDaerah.value || !namaPengelola.value || !nomorHP.value ) {
     alert('Harap isi semua field yang bertanda *')
     return
   }
 
   // Payload untuk backend
   const payload = {
-    namaPerangkatDaerah: namaPerangkatDaerah.value,
-    indukPerangkatDaerah: indukPerangkatDaerah.value,
-    namaPengelola: namaPengelola.value,
-    nomorHP: nomorHP.value,
-    email: email.value,
-    status: status.value
+    Nama_OPD: namaPerangkatDaerah.value,
+    ID_Induk_Organisasi: idOrganisasiTerpilih.value || null,
+    Nama_Pengelola: namaPengelola.value,
+    No_HP_Pengelola: nomorHP.value,
+    Email: email.value,
+    Status: status.value,
   }
+
+  const token = localStorage.getItem('Token');
+  axios.put(`http://127.0.0.1:8000/api/organisasi/${id_organisasi.value}`, payload, {
+    headers: {
+      Authorization: 'Bearer ' + token,
+    }
+  })
 
   console.log('Data yang akan diupdate ke backend:', payload)
 
@@ -50,7 +79,7 @@ function handleSubmit() {
 // === Reset form ===
 function handleReset() {
   namaPerangkatDaerah.value = ''
-  indukPerangkatDaerah.value = ''
+  idOrganisasiTerpilih.value = ''
   namaPengelola.value = ''
   nomorHP.value = ''
   email.value = ''
@@ -78,17 +107,31 @@ function handleReset() {
 
         <div class="form-group">
           <label>Induk Perangkat Daerah</label>
-          <select v-model="indukPerangkatDaerah">
-            <option value="">--Pilih Induk Organisasi--</option>
-            <option value="Diskominfo">Diskominfo</option>
-            <option value="BPKAD">BPKAD</option>
-            <option value="Setda">Setda</option>
+          <select v-model="idOrganisasiTerpilih">
+            <option value="">-- Pilih Perangkat Daerah --</option>
+            <option
+              v-for="item in pilihanInduk"
+              :key="item.id_organisasi"
+              :value="item.id_organisasi"
+            >
+              {{ item.nama_PerangkatDaerah }}
+            </option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>Nama Pengelola</label>
+          <label>Nama Pengelola<span class="red">*</span></label>
           <input type="text" v-model="namaPengelola" />
+        </div>
+
+        <div class="form-group">
+          <label>Nomor HP. Pengelola<span class="red">*</span></label>
+          <input
+            type="text"
+            inputmode="numeric"
+            v-model="nomorHP"
+            @input="nomorHP = $event.target.value.replace(/\D/g, '')"
+          />
         </div>
 
         <div class="form-group">
@@ -98,7 +141,10 @@ function handleReset() {
 
         <div class="form-group">
           <label>Status<span class="red">*</span></label>
-          <input type="text" v-model="status" />
+          <select v-model="status">
+            <option value="Aktif">Aktif</option>
+            <option value="Tidak Aktif">Tidak Aktif</option>
+          </select>
         </div>
 
         <div class="form-actions">
