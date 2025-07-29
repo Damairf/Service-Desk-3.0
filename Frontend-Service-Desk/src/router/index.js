@@ -46,6 +46,7 @@ import approval from '../views/UnitPelaksana/ApprovalPermintaan/ApprovalUnit.vue
 import disposisi from '../views/UnitPelaksana/DisposisiPermintaan/DisposisiUnit.vue'
 import detailPelayananPelaksana from '../views/UnitPelaksana/ApprovalPermintaan/detailPelayananPelaksana.vue'
 import halamanLacakPelaksana from '../views/UnitPelaksana/ApprovalPermintaan/halaman-lacak-PelayananPelaksana.vue'
+import halamanInformasiPelaksana from '../views/UnitPelaksana/ApprovalPermintaan/halaman-informasi-PelayananPelaksana.vue'
 
 // Daftar rute
 const routes = [
@@ -116,9 +117,10 @@ const routes = [
   { path: '/approval', name: 'Approval', component: approval},
   { path: '/disposisi', name: 'Disposisi', component: disposisi},
   //Approval
-  { path: '/detailPelayananPelaksana', name: 'DetailPelayananPelaksana', component: detailPelayananPelaksana
+  { path: '/detailPelayananPelaksana', name: 'DetailPelayananPelaksana', component: detailPelayananPelaksana,
     children: [
-      { path: 'lacakPelaksana', name: 'LacakPelaksana', component: halamanLacakPelaksana}
+      { path: 'lacakPelaksana', name: 'LacakPelaksana', component: halamanLacakPelaksana},
+      { path: 'informasiPelaksana', name: 'InformasiPelaksana', component: halamanInformasiPelaksana}
     ]
   },
 ]
