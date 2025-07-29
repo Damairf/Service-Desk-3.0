@@ -61,7 +61,7 @@ const handleTabChange = (tab) => {
     })
   } else if (tab === 'informasi') {
     router.push({
-      name: 'HalamanInformasiPengelola', 
+      name: 'InformasiPelaksana', 
       query: {
         layanan: pelayananId.value, 
         perihal: perihal.value, 
