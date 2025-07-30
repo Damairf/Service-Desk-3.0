@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use function GuzzleHttp\default_ca_bundle;
 
 return new class extends Migration
 {
@@ -23,9 +24,12 @@ return new class extends Migration
             $table->unsignedBigInteger('ID_Unit')->nullable(true);
             $table->text('Insiden')->nullable(true);
             $table->unsignedBigInteger('ID_Teknis')->nullable(true);
+            $table->boolean('Is_Done')->default(false);
+            $table->string('Hasil_Pemenuhan_Path')->nullable(true);
+            $table->string('BA_Path')->nullable(true);
+            $table->string('SLA_Path')->nullable(true);
             $table->enum('Rating', ['1', '2','3', '4', '5'])->nullable(true);
             $table->string('Isi_Survey')->nullable(true);
-            $table->string('Surat_Laporan_Hasil')->nullable(true);
             $table->timestamps();
 
             $table->foreign('ID_User')->references('ID_User')->on('user');

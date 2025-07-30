@@ -34,8 +34,8 @@ onBeforeMount(async () => {
     labelProgressBulanIni.value = data.map(item => item.status);
     dataProgressBulanIni.value = data.map(item => item.total);
   } catch (error) {
-    labelProgressKeseluruhan.value = ['Baru',  'Disetujui',  'Ditolak', 'Proses', 'Selesai', 'Tutup'];
-    dataProgressKeseluruhan.value = [0, 0, 0, 0, 0, 0];
+    labelProgressBulanIni.value = ['Baru',  'Disetujui',  'Ditolak', 'Proses', 'Selesai', 'Tutup'];
+    dataProgressBulanIni.value = [0, 0, 0, 0, 0, 0];
   }
 });
 

@@ -103,11 +103,11 @@ if (role.value == 1) {
 } else if (role.value == 4) {
   role.value = "Pelaksana Teknis"
   menuItem.value = [
-  { icon: '🏠', label: 'Beranda', to: '/beranda' },
+  { icon: '🏠', label: 'Beranda', to: '/berandaTeknis' },
   { icon: '⚙️', label: 'User Portal', to: '/portal' },
   { icon: '🔍', label: 'Request User', to: '/request' },
   { icon: '📁', label: 'Laporan Insiden', to: '/laporan' },
-  { icon: '📁', label: 'Disposisi Permintaan Layanan', to: '/disposisi' },
+  { icon: '📁', label: 'Disposisi Permintaan Layanan', to: '/disposisiTeknis' },
   { icon: '📁', label: 'Hasil Pengerjaan Permintaan Layanan', to: '/hasil' },
 ];
 } else if (role.value == 5) {

@@ -14,15 +14,15 @@ class IsiAlurSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table("isi_alur")->insert([
-            ["Isi_Bagian_Alur" => "Permintaan Masuk"],
-            ["Isi_Bagian_Alur" => "Verifikasi Dokumen"],
-            ["Isi_Bagian_Alur" => "Permintaan Diproses"],
-            ["Isi_Bagian_Alur" => "Perbaikan Server Dikerjakan"],
-            ["Isi_Bagian_Alur" => "Desain Laman Web Dikerjakan"],
-            ["Isi_Bagian_Alur" => "Pembuatan Website Dikerjakan"],
-            ["Isi_Bagian_Alur" => "Hosting Website Dikerjakan"],
-            ["Isi_Bagian_Alur" => "Pembuatan Desain Logo Dikerjakan"],
+        DB::table("reff_isi_alur")->insert([
+            ["Nama_Alur" => "Permintaan Masuk"],
+            ["Nama_Alur" => "Verifikasi Dokumen"],
+            ["Nama_Alur" => "Permintaan Diproses"],
+            ["Nama_Alur" => "Perbaikan Server Dikerjakan"],
+            ["Nama_Alur" => "Desain Laman Web Dikerjakan"],
+            ["Nama_Alur" => "Pembuatan Website Dikerjakan"],
+            ["Nama_Alur" => "Hosting Website Dikerjakan"],
+            ["Nama_Alur" => "Pembuatan Desain Logo Dikerjakan"],
         ]);
     }
 }

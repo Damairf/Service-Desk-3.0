@@ -56,6 +56,10 @@ onMounted(() => {
     router.push('/beranda');
   } else if (token && role === 2){
     router.push('/beranda-Pengelola');
+  } else if (token && role === 3){
+    router.push('/BerandaUnit')
+  } else if (token && role == 4){
+    router.push('/berandaTeknis')
   }
 });
 </script>

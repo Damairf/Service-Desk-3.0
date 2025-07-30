@@ -55,6 +55,17 @@ import halamanLacakDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/ha
 import halamanInformasiDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/halaman-informasi-DisposisiUnit.vue'
 import detailPelayananDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/detailPelayananDisposisi.vue'
 
+//=============Pelaksana Teknis================
+
+//Beranda
+import berandaTeknis from '../views/PelaksanaTeknis/BerandaTeknis/BerandaTeknis.vue'
+
+//Disposisi Teknis
+import disposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/disposisiTeknis.vue'
+import detailPelayananDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/detailPelayananDisposisiTeknis.vue'
+import halamanInformasiDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/halaman-informasi-DisposisiTeknis.vue'
+import halamanLacakDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/halaman-lacak-DisposisiTeknis.vue'
+
 // Daftar rute
 const routes = [
   // Login page
@@ -135,6 +146,18 @@ const routes = [
     children: [
       { path: 'lacakDisposisi', name: 'HalamanLacakDisposisi', component: halamanLacakDisposisi},
       { path: 'informasiDisposisi', name: 'HalamanInformasiDisposisi', component: halamanInformasiDisposisi}
+    ]
+  },
+
+  //=============PELAKSANA TEKNIS===============
+  { path: '/berandaTeknis', name: 'Beranda Teknis', component: berandaTeknis},
+
+  //Disposisi
+  { path: '/disposisiTeknis', name: 'DisposisiTeknis', component: disposisiTeknis},
+  { path: '/detailDisposisiTeknis', name: 'DetailDisposisiTeknis', component: detailPelayananDisposisiTeknis,
+    children: [
+      {path: 'informasiDisposisiTeknis', name: 'HalamanInformasiDisposisiTeknis', component: halamanInformasiDisposisiTeknis},
+      {path: 'lacakDisposisiTeknis', name: 'HalamanLacakDisposisiTeknis', component: halamanLacakDisposisiTeknis}
     ]
   },
 ]

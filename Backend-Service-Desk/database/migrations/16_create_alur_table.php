@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             
             $table->foreign('ID_Jenis_Pelayanan')->references('ID_Jenis_Pelayanan')->on('reff_jenis_pelayanan');
-            $table->foreign('ID_Isi_Alur')->references('ID_Isi_Alur')->on('isi_alur');
+            $table->foreign('ID_Isi_Alur')->references('ID_Isi_Alur')->on('reff_isi_alur');
         });
     }
 

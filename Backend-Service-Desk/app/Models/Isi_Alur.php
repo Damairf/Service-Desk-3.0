@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Isi_Alur extends Model
 {
-    protected $table = 'isi_alur';
+    protected $table = 'reff_isi_alur';
     protected $primaryKey = 'ID_Isi_Alur';
     protected $fillable = [
-        'Isi_Bagian_Alur'
+        'Nama_Alur'
     ];
 }
