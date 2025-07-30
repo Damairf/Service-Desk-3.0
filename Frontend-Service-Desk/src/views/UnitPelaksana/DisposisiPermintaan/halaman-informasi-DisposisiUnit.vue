@@ -141,13 +141,13 @@ const addMessage = () => {
         <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
       </div>
       <div v-if="SuratDinas_Path" class="file-card">
-        <div class="file-header">Surat Dinas (Diurutkan Berdasarkan Waktu Upload)</div>
+        <div class="file-header">Surat Dinas</div>
         <div class="file-content">
           <span class="file-placeholder">"{{ SuratDinaFileName }}"</span>
         </div>
       </div>
       <div v-if="Lampiran_Path" class="file-card">
-        <div class="file-header">Lampiran (Diurutkan Berdasarkan Waktu Upload)</div>
+        <div class="file-header">Lampiran</div>
         <div class="file-content">
           <span class="file-placeholder">"{{ LampiranFileName }}"</span>
         </div>

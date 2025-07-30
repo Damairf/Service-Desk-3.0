@@ -122,12 +122,12 @@ function handleReset() {
         </div>
 
         <div class="form-group">
-          <label>Nama Pengelola</label>
+          <label>Nama Pengelola<span class="red">*</span></label>
           <input type="text" v-model="namaPengelola" />
         </div>
 
         <div class="form-group">
-          <label>Nomor HP. Pengelola</label>
+          <label>Nomor HP. Pengelola<span class="red">*</span></label>
           <input
             type="text"
             inputmode="numeric"

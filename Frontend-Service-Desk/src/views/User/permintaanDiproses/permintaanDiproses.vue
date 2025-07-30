@@ -90,7 +90,7 @@ watch(filteredItems, () => {
 <template>
   <div class="container">
     <div class="progress-card">
-      <h1>On Progress</h1>
+      <h1>Permintaan Diproses</h1>
       <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
       <table class="rounded-table">
         <thead>

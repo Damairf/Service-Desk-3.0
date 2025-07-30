@@ -97,7 +97,7 @@ if (role.value == 1) {
   role.value = "Unit Pelaksana"
   menuItem.value = [
   { icon: '🏠', label: 'Beranda', to: '/berandaUnit' },
-  { icon: '⚙️', label: 'Approval Permintaan Layanan', to: '/approval' },
+  { icon: '⚙️', label: 'Persetujuan Permintaan Layanan', to: '/approval' },
   { icon: '📁', label: 'Disposisi Permintaan Layanan', to: '/disposisi' },
 ];
 } else if (role.value == 4) {
