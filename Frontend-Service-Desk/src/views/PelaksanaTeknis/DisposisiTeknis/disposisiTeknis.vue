@@ -16,7 +16,7 @@ const steps = ref('')
 
 onMounted(() => {
   const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/unit/pelayanan/disposisi', {
+  axios.get('http://127.0.0.1:8000/api/teknis/pelayanan/selesai', {
     headers: {
       Authorization: 'Bearer ' + token
     }

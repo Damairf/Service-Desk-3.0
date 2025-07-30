@@ -32,6 +32,8 @@ function login(){
       router.push('/beranda-Pengelola');
     } else if (role === 3){
       router.push('/berandaUnit');
+    } else if (role === 4){
+      router.push('/berandaTeknis')
     }
     })
 

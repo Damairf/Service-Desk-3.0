@@ -25,9 +25,12 @@ class Pelayanan extends Model
         'ID_Unit',
         'Insiden',
         'ID_Teknis',
+        'Is_Done',
+        'BA_Path',
+        'SLA_Path',
         'Rating',
         'Isi_Survey',
-        'Surat_Laporan_Hasil'
+        'Hasil_Pemenuhan_Path'
     ];
 
     protected static function boot()
