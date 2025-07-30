@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref , computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 const router = useRouter()
@@ -92,7 +92,22 @@ function handleSelesai() {
 
 //  ambil URL dari backend
 SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value
+const namaFileSuratDinas = computed(() => {
+  const fileName = src_SuratDinas.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Surat_Dinas.pdf`
+})
+
 Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value
+const namaFileLampiran = computed(() => {
+  const fileName = src_Lampiran.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Lampiran.pdf`
+})
 
 const messages = ref([
   {
@@ -130,14 +145,16 @@ const addMessage = () => {
         <strong>Deskripsi User</strong>
         <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
       </div>
+      <strong>Surat Dinas</strong>
       <div v-if="SuratDinas_Path">
         <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-          Surat Dinas
+          {{ namaFileSuratDinas }}
         </a>
       </div>
+      <strong>Lampiran</strong>
       <div v-if="Lampiran_Path">
         <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-          Lampiran
+          {{namaFileLampiran}}
         </a>
       </div>
     </div>

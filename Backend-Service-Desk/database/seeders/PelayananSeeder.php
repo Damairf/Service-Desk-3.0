@@ -21,16 +21,16 @@ class PelayananSeeder extends Seeder
                 "ID_Jenis_Pelayanan" => 1,
                 "Perihal" => "Perbaikan Server",
                 "Deskripsi" => "Server error sampai terjadi down",
-                "Surat_Dinas_Path" => "Surat Dinas A",
-                "Lampiran_Path" => "Lampiran A",
+                "Surat_Dinas_Path" => "storage/file/Surat-Dinas/20-07-2025_10-41-02_574da.pdf",
+                "Lampiran_Path" => "storage/file/lampiran/20-07-2025_10-41-02_2a494f9b.pdf",
         ]);
         Pelayanan::create([
                 "ID_User" => 6,
                 "ID_Jenis_Pelayanan" => 2,
                 "Perihal" => "Desain untuk website",
                 "Deskripsi" => "Buatkan desain website yang mengusung tema olahraga",
-                "Surat_Dinas_Path" => "Surat Dinas B",
-                "Lampiran_Path" => "Lampiran B",
+                "Surat_Dinas_Path" => "storage/file/Surat-Dinas/20-07-2025_10-41-02_574da.pdf",
+                "Lampiran_Path" => "storage/file/lampiran/20-07-2025_10-41-02_2a494f9b.pdf",
         ]);
         Pelayanan::create([
                 "ID_User" => 1,
@@ -38,15 +38,15 @@ class PelayananSeeder extends Seeder
                 "Perihal" => "Buatkan website",
                 "Deskripsi" => "Buatkan website dengan tenggat waktu 2 minggu",
                 "Surat_Dinas_Path" => "Surat Dinas C",
-                "Lampiran_Path" => "Lampiran C",
+                "Lampiran_Path" => "storage/file/lampiran/20-07-2025_10-41-02_2a494f9b.pdf",
         ]);
         Pelayanan::create([
                 "ID_User" => 6,
                 "ID_Jenis_Pelayanan" => 4,
                 "Perihal" => "Selesaikan Masalah",
                 "Deskripsi" => "Selesaikan masalah yang diberikan",
-                "Surat_Dinas_Path" => "Surat Dinas D",
-                "Lampiran_Path" => "Lampiran D",
+                "Surat_Dinas_Path" => "storage/file/Surat-Dinas/20-07-2025_10-41-02_574da.pdf",
+                "Lampiran_Path" => "storage/file/lampiran/20-07-2025_10-41-02_2a494f9b.pdf",
         ]);
     }
 }

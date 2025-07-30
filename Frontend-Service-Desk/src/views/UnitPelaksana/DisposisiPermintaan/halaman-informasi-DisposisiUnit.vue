@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref ,  computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 const router = useRouter()
@@ -90,8 +90,23 @@ function handleSelesai() {
 }
 
 // ambil URL dari backend
-SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value;
-Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value;
+SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value
+const namaFileSuratDinas = computed(() => {
+  const fileName = src_SuratDinas.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Surat_Dinas.pdf`
+})
+
+Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value
+const namaFileLampiran = computed(() => {
+  const fileName = src_Lampiran.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Lampiran.pdf`
+})
 HasilBA_Path.value = 'http://localhost:8000/' + src_HasilBA.value;
 HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value;
 
@@ -140,17 +155,17 @@ const addMessage = () => {
         <strong>Deskripsi User</strong>
         <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
       </div>
-      <div v-if="SuratDinas_Path" class="file-card">
-        <div class="file-header">Surat Dinas</div>
-        <div class="file-content">
-          <span class="file-placeholder">"{{ SuratDinaFileName }}"</span>
-        </div>
+      <strong>Surat Dinas</strong>
+      <div v-if="SuratDinas_Path">
+        <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+          {{ namaFileSuratDinas }}
+        </a>
       </div>
-      <div v-if="Lampiran_Path" class="file-card">
-        <div class="file-header">Lampiran</div>
-        <div class="file-content">
-          <span class="file-placeholder">"{{ LampiranFileName }}"</span>
-        </div>
+      <strong>Lampiran</strong>
+      <div v-if="Lampiran_Path">
+        <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+          {{ namaFileLampiran}}
+        </a>
       </div>
     </div>
 
