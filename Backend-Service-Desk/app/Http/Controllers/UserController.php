@@ -6,6 +6,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestPayloadValueResolver;
 
@@ -95,7 +96,10 @@ public function update_Photo(Request $request){
         }   
             
         $file = $request->file('Gambar_Path');
-        $filename = time() . '_' . $file->getClientOriginalName();
+        $datetime = date('d-m-Y_H-i-s');
+        $hashName = hash('sha256', time() . $file->getClientOriginalName());
+        $extension = $file->getClientOriginalExtension();
+        $filename = $datetime . '_' . $hashName . '.' . $extension;
         $file->move(public_path('images'), $filename);
         User::where('ID_User', $userId)->update(['Gambar_Path' => $filename]);
 

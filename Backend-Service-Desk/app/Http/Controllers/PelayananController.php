@@ -230,8 +230,16 @@ class PelayananController extends Controller
             'lampiran' => 'required|file|mimes:pdf|max:8192',
         ]);
 
-        $suratPath = $request->file('surat_dinas')->store('file/Surat-Dinas', 'public');
-        $lampiranPath = $request->file('lampiran')->store('file/lampiran', 'public');
+        $suratFile = $request->file('surat_dinas');
+        $lampiranFile = $request->file('lampiran');
+
+        $datetime = date('d-m-Y_H-i-s');
+
+        $suratName = $datetime . '_' . hash('sha256', time() . $suratFile->getClientOriginalName()) . '.' . $suratFile->getClientOriginalExtension();
+        $lampiranName = $datetime . '_' . hash('sha256', time() . $lampiranFile->getClientOriginalName()) . '.' . $lampiranFile->getClientOriginalExtension();
+
+        $suratPath = $suratFile->storeAs('file/Surat-Dinas', $suratName, 'public');
+        $lampiranPath = $lampiranFile->storeAs('file/lampiran', $lampiranName, 'public');
 
         return response()->json([
             'message' => 'Berkas berhasil diupload',

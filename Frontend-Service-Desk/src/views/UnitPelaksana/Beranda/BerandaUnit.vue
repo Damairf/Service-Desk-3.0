@@ -64,7 +64,7 @@ onBeforeMount(() => {
             <p>Setujui permintaan pelayanan yang diajui kepada Diskominfo Jabar</p>
             <button class="tambah" @click="router.push('/approval')">Persetujuan</button>
           </div>
-          <div class="box" @click="router.push('/diposisi')">
+          <div class="box" @click="router.push('/disposisi')">
             <img src="../../../../public/Disposisi.svg" alt="Disposisi Permintaan">
             <h3>Disposisi Permintaan</h3>
             <button class="lacak" @click="router.push('/disposisi')">Disposisi</button>
