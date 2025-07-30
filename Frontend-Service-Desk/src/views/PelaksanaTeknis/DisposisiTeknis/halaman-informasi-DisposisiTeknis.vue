@@ -25,14 +25,51 @@ const SuratDinas_Path = ref(null)
 const src_SuratDinas = ref(route.query.surat_dinas || '-')
 const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
+const HasilBA = ref('')
+const HasilSLA= ref('')
 const HasilBA_Path = ref(null)
-const src_HasilBA = ref(route.query.hasil_BA || '-')
 const HasilSLA_Path = ref(null)
-const src_HasilSLA = ref(route.query.hasil_SLA || '-')
 
 const pelaksana = ref([])
 const idUnitTerpilih = ref('')
 const insiden = ref('')
+
+
+// Fungsi untuk menangani perubahan file
+function handleFileChange(e, field) {
+const file = e.target.files[0]
+const maxSize = 8 * 1024 * 1024 // 8MB
+
+if (!file) return
+
+// ❌ Cek tipe file bukan PDF
+if (file.type !== 'application/pdf') {
+  alert('❌ Hanya file PDF yang diperbolehkan.')
+  e.target.value = ''
+  return
+}
+
+// ❌ Cek ukuran file lebih dari 8MB
+if (file.size > maxSize) {
+  alert('❌ Ukuran file melebihi 8MB. Silakan pilih file yang lebih kecil.')
+  e.target.value = ''
+  return
+}
+
+// ✅ Simpan file
+if (field === 'suratDinas') {
+  HasilBA.value = file
+} else if (field === 'lampiran') {
+  HasilSLA.value = file
+}
+
+}
+
+async function uploadFiles() {
+if (!HasilBA.value && !HasilSLA.value) {
+  alert('Harap unggah semua keperluan');
+  return false;
+}
 
 // === Untuk Tombol Selesai dan Revisi ===
 const pilihan = ref('')
@@ -71,7 +108,7 @@ function handleSelesai() {
         Authorization: 'Bearer ' + token,
       }
     })
-    .then(() => router.push('/pelayanan'))
+    .then(() => router.push('/disposisiTeknis'))
     .catch(error => console.error('Error updating status to Selesai:', error));
   } else if (pilihan.value === 'Revisi') {
     axios.put(`http://127.0.0.1:8000/api/pelayanan/revisi/${pelayananId.value}`, 
@@ -84,7 +121,7 @@ function handleSelesai() {
         Authorization: 'Bearer ' + token,
       }
     })
-    .then(() => router.push('/pelayanan'))
+    .then(() => router.push('/disposisiTeknis'))
     .catch(error => console.error('Error updating status to Revisi:', error));
   }
 }
@@ -107,8 +144,6 @@ const namaFileLampiran = computed(() => {
   const waktu = parts[1]
   return `${tanggal}_${waktu}_Lampiran.pdf`
 })
-HasilBA_Path.value = 'http://localhost:8000/' + src_HasilBA.value;
-HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value;
 
 function getFileName(path) {
   return path.split('/').pop() || "Nama File";
@@ -116,8 +151,6 @@ function getFileName(path) {
 
 const SuratDinaFileName = getFileName(SuratDinas_Path.value);
 const LampiranFileName = getFileName(Lampiran_Path.value);
-const HasilBAFileName = getFileName(HasilBA_Path.value);
-const HasilSLAFileName = getFileName(HasilSLA_Path.value);
 
 const messages = ref([
   {
@@ -138,6 +171,7 @@ const addMessage = () => {
     })
     newMessage.value = ''
   }
+}
 }
 </script>
 
@@ -192,20 +226,6 @@ const addMessage = () => {
 
         <button class="send-btn" @click="addMessage">Kirim</button>
       </div>
-  
-      <div v-if="HasilBA_Path" class="file-card">
-        <div class="file-header">Hasil BA</div>
-        <div class="file-content">
-          <span class="file-placeholder">"{{ HasilBAFileName }}"</span>
-        </div>
-      </div>
-
-      <div v-if="HasilSLA_Path" class="file-card">
-        <div class="file-header">Hasil SLA</div>
-        <div class="file-content">
-          <span class="file-placeholder">"{{ HasilSLAFileName }}"</span>
-        </div>
-      </div>
 
       <div class="tinjau-card">
         <h3>Tinjau Pelayanan</h3>
@@ -225,6 +245,15 @@ const addMessage = () => {
         </div>
       </div>
     </div>
+
+    
+    <label>Hasil BA</label>
+    <input type="file" accept=".pdf" @change="handleFileChange($event, 'suratDinas')" />
+    <p class="note">(Hanya PDF, maksimum 8MB)</p>
+
+    <label>Hasil SLA</label>
+    <input type="file" accept=".pdf" @change="handleFileChange($event, 'lampiran')" />
+    <p class="note">(Hanya PDF, maksimum 8MB)</p>
   </div>
 </template>
 
@@ -453,4 +482,18 @@ select {
   color: #2196f3;
   font-style: italic;
 }
+
+.note {
+  color: red;
+  font-size: 0.75rem;
+  margin-top: -0.8rem;
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
 </style>
