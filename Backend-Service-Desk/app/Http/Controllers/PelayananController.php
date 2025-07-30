@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Pelayanan;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 
 class PelayananController extends Controller
@@ -176,6 +177,22 @@ class PelayananController extends Controller
         'status_pelayanan' => function ($query) {
             $query->select('ID_Status', 'Nama_Status');
          }])->groupBy('ID_Status')->get();
+
+        $dataPoints = [];
+        foreach ($statusCounts as $row) {
+            $dataPoints[] = [
+                "status" => $row->status_pelayanan->Nama_Status,
+                "total" => $row->total
+        ];
+        }
+        return response()->json($dataPoints);
+    }
+
+    public function Chart_PelayananStsBulanIni(){
+        $statusCounts = Pelayanan::select('ID_Status' , Status::raw('count(*) as total'))->with([
+        'status_pelayanan' => function ($query) {
+            $query->select('ID_Status', 'Nama_Status');
+         }])->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->groupBy('ID_Status')->get();
 
         $dataPoints = [];
         foreach ($statusCounts as $row) {

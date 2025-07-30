@@ -75,6 +75,7 @@ Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
 
 Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 Route::get('/stsPelayananChart',[PelayananController::class, 'Chart_PelayananSts']);
+Route::get('/stsPelayananChartBulanIni',[PelayananController::class, 'Chart_PelayananStsBulanIni']);
 Route::get('/jnsPelayananChart',[PelayananController::class, 'Chart_PelayananJns']);
 Route::get('/TknsPelayananChart',[PelayananController::class, 'Chart_PelayananTkns']);
 Route::get('/ratePelayananChart',[PelayananController::class, 'Chart_PelayananRate']);
