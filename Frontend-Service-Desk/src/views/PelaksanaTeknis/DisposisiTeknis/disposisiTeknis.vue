@@ -281,7 +281,6 @@ watch(search, () => {
   background-color: #fddede;
   color: #000000;
 }
-
 .detail-button {
   background: none;
   border: none;

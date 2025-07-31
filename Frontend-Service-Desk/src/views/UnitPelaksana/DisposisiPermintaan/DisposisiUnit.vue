@@ -14,6 +14,9 @@ const sortKey = ref('')
 const sortOrder = ref(null) 
 const steps = ref('')
 
+//lampu kekirim ato blm, masukin di item nanti
+const terkirim = ref(false)
+
 onMounted(() => {
   const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/unit/pelayanan/disposisi', {
@@ -171,7 +174,11 @@ watch(search, () => {
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
             </td>
-            <td><button class="detail-button" @click="lihatDetail(item)">Lihat</button></td>
+            <td>
+              <button class="detail-button" @click="lihatDetail(item)">Lihat</button>
+              <!-- nanti ganti kalo udah ada di backend jd item.terkirim mungkin -->
+              <span :class="['lingkaran', terkirim.toString()]"></span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -281,7 +288,19 @@ watch(search, () => {
   background-color: #fddede;
   color: #000000;
 }
-
+/* Lingkaran sebelah status */
+.lingkaran {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.lingkaran.false{
+  background-color: #E0E0E0;
+}
+.lingkaran.true{
+  background-color: #22ff00;
+}
 .detail-button {
   background: none;
   border: none;
