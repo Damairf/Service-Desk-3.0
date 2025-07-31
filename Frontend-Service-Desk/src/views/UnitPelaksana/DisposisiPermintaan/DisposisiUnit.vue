@@ -15,7 +15,6 @@ const sortOrder = ref(null)
 const steps = ref('')
 
 //lampu kekirim ato blm, masukin di item nanti
-const terkirim = ref(false)
 
 onMounted(() => {
   const token = localStorage.getItem('Token');
@@ -32,6 +31,7 @@ onMounted(() => {
       teknis: item.teknis_pelayanan?.Nama_Depan || '-',
       tanggal: item.created_at,
       status: item.status_pelayanan.Nama_Status,
+      terkirim: item.Is_Done
     }))
     if (layananData.value.length > 0) {
       const jenis = layananData.value[0].jenis;
@@ -188,7 +188,7 @@ watch(search, () => {
             <td>
               <button class="detail-button" @click="lihatDetail(item)">Lihat</button>
               <!-- nanti ganti kalo udah ada di backend jd item.terkirim mungkin -->
-              <span :class="['lingkaran', terkirim.toString()]"></span>
+              <span :class="['lingkaran', item.terkirim.toString()]"></span>
             </td>
           </tr>
         </tbody>

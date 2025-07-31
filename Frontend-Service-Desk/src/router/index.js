@@ -188,6 +188,7 @@ router.beforeEach(async (to, from, next) => {
     });
     const userRole = response.data.ID_Role;
 
+
     if (!to.meta.allowedRoles.includes(userRole)) {
       localStorage.clear();
       return next({ name: 'Login' });
