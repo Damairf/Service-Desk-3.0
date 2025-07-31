@@ -113,8 +113,9 @@ if (role.value == 1) {
 } else if (role.value == 5) {
   role.value = "Kepala Dinas"
   menuItem.value = [
-  { icon: '🏠', label: 'Beranda', to: '/beranda' },
-  { icon: '⚙️', label: 'Reporting dan Hasil Kepuasaan User Keseluruhan', to: '/reportingKeseluruhan' },
+  { icon: '🏠', label: 'Beranda', to: '/berandaKD' },
+  { icon: '📁', label: 'Reporting dan Hasil Kepuasaan User Keseluruhan', to: '/reportingKeseluruhan' },
+  { icon: '📁', label: 'Reporting dan Hasil Kepuasaan User Bulan ini', to: '/reportingBulanIni'}
 ];
 } else {
   role.value = null

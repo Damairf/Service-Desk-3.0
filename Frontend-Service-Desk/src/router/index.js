@@ -55,7 +55,7 @@ import halamanLacakDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/ha
 import halamanInformasiDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/halaman-informasi-DisposisiUnit.vue'
 import detailPelayananDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/detailPelayananDisposisi.vue'
 
-//=============Pelaksana Teknis================
+//=============PELAKSANA TEKNIS================
 
 //Beranda
 import berandaTeknis from '../views/PelaksanaTeknis/BerandaTeknis/BerandaTeknis.vue'
@@ -65,6 +65,9 @@ import disposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/disposisiT
 import detailPelayananDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/detailPelayananDisposisiTeknis.vue'
 import halamanInformasiDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/halaman-informasi-DisposisiTeknis.vue'
 import halamanLacakDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/halaman-lacak-DisposisiTeknis.vue'
+
+//===============KEPALA DINAS===============
+import berandaKD from '../views/KepalaDinas/BerandaKD/BerandaKD.vue'
 
 // Daftar rute
 const routes = [
@@ -160,6 +163,9 @@ const routes = [
       {path: 'lacakDisposisiTeknis', name: 'HalamanLacakDisposisiTeknis', component: halamanLacakDisposisiTeknis}
     ]
   },
+
+  //===============KEPALA DINAS===============
+  { path: '/berandaKD', name: 'BerandaKepalaDinas', component: berandaKD}
 ]
 
 
