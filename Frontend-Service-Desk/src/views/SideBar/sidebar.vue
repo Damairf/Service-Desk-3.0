@@ -94,8 +94,8 @@ if (role.value == 1) {
   menuItem.value = [
   { icon: '🏠', label: 'Beranda', to: '/Beranda-Pengelola' },
   { icon: '⚙️', label: 'Pelayanan', to: '/pelayanan' },
-  { icon: '🔍', label: 'Lembaga/Organisasi', to: '/lembaga' },
   { icon: '📁', label: 'Referensi', children: [
+    { label: 'Lembaga/Organisasi', to: '/lembaga'},
     { label: "Jabatan", to: '/referensi/jabatan'},
     { label: "Status", to: '/referensi/status'},
     { label: "Jenis Pelayanan", to: '/referensi/jenis-pelayanan'}
