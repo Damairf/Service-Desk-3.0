@@ -75,7 +75,7 @@ const handleTabChange = async (tab) => {
   if (tab === 'tracking') {
     if (steps.value.length > 0) {
       router.push({
-        name: 'HalamanLacak',
+        name: 'LacakKepuasanUserKeseluruhan',
         query: {
           layanan: pelayananId.value,
           tab: 'tracking',
@@ -87,7 +87,7 @@ const handleTabChange = async (tab) => {
     }
   } else if (tab === 'informasi') {
     router.push({
-      name: 'HalamanInformasi',
+      name: 'InformasiKepuasanUserKeseluruhan',
       query: {
         layanan: pelayananId.value,
         perihal: perihal.value,
@@ -112,7 +112,7 @@ onMounted(() => {
   // Event listener untuk tombol back browser
   const handlePopState = () => {
     // Langsung dilempar ke permintaanDiproses
-    router.push({ name: 'riwayat' })
+    router.push({ name: 'KepuasanUserKeseluruhan' })
   }
   
   window.addEventListener('popstate', handlePopState)

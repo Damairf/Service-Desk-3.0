@@ -16,6 +16,8 @@ const isLoading = ref(true)
 const nip_user = ref('')
 const nama_jabatan = ref('')
 const nama_organisasi = ref('')
+const nama_depan = localStorage.getItem('nama_depan')
+const nama_belakang = localStorage.getItem('nama_belakang')
 
 onMounted(()=> {
   const token = localStorage.getItem('Token');
@@ -86,7 +88,7 @@ onMounted(()=> {
 </script>
 
 <template>
-    <h1 class="dashboard-title">Beranda</h1>
+    <h1 class="dashboard-title">Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
 
 <!-- Ringkasan: 3 kotak atas -->
 <div class="box-row">

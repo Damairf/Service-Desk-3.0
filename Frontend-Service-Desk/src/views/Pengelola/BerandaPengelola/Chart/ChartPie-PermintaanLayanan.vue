@@ -1,8 +1,8 @@
 <script setup>
-  import {ref, onMounted , onBeforeMount, computed} from 'vue'
-  import { Bar, Pie } from 'vue-chartjs';
-  import axios from 'axios';
-  import {
+import { ref, onBeforeMount, computed } from 'vue'
+import { Pie } from 'vue-chartjs'
+import axios from 'axios'
+import {
   Chart as ChartJS,
   Title,
   Tooltip,
@@ -12,83 +12,96 @@
   BarElement,
   ArcElement
 } from 'chart.js'
-import { color } from 'chart.js/helpers';
 
-// Registrasi komponen Chart.js
+// Register Chart.js components
 ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement, ArcElement)
 
-//placeholder untuk diskominfo
-// ceritanya backend
-const labelPermintaanLayanan = ref([]);
-const dataPermintaanLayanan = ref([]);
+// Data for pie chart
+const labelPermintaanLayanan = ref([])
+const dataPermintaanLayanan = ref([])
 
 onBeforeMount(async () => {
   try {
-    const token = localStorage.getItem('Token');
+    const token = localStorage.getItem('Token')
     const response = await axios.get('http://127.0.0.1:8000/api/jnsPelayananChart', {
       headers: {
         Authorization: 'Bearer ' + token
       }
-    });
-    const data = response.data;
-    labelPermintaanLayanan.value = data.map(item => item.Jenis_Pelayanan);
-    dataPermintaanLayanan.value = data.map(item => item.total);
+    })
+    const data = response.data
+    labelPermintaanLayanan.value = data.map(item => item.Jenis_Pelayanan)
+    dataPermintaanLayanan.value = data.map(item => item.total)
   } catch (error) {
+    console.error("Gagal memuat data:", error)
   }
-});
-//data fixed jadi cmn ada di FrontEnd
+})
+
+// Colors
 const warnaChart = ['#4264C2', '#CA4D2D', '#F3A33C', '#449533', '#CC557D', '#A83A2D', '#9845A1', '#51AC9A', '#ABAB3B', '#6137C7', '#601861']
-//presentasi progress keseluruhan
+
+// Computed chart data
 const PermintaanLayananData = computed(() => ({
   labels: labelPermintaanLayanan.value,
   datasets: [
     {
-      label: "Presentase Layanan",
+      label: 'Presentase Layanan',
       data: dataPermintaanLayanan.value,
       backgroundColor: warnaChart
     }
   ]
-}));
+}))
 
+// Chart options with tooltip in percentage
 const configPermintaanLayanan = {
   maintainAspectRatio: false,
   responsive: true,
   layout: {
     padding: {
-      top: 15  // Ganti sesuai kebutuhan, misalnya 0 atau 5
+      top: 15
     }
   },
   plugins: {
     legend: {
-      position: 'right',
+      position: 'right'
     },
     title: {
       display: true,
-      text: "Persentase Permintaan Pelayanan",
+      text: 'Persentase Permintaan Pelayanan',
       color: '#000000',
       font: {
         size: 16,
         weight: 'bold'
       }
+    },
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          const label = context.label || ''
+          const value = context.parsed || 0
+          const data = context.dataset.data
+          const total = data.reduce((sum, val) => sum + val, 0)
+          const percentage = total ? ((value / total) * 100).toFixed(2) : 0
+          return `${label}: ${percentage}%`
+        }
+      }
     }
   }
 }
-
 </script>
 
 <template>
-    <div class="chart-container">
-        <Pie :data="PermintaanLayananData" :options="configPermintaanLayanan" />
-    </div>
+  <div class="chart-container">
+    <Pie :data="PermintaanLayananData" :options="configPermintaanLayanan" />
+  </div>
 </template>
 
 <style scoped>
 .chart-container {
-    width: 300px;
-    margin: 0;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 300px;
+  margin: 0;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

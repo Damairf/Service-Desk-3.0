@@ -1,5 +1,5 @@
 <script setup>
-import { ref ,  computed } from 'vue'
+import { ref , computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 const router = useRouter()
@@ -30,6 +30,7 @@ const src_HasilBA = ref(route.query.hasil_BA || '-')
 const HasilSLA_Path = ref(null)
 const src_HasilSLA = ref(route.query.hasil_SLA || '-')
 
+const stepsStatus = ref([])
 const pelaksana = ref([])
 const idUnitTerpilih = ref('')
 const insiden = ref('')
@@ -39,6 +40,18 @@ const pilihan = ref('')
 function handlePilihan(klik) {
   pilihan.value = klik
 }
+
+onMounted(() => {
+  const stepsStatusParam = route.query.stepsStatus
+
+  if (stepsStatusParam) {
+    try {
+      stepsStatus.value = JSON.parse(stepsStatusParam)
+    } catch (e) {
+      console.error('Gagal parse stepsStatus dari query:', e)
+    }
+  }
+})
 
 const token = localStorage.getItem('Token');
 axios.get('http://127.0.0.1:8000/api/pelayanan/unit', {
@@ -63,7 +76,7 @@ function handleSelesai() {
   if (pilihan.value === 'Selesai') {
     axios.put(`http://127.0.0.1:8000/api/pelayanan/selesai/${pelayananId.value}`, 
     {
-      ID_Status: 4, // Adjust ID_Status for 'Selesai' based on your backend
+      ID_Status: 4,
       Insiden: insiden.value
     },
     {
@@ -76,7 +89,7 @@ function handleSelesai() {
   } else if (pilihan.value === 'Revisi') {
     axios.put(`http://127.0.0.1:8000/api/pelayanan/revisi/${pelayananId.value}`, 
     {
-      ID_Status: 5, // Adjust ID_Status for 'Revisi' based on your backend
+      ID_Status: 5,
       Insiden: insiden.value
     },
     {
@@ -107,8 +120,24 @@ const namaFileLampiran = computed(() => {
   const waktu = parts[1]
   return `${tanggal}_${waktu}_Lampiran.pdf`
 })
-HasilBA_Path.value = 'http://localhost:8000/' + src_HasilBA.value;
-HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value;
+
+HasilBA_Path.value = 'http://localhost:8000/' + src_HasilBA.value
+const NamaFileHasilBA = computed(() => {
+  const fileName = src_HasilBA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Hasil_BA.pdf`
+})
+
+HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value
+const NamaFileHasilSLA = computed(() => {
+  const fileName = src_HasilSLA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Hasil_SLA.pdf`
+})
 
 function getFileName(path) {
   return path.split('/').pop() || "Nama File";
@@ -193,18 +222,18 @@ const addMessage = () => {
         <button class="send-btn" @click="addMessage">Kirim</button>
       </div>
   
-      <div v-if="HasilBA_Path" class="file-card">
-        <div class="file-header">Hasil BA</div>
-        <div class="file-content">
-          <span class="file-placeholder">"{{ HasilBAFileName }}"</span>
-        </div>
+      <strong>Hasil BA</strong>
+      <div v-if="HasilBA_Path"></div>
+        <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+          {{ NamaFileHasilBA }}
+        </a>
       </div>
 
-      <div v-if="HasilSLA_Path" class="file-card">
-        <div class="file-header">Hasil SLA</div>
-        <div class="file-content">
-          <span class="file-placeholder">"{{ HasilSLAFileName }}"</span>
-        </div>
+      <strong>Hasil SLA</strong>
+      <div v-if="HasilSLA_Path"></div>
+        <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+          {{ NamaFileHasilSLA }}
+        </a>
       </div>
 
       <div class="tinjau-card">
@@ -224,8 +253,6 @@ const addMessage = () => {
           <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
         </div>
       </div>
-    </div>
-  </div>
 </template>
 
 <style scoped>

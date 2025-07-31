@@ -1,48 +1,57 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+
 const route = useRoute()
-// buat import tulisan perihalnya, tapi kyknya mending diammbil dari backendnya
 const idLayanan = ref(route.query.layanan || '')
 const currentStep = ref(0) // buat tau 
 const steps = ref([])
-
-onUnmounted(() => {
-  localStorage.removeItem('steps');
-});
+const stepsStatus = ref([])
 
 onMounted(() => {
-  const savedSteps = localStorage.getItem('steps')
-  if (savedSteps) {
+  const stepsParam = route.query.steps
+  const stepsStatusParam = route.query.stepsStatus
+
+  if (stepsParam) {
     try {
-      steps.value = JSON.parse(savedSteps)
+      steps.value = JSON.parse(stepsParam)
     } catch (e) {
-      console.error('Gagal parse steps dari localStorage:', e)
+      console.error('Gagal parse steps dari query:', e)
     }
-  } else {
-    console.warn('Steps belum ada di localStorage')
+  }
+
+  if (stepsStatusParam) {
+    try {
+      stepsStatus.value = JSON.parse(stepsStatusParam)
+    } catch (e) {
+      console.error('Gagal parse stepsStatus dari query:', e)
+    }
   }
 })
 </script>
 
 <template>
-    <!-- Card -->
-  <h2 class="card-title">Detail Progress<br>{{ idLayanan }}</h2>
-  <div class="step-wrapper">
-    <div
-      v-for="(step, index) in steps"
-      :key="index"
-      class="step-row"
-    >
+  <div>
+    <h2 class="card-title">Detail Progress<br>{{ idLayanan }}</h2>
+    <div class="step-wrapper">
       <div
-        class="circle"
-        :class="index < currentStep ? 'circle-active' : 'circle-inactive'"
+        v-for="(step, index) in steps"
+        :key="index"
+        class="step-row"
       >
-        {{ index + 1 }}
-      </div>
+        <div
+          class="circle"
+          :class="stepsStatus[index] === 1 ? 'circle-blue' : 'circle-inactive'"
+        >
+          {{ index + 1 }}
+        </div>
 
-      <div class="step-label">
-        {{ step }}
+        <div
+        class="step-label"
+          :class="stepsStatus[index] === 1 ? 'label-blue' : ''"
+        >
+          {{ step }}
+        </div>
       </div>
     </div>
   </div>
@@ -166,8 +175,17 @@ onMounted(() => {
 }
 
 .step-label {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   color: #1f2937;
+}
+
+.circle-blue {
+  background-color: #0185DA !important;
+  color: white;
+}
+
+.label-blue {
+  color: #0185DA !important;
 }
 </style>

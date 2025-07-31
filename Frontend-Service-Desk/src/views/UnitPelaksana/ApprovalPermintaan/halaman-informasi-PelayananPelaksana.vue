@@ -1,5 +1,5 @@
 <script setup>
-import { ref , computed } from 'vue'
+import { ref , computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 const router = useRouter()
@@ -28,6 +28,7 @@ const src_SuratDinas = ref(route.query.surat_dinas || '-')
 const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
 
+const stepsStatus = ref([])
 const pelaksana = ref([])
 const idTeknisTerpilih = ref('')
 
@@ -37,6 +38,18 @@ const pilihan = ref('')
 function handlePilihan(klik){
   pilihan.value = klik
 }
+
+onMounted(() => {
+  const stepsStatusParam = route.query.stepsStatus
+
+  if (stepsStatusParam) {
+    try {
+      stepsStatus.value = JSON.parse(stepsStatusParam)
+    } catch (e) {
+      console.error('Gagal parse stepsStatus dari query:', e)
+    }
+  }
+})
 
 const token = localStorage.getItem('Token');
 axios.get('http://127.0.0.1:8000/api/pelayanan/teknis', {

@@ -57,7 +57,14 @@ onBeforeMount(() => {
             Apa yang ingin dilaksanakan hari ini?
           </p>
         </div>
+        
         <div class="boxHolder">
+          <div class="box">
+            <ChartProgressKeseluruhan />
+          </div>
+          <div class="box">
+            <ChartProgressBulanIni />
+          </div>
           <div class="box" @click="router.push('/KepuasanUserKeseluruhan')">
             <img src="../../../../public/Approval.svg" alt="Persetujuan Permintaan">
             <h3>Laporan & Kepuasan User Keseluruhan</h3>
@@ -70,12 +77,7 @@ onBeforeMount(() => {
             <p>Lihat Laporan & Kepuasan User Bulan Ini</p>
             <button class="lacak" @click="router.push('/KepuasanUserBulanIni')">Buka Laporan</button>
           </div>
-          <div class="box">
-            <ChartProgressKeseluruhan />
-          </div>
-          <div class="box">
-            <ChartProgressBulanIni />
-          </div>
+
         </div>
       </div>
     </template>

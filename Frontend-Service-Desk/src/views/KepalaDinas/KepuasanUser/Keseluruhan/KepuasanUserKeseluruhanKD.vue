@@ -90,7 +90,7 @@ watch(filteredItems, () => {
 function checkProgress(item) {
   alert(`Melihat detail untuk tiket: ${item.ticket}`)
   router.push({
-    name: 'DetailPermintaanRiwayat',
+    name: 'DetailKepuasanUserKeseluruhanKD',
     query: {
       layanan: item.ticket,
       perihal: item.perihal,
@@ -112,7 +112,7 @@ function checkProgress(item) {
 <template>
   <div class="container">
     <div class="progress-card">
-      <h1>Riwayat</h1>
+      <h1>Laporan Kepuasan User Keseluruhan</h1>
       <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
       <table class="rounded-table">
         <thead>
