@@ -75,7 +75,7 @@ const handleTabChange = async (tab) => {
   if (tab === 'tracking') {
     if (steps.value.length > 0) {
       router.push({
-        name: 'HalamanLacak',
+        name: 'HalamanLacakHasil',
         query: {
           layanan: pelayananId.value,
           tab: 'tracking',
@@ -87,7 +87,7 @@ const handleTabChange = async (tab) => {
     }
   } else if (tab === 'informasi') {
     router.push({
-      name: 'HalamanInformasi',
+      name: 'HalamanInformasiHasil',
       query: {
         layanan: pelayananId.value,
         perihal: perihal.value,
@@ -107,7 +107,7 @@ const handleTabChange = async (tab) => {
 
 // Set default route saat komponen dimount
 onMounted(() => {
-  fetchDataAndNavigate()
+  handleTabChange(activeTab.value)
   
   // Event listener untuk tombol back browser
   const handlePopState = () => {

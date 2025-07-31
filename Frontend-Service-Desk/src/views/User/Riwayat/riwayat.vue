@@ -50,7 +50,7 @@ onMounted(() => {
 
 function checkProgress(item) {
   router.push({
-    name: 'DetailPermintaan', 
+    name: 'DetailPermintaanRiwayat', 
     query: {
       layanan: item.ticket,
     },

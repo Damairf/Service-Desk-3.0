@@ -125,7 +125,7 @@ watch(filteredItems, () => {
             <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progres</a></td>
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
-            </td>
+            </td>
           </tr>
         </tbody>
       </table>
