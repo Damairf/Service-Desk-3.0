@@ -37,7 +37,6 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
   }
 })
 .then(response => {
-  const id_jenis_pelayanan = ref(null)
   deskripsi.value = response.data.Deskripsi
   organisasi.value = response.data.user.user_organisasi.Nama_OPD
   surat_dinas.value = response.data.Surat_Dinas_Path

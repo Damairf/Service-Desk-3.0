@@ -48,7 +48,14 @@ onMounted(() => {
   });
 });
 
-
+function checkProgress(item) {
+  router.push({
+    name: 'DetailPermintaan', 
+    query: {
+      layanan: item.ticket,
+    },
+  }) 
+}
 
 // Computed
 const filteredItems = computed(() => {
@@ -85,29 +92,6 @@ const visiblePages = computed(() => {
 watch(filteredItems, () => {
   currentPage.value = 1
 })
-
-// Methods
-function checkProgress(item) {
-  alert(`Melihat hasil untuk tiket: ${item.ticket}`)
-  router.push({
-    name: 'DetailPermintaanHasil',
-    query: {
-      layanan: item.ticket,
-      perihal: item.perihal,
-      tanggal: item.date,
-      nama_depanPengaju: item.pic, // adjust if you have separate first/last name
-      // nama_belakangPengaju: '', // add if available
-      jenis_pelayanan: '', // add if available
-      organisasi: '', // add if available
-      deskripsi: '', // add if available
-      surat_dinas: '', // add if available
-      lampiran: '',
-      tab: 'informasi'
-    }
-  })
-}
-
-
 </script>
 
 

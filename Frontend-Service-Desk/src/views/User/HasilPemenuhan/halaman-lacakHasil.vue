@@ -1,23 +1,32 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import axios from 'axios'
 
 const route = useRoute()
 const idLayanan = ref(route.query.layanan || '')
 const currentStep = ref(0) // buat tau 
 const steps = ref([])
+const stepsStatus = ref([])
 
 onMounted(() => {
-  // Proses steps setelah loading ditampilkan
-    const stepsParam = route.query.steps
-    if (stepsParam) {
-      try {
-        steps.value = JSON.parse(stepsParam)
-      } catch (e) {
-        console.error('Gagal parse steps dari query:', e)
-      }
+  const stepsParam = route.query.steps
+  const stepsStatusParam = route.query.stepsStatus
+
+  if (stepsParam) {
+    try {
+      steps.value = JSON.parse(stepsParam)
+    } catch (e) {
+      console.error('Gagal parse steps dari query:', e)
     }
+  }
+
+  if (stepsStatusParam) {
+    try {
+      stepsStatus.value = JSON.parse(stepsStatusParam)
+    } catch (e) {
+      console.error('Gagal parse stepsStatus dari query:', e)
+    }
+  }
 })
 </script>
 
@@ -31,18 +40,15 @@ onMounted(() => {
         class="step-row"
       >
         <div
-        class="circle"
-          :class="[
-            index === 0 || index === 1 ? 'circle-blue' : '',
-            index < currentStep ? 'circle-active' : 'circle-inactive'
-          ]"
+          class="circle"
+          :class="stepsStatus[index] === 1 ? 'circle-blue' : 'circle-inactive'"
         >
           {{ index + 1 }}
         </div>
 
         <div
         class="step-label"
-          :class="(index === 0 || index === 1) ? 'label-blue' : ''"
+          :class="stepsStatus[index] === 1 ? 'label-blue' : ''"
         >
           {{ step }}
         </div>
