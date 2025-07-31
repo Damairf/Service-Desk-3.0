@@ -161,12 +161,12 @@ watch(search, () => {
             <td>{{ formatDate(item.tanggal) }}</td>
             <td>{{ item.teknis }}</td>
             <td>
-              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
-            </td>
-            <td>
               <button class="detail-button" @click="lihatDetail(item)">Lihat</button>
               <!-- nanti ganti kalo udah ada di backend jd item.terkirim mungkin -->
               <span :class="['lingkaran', item.terkirim.toString()]"></span>
+            </td>
+            <td>
+              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
             </td>
           </tr>
         </tbody>
