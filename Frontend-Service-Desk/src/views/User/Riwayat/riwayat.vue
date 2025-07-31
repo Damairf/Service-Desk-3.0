@@ -194,21 +194,6 @@ h1 {
 .rounded-table tr:nth-child(even) {
   background-color: #f2f2f2;
 }
-.status {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-  display: inline-block;
-}
-.status.tutup {
-  background-color: #9c9c9c;
-  color:#1e1e1e;
-}
-.status.ditolak {
-  background-color: #ff8181;
-  color:#490707;
-}
 .pagination {
   margin-top: 20px;
   text-align: center;
