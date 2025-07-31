@@ -69,6 +69,54 @@ function goToPage(page) {
 watch(search, () => {
   currentPage.value = 1
 })
+
+const jabatanToDelete = ref("")
+function Delete(item) {
+  jabatanToDelete.value = item.id_organisasi
+  showModal.value = true
+}
+
+function cancelDelete() {
+  showModal.value = false
+  jabatanToDelete.value = null
+}
+
+// function confirmDelete() {
+//   const token = localStorage.getItem('Token');
+//   axios.delete(`http://127.0.0.1:8000/api/organisasi/${idOrganisasiToDelete.value}`, {
+//   headers: {
+//       Authorization: 'Bearer ' + token
+//     }
+//   })
+//   .then(() => {
+//   fetchDataOrganisasi();
+//   showModal.value = false
+//   idOrganisasiToDelete.value = null
+// })
+
+//   .catch(error => {
+//     console.error(error);
+//     alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus organisasi.');
+//   });
+// }
+
+//Countdown
+const countdown = ref(5)
+const isCounting = ref(false)
+let timer = null
+function startCountdown() {
+  countdown.value = 5
+  isCounting.value = true
+
+  timer = setInterval(() => {
+    if (countdown.value > 1) {
+      countdown.value--
+    } else {
+      clearInterval(timer)
+      isCounting.value = false
+    }
+  }, 1000)
+}
 </script>
 
 
@@ -100,7 +148,9 @@ watch(search, () => {
               <td>{{ jabatan.tglPembuatan }}</td>
               <td>
                 <div class="wrapper-aksiBtn">
-                  <button class="aksiLihat-btn" title="View">Detail</button>
+                    <!-- functionnya belum ada -->
+                    <button class="aksiEdit-btn" title="Edit" @click="editJabatan(item)">Ubah</button>
+                    <button class="aksiDelete-btn" title="Delete" @click="Delete(item); startCountdown()">Hapus</button>
                 </div>
               </td>
             </tr>
@@ -220,13 +270,25 @@ watch(search, () => {
 .data-table tr {
   border-bottom: 1px solid #eee;
 }
-/* tombol aksi */
+/* Tombol aksi */
 .wrapper-aksiBtn{
   display: flex;
   gap: 3px;
 }
-.aksiLihat-btn{
-  background: #6c757d;
+.aksiEdit-btn {
+  background: #2196f3;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  margin-right: 0.2rem;
+  cursor: pointer;
+  font-size: 14px;
+  color: white;
+  transition: background 0.2s;
+}
+.aksiEdit-btn:hover { background: #1976d2; }
+.aksiDelete-btn {
+  background: #c14421;
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 0.3rem 0.5rem;
@@ -235,9 +297,7 @@ watch(search, () => {
   color: white;
   transition: background 0.2s;
 }
-.aksiLihat-btn:hover{
-  background: #5a6268;
-}
+.aksiDelete-btn:hover { background: #a63a1d; }
 /* Pengganti Halaman */
 .pagination {
   display: flex;
