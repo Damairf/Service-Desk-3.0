@@ -124,7 +124,9 @@ watch(filteredItems, () => {
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.pic }}</td>
             <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Lihat Hasil</a></td>
-            <td>{{ item.status }}</td>
+            <td>
+              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -192,6 +194,17 @@ h1 {
 }
 .rounded-table tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+}
+.status.selesai {
+  background-color: #e6dcf5;
+  color:#6a1b9a;
 }
 .pagination {
   margin-top: 20px;

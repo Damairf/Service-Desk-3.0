@@ -123,7 +123,9 @@ watch(filteredItems, () => {
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.teknis }}</td>
             <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progres</a></td>
-            <td>{{ item.status }}</td>
+            <td>
+              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -197,6 +199,29 @@ h1 {
 
 .rounded-table tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.status.baru {
+  background-color: #caeaff;
+  color: #0185DA;
+}
+
+.status.proses {
+  background-color: #f5f5c3;
+  color: #aaaa3a;
+}
+
+.status.disetujui {
+  background-color: #c7f5d9;
+  color: #2e7d32;
 }
 
 .pagination {
