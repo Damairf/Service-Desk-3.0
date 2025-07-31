@@ -7,6 +7,7 @@ const route = useRoute()
 
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
+const stepsStatus = ref([])
 const perihal = ref('')
 const tanggal = ref('')
 const organisasi = ref('')
@@ -17,7 +18,6 @@ const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const activeTab = ref(route.query.tab === 'informasi' ? 'informasi' : 'tracking')
-const currentStep = ref(0) // buat tau 
 
 onMounted(() => {
   if (route.query.steps) {
@@ -30,37 +30,42 @@ onMounted(() => {
 });
 
 const token = localStorage.getItem('Token');
-axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
-    headers: {
-      Authorization: 'Bearer ' + token
+axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
+  headers: {
+    Authorization: 'Bearer ' + token
+  }
+})
+.then(response => {
+  deskripsi.value = response.data.Deskripsi
+  organisasi.value = response.data.user.user_organisasi.Nama_OPD
+  surat_dinas.value = response.data.Surat_Dinas_Path
+  lampiran.value = response.data.Lampiran_Path
+  jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
+  nama_depanPengaju.value = response.data.user.Nama_Depan
+  nama_belakangPengaju.value = response.data.user.Nama_Belakang
+  perihal.value = response.data.Perihal
+  tanggal.value = response.data.created_at
+
+  axios.get(`http://127.0.0.1:8000/api/pelayanan/alur/progress/${pelayananId.value}`, {
+  headers: {
+    Authorization: 'Bearer ' + token
     }
   })
   .then(response => {
-    const id_jenis_pelayanan = ref(null)
-    deskripsi.value = response.data.Deskripsi
-    surat_dinas.value = response.data.Surat_Dinas_Path
-    lampiran.value = response.data.Lampiran_Path
-    jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
-    id_jenis_pelayanan.value = response.data.ID_Jenis_Pelayanan
-    nama_depanPengaju.value = response.data.user.Nama_Depan
-    nama_belakangPengaju.value = response.data.user.Nama_Belakang
-    organisasi.value = response.data.user.user_organisasi.Nama_OPD
-    perihal.value = response.data.Perihal
-    tanggal.value = response.data.created_at
+  steps.value = response.data.map(item =>
+    item.progress_to_alur?.isi_alur?.Nama_Alur || 'Tidak Diketahui'
+  )
 
-    axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${id_jenis_pelayanan.value}`, {
-        headers: { Authorization: 'Bearer ' + token }
-      })
-      .then(response => {
-        steps.value = response.data.map(a => a.isi_alur?.Nama_Alur) || [];
-        handleTabChange(activeTab.value)
-      })
-      .catch(error => {
-        console.error('Gagal mengambil steps:', error);
-      })
-    })
-  .catch(function(error) {
-    console.log(error)
+  stepsStatus.value = response.data.map(item => item.Is_Done)
+
+  handleTabChange(activeTab.value)
+  })
+  .catch(error => {
+    console.error(error)
+  })
+})
+.catch(function(error) {
+  console.log(error)
 });
 
 // Fungsi untuk menangani perubahan tab
@@ -74,7 +79,8 @@ const handleTabChange = (tab) => {
         query: {
           layanan: pelayananId.value,
           tab: 'tracking',
-          steps: JSON.stringify(steps.value), 
+          steps: JSON.stringify(steps.value),
+          stepsStatus: JSON.stringify(stepsStatus.value)
         }
       });
       return;
@@ -94,6 +100,8 @@ const handleTabChange = (tab) => {
         surat_dinas: surat_dinas.value,
         lampiran: lampiran.value,
         tab: 'informasi',
+        steps: JSON.stringify(steps.value),
+        stepsStatus: JSON.stringify(stepsStatus.value)
       }
     });
   }

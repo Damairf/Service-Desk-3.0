@@ -7,6 +7,7 @@ const route = useRoute()
 
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
+const stepsStatus = ref([])
 const perihal = ref('')
 const tanggal = ref('')
 const organisasi = ref('')
@@ -16,9 +17,8 @@ const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
-const activeTab = ref('tracking')
+const activeTab = ref(route.query.tab === 'informasi' ? 'informasi' : 'tracking')
 const insiden = ref('')
-const currentStep = ref(0) // buat tau 
 
 onMounted(() => {
   if (route.query.steps) {
@@ -31,36 +31,62 @@ onMounted(() => {
 });
 
 const token = localStorage.getItem('Token');
-axios.get (`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
-    headers: {
-      Authorization: 'Bearer ' + token
+axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
+  headers: {
+    Authorization: 'Bearer ' + token
+  }
+})
+.then(response => {
+  deskripsi.value = response.data.Deskripsi
+  organisasi.value = response.data.user.user_organisasi.Nama_OPD
+  surat_dinas.value = response.data.Surat_Dinas_Path
+  lampiran.value = response.data.Lampiran_Path
+  jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
+  nama_depanPengaju.value = response.data.user.Nama_Depan
+  nama_belakangPengaju.value = response.data.user.Nama_Belakang
+  perihal.value = response.data.Perihal
+  tanggal.value = response.data.created_at
+  insiden.value = response.data.insiden
+
+  axios.get(`http://127.0.0.1:8000/api/pelayanan/alur/progress/${pelayananId.value}`, {
+  headers: {
+    Authorization: 'Bearer ' + token
     }
   })
   .then(response => {
-    deskripsi.value = response.data.Deskripsi
-    surat_dinas.value = response.data.Surat_Dinas_Path
-    lampiran.value = response.data.Lampiran_Path
-    jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
-    nama_depanPengaju.value = response.data.user.Nama_Depan
-    nama_belakangPengaju.value = response.data.user.Nama_Belakang
-    organisasi.value = response.data.user.user_organisasi.Nama_OPD
-    perihal.value = response.data.Perihal
-    tanggal.value = response.data.created_at
-    insiden.value = response.data.Insiden
-    })
-  .catch(function(error) {
-    console.log(error)
+  steps.value = response.data.map(item =>
+    item.progress_to_alur?.isi_alur?.Nama_Alur || 'Tidak Diketahui'
+  )
+
+  stepsStatus.value = response.data.map(item => item.Is_Done)
+
+  handleTabChange(activeTab.value)
+  })
+  .catch(error => {
+    console.error(error)
+  })
+})
+.catch(function(error) {
+  console.log(error)
 });
 
 // Fungsi untuk menangani perubahan tab
 const handleTabChange = (tab) => {
   activeTab.value = tab
+  
   if (tab === 'tracking') {
-    localStorage.setItem('steps', JSON.stringify(steps.value))
-    router.push({
-      name: 'LacakPelaksana', 
-      query: {layanan: pelayananId.value}
-    })
+    if (steps.value.length > 0) {
+      router.push({
+        name: 'LacakPelaksana',
+        query: {
+          layanan: pelayananId.value,
+          tab: 'tracking',
+          steps: JSON.stringify(steps.value),
+          stepsStatus: JSON.stringify(stepsStatus.value)
+        }
+      });
+      return;
+    }
   } else if (tab === 'informasi') {
     router.push({
       name: 'InformasiPelaksana', 
@@ -75,7 +101,9 @@ const handleTabChange = (tab) => {
         deskripsi: deskripsi.value,
         surat_dinas: surat_dinas.value,
         lampiran: lampiran.value,
-        insiden: insiden.value
+        insiden: insiden.value,
+        steps: JSON.stringify(steps.value),
+        stepsStatus: JSON.stringify(stepsStatus.value)
       }
     })
   }

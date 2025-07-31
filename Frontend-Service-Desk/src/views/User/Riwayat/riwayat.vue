@@ -3,7 +3,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 const router = useRouter()
-// Data dan state
+
 const search = ref('')
 const currentPage = ref(1)
 const isLoading = ref(true)
@@ -48,7 +48,14 @@ onMounted(() => {
   });
 });
 
-
+function checkProgress(item) {
+  router.push({
+    name: 'DetailPermintaanRiwayat', 
+    query: {
+      layanan: item.ticket,
+    },
+  }) 
+}
 
 // Computed
 const filteredItems = computed(() => {
@@ -81,31 +88,9 @@ const visiblePages = computed(() => {
   return pages
 })
 
-// Watcher
 watch(filteredItems, () => {
   currentPage.value = 1
 })
-
-// Methods
-function checkProgress(item) {
-  alert(`Melihat detail untuk tiket: ${item.ticket}`)
-  router.push({
-    name: 'DetailPermintaanRiwayat',
-    query: {
-      layanan: item.ticket,
-      perihal: item.perihal,
-      tanggal: item.date,
-      nama_depanPengaju: item.pic, // adjust if you have separate first/last name
-      // nama_belakangPengaju: '', // add if available
-      jenis_pelayanan: '', // add if available
-      organisasi: '', // add if available
-      deskripsi: '', // add if available
-      surat_dinas: '', // add if available
-      lampiran: '', // add if available
-      tab: 'informasi' // to open the Informasi tab by default
-    }
-  })
-}
 </script>
 
 
@@ -138,7 +123,9 @@ function checkProgress(item) {
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.pic }}</td>
             <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Lihat Detail</a></td>
-            <td>{{ item.status }}</td>
+            <td>
+              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -206,6 +193,21 @@ h1 {
 }
 .rounded-table tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+}
+.status.tutup {
+  background-color: #9c9c9c;
+  color:#1e1e1e;
+}
+.status.ditolak {
+  background-color: #ff8181;
+  color:#490707;
 }
 .pagination {
   margin-top: 20px;
