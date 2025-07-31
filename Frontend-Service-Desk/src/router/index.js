@@ -69,6 +69,8 @@ import halamanLacakDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTekni
 
 //===============KEPALA DINAS===============
 import berandaKD from '../views/KepalaDinas/BerandaKD/BerandaKD.vue'
+import KepuasanUserKeseluruhan from '../views/KepalaDinas/KepuasanUser/KepuasanUserKeseluruhanKD.vue'
+import KepuasanUserBulanIni from '../views/KepalaDinas/KepuasanUser/KepuasanUserBulanKD.vue'
 
 // Daftar rute
 const routes = [
@@ -166,7 +168,9 @@ const routes = [
   },
 
   //===============KEPALA DINAS===============
-  { path: '/berandaKD', name: 'BerandaKepalaDinas', component: berandaKD}
+  { path: '/berandaKD', name: 'BerandaKepalaDinas', component: berandaKD},
+  { path: '/KepuasanUserKeseluruhan', name: 'KepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan},
+  { path: '/KepuasanUserBulanIni', name: 'KepuasanUserBulanIni', component: KepuasanUserBulanIni}
 ]
 
 

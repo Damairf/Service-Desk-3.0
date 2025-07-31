@@ -58,16 +58,17 @@ onBeforeMount(() => {
           </p>
         </div>
         <div class="boxHolder">
-          <div class="box" @click="router.push('/approval')">
+          <div class="box" @click="router.push('/KepuasanUserKeseluruhan')">
             <img src="../../../../public/Approval.svg" alt="Persetujuan Permintaan">
-            <h3>Persetujuan Permintaan</h3>
-            <p>Setujui permintaan pelayanan yang diajui kepada Diskominfo Jabar</p>
-            <button class="tambah" @click="router.push('/approval')">Persetujuan</button>
+            <h3>Laporan & Kepuasan User Keseluruhan</h3>
+            <p>Lihat Seluruh Laporan & Kepuasan User</p>
+            <button class="tambah" @click="router.push('/KepuasanUserKeseluruhan')">Buka Laporan</button>
           </div>
-          <div class="box" @click="router.push('/disposisi')">
+          <div class="box" @click="router.push('/KepuasanUserBulanIni')">
             <img src="../../../../public/Disposisi.svg" alt="Disposisi Permintaan">
-            <h3>Disposisi Permintaan</h3>
-            <button class="lacak" @click="router.push('/disposisi')">Disposisi</button>
+            <h3>Laporan & Kepuasan User Bulan Ini</h3>
+            <p>Lihat Laporan & Kepuasan User Bulan Ini</p>
+            <button class="lacak" @click="router.push('/KepuasanUserBulanIni')">Buka Laporan</button>
           </div>
           <div class="box">
             <ChartProgressKeseluruhan />
