@@ -120,8 +120,24 @@ const namaFileLampiran = computed(() => {
   const waktu = parts[1]
   return `${tanggal}_${waktu}_Lampiran.pdf`
 })
-HasilBA_Path.value = 'http://localhost:8000/' + src_HasilBA.value;
-HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value;
+
+HasilBA_Path.value = 'http://localhost:8000/' + src_HasilBA.value
+const NamaFileHasilBA = computed(() => {
+  const fileName = src_HasilBA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Hasil_BA.pdf`
+})
+
+HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value
+const NamaFileHasilSLA = computed(() => {
+  const fileName = src_HasilSLA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Hasil_SLA.pdf`
+})
 
 function getFileName(path) {
   return path.split('/').pop() || "Nama File";
@@ -206,18 +222,18 @@ const addMessage = () => {
         <button class="send-btn" @click="addMessage">Kirim</button>
       </div>
   
-      <div v-if="HasilBA_Path" class="file-card">
-        <div class="file-header">Hasil BA</div>
-        <div class="file-content">
-          <span class="file-placeholder">"{{ HasilBAFileName }}"</span>
-        </div>
+      <strong>Hasil BA</strong>
+      <div v-if="HasilBA_Path"></div>
+        <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+          {{ NamaFileHasilBA }}
+        </a>
       </div>
 
-      <div v-if="HasilSLA_Path" class="file-card">
-        <div class="file-header">Hasil SLA</div>
-        <div class="file-content">
-          <span class="file-placeholder">"{{ HasilSLAFileName }}"</span>
-        </div>
+      <strong>Hasil SLA</strong>
+      <div v-if="HasilSLA_Path"></div>
+        <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+          {{ NamaFileHasilSLA }}
+        </a>
       </div>
 
       <div class="tinjau-card">
@@ -237,8 +253,6 @@ const addMessage = () => {
           <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
         </div>
       </div>
-    </div>
-  </div>
 </template>
 
 <style scoped>
