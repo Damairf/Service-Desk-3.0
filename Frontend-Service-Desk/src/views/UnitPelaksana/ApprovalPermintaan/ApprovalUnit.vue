@@ -12,7 +12,6 @@ const isLoading = ref(true)
 const layananData = ref([]);
 const sortKey = ref('') 
 const sortOrder = ref(null) 
-const steps = ref('')
 
 onMounted(() => {
   const token = localStorage.getItem('Token');
@@ -28,6 +27,7 @@ onMounted(() => {
       perihal: item.Perihal,
       tanggal: item.created_at,
       organisasi: item.user.user_organisasi.Nama_OPD,
+      status: item.status_pelayanan.Nama_Status,
     }))
     if (layananData.value.length > 0) {
       const jenis = layananData.value[0].jenis;
@@ -58,12 +58,10 @@ onMounted(() => {
 //ke halaman detail 
 function lihatDetail(item){
   const pelayananId = ref(item.noTiket)
-  const stepString = JSON.stringify(steps.value);
     router.push({
     name: 'DetailPelayananPelaksana', 
     query: {
       layanan: item.noTiket,
-      steps: stepString
     }
   })
     
@@ -155,6 +153,7 @@ watch(search, () => {
             <th>Organisasi</th>
             <th>Tanggal</th>
             <th>Detail Progress</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -170,6 +169,9 @@ watch(search, () => {
             <td>{{ item.organisasi }}</td>
             <td>{{ formatDate(item.tanggal) }}</td>
             <td><button class="detail-button" @click="lihatDetail(item)">Lihat</button></td>
+            <td>
+              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -252,6 +254,19 @@ watch(search, () => {
   cursor: pointer;
   text-decoration: underline;
   font-size: 13px;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.status.disetujui {
+  background-color: #c7f5d9;
+  color: #2e7d32;
 }
 
 .pagination {
