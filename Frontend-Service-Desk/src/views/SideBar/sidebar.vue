@@ -11,6 +11,12 @@ const gambar = ref(localStorage.getItem('src_gambar'));
 const role = ref(localStorage.getItem('id_role'))
 
 const profileRef = ref(null)
+// dropdown referensi
+const dropdownref = ref(false)
+function togglereferensi() {
+  dropdownref.value = !dropdownref.value
+}
+
 
 // biar auto update
 onMounted(() => {
@@ -62,7 +68,6 @@ function toProfile(){
     router.push('/profileSaya')
   }
 
-//ovelay
 
 // biar bisa buka tutup
 const isOpen = ref(true)
@@ -90,7 +95,11 @@ if (role.value == 1) {
   { icon: '🏠', label: 'Beranda', to: '/Beranda-Pengelola' },
   { icon: '⚙️', label: 'Pelayanan', to: '/pelayanan' },
   { icon: '🔍', label: 'Lembaga/Organisasi', to: '/lembaga' },
-  { icon: '📁', label: 'Referensi', to: '/referensi' },
+  { icon: '📁', label: 'Referensi', children: [
+    { label: "Jabatan", to: '/referensi/jabatan'},
+    { label: "Status", to: '/referensi/status'},
+    { label: "Jenis Pelayanan", to: '/referensi/jenis-pelayanan'}
+  ] },
   { icon: '📁', label: 'Pengguna', to: '/pengguna' },
 ];
 } else if (role.value == 3) {
@@ -147,40 +156,57 @@ if (role.value == 1) {
     <!-- Profile -->
     <div class="profile" ref="profileRef" @click="toggleOverlay">
       <img
-          :src="`http://localhost:8000/images/${gambar}`"
-          alt="Foto Profil"
-          class="gambar-profile"
-        />
-    <span class="nama-profile">{{nama_depan + " " + nama_belakang}} <br> {{role}}</span>
-    
-    <!-- Profile Dropdown Menu -->
-    <div v-if="tampilinOverlay" 
-      class="profile-dropdown"
-      :class="{'collapsed': !isOpen}"
-    >
-      <button class="dropdown-item" @click="() => {toggleOverlay(); toProfile()}">
-        <span class="dropdown-icon">👤</span>
-        <span v-if="isOpen" class="dropdown-text">Profil Saya</span>
-      </button>
-      <button class="dropdown-item" @click="logout()">
-        <span class="dropdown-icon">🚪</span>
-        <span v-if="isOpen" class="dropdown-text">Keluar</span>
-      </button>
-    </div>
+        :src="`http://localhost:8000/images/${gambar}`"
+        alt="Foto Profil"
+        class="gambar-profile"
+      />
+      <span class="nama-profile">{{ nama_depan + " " + nama_belakang }} <br> {{ role }}</span>
+
+      <!-- Profile Dropdown Menu -->
+      <div v-if="tampilinOverlay" class="profile-dropdown" :class="{ 'collapsed': !isOpen }">
+        <button class="dropdown-item" @click="() => { toggleOverlay(); toProfile() }">
+          <span class="dropdown-icon">👤</span>
+          <span v-if="isOpen" class="dropdown-text">Profil Saya</span>
+        </button>
+        <button class="dropdown-item" @click="logout()">
+          <span class="dropdown-icon">🚪</span>
+          <span v-if="isOpen" class="dropdown-text">Keluar</span>
+        </button>
+      </div>
     </div>
 
     <!-- Menu -->
-    <router-link
-      :to="item.to"
-      v-for="item in menuItem"
-      :key="item.label"
-      class="menu-item"
-    >
-      <span class ="icon">{{item.icon}}</span>
-      <span v-if="isOpen" class="">{{item.label}}</span>
-    </router-link>
+    <template v-for="item in menuItem" :key="item.label">
+      <template v-if="item.children">
+        <!-- Menu dengan dropdown -->
+        <div class="menu-item" @click="togglereferensi">
+          <span class="icon">{{ item.icon }}</span>
+          <span v-if="isOpen">{{ item.label }}</span>
+        </div>
+        <!-- Dropdown anak -->
+        <ul v-if="dropdownref" class="dropdown-list">
+          <li v-for="child in item.children" :key="child.label">
+            <router-link :to="child.to" class="dropdown-item" active-class="active">
+              {{ child.label }}
+            </router-link>
+          </li>
+        </ul>
+      </template>
+      <template v-else>
+        <!-- Menu biasa -->
+        <router-link
+          :to="item.to"
+          class="menu-item"
+        >
+          <span class="icon">{{ item.icon }}</span>
+          <span v-if="isOpen">{{ item.label }}</span>
+        </router-link>
+      </template>
+    </template>
   </div>
 </template>
+
+
 
 
 <style scoped>
@@ -393,7 +419,11 @@ nav {
 .menu-item:hover {
   background: #07883e;
 }
-
+/* Dropdown referensi */
+.dropdown-list{
+  background: #07883e;
+  margin-top: 0px;
+}
 .tombol-toggle:hover {
   background: #07883e;
 }

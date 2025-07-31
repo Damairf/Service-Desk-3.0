@@ -36,7 +36,8 @@ function login(){
       router.push('/berandaTeknis')
     } else if (role === 5){
       router.push('/berandaKD')
-    }})
+    } 
+    })
 
   .catch(function(error) {
     if (error.response && error.response.status === 401) {

@@ -92,10 +92,14 @@ function handleReset() {
 
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Edit Organisasi</h1>
+    <h1 v-if="!readonlyMode" class="main-title">Edit Organisasi</h1>
+    <h1 v-if="readonlyMode" class="main-title">Detail Organisasi</h1>
     <div class="form-card">
-      <div class="form-card-header">
+      <div v-if="!readonlyMode" class="form-card-header">
         Formulir Ubah Organisasi
+      </div>
+      <div v-if="readonlyMode" class="form-card-header">
+        Informasi Organisasi
       </div>
 
       <form class="form-content" @submit.prevent="handleSubmit">
@@ -153,7 +157,7 @@ function handleReset() {
 
         <div class="form-actions" v-if="!readonlyMode">
           <button type="submit" class="btn simpan">Simpan</button>
-          <button type="button" class="btn hapus" @click="handleReset">Hapus</button>
+          <button type="button" class="btn hapus" @click="handleReset">Reset</button>
         </div>
       </form>
     </div>
