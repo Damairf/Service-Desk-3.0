@@ -122,7 +122,7 @@ const namaFileLampiran = computed(() => {
 })
 
 HasilBA_Path.value = 'http://localhost:8000/' + src_HasilBA.value
-const namaFileLampiran = computed(() => {
+const NamaFileHasilBA = computed(() => {
   const fileName = src_HasilBA.value.split('/').pop() 
   const parts = fileName.split('_')
   const tanggal = parts[0]
@@ -131,7 +131,7 @@ const namaFileLampiran = computed(() => {
 })
 
 HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value
-const namaFileLampiran = computed(() => {
+const NamaFileHasilSLA = computed(() => {
   const fileName = src_HasilSLA.value.split('/').pop() 
   const parts = fileName.split('_')
   const tanggal = parts[0]
@@ -225,14 +225,14 @@ const addMessage = () => {
       <strong>Hasil BA</strong>
       <div v-if="HasilBA_Path"></div>
         <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-          {{ HasilBAFileName }}
+          {{ NamaFileHasilBA }}
         </a>
       </div>
 
       <strong>Hasil SLA</strong>
       <div v-if="HasilSLA_Path"></div>
         <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-          {{ HasilSLAFileName }}
+          {{ NamaFileHasilSLA }}
         </a>
       </div>
 
