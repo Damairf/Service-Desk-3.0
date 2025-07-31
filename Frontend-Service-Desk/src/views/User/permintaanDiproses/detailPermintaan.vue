@@ -18,7 +18,6 @@ const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
 const activeTab = ref(route.query.tab === 'informasi' ? 'informasi' : 'tracking')
-const currentStep = ref(0)
 
 onMounted(() => {
   if (route.query.steps) {
