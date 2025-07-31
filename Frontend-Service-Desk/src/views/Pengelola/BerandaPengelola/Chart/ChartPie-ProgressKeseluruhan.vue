@@ -1,8 +1,8 @@
 <script setup>
-  import {ref, onMounted, onBeforeMount, computed} from 'vue'
-  import axios from 'axios';
-  import { Pie } from 'vue-chartjs';
-  import {
+import { ref, onBeforeMount, computed } from 'vue'
+import axios from 'axios'
+import { Pie } from 'vue-chartjs'
+import {
   Chart as ChartJS,
   Title,
   Tooltip,
@@ -10,57 +10,58 @@
   ArcElement
 } from 'chart.js'
 
-// Registrasi komponen Chart.js yang diperlukan untuk Pie chart
+// Register Chart.js components
 ChartJS.register(Title, Tooltip, Legend, ArcElement)
 
-//placeholder untuk diskominfo
-// API
-const labelProgressKeseluruhan = ref([]);
-const dataProgressKeseluruhan = ref([]);
+// API data placeholders
+const labelProgressKeseluruhan = ref([])
+const dataProgressKeseluruhan = ref([])
 
 onBeforeMount(async () => {
   try {
-    const token = localStorage.getItem('Token');
+    const token = localStorage.getItem('Token')
     const response = await axios.get('http://127.0.0.1:8000/api/stsPelayananChart', {
       headers: {
         Authorization: 'Bearer ' + token
       }
-    });
-    const data = response.data;
-    labelProgressKeseluruhan.value = data.map(item => item.status);
-    dataProgressKeseluruhan.value = data.map(item => item.total);
+    })
+    const data = response.data
+    labelProgressKeseluruhan.value = data.map(item => item.status)
+    dataProgressKeseluruhan.value = data.map(item => item.total)
   } catch (error) {
-    labelProgressKeseluruhan.value = ['Baru',  'Disetujui',  'Ditolak', 'Proses', 'Selesai', 'Tutup'];
-    dataProgressKeseluruhan.value = [0, 0, 0, 0, 0, 0];
+    // fallback dummy
+    labelProgressKeseluruhan.value = ['Baru', 'Disetujui', 'Ditolak', 'Proses', 'Selesai', 'Tutup']
+    dataProgressKeseluruhan.value = [0, 0, 0, 0, 0, 0]
   }
-});
+})
 
-//data fixed jadi cmn ada di FrontEnd
-const warnaChart = ['#4264C2', '#F3D13C', '#E74C3C', '#F39C12', '#27AE60', '#8E44AD'];
+// Pie colors
+const warnaChart = ['#4264C2', '#F3D13C', '#E74C3C', '#F39C12', '#27AE60', '#8E44AD']
 
-//presentasi progress keseluruhan
+// Chart data
 const progressKeseluruhanData = computed(() => ({
   labels: labelProgressKeseluruhan.value,
   datasets: [
     {
-      label: "Presentase Progress",
+      label: "Persentase Progress",
       data: dataProgressKeseluruhan.value,
       backgroundColor: warnaChart
     }
   ]
-}));
+}))
 
+// Chart config with tooltip showing percentage
 const configKeseluruhanData = {
   maintainAspectRatio: false,
   responsive: true,
   layout: {
     padding: {
-      top: 15  // Ganti sesuai kebutuhan, misalnya 0 atau 5
+      top: 15
     }
   },
   plugins: {
     legend: {
-      position: 'right',
+      position: 'right'
     },
     title: {
       display: true,
@@ -70,25 +71,35 @@ const configKeseluruhanData = {
         size: 16,
         weight: 'bold'
       }
+    },
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          const label = context.label || ''
+          const value = context.parsed || 0
+          const dataArr = context.chart.data.datasets[0].data
+          const total = dataArr.reduce((sum, val) => sum + val, 0)
+          const percentage = total ? ((value / total) * 100).toFixed(2) : 0
+          return `${label}: ${percentage}%`
+        }
+      }
     }
   }
 }
-
 </script>
 
 <template>
-    <div class="chart-container">
-        <Pie :data="progressKeseluruhanData" :options="configKeseluruhanData" />
-    </div>
+  <div class="chart-container">
+    <Pie :data="progressKeseluruhanData" :options="configKeseluruhanData" />
+  </div>
 </template>
 
 <style scoped>
 .chart-container {
-    width: 300px;
-    margin: 0;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
