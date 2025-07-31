@@ -282,8 +282,8 @@ watch(search, () => {
 }
 
 .status.ditolak {
-  background-color: #fddede;
-  color: #c62828;
+  background-color: #ff8181;
+  color: #490707;
 }
 
 .status.selesai {
@@ -292,8 +292,8 @@ watch(search, () => {
 }
 
 .status.tutup {
-  background-color: #fddede;
-  color: #000000;
+  background-color: #9c9c9c;
+  color: #1e1e1e;
 }
 .detail-button {
   background: none;
