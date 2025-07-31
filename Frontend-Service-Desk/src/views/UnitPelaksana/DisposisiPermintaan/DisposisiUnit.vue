@@ -138,6 +138,7 @@ watch(search, () => {
             <th>Perihal</th>
             <th>Tanggal</th>
             <th>Pelaksana Teknis</th>
+            <th>Detail Progress</th>
             <th @click="toggleSort('status')" class="cursor-pointer">Status
                 <span v-if="sortKey === 'status' || sortOrder === null">
                 <span v-if="sortOrder === 'asc'">🔼</span>
@@ -145,7 +146,6 @@ watch(search, () => {
                 <span v-else>☰</span>
               </span>
             </th>
-            <th>Detail Progress</th>
           </tr>
         </thead>
         <tbody>
