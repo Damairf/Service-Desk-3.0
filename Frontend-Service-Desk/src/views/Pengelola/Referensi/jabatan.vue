@@ -70,9 +70,11 @@ watch(search, () => {
   currentPage.value = 1
 })
 
+// === Modal Delete ===
+const showModal = ref(false)
 const jabatanToDelete = ref("")
 function Delete(item) {
-  jabatanToDelete.value = item.id_organisasi
+  jabatanToDelete.value = item.nama
   showModal.value = true
 }
 
@@ -149,8 +151,8 @@ function startCountdown() {
               <td>
                 <div class="wrapper-aksiBtn">
                     <!-- functionnya belum ada -->
-                    <button class="aksiEdit-btn" title="Edit" @click="editJabatan(item)">Ubah</button>
-                    <button class="aksiDelete-btn" title="Delete" @click="Delete(item); startCountdown()">Hapus</button>
+                    <button class="aksiEdit-btn" title="Edit" @click="editJabatan(jabatan)">Ubah</button>
+                    <button class="aksiDelete-btn" title="Delete" @click="Delete(jabatan); startCountdown()">Hapus</button>
                 </div>
               </td>
             </tr>
@@ -169,6 +171,21 @@ function startCountdown() {
         </div>
       </div>
     </div>
+
+      <!-- Modal Delete -->
+  <div v-if="showModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Konfirmasi Hapus</h3>
+      <p>
+        Apakah Anda yakin ingin menghapus jabatan <strong>{{ jabatanToDelete }}</strong>?
+      </p>
+      <p v-if="isCounting">Mohon tunggu {{ countdown }} detik</p>
+      <div class="modal-actions">
+        <button v-if="!isCounting" class="btn danger" @click="confirmDelete()">Ya, hapus</button>
+        <button class="btn" @click="cancelDelete()">Batal</button>
+      </div>
+    </div>
+  </div>
   </template>
   
 

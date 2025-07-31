@@ -126,10 +126,12 @@ watch(search, () => {
 
 // === Modal Delete ===
 const showModal = ref(false)
+const namaOrganisasiToDelete = ref('')
 const idOrganisasiToDelete = ref(null)
 
 function Delete(item) {
   idOrganisasiToDelete.value = item.id_organisasi
+  namaOrganisasiToDelete.value = item.nama_PerangkatDaerah
   showModal.value = true
 }
 
@@ -251,7 +253,7 @@ function lihatOrganisasi(item) {
     <div class="modal-box">
       <h3>Konfirmasi Hapus</h3>
       <p>
-        Apakah Anda yakin ingin menghapus lembaga/organisasi <strong></strong>?
+        Apakah Anda yakin ingin menghapus lembaga/organisasi <strong>{{ namaOrganisasiToDelete }}</strong>?
       </p>
       <p v-if="isCounting">Mohon tunggu {{ countdown }} detik</p>
       <div class="modal-actions">
