@@ -70,6 +70,17 @@ const paginatedItems = computed(() => {
   return filteredItems.value.slice(start, end)
 })
 
+// Menampilkan hanya ±2 halaman dari current page
+const visiblePages = computed(() => {
+  const pages = []
+  const start = Math.max(1, currentPage.value - 2)
+  const end = Math.min(totalPages.value, currentPage.value + 2)
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  return pages
+})
+
 // Watcher
 watch(filteredItems, () => {
   currentPage.value = 1
@@ -134,11 +145,16 @@ function checkProgress(item) {
         </tbody>
       </table>
       <div class="pagination">
-        <button @click="currentPage--" :disabled="currentPage === 1"><</button>
-        <button v-for="page in totalPages" :key="page" @click="currentPage = page" :class="{ active: currentPage === page }">
+        <button @click="currentPage--" :disabled="currentPage === 1">&lt;</button>
+        <button
+          v-for="page in visiblePages"
+          :key="page"
+          @click="currentPage = page"
+          :class="{ active: currentPage === page }"
+        >
           {{ page }}
         </button>
-        <button @click="currentPage++" :disabled="currentPage === totalPages">></button>
+        <button @click="currentPage++" :disabled="currentPage === totalPages">&gt;</button>
       </div>
     </div>
   </div>

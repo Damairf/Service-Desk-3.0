@@ -3,9 +3,13 @@
   import axios from 'axios'
   import { useRouter } from 'vue-router'
   
+  //Chart
+  import ChartProgressKeseluruhan from '../../Pengelola/BerandaPengelola/Chart/ChartPie-ProgressKeseluruhan.vue'
+  import ChartProgressBulanIni from '../../Pengelola/BerandaPengelola/Chart/ChartPie-ProgressBulanIni.vue'
+
   // biar tombolnya bisa berfungsi
    function handleOK(){
-    selectMenu('Permintaan Baru')
+    selectMenu('ApprovalPermintaan')
   }
 
 const nama_depan = localStorage.getItem('nama_depan')
@@ -30,11 +34,9 @@ onBeforeMount(() => {
     }
   })
   .then(response => {
-    console.log(response.data)
     nip_user.value = response.data.NIP
     nama_jabatan.value = response.data.user_jabatan.Nama_Jabatan
     nama_organisasi.value = response.data.user_organisasi.Nama_OPD
-    // localStorage.setItem('id_role', response.data.ID_Role)
     localStorage.setItem('nip_user', response.data.NIP)
     localStorage.setItem('nama_jabatan', response.data.user_jabatan.Nama_Jabatan)
     localStorage.setItem('nama_organisasi', response.data.user_organisasi.Nama_OPD)
@@ -44,35 +46,36 @@ onBeforeMount(() => {
   });
 });
 
-// onBeforeMount(() => {
-// const role = localStorage.getItem('id_role');
-// if (role !== 1) {
-//   router.back();
-// }})
+
 </script>
   
   <template>
       <div class="container" >
         <div class="greet">
-        <h1>Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
-        <p>
-          Ada yang bisa kami bantu?
-        </p>
-      </div>
-      <div class="boxHolder">
-        <div class="box" @click="router.push('/permintaanBaru')">
-          <img src="../../../../public/Beranda_Baru.svg" alt="Permintaan Baru">
-          <h3>Permintaan Baru</h3>
-          <p>Mulai permintaan pelayanan pada Diskominfo Jabar</p>
-          <button class="tambah" @click="router.push('/permintaanBaru')">Baru</button>
+          <h1>Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
+          <p>
+            Apa yang ingin dilaksanakan hari ini?
+          </p>
         </div>
-        <div class="box" @click="router.push('/permintaanDiproses')">
-          <img src="../../../../public/Beranda_Lacak.svg" alt="Lacak Permintaan">
-          <h3>Lacak Permintaan</h3>
-          <p>Mulai melacak pelayanan yang sudah diajukan pada Diskominfo Jabar</p>
-          <button class="lacak" @click="router.push('/permintaanDiproses')">Lacak</button>
+        <div class="boxHolder">
+          <div class="box" @click="router.push('/approval')">
+            <img src="../../../../public/Approval.svg" alt="Persetujuan Permintaan">
+            <h3>Persetujuan Permintaan</h3>
+            <p>Setujui permintaan pelayanan yang diajui kepada Diskominfo Jabar</p>
+            <button class="tambah" @click="router.push('/approval')">Persetujuan</button>
+          </div>
+          <div class="box" @click="router.push('/disposisi')">
+            <img src="../../../../public/Disposisi.svg" alt="Disposisi Permintaan">
+            <h3>Disposisi Permintaan</h3>
+            <button class="lacak" @click="router.push('/disposisi')">Disposisi</button>
+          </div>
+          <div class="box">
+            <ChartProgressKeseluruhan />
+          </div>
+          <div class="box">
+            <ChartProgressBulanIni />
+          </div>
         </div>
-      </div>
       </div>
     </template>
     
@@ -118,7 +121,7 @@ onBeforeMount(() => {
     .box {
       background-color: white;
       width: 100%;
-      max-width: 30rem;
+      max-width: 35rem;
       min-width: 250px;
       height: 30rem;
       border-radius: 8px;
@@ -181,4 +184,43 @@ onBeforeMount(() => {
     transform: scale(1.02);
     background-color: #52AE6E;
   }
+
+  
+.chart-box {
+  flex: 1;
+  min-width: 250px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.chart-container {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bar-chart-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.chart-full {
+  width: 100%;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.chart-title {
+  color: black;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
     </style>

@@ -86,7 +86,7 @@ onMounted(() => {
   // Event listener untuk tombol back browser
   const handlePopState = () => {
     // Langsung dilempar ke permintaanDiproses
-    router.push({ name: 'disposisi' })
+    router.push({ name: 'Disposisi' })
   }
   
   window.addEventListener('popstate', handlePopState)

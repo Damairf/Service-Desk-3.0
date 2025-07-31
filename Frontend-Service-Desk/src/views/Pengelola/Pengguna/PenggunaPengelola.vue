@@ -39,7 +39,7 @@ const search = ref('')
 const sortKey = ref('')
 const sortOrder = ref('asc')
 const currentPage = ref(1)
-const itemsPerPage = 10
+const itemsPerPage = 1
 
 const filteredItems = computed(() => {
   let items = daftarPengguna.value.filter(item =>
@@ -66,6 +66,16 @@ const totalPages = computed(() => {
   return Math.ceil(filteredItems.value.length / itemsPerPage)
 })
 
+const visiblePages = computed(() => {
+  const pages = []
+  const start = Math.max(1, currentPage.value - 2)
+  const end = Math.min(totalPages.value, currentPage.value + 2)
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  return pages
+})
+
 const paginatedItems = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
   return filteredItems.value.slice(start, start + itemsPerPage)
@@ -82,6 +92,8 @@ function nextPage() {
 function goToPage(page) {
   currentPage.value = page
 }
+
+
 
 watch(search, () => {
   currentPage.value = 1
@@ -165,7 +177,7 @@ function ubahpengguna(user) {
       <div class="pagination">
         <button :disabled="currentPage === 1" @click="prevPage">&#60;</button>
         <button
-          v-for="page in totalPages"
+          v-for="page in visiblePages"
           :key="page"
           :class="{ active: currentPage === page }"
           @click="goToPage(page)"
@@ -342,6 +354,7 @@ function ubahpengguna(user) {
   padding: 0.4rem 1rem;
   font-size: 1rem;
   cursor: pointer;
+  color: black;
   transition: background 0.2s, color 0.2s;
 }
 .pagination button.active, .pagination button:focus {
@@ -350,7 +363,8 @@ function ubahpengguna(user) {
   border: none;
 }
 .pagination button:disabled {
-  opacity: 0.5;
+  opacity: 30%;
+  color: black;
   cursor: not-allowed;
 }
 

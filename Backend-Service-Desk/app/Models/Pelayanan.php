@@ -13,6 +13,9 @@ class Pelayanan extends Model
     protected $primaryKey = 'ID_Pelayanan';
      public $incrementing = false;
     protected $keyType = 'string';
+    protected $casts = [
+        'Is_Done' => 'boolean'
+    ];
     protected $fillable = [
         'Perihal',
         'Deskripsi',
