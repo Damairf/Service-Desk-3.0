@@ -39,7 +39,7 @@ const search = ref('')
 const sortKey = ref('')
 const sortOrder = ref('asc')
 const currentPage = ref(1)
-const itemsPerPage = 1
+const itemsPerPage = 10
 
 const filteredItems = computed(() => {
   let items = daftarPengguna.value.filter(item =>
@@ -117,7 +117,7 @@ function confirmDelete() {
   idUserToDelete = null
 }
 
-function ubahpengguna(user) {
+function ubahPengguna(user) {
   router.push({
     path: '/ubahPengguna',
     query: {
@@ -167,7 +167,7 @@ function ubahpengguna(user) {
             </td>
             <td>
               <div class="wrapper-aksiBtn">
-                <button class="aksiEdit-btn" title="Edit">Ubah</button>
+                <button class="aksiEdit-btn" title="Edit" @click="ubahPengguna(user)">Ubah</button>
                 <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
               </div>
             </td>
