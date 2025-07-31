@@ -73,6 +73,17 @@ const filteredItems = computed(() => {
 
 const totalPages = computed(() => Math.ceil(filteredItems.value.length / itemsPerPage))
 
+const visiblePages = computed(() => {
+  const pages = []
+  const start = Math.max(1, currentPage.value - 2)
+  const end = Math.min(totalPages.value, currentPage.value + 2)
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  return pages
+})
+
+
 const paginatedItems = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
   return filteredItems.value.slice(start, start + itemsPerPage)
@@ -208,7 +219,7 @@ function lihatOrganisasi(item) {
       <div class="pagination">
         <button :disabled="currentPage === 1" @click="prevPage">&#60;</button>
         <button
-          v-for="page in totalPages"
+          v-for="page in visiblePages"
           :key="page"
           :class="{ active: currentPage === page }"
           @click="goToPage(page)"
@@ -362,9 +373,10 @@ function lihatOrganisasi(item) {
   padding: 0.4rem 1rem;
   cursor: pointer;
   transition: background 0.2s;
+  color: black;
 }
 .pagination button.active { background: #2196f3; color: #fff; border: none; }
-.pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
+.pagination button:disabled { opacity: 30%; cursor: not-allowed; }
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;

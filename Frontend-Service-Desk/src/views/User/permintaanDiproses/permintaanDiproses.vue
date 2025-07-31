@@ -1,13 +1,13 @@
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 const isLoading = ref(true)
 
 function formatDate(dateString) {
-if (!dateString) return '-';
-return new Date(dateString).toLocaleDateString('id-ID');
+  if (!dateString) return '-';
+  return new Date(dateString).toLocaleDateString('id-ID');
 }
 
 const router = useRouter()
@@ -30,15 +30,15 @@ onMounted(() => {
   })
   .then(response => {
     items.value = response.data.filter(item =>
-        ['Baru',  'Disetujui', 'Proses'].includes(item.status_pelayanan?.Nama_Status)
-      ).map(item => ({
-        id: item.ID_Pelayanan,
-        ticket: item.ID_Pelayanan,
-        jenis: item.ID_Jenis_Pelayanan,
-        perihal: item.Perihal,
-        teknis: item.teknis_pelayanan?.Nama_Depan || '-',
-        date: item.created_at,
-        status: item.status_pelayanan?.Nama_Status || '-'
+      ['Baru',  'Disetujui', 'Proses'].includes(item.status_pelayanan?.Nama_Status)
+    ).map(item => ({
+      id: item.ID_Pelayanan,
+      ticket: item.ID_Pelayanan,
+      jenis: item.ID_Jenis_Pelayanan,
+      perihal: item.Perihal,
+      teknis: item.teknis_pelayanan?.Nama_Depan || '-',
+      date: item.created_at,
+      status: item.status_pelayanan?.Nama_Status || '-'
     }))
   })
   .catch(error => {
@@ -49,10 +49,8 @@ onMounted(() => {
   });
 });
 
-//ke halaman detail 
-function checkProgress(item){
-  const pelayananId = ref(item.ticket)
-    router.push({
+function checkProgress(item) {
+  router.push({
     name: 'DetailPermintaan', 
     query: {
       layanan: item.ticket,
@@ -80,11 +78,20 @@ const paginatedItems = computed(() => {
   return filteredItems.value.slice(start, end)
 })
 
-// Watcher
+// Menampilkan hanya ±2 halaman dari current page
+const visiblePages = computed(() => {
+  const pages = []
+  const start = Math.max(1, currentPage.value - 2)
+  const end = Math.min(totalPages.value, currentPage.value + 2)
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  return pages
+})
+
 watch(filteredItems, () => {
   currentPage.value = 1
 })
-
 </script>
 
 <template>
@@ -120,19 +127,25 @@ watch(filteredItems, () => {
           </tr>
         </tbody>
       </table>
+
+      <!-- Pagination -->
       <div class="pagination">
-        <button @click="currentPage--" :disabled="currentPage === 1"><</button>
-        <button v-for="page in totalPages" :key="page" @click="currentPage = page" :class="{ active: currentPage === page }">
+        <button @click="currentPage--" :disabled="currentPage === 1">&lt;</button>
+        <button
+          v-for="page in visiblePages"
+          :key="page"
+          @click="currentPage = page"
+          :class="{ active: currentPage === page }"
+        >
           {{ page }}
         </button>
-        <button @click="currentPage++" :disabled="currentPage === totalPages">></button>
+        <button @click="currentPage++" :disabled="currentPage === totalPages">&gt;</button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-
 .container {
   background-color: #faf4ff;
   min-height: 100vh;
@@ -153,6 +166,7 @@ watch(filteredItems, () => {
 h1 {
   color: #333;
 }
+
 .search-bar {
   width: 97%;
   padding: 10px;
@@ -162,6 +176,7 @@ h1 {
   border-radius: 13px;
   background-color: #e0e0e0;
 }
+
 .rounded-table {
   width: 100%;
   border-collapse: separate;
@@ -169,21 +184,26 @@ h1 {
   border-radius: 10px;
   overflow: hidden;
 }
+
 .rounded-table th, .rounded-table td {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
+
 .rounded-table th {
   background-color: #e0e0e0;
 }
+
 .rounded-table tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+
 .pagination {
   margin-top: 20px;
   text-align: center;
 }
+
 .pagination button {
   background-color: white;
   color: black;
@@ -195,11 +215,13 @@ h1 {
   text-align: center;
   font-weight: 500;
 }
+
 .pagination button:disabled {
   cursor: not-allowed;
   color: black;
   opacity: 30%;
 }
+
 .pagination button.active {
   background-color: #007bff;
   color: white;
