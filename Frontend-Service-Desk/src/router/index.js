@@ -40,6 +40,7 @@ import UbahPengguna from '../views/Pengelola/Pengguna/UbahPengguna.vue'
 import lembagaOrganisasi from '../views/Pengelola/LembagaOrganisasi/Organisasi.vue'
 import tambahOrganisasi from '../views/Pengelola/LembagaOrganisasi/TambahOrganisasi.vue'
 import ubahOrganisasi from '../views/Pengelola/LembagaOrganisasi/EditOrganisasi.vue'
+import referensiJabatan from '../views/Pengelola/Referensi/jabatan.vue'
 
 //===============UNIT PELAKSANA===============
 import berandaUnit from '../views/UnitPelaksana/Beranda/BerandaUnit.vue'
@@ -132,6 +133,7 @@ const routes = [
   { path: '/lembaga', name: 'lembaga/Organisasi', component: lembagaOrganisasi, meta: {allowedRoles: [2]}},
   { path: '/tambahLembaga', name: 'TambahLembaga', component:  tambahOrganisasi, meta: {allowedRoles: [2]}},
   { path: '/ubahLembaga', name: 'UbahLembaga', component: ubahOrganisasi, meta: {allowedRoles: [2]}},
+  { path: '/referensi/jabatan', name: 'referensiJabatan', component: referensiJabatan}, 
 
     
   //===============UNIT PELAKSANA===============
