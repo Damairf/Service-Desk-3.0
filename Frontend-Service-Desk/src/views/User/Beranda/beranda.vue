@@ -30,9 +30,11 @@ onBeforeMount(() => {
     }
   })
   .then(response => {
+    console.log(response.data)
     nip_user.value = response.data.NIP
     nama_jabatan.value = response.data.user_jabatan.Nama_Jabatan
     nama_organisasi.value = response.data.user_organisasi.Nama_OPD
+    // localStorage.setItem('id_role', response.data.ID_Role)
     localStorage.setItem('nip_user', response.data.NIP)
     localStorage.setItem('nama_jabatan', response.data.user_jabatan.Nama_Jabatan)
     localStorage.setItem('nama_organisasi', response.data.user_organisasi.Nama_OPD)
@@ -42,7 +44,11 @@ onBeforeMount(() => {
   });
 });
 
-
+// onBeforeMount(() => {
+// const role = localStorage.getItem('id_role');
+// if (role !== 1) {
+//   router.back();
+// }})
 </script>
   
   <template>

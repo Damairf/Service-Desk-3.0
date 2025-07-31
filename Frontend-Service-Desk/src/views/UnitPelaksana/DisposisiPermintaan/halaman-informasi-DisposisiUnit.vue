@@ -71,7 +71,7 @@ function handleSelesai() {
         Authorization: 'Bearer ' + token,
       }
     })
-    .then(() => router.push('/pelayanan'))
+    .then(() => router.push('/Disposisi'))
     .catch(error => console.error('Error updating status to Selesai:', error));
   } else if (pilihan.value === 'Revisi') {
     axios.put(`http://127.0.0.1:8000/api/pelayanan/revisi/${pelayananId.value}`, 
@@ -84,7 +84,7 @@ function handleSelesai() {
         Authorization: 'Bearer ' + token,
       }
     })
-    .then(() => router.push('/pelayanan'))
+    .then(() => router.push('/Disposisi'))
     .catch(error => console.error('Error updating status to Revisi:', error));
   }
 }
