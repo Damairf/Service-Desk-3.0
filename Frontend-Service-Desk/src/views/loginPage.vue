@@ -34,7 +34,9 @@ function login(){
       router.push('/berandaUnit');
     } else if (role === 4){
       router.push('/berandaTeknis')
-    }
+    } else if (role === 5){
+      router.push('/berandaKD')
+    } 
     })
 
   .catch(function(error) {
