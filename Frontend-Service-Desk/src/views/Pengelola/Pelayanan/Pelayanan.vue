@@ -250,8 +250,8 @@ watch(search, () => {
 }
 
 .status.baru {
-  background-color: #e6dcf5;
-  color: #6a1b9a;
+  background-color: #caeaff;
+  color: #0185DA;
 }
 
 .status.proses {
@@ -270,8 +270,8 @@ watch(search, () => {
 }
 
 .status.selesai {
-  background-color: #fddede;
-  color: #22ff00;
+  background-color: #e6dcf5;
+  color: #6a1b9a;
 }
 
 .status.tutup {

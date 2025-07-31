@@ -169,10 +169,23 @@ const routes = [
 
   //===============KEPALA DINAS===============
   { path: '/berandaKD', name: 'BerandaKepalaDinas', component: berandaKD},
-  { path: '/KepuasanUserKeseluruhan', name: 'KepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan},
-  { path: '/KepuasanUserBulanIni', name: 'KepuasanUserBulanIni', component: KepuasanUserBulanIni}
-]
 
+  // Kepuasan User Keseluruhan
+  { path: '/KepuasanUserKeseluruhan', name: 'KepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan},
+  { path: '/detailKepuasanUserKeseluruhan', name: 'DetailKepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan,
+    children: [
+      { path: 'lacakKepuasanUserKeseluruhan', name: 'LacakKepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan, meta: {allowedRoles: [5]}},
+      { path: 'informasiKepuasanUserKeseluruhan', name: 'InformasiKepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan, meta: {allowedRoles: [5]}}
+    ]
+  },
+  { path: '/KepuasanUserBulanIni', name: 'KepuasanUserBulanIni', component: KepuasanUserBulanIni},
+  { path: '/detailKepuasanUserBulanIni', name: 'DetailKepuasanUserBulanIni', component: KepuasanUserBulanIni,
+    children: [
+      { path: 'lacakKepuasanUserBulanIni', name: 'LacakKepuasanUserBulanIni', component: KepuasanUserBulanIni, meta: {allowedRoles: [5]}},
+      { path: 'informasiKepuasanUserBulanIni', name: 'InformasiKepuasanUserBulanIni', component: KepuasanUserBulanIni, meta: {allowedRoles: [5]}}
+    ]
+  }
+]
 
 const router = createRouter({
   history: createWebHistory(),
