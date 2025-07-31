@@ -7,6 +7,7 @@ use App\Http\Controllers\OrganisasiController;
 use App\Http\Controllers\PelayananController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AlurController;
+use App\Http\Controllers\ProgressAlurController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CekToken;
@@ -38,7 +39,7 @@ Route::get('/pelayananUser',[PelayananController::class, 'Pelayanan_byUser']);
 Route::get('/pelayananUser/{pelayananId}',[PelayananController::class, 'getByID_Pelayanan_Jenis_User']);
 
 Route::get('/alur/jenis_pelayanan/{id}',[AlurController::class, 'getAlurByJenisPelayanan']);
-
+Route::get('/pelayanan/alur/progress/{id}',[ProgressAlurController::class, 'getAlurByPelayanan']);
 
 
 // endpoint pengelola
@@ -72,6 +73,7 @@ Route::get('/status/organisasi',[StatusController::class, 'findAll_Organisasi_St
 Route::get('/status/pelayanan',[StatusController::class, 'findAll_Pelayanan_Status']);
 Route::get('/status/pelayanan/{statusId}',[StatusController::class, 'findOne_Status_Pelayanan']);
 Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
+Route::put('/progress-alur/update-status/{id}', [ProgressAlurController::class, 'updateStatus']);
 
 Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 Route::get('/stsPelayananChart',[PelayananController::class, 'Chart_PelayananSts']);

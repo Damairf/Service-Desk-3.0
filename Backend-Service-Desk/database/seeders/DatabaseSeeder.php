@@ -40,5 +40,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AlurSeeder::class,
         ]);
+        $this->call([
+            ProgressAlurSeeder::class,
+        ]);
     }
 }

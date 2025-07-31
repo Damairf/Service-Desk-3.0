@@ -7,6 +7,8 @@ use App\Models\JenisPelayanan;
 use Illuminate\Http\Request;
 use App\Models\Pelayanan;
 use App\Models\User;
+use App\Models\Alur;
+use App\Models\ProgressAlur;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
@@ -87,6 +89,16 @@ class PelayananController extends Controller
             'Lampiran_Path' => $Lampiran_Path,
             'ID_Status' => $ID_Status,
         ]);
+
+        $alurList = Alur::where('ID_Jenis_Pelayanan', $ID_Jenis_Pelayanan)->get();
+
+        foreach ($alurList as $index => $alur) {
+            ProgressAlur::create([
+                'ID_Pelayanan' => $newPelayanan->ID_Pelayanan,
+                'ID_Alur' => $alur->ID_Alur,
+                'Is_Done' => $index < 2 ? 1 : 0 // opsional: dua pertama sudah done
+            ]);
+        }
 
         return response(["message" => "Layanan ditambahkan", "data" => $newPelayanan]);
     }
