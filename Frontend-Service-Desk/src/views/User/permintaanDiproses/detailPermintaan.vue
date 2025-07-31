@@ -7,6 +7,7 @@ const route = useRoute()
 
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
+const stepsStatus = ref([])
 const perihal = ref('') 
 const tanggal = ref('') 
 const nama_depanPengaju = ref('') 
@@ -42,23 +43,28 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
   surat_dinas.value = response.data.Surat_Dinas_Path
   lampiran.value = response.data.Lampiran_Path
   jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
-  id_jenis_pelayanan.value = response.data.ID_Jenis_Pelayanan
   nama_depanPengaju.value = response.data.user.Nama_Depan
   nama_belakangPengaju.value = response.data.user.Nama_Belakang
   perihal.value = response.data.Perihal
   tanggal.value = response.data.created_at
 
-  axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${id_jenis_pelayanan.value}`, {
-        headers: { Authorization: 'Bearer ' + token }
-      })
-      .then(response => {
-        steps.value = response.data.map(a => a.isi_alur?.Nama_Alur) || [];
-        console.log(steps.value)
-        handleTabChange(activeTab.value)
-      })
-      .catch(error => {
-        console.error('Gagal mengambil steps:', error);
-      })
+  axios.get(`http://127.0.0.1:8000/api/pelayanan/alur/progress/${pelayananId.value}`, {
+  headers: {
+    Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+  steps.value = response.data.map(item =>
+    item.progress_to_alur?.isi_alur?.Nama_Alur || 'Tidak Diketahui'
+  )
+
+  stepsStatus.value = response.data.map(item => item.Is_Done)
+
+  handleTabChange(activeTab.value)
+  })
+  .catch(error => {
+    console.error(error)
+  })
 })
 .catch(function(error) {
   console.log(error)
@@ -75,7 +81,8 @@ const handleTabChange = async (tab) => {
         query: {
           layanan: pelayananId.value,
           tab: 'tracking',
-          steps: JSON.stringify(steps.value), 
+          steps: JSON.stringify(steps.value),
+          stepsStatus: JSON.stringify(stepsStatus.value)
         }
       });
       return;
