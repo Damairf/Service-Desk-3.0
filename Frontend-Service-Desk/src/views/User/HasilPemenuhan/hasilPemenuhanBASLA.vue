@@ -195,17 +195,6 @@ h1 {
 .rounded-table tr:nth-child(even) {
   background-color: #f2f2f2;
 }
-.status {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-  display: inline-block;
-}
-.status.selesai {
-  background-color: #e6dcf5;
-  color:#6a1b9a;
-}
 .pagination {
   margin-top: 20px;
   text-align: center;

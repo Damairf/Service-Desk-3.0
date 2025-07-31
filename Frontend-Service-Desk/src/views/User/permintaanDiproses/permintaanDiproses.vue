@@ -201,29 +201,6 @@ h1 {
   background-color: #f2f2f2;
 }
 
-.status {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-  display: inline-block;
-}
-
-.status.baru {
-  background-color: #caeaff;
-  color: #0185DA;
-}
-
-.status.proses {
-  background-color: #f5f5c3;
-  color: #aaaa3a;
-}
-
-.status.disetujui {
-  background-color: #c7f5d9;
-  color: #2e7d32;
-}
-
 .pagination {
   margin-top: 20px;
   text-align: center;

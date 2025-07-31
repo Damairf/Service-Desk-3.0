@@ -33,7 +33,7 @@
         />
         <div class="button-wrapper">
           <button class="btn-edit" @click="toEdit()">
-            ✏️ Edit
+            Edit
           </button>
         </div>
       </div>
@@ -123,8 +123,8 @@ html, body {
   background: #4CAF50;
   color: white;
   border: none;
-  padding: 1rem 3rem;
-  border-radius: 50px;
+  padding: 0.8rem 4rem;
+  border-radius: 20px;
   font-weight: 600;
   font-size: large;
   cursor: pointer;
