@@ -9,7 +9,7 @@ const NIP = ref()
 const Password = ref('')
 
 function login(){
-  axios.post('http://127.0.0.1:8000/api/user/login', {
+  axios.post('/api/user/login', {
     NIP: NIP.value,
     Password: Password.value
     })

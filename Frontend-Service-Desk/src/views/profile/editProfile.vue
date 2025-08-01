@@ -60,7 +60,7 @@ function uploadSelectedImage() {
     selectedImage.value = null;
     newImageFile.value = null;
     showOverlay.value = false;
-    alert('Foto profil berhasil diubah!');
+    router.push('/profileSaya')
   })
   .catch(function(error) {
     console.log(error);

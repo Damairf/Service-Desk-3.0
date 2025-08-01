@@ -12,6 +12,7 @@ onUnmounted(() => {
 const route = useRoute()
 const layanan = ref(route.query.layanan || '')
 const persyaratan = ref(route.query.persyaratan || '')
+const namaPelapor = [localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' ');
 const id_user = localStorage.getItem('ID_User')
 const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
 const id_status = 1
@@ -22,6 +23,7 @@ const suratDinas = ref('')
 const lampiran = ref('')
 const suratDinasPath = ref(null)
 const lampiranPath = ref(null)
+const isSubmitted = ref(false)
 
 // Fungsi untuk menangani perubahan file
 function handleFileChange(e, field) {
@@ -85,6 +87,10 @@ try {
 }
 
 async function handleSubmit(){
+  if (isSubmitted.value) {
+    alert('Permintaan sudah dikirim sebelumnya.');
+    return;
+  }
 
 const confirmSubmit = window.confirm("Apakah Anda yakin ingin mengirim permintaan ini?");
   if (!confirmSubmit) return;
@@ -93,6 +99,7 @@ const uploaded = await uploadFiles()
 if (!uploaded) return
 const token = localStorage.getItem('Token');
 axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
+  "Nama_Pelapor": namaPelapor.value,
   "ID_User": id_user,
   "ID_Jenis_Pelayanan": id_jenis_pelayanan,
   "ID_Status": id_status,
@@ -106,6 +113,7 @@ axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
   }
 })
 .then(response => {
+  isSubmitted.value = true;
   router.push('/permintaanDiproses');
 })
 .catch(error => {
@@ -125,8 +133,11 @@ axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
     </div>
 
       <form @submit.prevent="handleSubmit">
+        <label>Pelapor</label>
+        <input type="text" v-model="namaPelapor" maxlength="50"/>
+
         <label>Layanan</label>
-        <p class="layanan-display">{{ layanan }}</p>
+        <p class="display">{{ layanan }}</p>
 
         <label>Perihal</label>
         <input type="text" v-model="perihal" maxlength="50"/>
@@ -173,19 +184,21 @@ axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
   text-align: center;
   font-weight: bold;
   font-size: 1.2rem;
+  font-family: poppins, sans-serif;
 }
 
 form {
   padding: 2rem;
 }
 
-.layanan-display{
+.display{
   padding: 0.7rem;
   margin-bottom: 1rem;
   background-color: #f0f0f0;
   border-radius: 5px;
   border: 1px solid #ccc;
   width: 95%;
+  font-family: poppins, sans-serif;
 }
 
 label {
@@ -206,11 +219,13 @@ input[type="file"] {
   border: 1px solid #ccc;
   background-color: white;
   color: black;
+  font-family: poppins, sans-serif;
 }
 
 textarea {
   resize: vertical;
   border: 2px solid #4285f4;
+  font-family: poppins, sans-serif;
 }
 
 .note {
@@ -250,12 +265,14 @@ button:active {
   border-radius: 0px 0px 8px 8px;
   margin-bottom: -0.8rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: poppins, sans-serif;
 }
 
 .info-box p {
   font-size: small;
   font-weight: 500;
   margin: 2px;
+  font-family: poppins, sans-serif;
 }
 
 </style>

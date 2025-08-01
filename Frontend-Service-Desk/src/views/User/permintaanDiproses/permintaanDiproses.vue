@@ -122,9 +122,11 @@ watch(filteredItems, () => {
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.teknis }}</td>
-            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progres</a></td>
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+            </td>
+            <td>
+              <a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progres</a>
             </td>
           </tr>
         </tbody>
@@ -167,6 +169,7 @@ watch(filteredItems, () => {
 
 h1 {
   color: #333;
+  font-family: poppins, sans-serif;
 }
 
 .search-bar {
@@ -177,6 +180,7 @@ h1 {
   color: black;
   border-radius: 13px;
   background-color: #e0e0e0;
+  font-family: poppins, sans-serif;
 }
 
 .rounded-table {
@@ -191,6 +195,7 @@ h1 {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  font-family: poppins, sans-serif;
 }
 
 .rounded-table th {

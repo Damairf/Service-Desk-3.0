@@ -32,8 +32,7 @@ const src_HasilSLA = ref(route.query.hasil_SLA || '-')
 
 const stepsStatus = ref([])
 const pelaksana = ref([])
-const idUnitTerpilih = ref('')
-const insiden = ref('')
+const pesanUnit = ref('')
 
 // === Untuk Tombol Selesai dan Revisi ===
 const pilihan = ref('')
@@ -65,7 +64,6 @@ axios.get('http://127.0.0.1:8000/api/pelayanan/unit', {
     nama_depan: item.Nama_Depan,
     nama_belakang: item.Nama_Belakang
   }));  
-  idUnitTerpilih.value = '';
 })
 .catch(error => {
   console.error(error); 
@@ -74,10 +72,10 @@ axios.get('http://127.0.0.1:8000/api/pelayanan/unit', {
 function handleSelesai() {
   const token = localStorage.getItem('Token');
   if (pilihan.value === 'Selesai') {
-    axios.put(`http://127.0.0.1:8000/api/pelayanan/selesai/${pelayananId.value}`, 
+    axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
     {
-      ID_Status: 4,
-      Insiden: insiden.value
+      ID_Status: 5,
+      Pesan_Unit: pesanUnit.value
     },
     {
       headers: {
@@ -87,10 +85,10 @@ function handleSelesai() {
     .then(() => router.push('/Disposisi'))
     .catch(error => console.error('Error updating status to Selesai:', error));
   } else if (pilihan.value === 'Revisi') {
-    axios.put(`http://127.0.0.1:8000/api/pelayanan/revisi/${pelayananId.value}`, 
+    axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
     {
-      ID_Status: 5,
-      Insiden: insiden.value
+      ID_Status: 4,
+      Pesan_Unit: pesanUnit.value
     },
     {
       headers: {
@@ -244,12 +242,12 @@ const addMessage = () => {
         </div>
         <div class="wrapper-selesai" v-if="pilihan == 'Selesai'">
           <h4>Keterangan Selesai</h4>
-          <textarea class="input" v-model="insiden"></textarea>
+          <textarea class="input" v-model="pesanUnit"></textarea>
           <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
         </div>
         <div class="wrapper-revisi" v-if="pilihan == 'Revisi'">
           <h4>Alasan Butuh Direvisi</h4>
-          <textarea class="input" v-model="insiden"></textarea>
+          <textarea class="input" v-model="pesanUnit"></textarea>
           <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
         </div>
       </div>

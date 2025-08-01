@@ -17,8 +17,8 @@ const isLoading = ref(true)
 const nip_user = ref('')
 const nama_jabatan = ref('')
 const nama_organisasi = ref('')
-const nama_depan = localStorage.getItem('nama_depan')
-const nama_belakang = localStorage.getItem('nama_belakang')
+const nama_user = [localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' ');
+
 
 onMounted(()=> {
   const token = localStorage.getItem('Token');
@@ -45,7 +45,6 @@ onMounted(()=> {
   .catch(error => {
     console.error(error); 
   });
-
 
   axios.get('http://127.0.0.1:8000/api/userCount', {
     headers: {
@@ -89,7 +88,7 @@ onMounted(()=> {
 </script>
 
 <template>
-    <h1 class="dashboard-title">Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
+    <h1 class="dashboard-title">Selamat datang, {{ nama_user }}</h1>
 
 <!-- Ringkasan: 3 kotak atas -->
 <div class="box-row">
