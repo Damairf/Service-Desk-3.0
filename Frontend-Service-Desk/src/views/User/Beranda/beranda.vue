@@ -30,7 +30,6 @@ onBeforeMount(() => {
     }
   })
   .then(response => {
-    console.log(response.data)
     nip_user.value = response.data.NIP
     nama_jabatan.value = response.data.user_jabatan.Nama_Jabatan
     nama_organisasi.value = response.data.user_organisasi.Nama_OPD

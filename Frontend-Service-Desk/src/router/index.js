@@ -13,8 +13,6 @@ import HalamanFormulirTiketBaru from '../views/User/pengajuanPermintaan/halaman-
 // Permintaan Diproses
 import permintaanDiproses from '../views/User/permintaanDiproses/permintaanDiproses.vue'
 import detailPermintaan from '../views/User/permintaanDiproses/detailPermintaan.vue'
-import halamanLacak from '../views/User/permintaanDiproses/halaman-lacak.vue'
-import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
 
 // Hasil Pemenuhan BASLA
 import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
@@ -99,12 +97,7 @@ const routes = [
   
   // Halaman permintaan diproses
   { path: '/permintaanDiproses', name: 'PermintaanDiproses', component: permintaanDiproses, meta: {allowedRoles: [1]}},
-  { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, meta: {allowedRoles: [1]}, 
-    children: [
-      { path: 'lacak', name: 'HalamanLacak', component: halamanLacak, meta: {allowedRoles: [1]}},
-      { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi, meta: {allowedRoles: [1]}}
-    ]
-  },
+  { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, meta: {allowedRoles: [1]}},
 
   // Hasil Pemenuhan BASLA
   { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA, meta: {allowedRoles: [1]}},

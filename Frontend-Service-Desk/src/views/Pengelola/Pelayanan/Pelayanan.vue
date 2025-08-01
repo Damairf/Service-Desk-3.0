@@ -12,7 +12,7 @@ function formatDate(dateString) {
 const isLoading = ref(true)
 const layananData = ref([]);
 const sortKey = ref('') 
-const sortOrder = ref(null) 
+const sortOrder = ref(null)
 
 onMounted(() => {
   const token = localStorage.getItem('Token');
@@ -97,8 +97,6 @@ const filteredItems = computed(() => {
   return items
 })
 
-
-
 const totalPages = computed(() => {
   return Math.ceil(filteredItems.value.length / itemsPerPage)
 })
@@ -122,8 +120,6 @@ const visiblePages = computed(() => {
 watch(search, () => {
   currentPage.value = 1
 })
-
-
 </script>
 
 <template>

@@ -25,8 +25,8 @@ const deskripsiUser = ref(route.query.deskripsi || '-')
 const status = ref(Number(route.query.status) || '-')
 
 const SuratDinas_Path = ref(null)
-const src_SuratDinas = ref(route.query.surat_dinas || '-')
 const Lampiran_Path = ref(null)
+const src_SuratDinas = ref(route.query.surat_dinas || '-')
 const src_Lampiran = ref(route.query.lampiran || '-')
 const progress = ref(null)
 
@@ -147,11 +147,10 @@ const addMessage = () => {
 }
 
 onMounted(() => {
-  if (status.value === 2) {
+  if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
     progress.value = true
   }
 })
-
 </script>
 
 <template>
