@@ -156,7 +156,7 @@ if (role.value == 1) {
     <!-- Profile -->
     <div class="profile" ref="profileRef" @click="toggleOverlay">
       <img
-        :src="`http://localhost:8000/images/${gambar}`"
+        :src="`/images/${gambar}`"
         alt="Foto Profil"
         class="gambar-profile"
       />

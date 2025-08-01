@@ -23,7 +23,7 @@ const dataPermintaanBerdasarkanPengelolaTeknis = ref([]);
 onBeforeMount(async () => {
   try {
     const token = localStorage.getItem('Token');
-    const response = await axios.get('http://127.0.0.1:8000/api/TknsPelayananChart', {
+    const response = await axios.get('/api/TknsPelayananChart', {
       headers: {
         Authorization: 'Bearer ' + token
       }

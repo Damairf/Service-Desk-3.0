@@ -23,7 +23,7 @@ const dataProgressBulanIni = ref([])
 onBeforeMount(async () => {
   try {
     const token = localStorage.getItem('Token')
-    const response = await axios.get('http://127.0.0.1:8000/api/stsPelayananChartBulanIni', {
+    const response = await axios.get('/api/stsPelayananChartBulanIni', {
       headers: {
         Authorization: 'Bearer ' + token
       }

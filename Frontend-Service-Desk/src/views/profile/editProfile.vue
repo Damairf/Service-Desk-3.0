@@ -20,7 +20,7 @@ const fileInput = ref(null)
 const newImageFile = ref(null) // for upload
 
 const gambar = ref(localStorage.getItem('src_gambar'));
-const imageSrc = computed(() => `http://localhost:8000/images/${gambar.value}?t=${Date.now()}`);
+const imageSrc = computed(() => `/images/${gambar.value}?t=${Date.now()}`);
 const previewSrc = computed(() => selectedImage.value || imageSrc.value);
 
 const userID = localStorage.getItem("ID_User");
@@ -76,7 +76,7 @@ function cancelImageChange() {
 
 function removeImage() {
   const token = localStorage.getItem('Token');
-  axios.delete('http://127.0.0.1:8000/api/user/profilepict', {
+  axios.delete('/api/user/profilepict', {
     data: {
       ID_User: userID
     },
@@ -105,7 +105,7 @@ function saveChanges() {
     return;
   }
   const token = localStorage.getItem('Token');
-  axios.put('http://127.0.0.1:8000/api/user/profile', {
+  axios.put('/api/user/profile', {
     ID_User: userID,
     PasswordLama: PasswordLama.passwordLama,
     PasswordBaru: UbahPassword.PasswordBaru
