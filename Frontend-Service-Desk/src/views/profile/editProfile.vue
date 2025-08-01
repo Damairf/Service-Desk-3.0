@@ -60,6 +60,7 @@ function uploadSelectedImage() {
     selectedImage.value = null;
     newImageFile.value = null;
     showOverlay.value = false;
+    router.push('/profileSaya')
   })
   .catch(function(error) {
     console.log(error);

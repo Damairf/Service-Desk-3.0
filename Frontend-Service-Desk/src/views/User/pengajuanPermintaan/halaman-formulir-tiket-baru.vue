@@ -12,6 +12,7 @@ onUnmounted(() => {
 const route = useRoute()
 const layanan = ref(route.query.layanan || '')
 const persyaratan = ref(route.query.persyaratan || '')
+const namaPelapor = [localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' ');
 const id_user = localStorage.getItem('ID_User')
 const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
 const id_status = 1
@@ -98,6 +99,7 @@ const uploaded = await uploadFiles()
 if (!uploaded) return
 const token = localStorage.getItem('Token');
 axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
+  "Nama_Pelapor": namaPelapor.value,
   "ID_User": id_user,
   "ID_Jenis_Pelayanan": id_jenis_pelayanan,
   "ID_Status": id_status,
@@ -132,7 +134,7 @@ axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
 
       <form @submit.prevent="handleSubmit">
         <label>Pelapor</label>
-        <p class="display">-</p>
+        <input type="text" v-model="namaPelapor" maxlength="50"/>
 
         <label>Layanan</label>
         <p class="display">{{ layanan }}</p>

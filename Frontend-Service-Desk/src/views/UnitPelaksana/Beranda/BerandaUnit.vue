@@ -12,8 +12,7 @@
     selectMenu('ApprovalPermintaan')
   }
 
-const nama_depan = localStorage.getItem('nama_depan')
-const nama_belakang = localStorage.getItem('nama_belakang')
+const nama_user = [localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' ');
 const nip_user = ref('')
 const nama_jabatan = ref('')
 const nama_organisasi = ref('')
@@ -52,7 +51,7 @@ onBeforeMount(() => {
   <template>
       <div class="container" >
         <div class="greet">
-          <h1>Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
+          <h1>Selamat datang, {{ nama_user }}</h1>
           <p>
             Apa yang ingin dilaksanakan hari ini?
           </p>

@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('pelayanan', function (Blueprint $table) {
             $table->string('ID_Pelayanan', 10)->primary();
             $table->unsignedBigInteger('ID_User')->nullable(false);
+            $table->string('Nama_Pelapor')->nullable(false);
             $table->unsignedBigInteger('ID_Jenis_Pelayanan')->nullable(false);
             $table->string('Perihal')->nullable(false);
             $table->text('Deskripsi')->nullable(false);
