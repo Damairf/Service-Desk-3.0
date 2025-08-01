@@ -77,7 +77,7 @@ const addMessage = () => {
       <div class="info-row"><strong>Perihal</strong> <span>{{ perihal }}</span></div>
       <div class="info-row textarea-row">
         <strong>Deskripsi User</strong>
-        <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5"></textarea>
+        <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
         <strong>Surat Dinas</strong>
         <div v-if="SuratDinas_Path">
         <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
@@ -161,6 +161,8 @@ const addMessage = () => {
   border-radius: 8px;
   border: 1px solid #ccc;
   resize: vertical;
+  font-family: poppins, sans-serif;
+  background-color: #e6e6e6;
 }
 
 .chat-content {

@@ -130,6 +130,7 @@ input[type="checkbox"]{
   margin-top: 2rem;
   text-align: center;
   font-size: 1.1rem;
+  font-family: poppins, sans-serif;
 }
 
 .info-box {
@@ -139,11 +140,13 @@ input[type="checkbox"]{
   border-radius: 8px;
   margin-bottom: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: poppins, sans-serif;
 }
 
 .info-box p {
   font-size: small;
   font-weight: 500;
+  font-family: poppins, sans-serif;
   margin: 2px;
 }
 
@@ -153,6 +156,7 @@ input[type="checkbox"]{
   width: 96%;
   padding: 0.75rem 1rem;
   font-size: 1rem;
+  font-family: poppins, sans-serif;
   border-radius: 9999px;
   border: 1px solid #ccc;
   margin-bottom: 1rem;
@@ -177,6 +181,7 @@ input[type="checkbox"]{
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   font-weight: bold;
+  font-family: poppins, sans-serif;
   background-color: #e0f7fa;
 }
 
@@ -226,6 +231,7 @@ input[type="checkbox"]{
   min-width: 2rem;
   text-align: center;
   font-weight: 500;
+  font-family: poppins, sans-serif;
 }
 
 .paging .active {
@@ -283,6 +289,7 @@ input[type="checkbox"]{
   background: none;
   border: none;
   font-size: 1.5rem;
+  font-family: poppins, sans-serif;
   cursor: pointer;
 }
 

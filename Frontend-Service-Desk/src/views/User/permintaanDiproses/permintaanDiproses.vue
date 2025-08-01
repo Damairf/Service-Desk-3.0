@@ -167,6 +167,7 @@ watch(filteredItems, () => {
 
 h1 {
   color: #333;
+  font-family: poppins, sans-serif;
 }
 
 .search-bar {
@@ -177,6 +178,7 @@ h1 {
   color: black;
   border-radius: 13px;
   background-color: #e0e0e0;
+  font-family: poppins, sans-serif;
 }
 
 .rounded-table {
@@ -191,6 +193,7 @@ h1 {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  font-family: poppins, sans-serif;
 }
 
 .rounded-table th {
