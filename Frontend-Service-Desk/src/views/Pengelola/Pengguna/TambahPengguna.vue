@@ -21,7 +21,7 @@ const pilihanInduk = ref([])
 const idOrganisasiTerpilih = ref('')
 
 const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/role', {
+  axios.get('/api/role', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -37,7 +37,7 @@ const token = localStorage.getItem('Token');
     console.error(error); 
   });
 
-  axios.get('http://127.0.0.1:8000/api/jabatan', {
+  axios.get('/api/jabatan', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -53,7 +53,7 @@ const token = localStorage.getItem('Token');
     console.error(error); 
   });
 
-  axios.get('http://127.0.0.1:8000/api/organisasi', {
+  axios.get('/api/organisasi', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -97,7 +97,7 @@ function handleSubmit() {
   }
 
   const token = localStorage.getItem('Token');
-  axios.post(`http://127.0.0.1:8000/api/user`, payload
+  axios.post(`/api/user`, payload
   , {
     headers: {
       Authorization: 'Bearer ' + token,

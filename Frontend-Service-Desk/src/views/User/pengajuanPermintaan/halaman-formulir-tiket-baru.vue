@@ -67,7 +67,7 @@ formData.append('surat_dinas', suratDinas.value);
 formData.append('lampiran', lampiran.value);
 
 try {
-  const response = await axios.post('http://localhost:8000/api/uploadKeperluan', formData, {
+  const response = await axios.post('/api/uploadKeperluan', formData, {
     headers: {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'multipart/form-data'
@@ -98,7 +98,7 @@ const uploaded = await uploadFiles()
 
 if (!uploaded) return
 const token = localStorage.getItem('Token');
-axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
+axios.post('/api/pelayanan/tambah', {
   "ID_User": id_user,
   "Nama_Pelapor": namaPelapor.value,
   "ID_Jenis_Pelayanan": id_jenis_pelayanan,

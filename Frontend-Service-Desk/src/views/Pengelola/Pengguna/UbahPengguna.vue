@@ -26,7 +26,7 @@ const idOrganisasiTerpilih = ref('')
 const token = localStorage.getItem('Token')
 
 // === Ambil data Role ===
-axios.get('http://127.0.0.1:8000/api/role', {
+axios.get('/api/role', {
   headers: { Authorization: 'Bearer ' + token }
 })
 .then(response => {
@@ -44,7 +44,7 @@ axios.get('http://127.0.0.1:8000/api/role', {
 .catch(error => console.error(error))
 
 // === Ambil data Jabatan ===
-axios.get('http://127.0.0.1:8000/api/jabatan', {
+axios.get('/api/jabatan', {
   headers: { Authorization: 'Bearer ' + token }
 })
 .then(response => {
@@ -62,7 +62,7 @@ axios.get('http://127.0.0.1:8000/api/jabatan', {
 .catch(error => console.error(error))
 
 // === Ambil data Organisasi ===
-axios.get('http://127.0.0.1:8000/api/organisasi', {
+axios.get('/api/organisasi', {
   headers: { Authorization: 'Bearer ' + token }
 })
 .then(response => {
@@ -105,7 +105,7 @@ function handleSubmit() {
     Status: status.value
   }
 
-  axios.post('http://127.0.0.1:8000/api/user', payload, {
+  axios.post('/api/user', payload, {
     headers: { Authorization: 'Bearer ' + token }
   })
   .then(() => {

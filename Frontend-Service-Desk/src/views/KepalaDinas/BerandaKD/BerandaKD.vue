@@ -27,7 +27,7 @@ onMounted(()=> {
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/user/profile', {
+  axios.get('/api/user/profile', {
     headers: {
       Authorization: 'Bearer ' + token
     }

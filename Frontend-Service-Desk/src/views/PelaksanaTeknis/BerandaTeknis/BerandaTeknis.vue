@@ -27,7 +27,7 @@ onMounted(()=> {
 
 
   const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/user/profile', {
+  axios.get('/api/user/profile', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -45,7 +45,7 @@ onMounted(()=> {
   });
 
 
-  axios.get('http://127.0.0.1:8000/api/userCount', {
+  axios.get('/api/userCount', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -57,7 +57,7 @@ onMounted(()=> {
     console.error(error);
   });
 
-  axios.get('http://127.0.0.1:8000/api/allPelayanan', {
+  axios.get('/api/allPelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -73,7 +73,7 @@ onMounted(()=> {
   });
   
 
-  axios.get('http://127.0.0.1:8000/api/organisasiCount', {
+  axios.get('/api/organisasiCount', {
     headers: {
       Authorization: 'Bearer ' + token
     }
