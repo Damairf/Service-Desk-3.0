@@ -43,17 +43,17 @@
         <div class="info-box blue">
           <div class="info-text">
             <strong>Nama Depan</strong>
-            <p class= "display">{{namaDepan}}</p>
+            <p class= "display-info">{{namaDepan}}</p>
             <strong>Nama Belakang</strong>
-            <p class= "display">{{namaBelakang}}</p>
+            <p class= "display-info">{{namaBelakang}}</p>
             <strong>NIP</strong>
-            <p class= "display">{{nip}}</p>
+            <p class= "display-info">{{nip}}</p>
             <strong>Role</strong>
-            <p class= "display">{{role}}</p>
+            <p class= "display-info">{{role}}</p>
             <strong>Jabatan</strong>
-            <p class= "display">{{jabatan}}</p>
+            <p class= "display-info">{{jabatan}}</p>
             <strong>Organisasi</strong>
-            <p class= "display">{{organisasi}}</p>
+            <p class= "display-info">{{organisasi}}</p>
           </div>
         </div>
       </div>
@@ -167,7 +167,7 @@ html, body {
   background: #f8fafc;
 }
 
-.display {
+.display-info {
   padding: 0.25rem;
   margin-top: 0.25rem;
   margin-bottom: 1.5rem;
