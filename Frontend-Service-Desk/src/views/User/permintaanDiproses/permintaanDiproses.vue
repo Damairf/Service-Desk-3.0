@@ -106,8 +106,8 @@ watch(filteredItems, () => {
             <th>Perihal</th>
             <th>Tanggal Laporan</th>
             <th>Pelaksana Teknis</th>
-            <th>Detail Proses</th>
             <th>Status</th>
+            <th>Detail Proses</th>
           </tr>
         </thead>
         <tbody>

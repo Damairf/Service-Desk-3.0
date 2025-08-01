@@ -170,7 +170,7 @@ html, body {
 .display-info {
   padding: 0.25rem;
   margin-top: 0.25rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
   background-color: #f0f0f0;
   border-radius: 10px;
   border: 1px solid #ccc;

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 
@@ -23,9 +23,65 @@ const SuratDinas_Path = ref(null)
 const src_SuratDinas = ref(route.query.surat_dinas || '-')
 const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
+const HasilPemenuhan_Path = ref(null)
+const src_HasilPemenuhan = ref(route.query.hasil_pemenuhan || '-')
+const HasilBA_Path = ref(null)
+const src_HasilBA = ref(route.query.hasil_ba || '-')
+const HasilSLA_Path = ref(null)
+const src_HasilSLA = ref(route.query.hasil_sla || '-')
+
+//Review
+const rating = ref(0)
+const hoverRating = ref(0)
+const reviewText = ref('')
+const reviewSubmitted = ref(false)
+
 //  ambil URL dari backend
 SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value
+const namaFileSuratDinas = computed(() => {
+  const fileName = src_SuratDinas.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Surat_Dinas.pdf`
+})
+
 Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value
+const namaFileLampiran = computed(() => {
+  const fileName = src_Lampiran.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Lampiran.pdf`
+})
+
+HasilPemenuhan_Path.value = 'http://localhost:8000/' + src_HasilPemenuhan.value
+const namaFileHasilPemenuhan = computed(() => {
+  const fileName = src_HasilPemenuhan.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilPemenuhan.pdf`
+})
+
+HasilBA_Path.value = 'http://localhost:8000/' + src_HasilBA.value
+const namaFileHasilBA = computed(() => {
+  const fileName = src_HasilBA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilBA.pdf`
+})
+
+HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value
+const namaFileHasilSLA = computed(() => {
+  const fileName = src_HasilSLA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilSLA.pdf`
+})
+
 
 const messages = ref([
   {
@@ -47,18 +103,37 @@ const messages = ref([
       <div class="info-row"><strong>Tanggal Laporan</strong> <span>{{ formatDate(tanggalLaporan) }}</span></div>
       <div class="info-row"><strong>Perihal</strong> <span>{{ perihal }}</span></div>
       <div class="info-row textarea-row">
-        <strong>Deskripsi User</strong>
-        <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
+        <strong>Surat Dinas</strong>
         <div v-if="SuratDinas_Path">
-        <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-          Surat Dinas
-        </a>
+          <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+            {{ namaFileSuratDinas }}
+          </a>
+        </div>  
+        <strong>Lampiran</strong>
+        <div v-if="Lampiran_Path">
+          <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+            {{ namaFileLampiran }}
+          </a>
+        </div>
       </div>
-      <div v-if="Lampiran_Path">
-        <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-          Lampiran
-        </a>
-      </div>
+        <div class="review-section">
+        <div v-if="!reviewSubmitted">
+          <h4 class="review-title">Beri Ulasan</h4>
+          <div class="star-rating">
+            <span
+              v-for="star in 5"
+              :key="star"
+              class="star"
+              :class="{ 'filled': star <= (hoverRating || rating) }"
+              @mouseover="hoverRating = star"
+              @mouseleave="hoverRating = 0"
+              @click="setRating(star)"
+            >
+              ★
+            </span>
+          </div>
+          <textarea v-model="reviewText" class="review-textarea" placeholder="Bagikan pengalaman Anda..." rows="4" readonly></textarea>
+        </div>
       </div>
     </div>
 
@@ -72,6 +147,32 @@ const messages = ref([
         >
           <span class="message-text">{{ message.text }}</span>
           <span class="message-time">{{ message.time }}</span>
+        </div>
+      </div>
+      <div class="document-links">
+        <div class="info-docs">
+          <strong>Hasil Pemenuhan</strong>
+          <div v-if="HasilPemenuhan_Path">
+            <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+              {{ namaFileHasilPemenuhan }}
+            </a>
+          </div>
+        </div>
+        <div class="info-docs">
+          <strong>Hasil BA</strong>
+          <div v-if="HasilBA_Path">
+            <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+              {{ namaFileHasilBA }}
+            </a>
+          </div>
+        </div>
+        <div class="info-docs">
+          <strong>Hasil SLA</strong>
+          <div v-if="HasilSLA_Path">
+            <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+              {{ namaFileHasilSLA }}
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -96,6 +197,11 @@ const messages = ref([
 
 .info-row {
   display: flex;
+  padding: 0.8rem 0;
+}
+
+.info-docs{
+  display: block;
   padding: 0.8rem 0;
 }
 
@@ -169,6 +275,62 @@ const messages = ref([
 .input{
   background-color: white;
   color: black;
+}
+
+.review-section {
+  margin-top: 2rem;
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
+}
+
+.review-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.star-rating {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.star {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.review-textarea {
+  width: 95%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.75rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  background-color: white;
+  color: black;
+  font-family: poppins, sans-serif;
+  background-color: #e6e6e6;
+}
+
+.thank-you-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.document-links {
+  margin-top: 1rem;
 }
 
 </style>

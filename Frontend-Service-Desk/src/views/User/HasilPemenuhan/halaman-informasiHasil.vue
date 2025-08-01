@@ -69,14 +69,14 @@ const namaFileHasilBA = computed(() => {
   return `${tanggal}_${waktu}_HasilBA.pdf`
 })
 
-// HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value
-// const namaFileLampiran = computed(() => {
-//   const fileName = src_HasilSLA.value.split('/').pop() 
-//   const parts = fileName.split('_')
-//   const tanggal = parts[0]
-//   const waktu = parts[1]
-//   return `${tanggal}_${waktu}_HasilSLA.pdf`
-// })
+HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value
+const namaFileHasilSLA = computed(() => {
+  const fileName = src_HasilSLA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilSLA.pdf`
+})
 
 const messages = ref([
   {
@@ -218,6 +218,14 @@ const submitReview = async () => {
               {{ namaFileHasilBA }}
             </a>
           </div>
+          <div class="info-row">
+            <strong>Hasil SLA</strong>
+            <div v-if="HasilSLA_Path">
+              <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                {{ namaFileHasilSLA }}
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -246,7 +254,6 @@ const submitReview = async () => {
 }
 
 .info-row strong {
-  display: block;
   width: 12rem;
   flex-shrink: 0;
 }
