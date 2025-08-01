@@ -76,6 +76,7 @@ class PelayananController extends Controller
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
         $ID_Jenis_Pelayanan = $request->ID_Jenis_Pelayanan;
         $Perihal = $request->Perihal;
+        $Nama_Pelapor = $request->Nama_Pelapor;
         $Deskripsi = $request->Deskripsi;
         $Surat_Dinas_Path = $request->Surat_Dinas_Path;
         $Lampiran_Path = $request->Lampiran_Path;
@@ -83,6 +84,7 @@ class PelayananController extends Controller
 
         $newPelayanan = Pelayanan::create([
             'ID_User' => $ID_User,
+            'Nama_Pelapor' => $Nama_Pelapor,
             'ID_Jenis_Pelayanan' => $ID_Jenis_Pelayanan,
             'Perihal' => $Perihal,
             'Deskripsi' => $Deskripsi,

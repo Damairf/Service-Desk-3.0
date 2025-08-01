@@ -25,7 +25,7 @@ const src_SuratDinas = ref(route.query.surat_dinas || '-')
 const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
 //  ambil URL dari backend
-SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value
+SuratDinas_Path.value = '/files/' + src_SuratDinas.value
 const namaFileSuratDinas = computed(() => {
   const fileName = src_SuratDinas.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -34,7 +34,7 @@ const namaFileSuratDinas = computed(() => {
   return `${tanggal}_${waktu}_Surat_Dinas.pdf`
 })
 
-Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value
+Lampiran_Path.value = '/files/' + src_Lampiran.value
 const namaFileLampiran = computed(() => {
   const fileName = src_Lampiran.value.split('/').pop() 
   const parts = fileName.split('_')
