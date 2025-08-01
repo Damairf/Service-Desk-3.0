@@ -32,4 +32,8 @@ class User extends Model
     {
         return $this->hasMany(Role::class, 'ID_User'); 
     }
+    public function unit_pelayanan(): HasMany
+    {
+        return $this->hasMany(Role::class, 'ID_Unit'); 
+    }
 }

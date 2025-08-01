@@ -16,21 +16,24 @@ const layanan = ref(route.query.jenis_pelayanan || '-')
 const noTiket = ref(route.query.layanan || '-')
 const nama_depan = ref(route.query.nama_depanPengaju || '-')
 const nama_belakang = ref(route.query.nama_belakangPengaju || '-')
+const nama_depanUnit = ref(route.query.nama_depanUnit || '-')
+const nama_belakangUnit = ref(route.query.nama_belakangUnit || '-')
 const organisasi = ref(route.query.organisasi || '-')
 const tanggalLaporan = ref(route.query.tanggal || '-')
 const perihal = ref(route.query.perihal || '-')
 const deskripsiUser = ref(route.query.deskripsi || '-')
+const status = ref(Number(route.query.status) || '-')
 
 const SuratDinas_Path = ref(null)
 const src_SuratDinas = ref(route.query.surat_dinas || '-')
 const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
+const progress = ref(null)
 
 const stepsStatus = ref([])
 const pelaksana = ref([])
 const idUnitTerpilih = ref('')
 const insiden = ref('')
-
 
 // === Untuk Tombol Setuju ===
 const pilihan = ref('')
@@ -142,6 +145,13 @@ const addMessage = () => {
     newMessage.value = ''
   }
 }
+
+onMounted(() => {
+  if (status.value === 2) {
+    progress.value = true
+  }
+})
+
 </script>
 
 <template>
@@ -195,7 +205,12 @@ const addMessage = () => {
       <button class="send-btn" @click="addMessage">Kirim</button>
     </div>
 
-    <div class="tinjau-card">
+    <div v-if="progress">
+      <strong>Nama Unit Pelaksana</strong>
+      <div>{{ nama_depanUnit + ' ' + nama_belakangUnit }}</div>
+    </div>
+
+    <div class="tinjau-card" v-else="progress">
       <h3>Tinjau Pelayanan</h3>
       <!-- taro link pdfnya disini -->
       <div class="wrapper-btn">
