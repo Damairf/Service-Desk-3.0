@@ -16,7 +16,6 @@ onMounted(() => {
     }
   })
   .then(response => {
-    console.log(response.data)
     daftarPengguna.value = response.data.map(item => ({
       id: item.ID_User,
       nama_depan: item.Nama_Depan,
@@ -39,7 +38,7 @@ const search = ref('')
 const sortKey = ref('')
 const sortOrder = ref('asc')
 const currentPage = ref(1)
-const itemsPerPage = 1
+const itemsPerPage = 10
 
 const filteredItems = computed(() => {
   let items = daftarPengguna.value.filter(item =>

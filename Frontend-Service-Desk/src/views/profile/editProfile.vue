@@ -60,7 +60,6 @@ function uploadSelectedImage() {
     selectedImage.value = null;
     newImageFile.value = null;
     showOverlay.value = false;
-    alert('Foto profil berhasil diubah!');
   })
   .catch(function(error) {
     console.log(error);

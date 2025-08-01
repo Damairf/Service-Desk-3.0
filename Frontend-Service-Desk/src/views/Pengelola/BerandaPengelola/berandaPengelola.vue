@@ -46,7 +46,6 @@ onMounted(()=> {
     console.error(error); 
   });
 
-
   axios.get('http://127.0.0.1:8000/api/userCount', {
     headers: {
       Authorization: 'Bearer ' + token
