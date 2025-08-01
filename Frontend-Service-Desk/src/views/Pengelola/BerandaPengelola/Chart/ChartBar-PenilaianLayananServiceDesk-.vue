@@ -23,7 +23,7 @@ const dataPenilaianLayananServiceDesk = ref([]);
 onBeforeMount(async () => {
   try {
     const token = localStorage.getItem('Token');
-    const response = await axios.get('http://127.0.0.1:8000/api/ratePelayananChart', {
+    const response = await axios.get('/api/ratePelayananChart', {
       headers: {
         Authorization: 'Bearer ' + token
       }

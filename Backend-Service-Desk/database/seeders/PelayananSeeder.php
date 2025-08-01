@@ -18,6 +18,7 @@ class PelayananSeeder extends Seeder
         Pelayanan::create([
             
                 "ID_User" => 1,
+                "Nama_Pelapor" => "Damai Raya",
                 "ID_Jenis_Pelayanan" => 1,
                 "Perihal" => "Perbaikan Server",
                 "Deskripsi" => "Server error sampai terjadi down",
@@ -26,6 +27,7 @@ class PelayananSeeder extends Seeder
         ]);
         Pelayanan::create([
                 "ID_User" => 6,
+                "Nama_Pelapor" => "User Lain",
                 "ID_Jenis_Pelayanan" => 2,
                 "Perihal" => "Desain untuk website",
                 "Deskripsi" => "Buatkan desain website yang mengusung tema olahraga",
@@ -34,6 +36,7 @@ class PelayananSeeder extends Seeder
         ]);
         Pelayanan::create([
                 "ID_User" => 1,
+                "Nama_Pelapor" => "Damai Raya",
                 "ID_Jenis_Pelayanan" => 3,
                 "Perihal" => "Buatkan website",
                 "Deskripsi" => "Buatkan website dengan tenggat waktu 2 minggu",
@@ -42,6 +45,7 @@ class PelayananSeeder extends Seeder
         ]);
         Pelayanan::create([
                 "ID_User" => 6,
+                "Nama_Pelapor" => "User Lain",
                 "ID_Jenis_Pelayanan" => 4,
                 "Perihal" => "Selesaikan Masalah",
                 "Deskripsi" => "Selesaikan masalah yang diberikan",

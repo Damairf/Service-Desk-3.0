@@ -27,7 +27,7 @@
       <!-- FOTO & NAMA -->
       <div class="left-column">
         <img
-          :src="`http://localhost:8000/images/${gambar}`"
+          :src="`/images/${gambar}`"
           alt="Foto Profil"
           class="profile-img"
         />

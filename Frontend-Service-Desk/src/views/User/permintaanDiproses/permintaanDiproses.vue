@@ -23,7 +23,7 @@ const items = ref([])
 
 onMounted(() => {
   const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/pelayananUser', {
+  axios.get('/api/pelayananUser', {
     headers: {
       Authorization: 'Bearer ' + token
     }
