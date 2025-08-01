@@ -40,21 +40,20 @@
 
       <!-- DATA PROFIL -->
       <div class="right-column">
-        <div class="info-box green">
-          <div class="icon-area">👤</div>
-          <div class="info-text">
-            <p><strong>Nama Depan</strong> : {{namaDepan}}</p>
-            <p><strong>Nama Belakang</strong> : {{namaBelakang}}</p>
-            <p><strong>NIP</strong> : {{nip}}</p>
-          </div>
-        </div>
-
         <div class="info-box blue">
-          <div class="icon-area">📱</div>
           <div class="info-text">
-            <p><strong>Role</strong> : {{role}}</p>
-            <p><strong>Jabatan</strong> : {{jabatan}}</p>
-            <p><strong>Organisasi</strong> : {{organisasi}}</p>
+            <strong>Nama Depan</strong>
+            <p class= "display">{{namaDepan}}</p>
+            <strong>Nama Belakang</strong>
+            <p class= "display">{{namaBelakang}}</p>
+            <strong>NIP</strong>
+            <p class= "display">{{nip}}</p>
+            <strong>Role</strong>
+            <p class= "display">{{role}}</p>
+            <strong>Jabatan</strong>
+            <p class= "display">{{jabatan}}</p>
+            <strong>Organisasi</strong>
+            <p class= "display">{{organisasi}}</p>
           </div>
         </div>
       </div>
@@ -74,7 +73,7 @@ html, body {
 <style scoped>
 
 .profile-card {
-  max-width: 40rem;
+  max-width: 50rem;
   max-height: 60rem;
   margin: 2rem auto;
   padding: 2rem;
@@ -94,16 +93,23 @@ html, body {
 }
 
 .profile-container {
+  min-height: auto;
   display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
 }
 
 .left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 260px;
+  max-width: 320px;
+  gap: 1rem;
   flex: 1;
-  min-width: 250px;
-  text-align: center;
 }
 
 .profile-img {
@@ -139,12 +145,16 @@ html, body {
 
 .right-column {
   flex: 2;
-  min-width: 300px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  justify-content: flex-start;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 2rem 2rem 1.5rem 2rem;
+  min-width: 320px;
+  max-width: 420px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
-
 .info-box {
   display: flex;
   align-items: flex-start;
@@ -153,12 +163,19 @@ html, body {
   gap: 1rem;
 }
 
-.info-box.green {
-  background: #e6f7e6;
+.info-box.blue {
+  background: #f8fafc;
 }
 
-.info-box.blue {
-  background: #e6f1f9;
+.display {
+  padding: 0.25rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1.5rem;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 100%;
+  display: inline-block;
 }
 
 .icon-area {
@@ -172,7 +189,4 @@ html, body {
   color: #333;
 }
 
-.info-text p {
-  margin: 0.3rem 0;
-}
 </style>
