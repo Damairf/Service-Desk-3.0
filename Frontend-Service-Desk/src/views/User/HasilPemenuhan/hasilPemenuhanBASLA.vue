@@ -107,8 +107,8 @@ watch(filteredItems, () => {
             <th>Perihal</th>
             <th>Tanggal Laporan</th>
             <th>PIC</th>
-            <th>Detail Proses</th>
             <th>Status</th>
+            <th>Detail Proses</th>
           </tr>
         </thead>
         <tbody>
@@ -123,9 +123,11 @@ watch(filteredItems, () => {
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.pic }}</td>
-            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Lihat Hasil</a></td>
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+            </td> 
+            <td>
+              <a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Lihat Hasil</a>
             </td>
           </tr>
         </tbody>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 const router = useRouter()
 import axios from 'axios'
@@ -25,9 +25,58 @@ const SuratDinas_Path = ref(null)
 const src_SuratDinas = ref(route.query.surat_dinas || '-')
 const Lampiran_Path = ref(null)
 const src_Lampiran = ref(route.query.lampiran || '-')
+const HasilPemenuhan_Path = ref(null)
+const src_HasilPemenuhan = ref(route.query.hasil_pemenuhan || '-')
+const HasilBA_Path = ref(null)
+const src_HasilBA = ref(route.query.hasil_ba || '-')
+const HasilSLA_Path = ref(null)
+const src_HasilSLA = ref(route.query.hasil_sla || '-')
+
 //  ambil URL dari backend
 SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value
+const namaFileSuratDinas = computed(() => {
+  const fileName = src_SuratDinas.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Surat_Dinas.pdf`
+})
+
 Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value
+const namaFileLampiran = computed(() => {
+  const fileName = src_Lampiran.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Lampiran.pdf`
+})
+
+HasilPemenuhan_Path.value = 'http://localhost:8000/' + src_HasilPemenuhan.value
+const namaFileHasilPemenuhan = computed(() => {
+  const fileName = src_HasilPemenuhan.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilPemenuhan.pdf`
+})
+
+HasilBA_Path.value = 'http://localhost:8000/' + src_HasilBA.value
+const namaFileHasilBA = computed(() => {
+  const fileName = src_HasilBA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilBA.pdf`
+})
+
+// HasilSLA_Path.value = 'http://localhost:8000/' + src_HasilSLA.value
+// const namaFileLampiran = computed(() => {
+//   const fileName = src_HasilSLA.value.split('/').pop() 
+//   const parts = fileName.split('_')
+//   const tanggal = parts[0]
+//   const waktu = parts[1]
+//   return `${tanggal}_${waktu}_HasilSLA.pdf`
+// })
 
 const messages = ref([
   {
@@ -92,14 +141,16 @@ const submitReview = async () => {
       <div class="info-row textarea-row">
         <strong>Deskripsi User</strong>
         <textarea class="input" v-model="deskripsiUser" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
+        <strong>Surat Dinas</strong>
         <div v-if="SuratDinas_Path">
         <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-          Surat Dinas
+         {{ namaFileSuratDinas }}
         </a>
-      </div>
+      </div>  
+      <strong>Lampiran</strong>
       <div v-if="Lampiran_Path">
         <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-          Lampiran
+          {{ namaFileLampiran }}
         </a>
       </div>
       </div>
@@ -151,6 +202,24 @@ const submitReview = async () => {
       ></textarea>
 
       <button class="send-btn" @click="addMessage">Kirim</button>
+      <div class="document-links">
+        <div class="info-row">
+          <strong>Hasil Pemenuhan</strong>
+          <div v-if="HasilPemenuhan_Path">
+            <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+              {{ namaFileHasilPemenuhan }}
+            </a>
+          </div>
+        </div>
+        <div class="info-row">
+          <strong>Hasil BA</strong>
+          <div v-if="HasilBA_Path">
+            <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+              {{ namaFileHasilBA }}
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -172,11 +241,12 @@ const submitReview = async () => {
 }
 
 .info-row {
-  display: flex;
+  display: block;
   padding: 0.8rem 0;
 }
 
 .info-row strong {
+  display: block;
   width: 12rem;
   flex-shrink: 0;
 }
@@ -199,6 +269,7 @@ const submitReview = async () => {
   border: 1px solid #ccc;
   resize: vertical;
   background-color: #e6e6e6;
+  font-family: poppins, sans-serif;
 }
 
 .chat-content {
@@ -247,6 +318,7 @@ const submitReview = async () => {
   margin-bottom: 1rem;
   background-color: white;
   color: black;
+  font-family: poppins, sans-serif;
 }
 
 .send-btn {
@@ -308,6 +380,7 @@ const submitReview = async () => {
   margin-bottom: 1rem;
   background-color: white;
   color: black;
+  font-family: poppins, sans-serif;
 }
 
 .thank-you-message {
