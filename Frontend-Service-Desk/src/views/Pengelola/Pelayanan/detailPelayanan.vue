@@ -40,8 +40,8 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
 })
 .then(response => {
   console.log()
-  nama_depanUnit.value = response.data.unit_pelayanan.Nama_Depan
-  nama_belakangUnit.value = response.data.unit_pelayanan.Nama_Belakang
+  nama_depanUnit.value = response.data.unit_pelayanan?.Nama_Depan || '-'
+  nama_belakangUnit.value = response.data.unit_pelayanan?.Nama_Belakang || '-'
   deskripsi.value = response.data.Deskripsi
   organisasi.value = response.data.user.user_organisasi.Nama_OPD
   surat_dinas.value = response.data.Surat_Dinas_Path

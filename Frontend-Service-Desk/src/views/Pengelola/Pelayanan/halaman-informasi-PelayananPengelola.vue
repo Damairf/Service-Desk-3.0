@@ -33,7 +33,7 @@ const progress = ref(null)
 const stepsStatus = ref([])
 const pelaksana = ref([])
 const idUnitTerpilih = ref('')
-const insiden = ref('')
+const pesan = ref('')
 
 // === Untuk Tombol Setuju ===
 const pilihan = ref('')
@@ -75,11 +75,11 @@ function handleSelesai() {
   if (pilihan.value === 'Setuju') {
     
   const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/pelayanan/setuju/${pelayananId.value}`, 
+  axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
   {
     ID_Unit: idUnitTerpilih.value,
     ID_Status: 2,
-    Insiden: insiden.value
+    Pesan_Pengelola: pesan.value
   }
   , {
     headers: {
@@ -91,9 +91,9 @@ function handleSelesai() {
   } else if (pilihan.value === 'Tolak') {
 
   const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/pelayanan/tolak/${pelayananId.value}`, 
+  axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
   {
-    Insiden: insiden.value,
+    Pesan_Pengelola: pesan.value,
     ID_Status: 3,
     ID_Unit: null
   }
@@ -227,12 +227,12 @@ onMounted(() => {
           </option>
         </select>
         <h4>Pesan untuk Unit Pelaksana</h4>
-        <textarea class="input" v-model="insiden"></textarea>
+        <textarea class="input" v-model="pesan"></textarea>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>
       </div>
       <div class="wrapper-tolak" v-if='pilihan =="Tolak"'>
         <h4>Alasan Ditolak</h4>
-        <textarea class="input" v-model="insiden"></textarea>
+        <textarea class="input" v-model="pesan"></textarea>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>
       </div>
   </div>

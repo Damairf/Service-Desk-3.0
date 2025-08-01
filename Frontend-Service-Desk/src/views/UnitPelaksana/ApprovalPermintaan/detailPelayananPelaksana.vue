@@ -18,7 +18,7 @@ const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const activeTab = ref('informasi')
-const insiden = ref('')
+const pesanPengelola = ref('')
 
 onMounted(() => {
   if (route.query.steps) {
@@ -37,6 +37,7 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
   }
 })
 .then(response => {
+  console.log(response.data)
   deskripsi.value = response.data.Deskripsi
   organisasi.value = response.data.user.user_organisasi.Nama_OPD
   surat_dinas.value = response.data.Surat_Dinas_Path
@@ -46,7 +47,8 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
   nama_belakangPengaju.value = response.data.user.Nama_Belakang
   perihal.value = response.data.Perihal
   tanggal.value = response.data.created_at
-  insiden.value = response.data.insiden
+  pesanPengelola.value = response.data.Pesan_Pengelola
+
 
   axios.get(`http://127.0.0.1:8000/api/pelayanan/alur/progress/${pelayananId.value}`, {
   headers: {
@@ -101,7 +103,7 @@ const handleTabChange = (tab) => {
         deskripsi: deskripsi.value,
         surat_dinas: surat_dinas.value,
         lampiran: lampiran.value,
-        insiden: insiden.value,
+        pesanPengelola: pesanPengelola.value,
         steps: JSON.stringify(steps.value),
         stepsStatus: JSON.stringify(stepsStatus.value)
       }

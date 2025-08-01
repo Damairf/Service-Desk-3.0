@@ -22,8 +22,9 @@ return new class extends Migration
             $table->unsignedBigInteger('ID_Status')->nullable(false)->default(1);
             $table->string('Lampiran_Path')->nullable(false);
             $table->unsignedBigInteger('ID_Unit')->nullable(true);
-            $table->text('Insiden')->nullable(true);
+            $table->string('Pesan_Pengelola')->nullable(true);
             $table->unsignedBigInteger('ID_Teknis')->nullable(true);
+            $table->string('Pesan_Unit')->nullable(true);
             $table->boolean('Is_Done')->default(false);
             $table->string('Hasil_Pemenuhan_Path')->nullable(true);
             $table->string('BA_Path')->nullable(true);

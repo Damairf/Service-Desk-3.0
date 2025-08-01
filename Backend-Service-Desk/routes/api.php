@@ -5,6 +5,7 @@ use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\JenisPelayananController;
 use App\Http\Controllers\OrganisasiController;
 use App\Http\Controllers\PelayananController;
+use App\Http\Controllers\PesanController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AlurController;
 use App\Http\Controllers\ProgressAlurController;
@@ -83,8 +84,8 @@ Route::get('/TknsPelayananChart',[PelayananController::class, 'Chart_PelayananTk
 Route::get('/ratePelayananChart',[PelayananController::class, 'Chart_PelayananRate']);
 Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
 Route::get('/pdf/{filename}', [PelayananController::class, 'getPdfUrl']);
-Route::put('/pelayanan/setuju/{pelayananId}', [PelayananController::class, 'setuju']);
-Route::put('/pelayanan/tolak/{pelayananId}', [PelayananController::class, 'tolak']);
+Route::put('/pelayanan/disposisi/{pelayananId}', [PelayananController::class, 'disposisi']);
+
 
 
 Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
@@ -94,11 +95,13 @@ Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
 
 
 // endpoint unit pelaksana
+Route::get('/pesan/pengelola/{pelayananId}',[PesanController::class, 'PesanPengelola']);
+
+
 Route::get('/unit/pelayanan/',[PelayananController::class, 'getPelayananUnit']);
 Route::get('/pelayanan/teknis',[UserController::class, 'getTeknis']);
 Route::get('/unit/pelayanan/disposisi',[PelayananController::class, 'getDisposisiUnit']);
 
-Route::put('/pelayanan/disposisi/{pelayananId}', [PelayananController::class, 'disposisi']);
 
 // endpoint pelaksana teknis
 Route::get('/teknis/pelayanan/proses', [PelayananController::class, 'getPelayananTeknisNotDone']);

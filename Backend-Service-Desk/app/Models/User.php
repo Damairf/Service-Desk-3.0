@@ -36,4 +36,9 @@ class User extends Model
     {
         return $this->hasMany(Role::class, 'ID_Unit'); 
     }
+
+    public function user_pesan(): HasMany
+    {
+        return $this->hasMany(Pesan::class, 'ID_User'); 
+    }
 }
