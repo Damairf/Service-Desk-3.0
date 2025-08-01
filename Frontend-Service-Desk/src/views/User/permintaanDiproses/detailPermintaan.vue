@@ -71,10 +71,10 @@ const fetchPelayananData = async () => {
     const token = localStorage.getItem('Token')
     
     const [pelayananResponse, progressResponse] = await Promise.all([
-      axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
+      axios.get(`/api/pelayanan/${pelayananId.value}`, {
         headers: { Authorization: 'Bearer ' + token }
       }),
-      axios.get(`http://127.0.0.1:8000/api/pelayanan/alur/progress/${pelayananId.value}`, {
+      axios.get(`/api/pelayanan/alur/progress/${pelayananId.value}`, {
         headers: { Authorization: 'Bearer ' + token }
       })
     ])
@@ -122,7 +122,7 @@ const fetchPelayananData = async () => {
   }
 }
 
-SuratDinas_Path.value = 'http://localhost:8000/' + surat_dinas.value
+SuratDinas_Path.value = '/files' + surat_dinas.value
 const namaFileSuratDinas = computed(() => {
   const fileName = surat_dinas.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -131,7 +131,7 @@ const namaFileSuratDinas = computed(() => {
   return `${tanggal}_${waktu}_Surat_Dinas.pdf`
 })
 
-Lampiran_Path.value = 'http://localhost:8000/' + lampiran.value
+Lampiran_Path.value = '/files' + lampiran.value
 const namaFileLampiran = computed(() => {
   const fileName = lampiran.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -139,6 +139,26 @@ const namaFileLampiran = computed(() => {
   const waktu = parts[1]
   return `${tanggal}_${waktu}_Lampiran.pdf`
 })
+
+const messages = ref([
+{
+    text: "Halo, bagaimana saya bisa membantu?",
+    sender: "Admin",
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  }
+])
+const newMessage = ref('')
+
+const addMessage = () => {
+  if (newMessage.value.trim()) {
+    messages.value.push({
+      text: newMessage.value,
+      sender: "User",
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    })
+    newMessage.value = ''
+  }
+}
 
 // Fungsi untuk menangani perubahan tab (tanpa router navigation)
 const handleTabChange = (tab) => {
@@ -160,6 +180,10 @@ onMounted(() => {
     fetchPelayananData()
   }
   
+  if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
+    progress.value = true
+  }
+
   // Event listener untuk tombol back browser
   const handlePopState = () => {
     router.push({ name: 'PermintaanDiproses' })
@@ -234,13 +258,17 @@ onMounted(() => {
             <div class="chat-card">
               <h3>Chat</h3>
               <div class="chat-content">
-                <div class="message-bubble received">
-                  <div class="message-text">Halo, bagaimana saya bisa membantu?</div>
-                  <div class="message-time">{{ new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</div>
+                <div
+                  v-for="(message, index) in messages"
+                  :key="index"
+                  :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
+                >
+                  <div class="message-text">{{ message.text + " " }}</div>
+                  <div class="message-time">{{ message.time + " " }}</div>
                 </div>
               </div>
-              <textarea class="message" placeholder="Pesan"></textarea>
-              <button class="send-btn">Kirim</button>
+              <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
+              <button class="send-btn" @click="addMessage">Kirim</button>
             </div>
           </div>
         </div>

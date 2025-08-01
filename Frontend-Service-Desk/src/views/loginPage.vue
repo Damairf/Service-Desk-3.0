@@ -81,7 +81,7 @@ onMounted(() => {
       <div class="login-box">
         <h2 class="loginTitle">Login</h2>
         <input class="placeholderLgn" v-model="NIP" type="text" placeholder="NIP" />
-        <input class="placeholderLgn" v-model="Password" type="password" placeholder="Password" />
+        <input class="placeholderLgn" v-model="Password" @keyup.enter="login" type="password" placeholder="Password" />
         <button class= "login" @click="login">Login</button>
       </div>
     </div>
