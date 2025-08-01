@@ -72,6 +72,12 @@ import halamanLacakDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTekni
 import berandaKD from '../views/KepalaDinas/BerandaKD/BerandaKD.vue'
 import KepuasanUserKeseluruhan from '../views/KepalaDinas/KepuasanUser/Keseluruhan/KepuasanUserKeseluruhanKD.vue'
 import KepuasanUserBulanIni from '../views/KepalaDinas/KepuasanUser/BulanIni/KepuasanUserBulanKD.vue'
+import DetailKepuasanUserKeseluruhan from '../views/KepalaDinas/KepuasanUser/Keseluruhan/detailKepuasanKeseluruhanKD.vue'
+import LacakKepuasanUserKeseluruhan from '../views/KepalaDinas/KepuasanUser/Keseluruhan/halaman-lacakKepuasanKKD.vue'
+import InformasiKepuasanUserKeseluruhan from '../views/KepalaDinas/KepuasanUser/Keseluruhan/halaman-informasiKepuasannKKD.vue'
+import DetailKepuasanUserBulanIni from '../views/KepalaDinas/KepuasanUser/BulanIni/detailKepuasanBulanKD.vue'
+import LacakKepuasanUserBulanIni from '../views/KepalaDinas/KepuasanUser/BulanIni/halaman-lacakKepuasanBKD.vue'
+import InformasiKepuasanUserBulanIni from '../views/KepalaDinas/KepuasanUser/BulanIni/halaman-informasiKepuasanBKD.vue'
 
 // Daftar rute
 const routes = [
@@ -173,17 +179,17 @@ const routes = [
   { path: '/berandaKD', name: 'BerandaKepalaDinas', component: berandaKD, meta: {allowedRoles: [5]}},
   // Kepuasan User Keseluruhan
   { path: '/KepuasanUserKeseluruhan', name: 'KepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan, meta: {allowedRoles: [5]}},
-  { path: '/detailKepuasanUserKeseluruhan', name: 'DetailKepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan, meta: {allowedRoles: [5]},
+  { path: '/detailKepuasanUserKeseluruhan', name: 'DetailKepuasanUserKeseluruhan', component: DetailKepuasanUserKeseluruhan, meta: {allowedRoles: [5]},
     children: [
-      { path: 'lacakKepuasanUserKeseluruhan', name: 'LacakKepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan, meta: {allowedRoles: [5]}},
-      { path: 'informasiKepuasanUserKeseluruhan', name: 'InformasiKepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan, meta: {allowedRoles: [5]}}
+      { path: 'lacakKepuasanUserKeseluruhan', name: 'LacakKepuasanUserKeseluruhan', component: LacakKepuasanUserKeseluruhan, meta: {allowedRoles: [5]}},
+      { path: 'informasiKepuasanUserKeseluruhan', name: 'InformasiKepuasanUserKeseluruhan', component: InformasiKepuasanUserKeseluruhan, meta: {allowedRoles: [5]}}
     ]
   },
   { path: '/KepuasanUserBulanIni', name: 'KepuasanUserBulanIni', component: KepuasanUserBulanIni, meta: {allowedRoles: [5]}},
-  { path: '/detailKepuasanUserBulanIni', name: 'DetailKepuasanUserBulanIni', component: KepuasanUserBulanIni, meta: {allowedRoles: [5]},
+  { path: '/detailKepuasanUserBulanIni', name: 'DetailKepuasanUserBulanIni', component: DetailKepuasanUserBulanIni, meta: {allowedRoles: [5]},
     children: [
-      { path: 'lacakKepuasanUserBulanIni', name: 'LacakKepuasanUserBulanIni', component: KepuasanUserBulanIni, meta: {allowedRoles: [5]}},
-      { path: 'informasiKepuasanUserBulanIni', name: 'InformasiKepuasanUserBulanIni', component: KepuasanUserBulanIni, meta: {allowedRoles: [5]}}
+      { path: 'lacakKepuasanUserBulanIni', name: 'LacakKepuasanUserBulanIni', component: LacakKepuasanUserBulanIni, meta: {allowedRoles: [5]}},
+      { path: 'informasiKepuasanUserBulanIni', name: 'InformasiKepuasanUserBulanIni', component: InformasiKepuasanUserBulanIni, meta: {allowedRoles: [5]}}
     ]
   }
 ]

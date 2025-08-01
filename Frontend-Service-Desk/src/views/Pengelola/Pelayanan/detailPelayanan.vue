@@ -17,7 +17,7 @@ const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
-const activeTab = ref(route.query.tab === 'informasi' ? 'informasi' : 'tracking')
+const activeTab = ref('informasi')
 
 onMounted(() => {
   if (route.query.steps) {

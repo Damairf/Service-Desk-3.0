@@ -22,7 +22,7 @@ const items = ref([])
 
 onMounted(() => {
   const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/pelayananUser', {
+  axios.get('http://127.0.0.1:8000/api/pelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -30,7 +30,7 @@ onMounted(() => {
   .then(response => {
     console.log(response);
     items.value = response.data.filter(item =>
-        ['Tutup', 'Ditolak'].includes(item.status_pelayanan?.Nama_Status)
+        ['Selesai', 'Tutup', 'Ditolak'].includes(item.status_pelayanan?.Nama_Status)
       ).map(item => ({
       ticket: item.ID_Pelayanan,
       perihal: item.Perihal,
@@ -48,7 +48,15 @@ onMounted(() => {
   });
 });
 
-
+// Methods
+function checkProgress(item) {
+  router.push({
+    name: 'DetailKepuasanUserBulanIni',
+    query: {
+      layanan: item.ticket,
+    }
+  })
+}
 
 // Computed
 const filteredItems = computed(() => {
@@ -85,29 +93,7 @@ const visiblePages = computed(() => {
 watch(filteredItems, () => {
   currentPage.value = 1
 })
-
-// Methods
-function checkProgress(item) {
-  alert(`Melihat detail untuk tiket: ${item.ticket}`)
-  router.push({
-    name: 'DetailKepuasanUserBulanIni',
-    query: {
-      layanan: item.ticket,
-      perihal: item.perihal,
-      tanggal: item.date,
-      nama_depanPengaju: item.pic, // adjust if you have separate first/last name
-      // nama_belakangPengaju: '', // add if available
-      jenis_pelayanan: '', // add if available
-      organisasi: '', // add if available
-      deskripsi: '', // add if available
-      surat_dinas: '', // add if available
-      lampiran: '', // add if available
-      tab: 'informasi' // to open the Informasi tab by default
-    }
-  })
-}
 </script>
-
 
 <template>
   <div class="container">
