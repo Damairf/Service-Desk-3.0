@@ -138,8 +138,8 @@ const submitReview = async () => {
           :key="index"
           :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
         >
-          <span class="message-text">{{ message.text }}</span>
-          <span class="message-time">{{ message.time }}</span>
+          <div class="message-text">{{ message.text }}</div>
+          <div class="message-time">{{ message.time }}</div>
         </div>
       </div>
 
