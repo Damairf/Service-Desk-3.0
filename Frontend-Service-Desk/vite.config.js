@@ -14,7 +14,8 @@ export default defineConfig({
       '/files': {
         target: 'http://localhost:8000',
         changeOrigin: true,
-        secure: false
+        secure: false,
+        rewrite: (path) => path.replace(/^\/files/, '')
       }
     }
   }
