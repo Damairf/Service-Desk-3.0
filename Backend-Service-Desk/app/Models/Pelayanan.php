@@ -18,6 +18,7 @@ class Pelayanan extends Model
     ];
     protected $fillable = [
         'Perihal',
+        'Nama_Pelapor',
         'Deskripsi',
         'Lampiran',
         'Lampiran_Path',

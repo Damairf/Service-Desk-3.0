@@ -40,7 +40,7 @@ onMounted(() => {
       })
       .then(response => {
         steps.value = response.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
-        localStorage.setItem('steps', JSON.stringify(steps.value)) // simpan jika mau
+        localStorage.setItem('steps', JSON.stringify(steps.value))
       })
       .catch(error => {
         console.error('Gagal mengambil steps:', error);
