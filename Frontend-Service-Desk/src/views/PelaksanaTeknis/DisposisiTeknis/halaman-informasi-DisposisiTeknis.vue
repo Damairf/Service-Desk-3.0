@@ -30,6 +30,7 @@ const HasilSLA= ref('')
 const HasilBA_Path = ref(null)
 const HasilSLA_Path = ref(null)
 
+const stepsStatus = ref([])
 const pelaksana = ref([])
 const idUnitTerpilih = ref('')
 const insiden = ref('')
@@ -76,6 +77,18 @@ const pilihan = ref('')
 function handlePilihan(klik) {
   pilihan.value = klik
 }
+
+onMounted(() => {
+  const stepsStatusParam = route.query.stepsStatus
+
+  if (stepsStatusParam) {
+    try {
+      stepsStatus.value = JSON.parse(stepsStatusParam)
+    } catch (e) {
+      console.error('Gagal parse stepsStatus dari query:', e)
+    }
+  }
+})
 
 const token = localStorage.getItem('Token');
 axios.get('http://127.0.0.1:8000/api/pelayanan/unit', {

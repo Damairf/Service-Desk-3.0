@@ -3,6 +3,7 @@ import { ref, computed, watch , onMounted} from 'vue'
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 const router = useRouter()
+
 function formatDate(dateString) {
   if (!dateString) return '-';
   return new Date(dateString).toLocaleDateString('id-ID');
@@ -239,44 +240,6 @@ watch(search, () => {
 
 .rounded-table tr:nth-child(even) {
   background-color: #f9f9f9;
-}
-
-.status {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-  display: inline-block;
-}
-
-.status.baru {
-  background-color: #e6dcf5;
-  color: #6a1b9a;
-}
-
-.status.proses {
-  background-color: #f5f5c3;
-  color: #aaaa3a;
-}
-
-.status.disetujui {
-  background-color: #c7f5d9;
-  color: #2e7d32;
-}
-
-.status.ditolak {
-  background-color: #ff8181;
-  color: #490707;
-}
-
-.status.selesai {
-  background-color: #fddede;
-  color: #22ff00;
-}
-
-.status.tutup {
-  background-color: #9c9c9c;
-  color: #1e1e1e;
 }
 
 .detail-button {

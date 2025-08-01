@@ -9,7 +9,24 @@ const isLoading = ref(true)
 //datanya
 const dataOrganisasi = ref([])
 
-//===BACKEND=== (tapi masih murni penggunaPengelola.vue)
+//Countdown
+const countdown = ref(5)
+const isCounting = ref(false)
+let timer = null
+function startCountdown() {
+  countdown.value = 5
+  isCounting.value = true
+
+  timer = setInterval(() => {
+    if (countdown.value > 1) {
+      countdown.value--
+    } else {
+      clearInterval(timer)
+      isCounting.value = false
+    }
+  }, 1000)
+}
+//===BACKEND=== 
 onBeforeMount(() => {
   fetchDataOrganisasi();
 });
@@ -109,10 +126,12 @@ watch(search, () => {
 
 // === Modal Delete ===
 const showModal = ref(false)
+const namaOrganisasiToDelete = ref('')
 const idOrganisasiToDelete = ref(null)
 
 function Delete(item) {
   idOrganisasiToDelete.value = item.id_organisasi
+  namaOrganisasiToDelete.value = item.nama_PerangkatDaerah
   showModal.value = true
 }
 
@@ -209,7 +228,7 @@ function lihatOrganisasi(item) {
             <td>
               <div class="wrapper-aksiBtn">
                 <button class="aksiEdit-btn" title="Edit" @click="editOrganisasi(item)">Ubah</button>
-                <button class="aksiDelete-btn" title="Delete" @click="Delete(item)">Hapus</button>
+                <button class="aksiDelete-btn" title="Delete" @click="Delete(item); startCountdown()">Hapus</button>
                 <button class="aksiLihat-btn" @click="lihatOrganisasi(item)">Detail</button>
               </div>
             </td>
@@ -234,10 +253,11 @@ function lihatOrganisasi(item) {
     <div class="modal-box">
       <h3>Konfirmasi Hapus</h3>
       <p>
-        Apakah Anda yakin ingin menghapus lembaga/organisasi <strong></strong>?
+        Apakah Anda yakin ingin menghapus lembaga/organisasi <strong>{{ namaOrganisasiToDelete }}</strong>?
       </p>
+      <p v-if="isCounting">Mohon tunggu {{ countdown }} detik</p>
       <div class="modal-actions">
-        <button class="btn danger" @click="confirmDelete()">Ya, hapus</button>
+        <button v-if="!isCounting" class="btn danger" @click="confirmDelete()">Ya, hapus</button>
         <button class="btn" @click="cancelDelete()">Batal</button>
       </div>
     </div>

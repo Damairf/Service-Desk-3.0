@@ -22,3 +22,40 @@ a:hover {
   color: #535bf2;
 }
 
+.status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.status.baru {
+  background-color: #caeaff;
+  color: #0185DA;
+}
+
+.status.proses {
+  background-color: #f5f5c3;
+  color: #aaaa3a;
+}
+
+.status.disetujui {
+  background-color: #c7f5d9;
+  color: #2e7d32;
+}
+
+.status.selesai {
+  background-color: #e6dcf5;
+  color:#6a1b9a;
+}
+
+.status.tutup {
+  background-color: #9c9c9c;
+  color:#1e1e1e;
+}
+
+.status.ditolak {
+  background-color: #ff8181;
+  color:#490707;
+}

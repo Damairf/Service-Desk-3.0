@@ -1,57 +1,128 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import axios from 'axios'
+import { useRouter, useRoute } from 'vue-router'
+
 const router = useRouter()
+const route = useRoute()
 
 // === State untuk form ===
-const Nama_Depan = ref('')
-const Nama_Belakang = ref('')
-const NIP = ref('')
-const nomorHP = ref('')
-const email = ref('')
+const Nama_Depan = ref(route.query.nama_depan || '')
+const Nama_Belakang = ref(route.query.nama_belakang || '')
+const role = ref(route.query.role || '')
+const organisasi = ref(route.query.organisasi || '')
+const status = ref(route.query.status || '')
+const password = ref('')
 
-// === Submit handler (dengan validasi) ===
+const pilihanRole = ref([])
+const idRoleTerpilih = ref('')
+
+const pilihanJabatan = ref([])
+const idJabatanTerpilih = ref('')
+
+const pilihanInduk = ref([])
+const idOrganisasiTerpilih = ref('')
+
+const token = localStorage.getItem('Token')
+
+// === Ambil data Role ===
+axios.get('http://127.0.0.1:8000/api/role', {
+  headers: { Authorization: 'Bearer ' + token }
+})
+.then(response => {
+  pilihanRole.value = response.data.map(item => ({
+    id_role: item.ID_Role,
+    nama_role: item.Nama_Role
+  }))
+
+  // Set default sesuai route.query.role
+  const match = pilihanRole.value.find(r => r.nama_role === role.value)
+  if (match) {
+    idRoleTerpilih.value = match.id_role
+  }
+})
+.catch(error => console.error(error))
+
+// === Ambil data Jabatan ===
+axios.get('http://127.0.0.1:8000/api/jabatan', {
+  headers: { Authorization: 'Bearer ' + token }
+})
+.then(response => {
+  pilihanJabatan.value = response.data.map(item => ({
+    id_jabatan: item.ID_Jabatan,
+    nama_jabatan: item.Nama_Jabatan
+  }))
+
+  // Set default sesuai route.query.jabatan
+  const match = pilihanJabatan.value.find(j => j.nama_jabatan === route.query.jabatan)
+  if (match) {
+    idJabatanTerpilih.value = match.id_jabatan
+  }
+})
+.catch(error => console.error(error))
+
+// === Ambil data Organisasi ===
+axios.get('http://127.0.0.1:8000/api/organisasi', {
+  headers: { Authorization: 'Bearer ' + token }
+})
+.then(response => {
+  pilihanInduk.value = response.data.map(item => ({
+    id_organisasi: item.ID_Organisasi,
+    nama_PerangkatDaerah: item.Nama_OPD
+  }))
+
+  // Set default sesuai route.query.organisasi
+  const match = pilihanInduk.value.find(o => o.nama_PerangkatDaerah === organisasi.value)
+  if (match) {
+    idOrganisasiTerpilih.value = match.id_organisasi
+  }
+})
+.catch(error => console.error(error))
+
+// === Set Status langsung (karena tidak butuh fetch) ===
+// Status sudah otomatis terisi dari v-model="status"
+
+// === Submit handler ===
 function handleSubmit() {
-  // Validasi field wajib
-  if (!Nama_Belakang.value || !Nama_Belakang.value || !NIP.value || !email.value) {
-    alert('Harap isi semua field yang bertanda *')
+  if (!Nama_Depan.value || !Nama_Belakang.value || !NIP.value || !idRoleTerpilih.value || !idJabatanTerpilih.value || !idOrganisasiTerpilih.value || !status.value || !password.value) {
+    alert('Harap isi semua kolom yang bertanda *')
     return
   }
 
-  // Buat payload
-  const payload = {
-    Nama_Belakang: Nama_Belakang.value,
-    Nama_Depan: Nama_Depan.value,
-    NIP: NIP.value,
-    nomorHP: nomorHP.value,
-    email: email.value
+  if (NIP.value.length !== 18) {
+    alert('NIP harus 18 digit')
+    return
   }
 
-  console.log('Data yang akan dikirim ke backend:', payload)
+  const payload = {
+    Nama_Depan: Nama_Depan.value,
+    Nama_Belakang: Nama_Belakang.value,
+    NIP: NIP.value,
+    ID_Role: idRoleTerpilih.value,
+    ID_Jabatan: idJabatanTerpilih.value,
+    ID_Organisasi: idOrganisasiTerpilih.value,
+    Password: password.value,
+    Status: status.value
+  }
 
-  // Contoh request backend (aktifkan jika sudah ada API)
-  // await axios.post('/api/organisasi', payload)
-  alert('Pengguna sudah ditambahkan')
-  // Redirect setelah submit sukses
-  router.push('/pengguna')
-}
-
-// === Reset form ===
-function handleReset() {
-  Nama_Belakang.value = ''
-  Nama_Depan.value = ''
-  NIP.value = ''
-  nomorHP.value = ''
-  email.value = ''
+  axios.post('http://127.0.0.1:8000/api/user', payload, {
+    headers: { Authorization: 'Bearer ' + token }
+  })
+  .then(() => {
+    alert('Pengguna sudah ditambahkan')
+    router.push('/pengguna')
+  })
+  .catch(error => console.log(error))
 }
 </script>
 
+
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Tambah Pengguna</h1>
+    <h1 class="main-title">Ubah Pengguna</h1>
     <div class="form-card">
       <div class="form-card-header">
-        Formulir Tambah Pengguna
+        Formulir Ubah Pengguna
       </div>
 
       <!-- Form pakai @submit.prevent supaya tidak reload -->
@@ -62,7 +133,7 @@ function handleReset() {
 
         <div class="form-group">
           <label>Nama Depan<span class="red">*</span></label>
-          <input type="text" placeholder="Nama Depan" v-model="Nama_Depan" />
+          <input type="text" placeholder= "Nama_Depan" v-model="Nama_Depan" />
         </div>
 
         <div class="form-group">
@@ -71,22 +142,65 @@ function handleReset() {
         </div>
 
         <div class="form-group">
-          <label>NIP<span class="red">*</span></label>
-          <input type="text" v-model="NIP" />
+          <label>Role<span class="red">*</span></label>
+          <select v-model="idRoleTerpilih">
+            <option disabled value="">-- Pilih Role --</option>
+            <option
+              v-for="item in pilihanRole"
+              :key="item.id_role"
+              :value="item.id_role"
+            >
+              {{ item.nama_role }}
+            </option>
+          </select>
         </div>
 
         <div class="form-group">
-          <label>Nomor HP.</label>
-          <input type="text" v-model="nomorHP" />
+          <label>Jabatan <span class="red">*</span></label>
+          <select v-model="idJabatanTerpilih">
+            <option disabled value="">-- Pilih Jabatan --</option>
+            <option
+              v-for="item in pilihanJabatan"
+              :key="item.id_jabatan"
+              :value="item.id_jabatan"
+            >
+              {{ item.nama_jabatan }}
+            </option>
+          </select>
         </div>
 
         <div class="form-group">
-          <label>Email <span class="red">*</span></label>
-          <input type="email" v-model="email" />
+          <label>Organisasi <span class="red">*</span></label>
+          <select v-model="idOrganisasiTerpilih">
+            <option disabled value="">-- Pilih Perangkat Daerah --</option>
+            <option
+              v-for="item in pilihanInduk"
+              :key="item.id_organisasi"
+              :value="item.id_organisasi"
+            >
+              {{ item.nama_PerangkatDaerah }}
+            </option>
+          </select>
         </div>
+
+        <div class="form-group">
+          <label>Password <span class="red">*</span></label>
+          <input type="password" v-model="password" />
+        </div>
+
+
+        <div class="form-group">
+          <label>Status<span class="red">*</span></label>
+          <select v-model="status">
+            <option value="Aktif">Aktif</option>
+            <option value="Nonaktif">Nonaktif</option>
+          </select>
+        </div>
+
+
 
         <div class="form-actions">
-          <button type="submit" class="btn ubah">Simpan</button>
+          <button type="submit" class="btn simpan">Simpan</button>
           <button type="button" class="btn hapus" @click="handleReset">Hapus</button>
         </div>
       </form>
@@ -183,10 +297,10 @@ function handleReset() {
   color: #fff;
   transition: background 0.2s;
 }
-.btn.ubah {
+.btn.simpan {
   background: #2da8e2;
 }
-.btn.ubah:hover {
+.btn.simpan:hover {
   background: #1976d2;
 }
 .btn.hapus {

@@ -17,7 +17,7 @@ const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
-const activeTab = ref(route.query.tab === 'informasi' ? 'informasi' : 'tracking')
+const activeTab = ref('informasi')
 
 onMounted(() => {
   if (route.query.steps) {
@@ -69,7 +69,7 @@ axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
 });
 
 // Fungsi untuk menangani perubahan tab
-const handleTabChange = async (tab) => {
+const handleTabChange = (tab) => {
   activeTab.value = tab;
 
   if (tab === 'tracking') {
@@ -107,7 +107,7 @@ const handleTabChange = async (tab) => {
 
 // Set default route saat komponen dimount
 onMounted(() => {
-  fetchDataAndNavigate()
+  handleTabChange(activeTab.value)
   
   // Event listener untuk tombol back browser
   const handlePopState = () => {

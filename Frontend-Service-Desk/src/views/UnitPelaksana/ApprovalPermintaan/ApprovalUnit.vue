@@ -258,19 +258,6 @@ watch(search, () => {
   font-size: 13px;
 }
 
-.status {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-  display: inline-block;
-}
-
-.status.disetujui {
-  background-color: #c7f5d9;
-  color: #2e7d32;
-}
-
 .pagination {
   margin-top: 20px;
   text-align: center;

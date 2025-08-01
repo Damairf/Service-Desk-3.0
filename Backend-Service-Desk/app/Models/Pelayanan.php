@@ -64,6 +64,9 @@ class Pelayanan extends Model
     public function teknis_pelayanan(): BelongsTo{
         return $this -> belongsTo(User::class, 'ID_Teknis');
     }
+    public function unit_pelayanan(): BelongsTo{
+        return $this -> belongsTo(User::class, 'ID_Unit');
+    }
     public function progress_to_pelayanan(): HasMany
     {
         return $this->hasMany(ProgressAlur::class, 'ID_Pelayanan');

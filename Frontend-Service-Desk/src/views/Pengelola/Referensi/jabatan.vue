@@ -1,51 +1,30 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
+
 const router = useRouter()
-import axios from 'axios';
 
 const isLoading = ref(true)
-// === backend ===
-const daftarPengguna = ref([])  
 
-onMounted(() => {
-  const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/user', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    daftarPengguna.value = response.data.map(item => ({
-      id: item.ID_User,
-      nama_depan: item.Nama_Depan,
-      nama_belakang: item.Nama_Belakang,
-      role: item.user_role.Nama_Role,
-      organisasi: item.user_organisasi.Nama_OPD,
-      status: item.Status
-    }))
-  })
-  .catch(error => {
-    console.error(error);
-  })
-  .finally(() => {
-  isLoading.value = false;
-  });
-});
+// === Data Referensi Jabatan ===
+const referensiJabatan = ref([
+  { id: 1, nama: "Kepala Dinas", tglPembuatan: "19/09/2025" },
+  { id: 2, nama: "Staff Administrasi", tglPembuatan: "14/11/2025" },
+])
 
-// === Buat Search ===
+// === Search, Sort & Pagination ===
 const search = ref('')
 const sortKey = ref('')
 const sortOrder = ref('asc')
 const currentPage = ref(1)
 const itemsPerPage = 10
 
+// === Filter & Sort Data ===
 const filteredItems = computed(() => {
-  let items = daftarPengguna.value.filter(item =>
-    item.nama_depan.toLowerCase().includes(search.value.toLowerCase()) ||
-    item.nama_belakang.toLowerCase().includes(search.value.toLowerCase()) ||
-    item.role.toLowerCase().includes(search.value.toLowerCase()) ||
-    item.organisasi.toLowerCase().includes(search.value.toLowerCase())
+  let items = referensiJabatan.value.filter(item =>
+    item.nama.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.tglPembuatan.toLowerCase().includes(search.value.toLowerCase())
   )
 
   if (sortKey.value) {
@@ -57,21 +36,16 @@ const filteredItems = computed(() => {
       return 0
     })
   }
-
   return items
 })
 
-const totalPages = computed(() => {
-  return Math.ceil(filteredItems.value.length / itemsPerPage)
-})
+const totalPages = computed(() => Math.ceil(filteredItems.value.length / itemsPerPage))
 
 const visiblePages = computed(() => {
   const pages = []
   const start = Math.max(1, currentPage.value - 2)
   const end = Math.min(totalPages.value, currentPage.value + 2)
-  for (let i = start; i <= end; i++) {
-    pages.push(i)
-  }
+  for (let i = start; i <= end; i++) pages.push(i)
   return pages
 })
 
@@ -92,114 +66,128 @@ function goToPage(page) {
   currentPage.value = page
 }
 
-
-
 watch(search, () => {
   currentPage.value = 1
 })
 
-// === Modal saat delete ===
+// === Modal Delete ===
 const showModal = ref(false)
-const idUserToDelete = ref(null)
-
-function Delete(user) {
-  idUserToDelete.value = user 
+const jabatanToDelete = ref("")
+function Delete(item) {
+  jabatanToDelete.value = item.nama
   showModal.value = true
 }
+
 function cancelDelete() {
   showModal.value = false
-  idUserToDelete = null
-}
-function confirmDelete() {
-  daftarPengguna.value = daftarPengguna.value.filter(u => u.id !== idUserToDelete.value.id)
-  showModal = false
-  idUserToDelete = null
+  jabatanToDelete.value = null
 }
 
-function ubahPengguna(user) {
-  router.push({
-    path: '/ubahPengguna',
-    query: {
-      nama_depan: user.nama_depan,
-      nama_belakang: user.nama_belakang,
-      role: user.role,
-      organisasi: user.organisasi,
-      status: user.status
+// function confirmDelete() {
+//   const token = localStorage.getItem('Token');
+//   axios.delete(`http://127.0.0.1:8000/api/organisasi/${idOrganisasiToDelete.value}`, {
+//   headers: {
+//       Authorization: 'Bearer ' + token
+//     }
+//   })
+//   .then(() => {
+//   fetchDataOrganisasi();
+//   showModal.value = false
+//   idOrganisasiToDelete.value = null
+// })
+
+//   .catch(error => {
+//     console.error(error);
+//     alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus organisasi.');
+//   });
+// }
+
+//Countdown
+const countdown = ref(5)
+const isCounting = ref(false)
+let timer = null
+function startCountdown() {
+  countdown.value = 5
+  isCounting.value = true
+
+  timer = setInterval(() => {
+    if (countdown.value > 1) {
+      countdown.value--
+    } else {
+      clearInterval(timer)
+      isCounting.value = false
     }
-  })
+  }, 1000)
 }
 </script>
 
+
 <template>
-  <div class="page-bg">
-    <div class="user-card">
-      <h1 class="title">Daftar Pengguna</h1>
-      <div class="top-actions">
-        <button class="btn tambah" @click="router.push('TambahPengguna')">Tambah</button>
-      </div>
-      <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th @click="sortKey = 'id'">ID</th>
-            <th @click="sortKey = 'nama'">Nama</th>
-            <th @click="sortKey = 'role'">Role</th>
-            <th @click="sortKey = 'organisasi'">Organisasi</th>
-            <th @click="sortKey = 'status'">Status</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-if="isLoading">
-            <td colspan="6" style="text-align: center; padding: 1rem;">Memuat data...</td>
-          </tr>
-          <tr v-else-if="filteredItems.length === 0">
-            <td colspan="6" style="text-align: center; padding: 1rem;">Tidak ada user terdaftar</td>
-          </tr>
-          <tr v-for="(user, index) in paginatedItems" :key="index">
-            <td>{{ user.id }}</td>
-            <td>{{ user.nama_depan + ' ' + user.nama_belakang }}</td>
-            <td>{{ user.role }}</td>
-            <td>{{ user.organisasi }}</td>
-            <td>
-              <span :class="['status', user.status.toLowerCase()]">{{ user.status }}</span>
-            </td>
-            <td>
-              <div class="wrapper-aksiBtn">
-                <button class="aksiEdit-btn" title="Edit" @click="ubahPengguna(user)">Ubah</button>
-                <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="pagination">
-        <button :disabled="currentPage === 1" @click="prevPage">&#60;</button>
-        <button
-          v-for="page in visiblePages"
-          :key="page"
-          :class="{ active: currentPage === page }"
-          @click="goToPage(page)"
-        >{{ page }}</button>
-        <button :disabled="currentPage === totalPages" @click="nextPage">&#62;</button>
-      </div>
-    </div>
-  </div>
-  <!-- Overlay buat delete -->
-   <div v-if="showModal" class="modal-overlay">
-    <div class="modal-box">
-      <h3>Konfirmasi Hapus</h3>
-      <p>
-        Apakah Anda yakin ingin menghapus pengguna <strong>{{ idUserToDelete.nama_depan + ' ' + idUserToDelete.nama_belakang }}</strong>?
-      </p>
-      <div class="modal-actions">
-        <button class="btn danger" @click="confirmDelete()">Ya, hapus</button>
-        <button class="btn" @click="cancelDelete()">Batal</button>
+    <div class="page-bg">
+      <div class="user-card">
+        <h1 class="title">Referensi Jabatan</h1>
+        <input type="text" v-model="search" placeholder="Cari Jabatan" class="search-bar" />
+  
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th @click="sortKey = 'id'">ID</th>
+              <th @click="sortKey = 'nama'">Nama Jabatan</th>
+              <th @click="sortKey = 'tglPembuatan'">Tanggal Pembuatan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr v-if="isLoading">
+              <td colspan="4" style="text-align: center; padding: 1rem;">Memuat data...</td>
+            </tr>
+            <tr v-else-if="filteredItems.length === 0">
+              <td colspan="4" style="text-align: center; padding: 1rem;">Tidak ada data jabatan</td>
+            </tr> -->
+            <tr v-for="(jabatan, index) in paginatedItems" :key="index">
+              <td>{{ jabatan.id }}</td>
+              <td>{{ jabatan.nama }}</td>
+              <td>{{ jabatan.tglPembuatan }}</td>
+              <td>
+                <div class="wrapper-aksiBtn">
+                    <!-- functionnya belum ada -->
+                    <button class="aksiEdit-btn" title="Edit" @click="editJabatan(jabatan)">Ubah</button>
+                    <button class="aksiDelete-btn" title="Delete" @click="Delete(jabatan); startCountdown()">Hapus</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <div class="pagination">
+          <button :disabled="currentPage === 1" @click="prevPage">&#60;</button>
+          <button
+            v-for="page in visiblePages"
+            :key="page"
+            :class="{ active: currentPage === page }"
+            @click="goToPage(page)"
+          >{{ page }}</button>
+          <button :disabled="currentPage === totalPages" @click="nextPage">&#62;</button>
+        </div>
       </div>
     </div>
 
-   </div>
-</template>
+      <!-- Modal Delete -->
+  <div v-if="showModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Konfirmasi Hapus</h3>
+      <p>
+        Apakah Anda yakin ingin menghapus jabatan <strong>{{ jabatanToDelete }}</strong>?
+      </p>
+      <p v-if="isCounting">Mohon tunggu {{ countdown }} detik</p>
+      <div class="modal-actions">
+        <button v-if="!isCounting" class="btn danger" @click="confirmDelete()">Ya, hapus</button>
+        <button class="btn" @click="cancelDelete()">Batal</button>
+      </div>
+    </div>
+  </div>
+  </template>
+  
 
 
   <style scoped>
@@ -251,12 +239,6 @@ function ubahPengguna(user) {
   gap: 0.5rem;
 }
 
-.btn.tambah {
-  background: #009e3c;
-  color: #fff;
-  margin-left: auto;
-}
-
 .search-bar {
   width: 100%;
   padding: 10px;
@@ -305,7 +287,7 @@ function ubahPengguna(user) {
 .data-table tr {
   border-bottom: 1px solid #eee;
 }
-/* tombol aksi */
+/* Tombol aksi */
 .wrapper-aksiBtn{
   display: flex;
   gap: 3px;
@@ -319,25 +301,20 @@ function ubahPengguna(user) {
   cursor: pointer;
   font-size: 14px;
   color: white;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s;
 }
-.aksiEdit-btn:hover {
-  background: #1976d2;
-}
+.aksiEdit-btn:hover { background: #1976d2; }
 .aksiDelete-btn {
   background: #c14421;
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 0.3rem 0.5rem;
-  margin-right: 0.2rem;
   cursor: pointer;
   font-size: 14px;
   color: white;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s;
 }
-.aksiDelete-btn:hover {
-  background: #a63a1d;
-}
+.aksiDelete-btn:hover { background: #a63a1d; }
 /* Pengganti Halaman */
 .pagination {
   display: flex;

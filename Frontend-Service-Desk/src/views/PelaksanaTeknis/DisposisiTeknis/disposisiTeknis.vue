@@ -30,23 +30,6 @@ onMounted(() => {
       tanggal: item.created_at,
       status: item.status_pelayanan.Nama_Status,
     }))
-    if (layananData.value.length > 0) {
-      const jenis = layananData.value[0].jenis;
-
-      // ambil alur berdasarkan jenis
-      axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${jenis}`, {
-        headers: { Authorization: 'Bearer ' + token }
-      })
-      .then(response => {
-        steps.value = response.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
-        localStorage.setItem('steps', JSON.stringify(steps.value)) // simpan jika mau
-      })
-      .catch(error => {
-        console.error('Gagal mengambil steps:', error);
-      });
-    } else {
-      console.warn('Data items kosong, tidak bisa ambil jenis pelayanan');
-    }
   })
   .catch(error => {
     console.error('Gagal mengambil data pelayanan:', error);
@@ -59,13 +42,10 @@ onMounted(() => {
 //ke halaman detail 
 function lihatDetail(item){
   const pelayananId = ref(item.noTiket)
-  const stepString = JSON.stringify(steps.value);
     router.push({
     name: 'DetailDisposisiTeknis', 
     query: {
       layanan: item.noTiket,
-      steps: stepString,
-      tab: 'informasi'
     }
   })
     
@@ -140,8 +120,6 @@ const visiblePages = computed(() => {
 watch(search, () => {
   currentPage.value = 1
 })
-
-
 </script>
 
 <template>
@@ -157,6 +135,7 @@ watch(search, () => {
             <th>Perihal</th>
             <th>Tanggal</th>
             <th>Pelaksana Teknis</th>
+            <th>Detail Progress</th>
             <th @click="toggleSort('status')" class="cursor-pointer">Status
                 <span v-if="sortKey === 'status' || sortOrder === null">
                 <span v-if="sortOrder === 'asc'">🔼</span>
@@ -164,7 +143,6 @@ watch(search, () => {
                 <span v-else>☰</span>
               </span>
             </th>
-            <th>Detail Progress</th>
           </tr>
         </thead>
         <tbody>
@@ -258,43 +236,6 @@ watch(search, () => {
   background-color: #f9f9f9;
 }
 
-.status {
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-  display: inline-block;
-}
-
-.status.baru {
-  background-color: #e6dcf5;
-  color: #6a1b9a;
-}
-
-.status.proses {
-  background-color: #f5f5c3;
-  color: #aaaa3a;
-}
-
-.status.disetujui {
-  background-color: #c7f5d9;
-  color: #2e7d32;
-}
-
-.status.ditolak {
-  background-color: #ff8181;
-  color: #490707;
-}
-
-.status.selesai {
-  background-color: #fddede;
-  color: #22ff00;
-}
-
-.status.tutup {
-  background-color: #9c9c9c;
-  color: #1e1e1e;
-}
 .detail-button {
   background: none;
   border: none;
