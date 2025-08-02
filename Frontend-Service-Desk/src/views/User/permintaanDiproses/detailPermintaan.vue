@@ -23,7 +23,8 @@ const SuratDinas_Path = ref(null)
 const Lampiran_Path = ref(null)
 const activeTab = ref('informasi')
 
-const namaTeknis = ref('ful iful')
+const nama_depanTeknis = ref('ful')
+const nama_belakangTeknis = ref('iful')
 
 // Loading states
 const isLoading = ref(true)
@@ -256,10 +257,11 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-
+            <!-- <div class="containerKanan"></div> -->
             <div class="chat-card">
               <h3>Chat</h3>
               <div class="chat-content">
+
                 <div
                   v-for="(message, index) in messages"
                   :key="index"
@@ -271,10 +273,10 @@ onMounted(() => {
               </div>
               <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
               <button class="send-btn" @click="addMessage">Kirim</button>
+              <div class ="info-row-PelaksanaTeknis">
+                <strong>Nama Pelaksana Teknis:</strong>
+              <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
             </div>
-            <div class="teknisi-card">
-              <h3>Nama Pelaksana Teknis</h3>
-              {{ namaTeknis }}
             </div>
           </div>
         </div>
@@ -425,6 +427,16 @@ onMounted(() => {
   display: flex;
   gap: 2rem;
   align-items: flex-start;
+}
+
+.info-row {
+  display: flex;
+  padding: 0.8rem 0;
+}
+
+.info-row-PelaksanaTeknis {
+  display: block;
+  padding: 0.8rem 0;
 }
 
 .info-card,
