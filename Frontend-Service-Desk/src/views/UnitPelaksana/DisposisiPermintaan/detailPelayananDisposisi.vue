@@ -22,6 +22,7 @@ const organisasi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const pesanUnit = ref('')
+const isDone = ref(false) 
 const src_HasilPemenuhan = ref('-')
 const src_HasilBA = ref('-')
 const src_HasilSLA = ref('-')
@@ -49,6 +50,7 @@ const pelayananData = computed(() => ({
   nama_depanTeknis: nama_depanTeknis.value,
   nama_belakangTeknis: nama_belakangTeknis.value,
   perihal: perihal.value,
+  isDone: isDone.value,
   tanggal: tanggal.value,
   steps: steps.value,
   stepsStatus: stepsStatus.value
@@ -71,6 +73,7 @@ const fetchPelayananData = async () => {
     nama_belakangPengaju.value = cached.nama_belakangPengaju
     nama_depanTeknis.value = cached.nama_depanTeknis
     nama_belakangTeknis.value = cached.nama_belakangTeknis
+    isDone.value = cached.isDone
     perihal.value = cached.perihal
     tanggal.value = cached.tanggal
     steps.value = cached.steps
@@ -108,6 +111,7 @@ const fetchPelayananData = async () => {
     nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan || 'Belum'
     nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Tersedia'
     perihal.value = pelayananData.Perihal
+    isDone.value = Boolean(pelayananData.Is_Done)
     tanggal.value = pelayananData.created_at
 
     // Set progress data
@@ -131,6 +135,7 @@ const fetchPelayananData = async () => {
       nama_belakangTeknis: nama_belakangTeknis.value,
       perihal: perihal.value,
       tanggal: tanggal.value,
+      isDone: isDone.value,
       steps: steps.value,
       stepsStatus: stepsStatus.value
     }
@@ -227,7 +232,7 @@ function handleSelesai() {
     {
       ID_Status: 5,
       Pesan_Unit: pesanUnit.value,
-      Is_Done: false
+      Is_Done: true
     },
     {
       headers: {
@@ -240,7 +245,8 @@ function handleSelesai() {
     axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
     {
       ID_Status: 4,
-      Pesan_Unit: pesanUnit.value
+      Pesan_Unit: pesanUnit.value,
+      Is_Done: false
     },
     {
       headers: {
@@ -270,10 +276,7 @@ watch(() => pelayananId.value, (newId) => {
 onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
-  }
-  
-  if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
-    progress.value = true
+    console.log(isDone.value)
   }
 })
 </script>
@@ -361,8 +364,7 @@ onMounted(() => {
                 <strong>Nama Pelaksana Teknis:</strong>
                 <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
             </div>
-
-            <div class="document-links">
+            <div v-if="isDone" class="document-links" >
               <div class="info-row-docs">
                 <strong>Hasil Pemenuhan</strong>
                 <div v-if="HasilPemenuhan_Path">
@@ -390,7 +392,7 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-            <div class="tinjau-card">
+            <div class="tinjau-card" v-if="isDone">
         <h3>Tinjau Pelayanan</h3>
         <div class="wrapper-btn">
           <button class="btn-selesai" @click="handlePilihan('Selesai')">Selesai</button>
@@ -407,6 +409,7 @@ onMounted(() => {
           <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
         </div>
       </div>
+      
           </div> <!-- end chat-card -->
         </div> <!-- end layout-container -->
       </div> <!-- end informasi tab -->

@@ -42,8 +42,6 @@ import berandaUnit from '../views/UnitPelaksana/Beranda/BerandaUnit.vue'
 // Approval
 import approval from '../views/UnitPelaksana/ApprovalPermintaan/ApprovalUnit.vue'
 import detailPelayananPelaksana from '../views/UnitPelaksana/ApprovalPermintaan/detailPelayananPelaksana.vue'
-import halamanInformasiApproval from '../views/UnitPelaksana/ApprovalPermintaan/halaman-informasi-PelayananPelaksana.vue'
-import halamanLacakApproval from '../views/UnitPelaksana/ApprovalPermintaan/halaman-lacak-PelayananPelaksana.vue'
 
 // Disposisi
 import disposisi from '../views/UnitPelaksana/DisposisiPermintaan/DisposisiUnit.vue'
@@ -123,12 +121,7 @@ const routes = [
   { path: '/approval', name: 'Approval', component: approval, meta: {allowedRoles: [3]}},
   { path: '/disposisi', name: 'Disposisi', component: disposisi, meta: {allowedRoles: [3]}},
   //Approval
-  { path: '/detailPelayananPelaksana', name: 'DetailPelayananPelaksana', component: detailPelayananPelaksana, meta: {allowedRoles: [3]},
-    children: [
-      { path: 'informasiApproval', name: 'InformasiPelaksana' , component: halamanInformasiApproval, meta: {allowedRoles: [3]}},
-      { path: 'lacakApproval', name:'LacakPelaksana', component: halamanLacakApproval, meta: {allowedRoles: [3]}}
-    ]
-  },
+  { path: '/detailPelayananPelaksana', name: 'DetailPelayananPelaksana', component: detailPelayananPelaksana, meta: {allowedRoles: [3]}},
   //Disposisi
   { path: '/detailPelayananDisposisi', name: 'DetailPelayananDisposisi', component: detailPelayananDisposisi, meta: {allowedRoles: [3]}},
 
