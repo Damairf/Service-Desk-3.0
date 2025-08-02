@@ -217,7 +217,6 @@ const namaFileHasilSLA = computed(() => {
 })
 
 const rating = ref(null)
-const hoverRating = ref(0)
 const reviewText = ref('')
 const reviewSubmitted = ref(false)
 
@@ -320,9 +319,6 @@ onMounted(() => {
                       v-for="star in 5"
                       :key="star"
                       class="star"
-                      :class="{ 'filled': star <= (hoverRating || rating) }"
-                      @mouseover="hoverRating = star"
-                      @mouseleave="hoverRating = 0"
                     >
                       ★
                     </span>
