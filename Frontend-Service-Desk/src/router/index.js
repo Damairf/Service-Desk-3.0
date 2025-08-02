@@ -14,7 +14,7 @@ import HalamanFormulirTiketBaru from '../views/User/pengajuanPermintaan/halaman-
 import permintaanDiproses from '../views/User/permintaanDiproses/permintaanDiproses.vue'
 import detailPermintaan from '../views/User/permintaanDiproses/detailPermintaan.vue'
 import halamanLacak from '../views/User/permintaanDiproses/halaman-lacak.vue'
-import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
+// import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
 
 // Hasil Pemenuhan BASLA
 import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
@@ -102,7 +102,7 @@ const routes = [
   { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, meta: {allowedRoles: [1]}, 
     children: [
       { path: 'lacak', name: 'HalamanLacak', component: halamanLacak, meta: {allowedRoles: [1]}},
-      { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi, meta: {allowedRoles: [1]}}
+      // { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi, meta: {allowedRoles: [1]}}
     ]
   },
 
