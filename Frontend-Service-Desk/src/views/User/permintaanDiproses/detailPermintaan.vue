@@ -231,12 +231,12 @@ onMounted(() => {
           <div class="layout-container">
             <div class="info-card">
               <h3>Informasi Umum</h3>
-              <div class="info-row"><strong>Layanan</strong> <span>{{ jenis_pelayanan }}</span></div>
-              <div class="info-row"><strong>No. Tiket</strong> <span>{{ pelayananId }}</span></div>
-              <div class="info-row"><strong>Pengaju</strong> <span>{{ nama_depanPengaju + ' ' + nama_belakangPengaju }}</span></div>
-              <div class="info-row"><strong>Organisasi</strong> <span>{{ organisasi }}</span></div>
-              <div class="info-row"><strong>Tanggal Laporan</strong> <span>{{ new Date(tanggal).toLocaleDateString('id-ID') }}</span></div>
-              <div class="info-row"><strong>Perihal</strong> <span>{{ perihal }}</span></div>
+              <div class="info-row"><strong>Layanan:</strong> <span>{{ jenis_pelayanan }}</span></div>
+              <div class="info-row"><strong>No. Tiket:</strong> <span>{{ pelayananId }}</span></div>
+              <div class="info-row"><strong>Pengaju:</strong> <span>{{ nama_depanPengaju + ' ' + nama_belakangPengaju }}</span></div>
+              <div class="info-row"><strong>Organisasi:</strong> <span>{{ organisasi }}</span></div>
+              <div class="info-row"><strong>Tanggal Laporan:</strong> <span>{{ new Date(tanggal).toLocaleDateString('id-ID') }}</span></div>
+              <div class="info-row"><strong>Perihal:</strong> <span>{{ perihal }}</span></div>
               <div class="info-row textarea-row">
                 <strong>Deskripsi User</strong>
                 <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
@@ -404,7 +404,7 @@ onMounted(() => {
 }
 
 .tab-content {
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.1s ease-in-out;
 }
 
 @keyframes fadeIn {
@@ -429,7 +429,7 @@ onMounted(() => {
 }
 
 .info-row {
-  display: flex;
+  display: block;
   padding: 0.8rem 0;
 }
 
