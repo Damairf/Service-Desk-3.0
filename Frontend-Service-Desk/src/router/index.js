@@ -17,8 +17,6 @@ import detailPermintaan from '../views/User/permintaanDiproses/detailPermintaan.
 // Hasil Pemenuhan BASLA
 import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
 import detailPermintaanHasil from '../views/User/HasilPemenuhan/detailPermintaanHasil.vue'
-import halamanLacakHasil from '../views/User/HasilPemenuhan/halaman-lacakHasil.vue'
-import halamanInformasiHasil from '../views/User/HasilPemenuhan/halaman-informasiHasil.vue'
 
 //Riwayat
 import riwayat from '../views/User/Riwayat/riwayat.vue'
@@ -101,12 +99,7 @@ const routes = [
 
   // Hasil Pemenuhan BASLA
   { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA, meta: {allowedRoles: [1]}},
-  { path: '/detailPermintaanHasil', name: 'DetailPermintaanHasil', component: detailPermintaanHasil, meta: {allowedRoles: [1]},
-    children: [
-      {path: 'lacakHasil', name: 'HalamanLacakHasil', component: halamanLacakHasil, meta: {allowedRoles: [1]}},
-      {path: 'informasiHasil', name: 'HalamanInformasiHasil', component: halamanInformasiHasil, meta: {allowedRoles: [1]}}  
-    ]
-  },
+  { path: '/detailPermintaanHasil', name: 'DetailPermintaanHasil', component: detailPermintaanHasil, meta: {allowedRoles: [1]}},
 
   // Riwayat
   { path: '/riwayat', name: 'Riwayat', component: riwayat, meta: {allowedRoles: [1]}},

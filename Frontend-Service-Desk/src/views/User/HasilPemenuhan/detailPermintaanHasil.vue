@@ -654,7 +654,7 @@ onMounted(() => {
 
 .review-section {
   border-top: 1px solid #eee;
-  padding-top: 1.5rem;
+  padding-top: 0.5rem;
 }
 
 .review-title {
