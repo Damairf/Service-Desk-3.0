@@ -19,6 +19,7 @@ const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const organisasi = ref('')
+const status = ref('')
 
 const surat_dinas = ref('')
 const lampiran = ref('')
@@ -122,7 +123,7 @@ const fetchPelayananData = async () => {
     tanggal.value = pelayananData.created_at
     rating.value = pelayananData.Rating,
     reviewText.value = pelayananData.Isi_Survey
-    status.value = pelayananData.status_pelayanan?.ID_Status || ''
+    status.value = pelayananData.ID_Status
 
 
     // Set progress data
@@ -338,9 +339,17 @@ onMounted(() => {
                   <div class="message-text">{{ message.text + " " }}</div>
                   <div class="message-time">{{ message.time + " " }}</div>
                 </div>
+
+              </div class="alasan-tolak" v-if="status === 3">
+                <strong>Alasan Penolakan</strong>
+                <div class="textarea-row">
+                  <textarea class="input" :value="pelayananData.deskripsi" placeholder="Alasan Penolakan" rows="5" readonly></textarea>
+                </div>
+              <div>
+
               </div>
 
-              <div class="info-row-PelaksanaTeknis">
+              <div class="info-row-PelaksanaTeknis" v-if="status !== 3">
                 <strong>Nama Pelaksana Teknis:</strong>
                 <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
               </div>
