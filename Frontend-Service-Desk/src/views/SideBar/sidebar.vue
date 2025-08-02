@@ -114,8 +114,6 @@ if (role.value == 1) {
   menuItem.value = [
   { icon: '🏠', label: 'Beranda', to: '/berandaTeknis' },
   { icon: '⚙️', label: 'User Portal', to: '/portal' },
-  { icon: '🔍', label: 'Request User', to: '/request' },
-  { icon: '📁', label: 'Laporan Insiden', to: '/laporan' },
   { icon: '📁', label: 'Disposisi Permintaan Layanan', to: '/disposisiTeknis' },
   { icon: '📁', label: 'Hasil Pengerjaan Permintaan Layanan', to: '/hasil' },
 ];
@@ -156,7 +154,7 @@ if (role.value == 1) {
     <!-- Profile -->
     <div class="profile" ref="profileRef" @click="toggleOverlay">
       <img
-        :src="`http://localhost:8000/images/${gambar}`"
+        :src="`/images/${gambar}`"
         alt="Foto Profil"
         class="gambar-profile"
       />

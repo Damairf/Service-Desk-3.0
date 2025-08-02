@@ -12,6 +12,7 @@ onUnmounted(() => {
 const route = useRoute()
 const layanan = ref(route.query.layanan || '')
 const persyaratan = ref(route.query.persyaratan || '')
+const namaPelapor = ref([localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' '))
 const id_user = localStorage.getItem('ID_User')
 const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
 const id_status = 1
@@ -66,7 +67,7 @@ formData.append('surat_dinas', suratDinas.value);
 formData.append('lampiran', lampiran.value);
 
 try {
-  const response = await axios.post('http://localhost:8000/api/uploadKeperluan', formData, {
+  const response = await axios.post('/api/uploadKeperluan', formData, {
     headers: {
       Authorization: 'Bearer ' + token,
       'Content-Type': 'multipart/form-data'
@@ -97,8 +98,9 @@ const uploaded = await uploadFiles()
 
 if (!uploaded) return
 const token = localStorage.getItem('Token');
-axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
+axios.post('/api/pelayanan/tambah', {
   "ID_User": id_user,
+  "Nama_Pelapor": namaPelapor.value,
   "ID_Jenis_Pelayanan": id_jenis_pelayanan,
   "ID_Status": id_status,
   "Perihal": perihal.value,
@@ -116,6 +118,7 @@ axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
 })
 .catch(error => {
   console.error(error.response?.data || error.message);
+  console.log(namaPelapor.value)
 });
 }
 </script>
@@ -132,7 +135,7 @@ axios.post('http://127.0.0.1:8000/api/pelayanan/tambah', {
 
       <form @submit.prevent="handleSubmit">
         <label>Pelapor</label>
-        <p class="display">-</p>
+        <input type="text" v-model="namaPelapor" maxlength="50"/>
 
         <label>Layanan</label>
         <p class="display">{{ layanan }}</p>

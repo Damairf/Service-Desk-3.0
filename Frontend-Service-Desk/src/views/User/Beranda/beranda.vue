@@ -8,8 +8,7 @@
     selectMenu('Permintaan Baru')
   }
 
-const nama_depan = localStorage.getItem('nama_depan')
-const nama_belakang = localStorage.getItem('nama_belakang')
+const nama_user = [localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' ')
 const nip_user = ref('')
 const nama_jabatan = ref('')
 const nama_organisasi = ref('')
@@ -24,13 +23,12 @@ onMounted(()=> {
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/user/profile', {
+  axios.get('/api/user/profile', {
     headers: {
       Authorization: 'Bearer ' + token
     }
   })
   .then(response => {
-    console.log(response.data)
     nip_user.value = response.data.NIP
     nama_jabatan.value = response.data.user_jabatan.Nama_Jabatan
     nama_organisasi.value = response.data.user_organisasi.Nama_OPD
@@ -54,7 +52,7 @@ onBeforeMount(() => {
   <template>
       <div class="container" >
         <div class="greet">
-        <h1>Selamat datang, {{ nama_depan + " " + nama_belakang }}</h1>
+        <h1>Selamat datang, {{ nama_user }}</h1>
         <p>
           Ada yang bisa kami bantu?
         </p>

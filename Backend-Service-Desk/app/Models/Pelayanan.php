@@ -18,6 +18,7 @@ class Pelayanan extends Model
     ];
     protected $fillable = [
         'Perihal',
+        'Nama_Pelapor',
         'Deskripsi',
         'Lampiran',
         'Lampiran_Path',
@@ -26,8 +27,9 @@ class Pelayanan extends Model
         'ID_User',
         'ID_Jenis_Pelayanan',
         'ID_Unit',
-        'Insiden',
+        'Pesan_Pengelola',
         'ID_Teknis',
+        'Pesan_Unit',
         'Is_Done',
         'BA_Path',
         'SLA_Path',
@@ -70,5 +72,9 @@ class Pelayanan extends Model
     public function progress_to_pelayanan(): HasMany
     {
         return $this->hasMany(ProgressAlur::class, 'ID_Pelayanan');
+    }
+    public function pelayanan_pesan()
+    {
+        return $this->hasMany(Pesan::class, 'ID_Pelayanan', 'ID_Pelayanan');
     }
 }

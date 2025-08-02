@@ -21,7 +21,8 @@ const tanggalLaporan = ref(route.query.tanggal || '-')
 const perihal = ref(route.query.perihal || '-')
 const deskripsiUser = ref(route.query.deskripsi || '-')
 //pesan dari si pengelola
-const pesanPengelola = ref(route.query.insiden || '-')
+const pesanPengelola = ref(route.query.pesanPengelola || '-')
+const pesanUnit = ref('')
 
 const SuratDinas_Path = ref(null)
 const src_SuratDinas = ref(route.query.surat_dinas || '-')
@@ -69,11 +70,11 @@ axios.get('http://127.0.0.1:8000/api/pelayanan/teknis', {
 });
 
 function handleSelesai() {
-
   const token = localStorage.getItem('Token');
   axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
   {
     ID_Teknis: idTeknisTerpilih.value,
+    Pesan_Unit: pesanUnit.value,
     ID_Status: 4,
   }
   , {
@@ -85,7 +86,7 @@ function handleSelesai() {
 } 
 
 //  ambil URL dari backend
-SuratDinas_Path.value = 'http://localhost:8000/' + src_SuratDinas.value
+SuratDinas_Path.value = '/files/' + src_SuratDinas.value
 const namaFileSuratDinas = computed(() => {
   const fileName = src_SuratDinas.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -94,7 +95,7 @@ const namaFileSuratDinas = computed(() => {
   return `${tanggal}_${waktu}_Surat_Dinas.pdf`
 })
 
-Lampiran_Path.value = 'http://localhost:8000/' + src_Lampiran.value
+Lampiran_Path.value = '/files/' + src_Lampiran.value
 const namaFileLampiran = computed(() => {
   const fileName = src_Lampiran.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -183,15 +184,15 @@ const addMessage = () => {
     <div class="tinjau-card">
       <h3>Tinjau Pelayanan</h3>
       <div class='wrapper-setuju'>
-        <h4>Unit Pelaksana Teknis</h4>
+        <h4>Pilih Pelaksana Teknis</h4>
         <select id="status" v-model="idTeknisTerpilih">
           <option value="" disabled>Pilih Unit Pelaksana Teknis</option>
           <option v-for="option in pelaksana" :key="option.id_user" :value="option.id_user">
             {{ option.nama_depan }} {{ option.nama_belakang }}
           </option>
         </select>
-        <h4>Pesan untuk Unit Pelaksana Teknis</h4>
-        <textarea class="input" v-model="insiden"></textarea>
+        <h4>Pesan untuk Pelaksana Teknis</h4>
+        <textarea class="input" v-model="pesanUnit"></textarea>
         <button class="btn-selesai" @click="handleSelesai">Selesai</button>
       </div>
 

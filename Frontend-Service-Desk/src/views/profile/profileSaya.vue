@@ -27,7 +27,7 @@
       <!-- FOTO & NAMA -->
       <div class="left-column">
         <img
-          :src="`http://localhost:8000/images/${gambar}`"
+          :src="`/images/${gambar}`"
           alt="Foto Profil"
           class="profile-img"
         />
@@ -61,16 +61,8 @@
   </div>
 </template>
 
-<!-- <style>
-html, body {
-  height: auto;
-  margin: 0;
-  padding: 0;
-  background-color: #FAF4FF;
-}
-</style> -->
-
 <style scoped>
+
 
 .profile-card {
   max-width: 50rem;
@@ -87,9 +79,7 @@ html, body {
   font-size: 2rem;
   font-weight: 550;
   color: black;
-  padding-left: 2.5rem;
-  margin-bottom: 2rem;
-  display: inline-block;
+  text-align: center;
 }
 
 .profile-container {
@@ -106,7 +96,6 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 260px;
   max-width: 320px;
   gap: 1rem;
   flex: 1;
@@ -150,7 +139,7 @@ html, body {
   justify-content: flex-start;
   background: #f8fafc;
   border-radius: 12px;
-  padding: 2rem 2rem 1.5rem 2rem;
+  padding: 0.5rem 4rem 0.5rem 0.5rem;
   min-width: 320px;
   max-width: 420px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
@@ -159,7 +148,6 @@ html, body {
   display: flex;
   align-items: flex-start;
   border-radius: 1rem;
-  padding: 1.2rem;
   gap: 1rem;
 }
 
@@ -170,7 +158,7 @@ html, body {
 .display-info {
   padding: 0.25rem;
   margin-top: 0.25rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
   background-color: #f0f0f0;
   border-radius: 10px;
   border: 1px solid #ccc;

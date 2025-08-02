@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Pelayanan;
 use App\Models\User;
 use App\Models\Alur;
+use App\Models\Pesan;
 use App\Models\ProgressAlur;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
@@ -75,6 +76,7 @@ class PelayananController extends Controller
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
         $ID_Jenis_Pelayanan = $request->ID_Jenis_Pelayanan;
         $Perihal = $request->Perihal;
+        $Nama_Pelapor = $request->Nama_Pelapor;
         $Deskripsi = $request->Deskripsi;
         $Surat_Dinas_Path = $request->Surat_Dinas_Path;
         $Lampiran_Path = $request->Lampiran_Path;
@@ -82,6 +84,7 @@ class PelayananController extends Controller
 
         $newPelayanan = Pelayanan::create([
             'ID_User' => $ID_User,
+            'Nama_Pelapor' => $Nama_Pelapor,
             'ID_Jenis_Pelayanan' => $ID_Jenis_Pelayanan,
             'Perihal' => $Perihal,
             'Deskripsi' => $Deskripsi,
@@ -104,45 +107,50 @@ class PelayananController extends Controller
     }
 
     // untuk role pengelola memberikan ID Unit Pelaksana
-    public function setuju(Request $request){
+    public function disposisi(Request $request){
+        $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
         $pelayananId = $request->route('pelayananId');
         $dataPelayanan = $request->only([
             'ID_Unit',
             'ID_Status',
-            'Insiden'
-        ]);
-
-        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
-
-        $pelayanan->update($dataPelayanan);
-    }
-
-    public function tolak(Request $request){
-        $pelayananId = $request->route('pelayananId');
-        $dataPelayanan = $request->only([
-            'Insiden',
-            'ID_Status',
-            'ID_Unit'
-        ]);
-
-        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
-
-        $pelayanan->update($dataPelayanan);
-    }
-
-    public function disposisi(Request $request){
-        $pelayananId = $request->route('pelayananId');
-        $dataPelayanan = $request->only([
             'ID_Teknis',
-            'ID_Status'
+            'Pesan_Pengelola',
+            'Pesan_Unit'
         ]);
 
-        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
+    $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
 
-        $pelayanan->update($dataPelayanan);
+    $pelayanan->update($dataPelayanan);
 
-        return response()->json($pelayanan);
+    return response ($pelayanan);
     }
+
+    // public function tolak(Request $request){
+    //     $pelayananId = $request->route('pelayananId');
+    //     $dataPelayanan = $request->only([
+    //         'Insiden',
+    //         'ID_Status',
+    //         'ID_Unit'
+    //     ]);
+
+    //     $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
+
+    //     $pelayanan->update($dataPelayanan);
+    // }
+
+    // public function disposisi(Request $request){
+    //     $pelayananId = $request->route('pelayananId');
+    //     $dataPelayanan = $request->only([
+    //         'ID_Teknis',
+    //         'ID_Status'
+    //     ]);
+
+    //     $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
+
+    //     $pelayanan->update($dataPelayanan);
+
+    //     return response()->json($pelayanan);
+    // }
         
     // hanya untuk role user memberikan survey
     public function putSurvey(Request $request){

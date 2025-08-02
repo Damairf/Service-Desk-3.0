@@ -13,7 +13,7 @@ class Status extends Model
 
    protected $table = 'reff_status';
    protected $primaryKey = 'ID_Status';
-   protected $fillable = ['Is_Active'];
+   protected $fillable = ['Nama_Status'];
    
    public function status_pelayanan(): HasMany{
       return $this -> hasMany( Pelayanan::class, 'ID_Status');

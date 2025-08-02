@@ -10,7 +10,7 @@ const services = ref([])
 const isLoading = ref(true)
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/jenispelayanan', {
+  axios.get('/api/jenispelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
     }

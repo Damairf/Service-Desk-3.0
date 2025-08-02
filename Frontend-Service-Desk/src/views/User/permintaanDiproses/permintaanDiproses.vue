@@ -23,7 +23,7 @@ const items = ref([])
 
 onMounted(() => {
   const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/pelayananUser', {
+  axios.get('/api/pelayananUser', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -106,8 +106,8 @@ watch(filteredItems, () => {
             <th>Perihal</th>
             <th>Tanggal Laporan</th>
             <th>Pelaksana Teknis</th>
-            <th>Detail Proses</th>
             <th>Status</th>
+            <th>Detail Proses</th>
           </tr>
         </thead>
         <tbody>
@@ -122,9 +122,11 @@ watch(filteredItems, () => {
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.date) }}</td>
             <td>{{ item.teknis }}</td>
-            <td><a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progres</a></td>
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+            </td>
+            <td>
+              <a href="#" @click.prevent="checkProgress(item)" style="color: blue; text-decoration: underline;">Cek Progres</a>
             </td>
           </tr>
         </tbody>

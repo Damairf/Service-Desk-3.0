@@ -17,7 +17,7 @@ const steps = ([])
 
 onMounted(() => {
   const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/unit/pelayanan', {
+  axios.get('/api/unit/pelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -35,12 +35,12 @@ onMounted(() => {
       const jenis = layananData.value[0].jenis;
 
       // ambil alur berdasarkan jenis
-      axios.get(`http://127.0.0.1:8000/api/alur/jenis_pelayanan/${jenis}`, {
+      axios.get(`/api/alur/jenis_pelayanan/${jenis}`, {
         headers: { Authorization: 'Bearer ' + token }
       })
       .then(response => {
         steps.value = response.data.map(a => a.isi_alur?.Isi_Bagian_Alur) || [];
-        localStorage.setItem('steps', JSON.stringify(steps.value)) // simpan jika mau
+        localStorage.setItem('steps', JSON.stringify(steps.value))
       })
       .catch(error => {
         console.error('Gagal mengambil steps:', error);

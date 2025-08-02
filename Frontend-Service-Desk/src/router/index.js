@@ -13,20 +13,14 @@ import HalamanFormulirTiketBaru from '../views/User/pengajuanPermintaan/halaman-
 // Permintaan Diproses
 import permintaanDiproses from '../views/User/permintaanDiproses/permintaanDiproses.vue'
 import detailPermintaan from '../views/User/permintaanDiproses/detailPermintaan.vue'
-import halamanLacak from '../views/User/permintaanDiproses/halaman-lacak.vue'
-// import halamanInformasi from '../views/User/permintaanDiproses/halaman-informasi.vue'
 
 // Hasil Pemenuhan BASLA
 import HasilPemenuhanBASLA from '../views/User/HasilPemenuhan/hasilPemenuhanBASLA.vue'
 import detailPermintaanHasil from '../views/User/HasilPemenuhan/detailPermintaanHasil.vue'
-import halamanLacakHasil from '../views/User/HasilPemenuhan/halaman-lacakHasil.vue'
-import halamanInformasiHasil from '../views/User/HasilPemenuhan/halaman-informasiHasil.vue'
 
 //Riwayat
 import riwayat from '../views/User/Riwayat/riwayat.vue'
 import detailPermintaanRiwayat from '../views/User/Riwayat/detailPermintaanRiwayat.vue'
-import halamanLacakRiwayat from '../views/User/Riwayat/halaman-lacakRiwayat.vue'
-import halamanInformasiRiwayat from '../views/User/Riwayat/halaman-informasiRiwayat.vue'
 
 //===============PENGELOLA===============
 import berandaPengelola from '../views/Pengelola/BerandaPengelola/berandaPengelola.vue'
@@ -102,27 +96,17 @@ const routes = [
   { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, meta: {allowedRoles: [1]}, 
     children: [
       { path: 'lacak', name: 'HalamanLacak', component: halamanLacak, meta: {allowedRoles: [1]}},
-      // { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi, meta: {allowedRoles: [1]}}
+      { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi, meta: {allowedRoles: [1]}}
     ]
   },
 
   // Hasil Pemenuhan BASLA
   { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA, meta: {allowedRoles: [1]}},
-  { path: '/detailPermintaanHasil', name: 'DetailPermintaanHasil', component: detailPermintaanHasil, meta: {allowedRoles: [1]},
-    children: [
-      {path: 'lacakHasil', name: 'HalamanLacakHasil', component: halamanLacakHasil, meta: {allowedRoles: [1]}},
-      {path: 'informasiHasil', name: 'HalamanInformasiHasil', component: halamanInformasiHasil, meta: {allowedRoles: [1]}}  
-    ]
-  },
+  { path: '/detailPermintaanHasil', name: 'DetailPermintaanHasil', component: detailPermintaanHasil, meta: {allowedRoles: [1]}},
 
   // Riwayat
   { path: '/riwayat', name: 'Riwayat', component: riwayat, meta: {allowedRoles: [1]}},
-  { path: '/detailPermintaanRiwayat', name: 'DetailPermintaanRiwayat', component: detailPermintaanRiwayat, meta: {allowedRoles: [1]},
-    children: [
-      {path: 'lacakRiwayat', name: 'HalamanLacakRiwayat', component: halamanLacakRiwayat, meta: {allowedRoles: [1]}},
-      {path: 'informasiRiwayat', name: 'HalamanInformasiRiwayat', component: halamanInformasiRiwayat, meta: {allowedRoles: [1]}}
-    ]
-  },
+  { path: '/detailPermintaanRiwayat', name: 'DetailPermintaanRiwayat', component: detailPermintaanRiwayat, meta: {allowedRoles: [1]}},
 
   //===============PENGELOLA===============
   { path: '/Beranda-Pengelola', name: 'Beranda-Pengelola', component: berandaPengelola, meta: {allowedRoles: [2]}},

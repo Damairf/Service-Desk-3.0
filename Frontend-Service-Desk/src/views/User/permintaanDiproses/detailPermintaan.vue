@@ -19,7 +19,9 @@ const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
-const activeTab = ref('informasi')
+const SuratDinas_Path = ref(null)
+const Lampiran_Path = ref(null)
+const activeTab = ref(route.query.tab === 'informasi' ? 'informasi' : 'tracking')
 
 // Loading states
 const isLoading = ref(true)
@@ -69,10 +71,10 @@ const fetchPelayananData = async () => {
     const token = localStorage.getItem('Token')
     
     const [pelayananResponse, progressResponse] = await Promise.all([
-      axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
+      axios.get(`/api/pelayanan/${pelayananId.value}`, {
         headers: { Authorization: 'Bearer ' + token }
       }),
-      axios.get(`http://127.0.0.1:8000/api/pelayanan/alur/progress/${pelayananId.value}`, {
+      axios.get(`/api/pelayanan/alur/progress/${pelayananId.value}`, {
         headers: { Authorization: 'Bearer ' + token }
       })
     ])
@@ -96,48 +98,61 @@ const fetchPelayananData = async () => {
     )
     stepsStatus.value = progressData.map(item => item.Is_Done)
 
-    // Cache data
-    dataCache.value = {
-      id: pelayananId.value,
-      deskripsi: deskripsi.value,
-      organisasi: organisasi.value,
-      surat_dinas: surat_dinas.value,
-      lampiran: lampiran.value,
-      jenis_pelayanan: jenis_pelayanan.value,
-      nama_depanPengaju: nama_depanPengaju.value,
-      nama_belakangPengaju: nama_belakangPengaju.value,
-      perihal: perihal.value,
-      tanggal: tanggal.value,
-      steps: steps.value,
-      stepsStatus: stepsStatus.value
-    }
-
-    isDataLoaded.value = true
-  } catch (error) {
-    console.error('Error fetching data:', error)
-  } finally {
-    isLoading.value = false
-  }
-}
-
-// Fungsi untuk menangani perubahan tab (tanpa router navigation)
-const handleTabChange = (tab) => {
-  activeTab.value = tab
-  // Update URL tanpa navigation
-  const newQuery = { ...route.query, tab }
-  router.replace({ query: newQuery })
-}
-
-// Watch untuk perubahan pelayananId
-watch(() => pelayananId.value, (newId) => {
-  if (newId && newId !== '-') {
-    fetchPelayananData()
-  }
+  handleTabChange(activeTab.value)
+  })
+  .catch(error => {
+    console.error(error)
+  })
 })
+.catch(function(error) {
+  console.log(error)
+});
 
+// Fungsi untuk menangani perubahan tab
+const handleTabChange = async (tab) => {
+  activeTab.value = tab;
+
+  if (tab === 'tracking') {
+    if (steps.value.length > 0) {
+      router.push({
+        name: 'HalamanLacak',
+        query: {
+          layanan: pelayananId.value,
+          tab: 'tracking',
+          steps: JSON.stringify(steps.value),
+          stepsStatus: JSON.stringify(stepsStatus.value)
+        }
+      });
+      return;
+    }
+  } else if (tab === 'informasi') {
+    router.push({
+      name: 'HalamanInformasi',
+      query: {
+        layanan: pelayananId.value,
+        perihal: perihal.value,
+        tanggal: tanggal.value,
+        nama_depanPengaju: nama_depanPengaju.value,
+        nama_belakangPengaju: nama_belakangPengaju.value,
+        jenis_pelayanan: jenis_pelayanan.value,
+        organisasi: organisasi.value,
+        deskripsi: deskripsi.value,
+        surat_dinas: surat_dinas.value,
+        lampiran: lampiran.value,
+        tab: 'informasi',
+      }
+    });
+  }
+};
+
+// Set default route saat komponen dimount
 onMounted(() => {
-  if (pelayananId.value && pelayananId.value !== '-') {
-    fetchPelayananData()
+  handleTabChange(activeTab.value)
+  
+  // Event listener untuk tombol back browser
+  const handlePopState = () => {
+    // Langsung dilempar ke permintaanDiproses
+    router.push({ name: 'PermintaanDiproses' })
   }
 
 })
@@ -169,82 +184,9 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Card -->
-      <div class="card">
-        <!-- Tab Content -->
-        <div v-if="activeTab === 'informasi'" class="tab-content">
-          <div class="layout-container">
-            <div class="info-card">
-              <h3>Informasi Umum</h3>
-              <div class="info-row"><strong>Layanan</strong> <span>{{ jenis_pelayanan }}</span></div>
-              <div class="info-row"><strong>No. Tiket</strong> <span>{{ pelayananId }}</span></div>
-              <div class="info-row"><strong>Pengaju</strong> <span>{{ nama_depanPengaju + ' ' + nama_belakangPengaju }}</span></div>
-              <div class="info-row"><strong>Organisasi</strong> <span>{{ organisasi }}</span></div>
-              <div class="info-row"><strong>Tanggal Laporan</strong> <span>{{ new Date(tanggal).toLocaleDateString('id-ID') }}</span></div>
-              <div class="info-row"><strong>Perihal</strong> <span>{{ perihal }}</span></div>
-              <div class="info-row textarea-row">
-                <strong>Deskripsi User</strong>
-                <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
-                <strong>Surat Dinas</strong>
-                <div v-if="surat_dinas">
-                  <a :href="'http://localhost:8000/' + surat_dinas" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                    {{ surat_dinas.split('/').pop() }}
-                  </a>
-                </div>  
-                <strong>Lampiran</strong>
-                <div v-if="lampiran">
-                  <a :href="'http://localhost:8000/' + lampiran" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                    {{ lampiran.split('/').pop() }}
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="chat-card">
-              <h3>Chat</h3>
-              <div class="chat-content">
-                <div class="message-bubble received">
-                  <div class="message-text">Halo, bagaimana saya bisa membantu?</div>
-                  <div class="message-time">{{ new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</div>
-                </div>
-              </div>
-              <textarea class="message" placeholder="Pesan"></textarea>
-              <button class="send-btn">Kirim</button>
-            </div>
-          </div>
-        </div>
-
-        <div v-else-if="activeTab === 'tracking'" class="tab-content">
-          <div>
-            <h2 class="card-title">Detail Progress<br>{{ pelayananId }}</h2>
-            <div class="step-wrapper">
-              <div
-                v-for="(step, index) in steps"
-                :key="index"
-                class="step-row"
-              >
-                <div
-                  class="circle"
-                  :class="stepsStatus[index] === 1 ? 'circle-blue' : 'circle-inactive'"
-                >
-                  {{ index + 1 }}
-                </div>
-                <div
-                  class="step-label"
-                  :class="stepsStatus[index] === 1 ? 'label-blue' : ''"
-                >
-                  {{ step }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Error State -->
-    <div v-else class="error-container">
-      <p>Gagal memuat data. Silakan coba lagi.</p>
+    <!-- Card -->
+    <div class="card">
+      <router-view/>
     </div>
   </div>
 </template>
@@ -342,182 +284,5 @@ onMounted(() => {
   border-radius: 12px;
   border-top-left-radius: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.tab-content {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Layout Container */
-.layout-container {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-}
-
-.info-card,
-.chat-card {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  width: 50%;
-}
-
-.info-row {
-  display: flex;
-  padding: 0.8rem 0;
-}
-
-.info-row strong {
-  width: 12rem;
-  flex-shrink: 0;
-}
-
-.info-row span {
-  margin-left: 10px;
-  flex-grow: 1;
-}
-
-.textarea-row {
-  flex-direction: column;
-  align-items: start;
-}
-
-.textarea-row textarea {
-  width: 100%;
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  resize: vertical;
-  font-family: poppins, sans-serif;
-  background-color: #e6e6e6;
-}
-
-.chat-content {
-  background-color: #e6e6e6;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  max-height: 200px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.message-bubble {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  max-width: 70%;
-  font-size: 0.9rem;
-}
-
-.received {
-  background-color: #fff;
-  align-self: flex-start;
-}
-
-.sent {
-  background-color: #2196f3;
-  color: white;
-  align-self: flex-end;
-}
-
-.message-time {
-  font-size: 0.7rem;
-  margin-top: 5px;
-  text-align: right;
-  opacity: 0.7;
-}
-
-.message {
-  width: 100%;
-  border: 1px solid #aaa;
-  border-radius: 8px;
-  padding: 0.5rem;
-  resize: vertical;
-  margin-bottom: 1rem;
-  background-color: white;
-  color: black;
-}
-
-.send-btn {
-  background: #006920;
-  color: white;
-  padding: 0.5rem 1.5rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  margin-bottom: 1rem;
-}
-
-.input {
-  background-color: white;
-  color: black;
-}
-
-/* Steps */
-.card-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 32px;
-}
-
-.step-wrapper {
-  position: relative;
-  padding-left: 36px;
-}
-
-.step-row {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 32px;
-  z-index: 10;
-}
-
-.circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-  font-size: 16px;
-}
-
-.circle:hover {
-  transform: scale(1.1);
-}
-
-.circle-inactive {
-  background-color: #d1d5db;
-  color: white;
-}
-
-.step-label {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.circle-blue {
-  background-color: #0185DA !important;
-  color: white;
-}
-
-.label-blue {
-  color: #0185DA !important;
 }
 </style>
