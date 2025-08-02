@@ -14,6 +14,8 @@ const perihal = ref('')
 const tanggal = ref('') 
 const nama_depanPengaju = ref('') 
 const nama_belakangPengaju = ref('')
+const nama_depanTeknis = ref('')
+const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const surat_dinas = ref('')
@@ -39,6 +41,8 @@ const pelayananData = computed(() => ({
   jenis_pelayanan: jenis_pelayanan.value,
   nama_depanPengaju: nama_depanPengaju.value,
   nama_belakangPengaju: nama_belakangPengaju.value,
+  nama_depanTeknis: nama_depanTeknis.value,
+  nama_belakangTeknis: nama_belakangTeknis,
   perihal: perihal.value,
   tanggal: tanggal.value,
   steps: steps.value,
@@ -57,6 +61,8 @@ const fetchPelayananData = async () => {
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_depanPengaju.value = cached.nama_depanPengaju
     nama_belakangPengaju.value = cached.nama_belakangPengaju
+    nama_depanTeknis.value = cached.nama_depanTeknis
+    nama_belakangTeknis.value = cached.nama_belakangTeknis
     perihal.value = cached.perihal
     tanggal.value = cached.tanggal
     steps.value = cached.steps
@@ -88,6 +94,8 @@ const fetchPelayananData = async () => {
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_depanPengaju.value = pelayananData.user.Nama_Depan
     nama_belakangPengaju.value = pelayananData.user.Nama_Belakang
+    nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan || 'Belum'
+    nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Tersedia'
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
 
@@ -108,6 +116,8 @@ const fetchPelayananData = async () => {
       jenis_pelayanan: jenis_pelayanan.value,
       nama_depanPengaju: nama_depanPengaju.value,
       nama_belakangPengaju: nama_belakangPengaju.value,
+      nama_depanTeknis: nama_depanTeknis.value,
+      nama_belakangTeknis: nama_belakangTeknis.value,
       perihal: perihal.value,
       tanggal: tanggal.value,
       steps: steps.value,
@@ -250,10 +260,12 @@ onMounted(() => {
                 </div>
               </div>
             </div>
+            
 
             <div class="chat-card">
               <h3>Chat</h3>
               <div class="chat-content">
+                
                 <div
                   v-for="(message, index) in messages"
                   :key="index"
@@ -266,8 +278,14 @@ onMounted(() => {
               <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
               <button class="send-btn" @click="addMessage">Kirim</button>
             </div>
+            <div>
+              <strong>Nama Pelaksana Teknis:</strong>
+              <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
+            </div>
           </div>
         </div>
+
+        
 
         <div v-else-if="activeTab === 'tracking'" class="tab-content">
           <div>

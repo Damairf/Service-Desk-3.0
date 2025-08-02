@@ -38,6 +38,7 @@ Route::post('/uploadKeperluan',[PelayananController::class, 'uploadKeperluan']);
 Route::put('/pelayanan/tambah/survey/{pelayananId}',[PelayananController::class, 'putSurvey']);
 Route::get('/pelayananUser',[PelayananController::class, 'Pelayanan_byUser']);
 Route::get('/pelayananUser/{pelayananId}',[PelayananController::class, 'getByID_Pelayanan_Jenis_User']);
+// Route::get('/pelayanan/teknis/{pelayananId}',[PelayananController::class, 'getTeknis']);
 
 Route::get('/alur/jenis_pelayanan/{id}',[AlurController::class, 'getAlurByJenisPelayanan']);
 Route::get('/pelayanan/alur/progress/{id}',[ProgressAlurController::class, 'getAlurByPelayanan']);
@@ -99,7 +100,7 @@ Route::get('/pesan/pengelola/{pelayananId}',[PesanController::class, 'PesanPenge
 
 
 Route::get('/unit/pelayanan/',[PelayananController::class, 'getPelayananUnit']);
-Route::get('/pelayanan/teknis',[UserController::class, 'getTeknis']);
+Route::get('/pelayanan/allTeknis',[UserController::class, 'getAllTeknis']);
 Route::get('/unit/pelayanan/disposisi',[PelayananController::class, 'getDisposisiUnit']);
 
 

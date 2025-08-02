@@ -55,7 +55,7 @@ class PelayananController extends Controller
 
     public function getByID_Layanan(Request $request){
         $pelayananId = $request->route('pelayananId');
-        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->with('User.user_organisasi', 'Jenis_Pelayanan', 'unit_pelayanan')->first();
+        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->with('User.user_organisasi', 'Jenis_Pelayanan', 'unit_pelayanan', 'teknis_pelayanan')->first();
 
         return response()->json($pelayanan);
     }
@@ -124,6 +124,18 @@ class PelayananController extends Controller
 
     return response ($pelayanan);
     }
+
+    // public function getTeknis(Request $request){
+    //     $pelayananId = $request->route('pelayananId');
+    //     $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->select('ID_Teknis')->with([
+    //         'teknis_pelayanan' => function ($query) {
+    //             $query->select('ID_User', 'Nama_Depan', 'Nama_Belakang');
+    //         }
+    //         ])->first();
+
+    //     return response()->json($pelayanan);
+    // } 
+
 
     // public function tolak(Request $request){
     //     $pelayananId = $request->route('pelayananId');
