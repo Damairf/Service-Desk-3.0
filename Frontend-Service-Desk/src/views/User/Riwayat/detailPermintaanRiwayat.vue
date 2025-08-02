@@ -122,6 +122,8 @@ const fetchPelayananData = async () => {
     tanggal.value = pelayananData.created_at
     rating.value = pelayananData.Rating,
     reviewText.value = pelayananData.Isi_Survey
+    status.value = pelayananData.status_pelayanan?.ID_Status || ''
+
 
     // Set progress data
     const progressData = progressResponse.data
@@ -147,7 +149,8 @@ const fetchPelayananData = async () => {
       rating: rating.value,
       reviewText: reviewText.value,
       steps: steps.value,
-      stepsStatus: stepsStatus.value
+      stepsStatus: stepsStatus.value,
+      status: status.value
     }
 
     SuratDinas_Path.value = '/files' + surat_dinas.value
@@ -243,172 +246,174 @@ onMounted(() => {
 </script>
 
 <template>
-<div class="container">
-  <!-- Loading State -->
-  <div v-if="isLoading" class="loading-container">
-    <div class="loading-spinner"></div>
-    <p>Memuat data...</p>
-  </div>
-
-  <!-- Content -->
-  <div v-else-if="isDataLoaded">
-    <!-- Tabs -->
-    <div class="tabs">
-      <div
-        :class="['tab', activeTab === 'informasi' ? 'active-tab-info' : 'inactive-tab']"
-        @click="handleTabChange('informasi')"
-      >
-        Informasi
-      </div>
-      <div
-        :class="['tab', activeTab === 'tracking' ? 'active-tab-track' : 'inactive-tab']"
-        @click="handleTabChange('tracking')"
-      >
-        Lacak
-      </div>
+  <div class="container">
+    <!-- Loading State -->
+    <div v-if="isLoading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Memuat data...</p>
     </div>
 
-    <!-- Card -->
-    <div class="card">
-      <!-- Tab Content -->
-      <div v-if="activeTab === 'informasi'" class="tab-content">
-        <div class="layout-container">
-          <!-- Informasi Card -->
-          <div class="info-card">
-            <h3>Informasi Umum</h3>
-            <div class="info-row"><strong>Layanan:</strong> <span>{{ jenis_pelayanan }}</span></div>
-            <div class="info-row"><strong>No. Tiket:</strong> <span>{{ pelayananId }}</span></div>
-            <div class="info-row"><strong>Pengaju:</strong> <span>{{ nama_depanPengaju + ' ' + nama_belakangPengaju }}</span></div>
-            <div class="info-row"><strong>Organisasi:</strong> <span>{{ organisasi }}</span></div>
-            <div class="info-row"><strong>Tanggal Laporan:</strong> <span>{{ new Date(tanggal).toLocaleDateString('id-ID') }}</span></div>
-            <div class="info-row"><strong>Perihal:</strong> <span>{{ perihal }}</span></div>
-            
-            <div class="info-row textarea-row">
-              <strong>Deskripsi User</strong>
-              <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
+    <!-- Content -->
+    <div v-else-if="isDataLoaded">
+      <!-- Tabs -->
+      <div class="tabs">
+        <div
+          :class="['tab', activeTab === 'informasi' ? 'active-tab-info' : 'inactive-tab']"
+          @click="handleTabChange('informasi')"
+        >
+          Informasi
+        </div>
+        <div
+          :class="['tab', activeTab === 'tracking' ? 'active-tab-track' : 'inactive-tab']"
+          @click="handleTabChange('tracking')"
+        >
+          Lacak
+        </div>
+      </div>
 
-              <strong>Surat Dinas</strong>
-              <div v-if="surat_dinas">
-                <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                  {{ namaFileSuratDinas }}
-                </a>
-              </div>
+      <!-- Card -->
+      <div class="card">
+        <!-- Tab Content -->
+        <div v-if="activeTab === 'informasi'" class="tab-content">
+          <div class="layout-container">
+            <!-- Informasi Card -->
+            <div class="info-card">
+              <h3>Informasi Umum</h3>
+              <div class="info-row"><strong>Layanan:</strong> <span>{{ jenis_pelayanan }}</span></div>
+              <div class="info-row"><strong>No. Tiket:</strong> <span>{{ pelayananId }}</span></div>
+              <div class="info-row"><strong>Pengaju:</strong> <span>{{ nama_depanPengaju + ' ' + nama_belakangPengaju }}</span></div>
+              <div class="info-row"><strong>Organisasi:</strong> <span>{{ organisasi }}</span></div>
+              <div class="info-row"><strong>Tanggal Laporan:</strong> <span>{{ new Date(tanggal).toLocaleDateString('id-ID') }}</span></div>
+              <div class="info-row"><strong>Perihal:</strong> <span>{{ perihal }}</span></div>
 
-              <strong>Lampiran</strong>
-              <div v-if="lampiran">
-                <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                  {{ namaFileLampiran }}
-                </a>
-              </div>
-            </div>
+              <div class="info-row textarea-row">
+                <strong>Deskripsi User</strong>
+                <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
 
-            <!-- Review Section (SEKARANG di dalam info-card) -->
-            <div class="review-section">
-              <div v-if="!reviewSubmitted">
-                <h4 class="review-title">Ulasan Anda</h4>
-                <div class="star-rating">
-                  <span
-                    v-for="star in 5"
-                    :key="star"
-                    class="star"
-                    :class="{ 'filled': star <= (hoverRating || rating) }"
-                  >
-                    ★
-                  </span>
+                <strong>Surat Dinas</strong>
+                <div v-if="surat_dinas">
+                  <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                    {{ namaFileSuratDinas }}
+                  </a>
                 </div>
-                <textarea v-model="reviewText" class="review-textarea" placeholder="Bagikan pengalaman Anda..." rows="4" readonly></textarea>
-              </div>
-              <div v-else class="thank-you-message">
-                <p>Terima kasih! Ulasan Anda telah kami terima.</p>
-              </div>
-            </div>
-          </div> <!-- end info-card -->
 
-          <!-- Chat Card -->
-          <div class="chat-card">
-            <h3>Chat</h3>
-            <div class="chat-content view-only-chat">
-              <div
-                v-for="(message, index) in messages"
-                :key="index"
-                :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
-              >
-                <div class="message-text">{{ message.text + " " }}</div>
-                <div class="message-time">{{ message.time + " " }}</div>
+                <strong>Lampiran</strong>
+                <div v-if="lampiran">
+                  <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                    {{ namaFileLampiran }}
+                  </a>
+                </div>
               </div>
-            </div>
 
-            <div class ="info-row-PelaksanaTeknis">
+              <!-- Review Section -->
+              <div v-if="status !== 3" class="review-section">
+                <div v-if="!reviewSubmitted">
+                  <h4 class="review-title">Ulasan Anda</h4>
+                  <div class="star-rating">
+                    <span
+                      v-for="star in 5"
+                      :key="star"
+                      class="star"
+                      :class="{ 'filled': star <= (hoverRating || rating) }"
+                      @mouseover="hoverRating = star"
+                      @mouseleave="hoverRating = 0"
+                    >
+                      ★
+                    </span>
+                  </div>
+                  <textarea v-model="reviewText" class="review-textarea" placeholder="Bagikan pengalaman Anda..." rows="4" readonly></textarea>
+                </div>
+                <div v-else class="thank-you-message">
+                  <p>Terima kasih! Ulasan Anda telah kami terima.</p>
+                </div>
+              </div>
+            </div> <!-- end info-card -->
+
+            <!-- Chat Card -->
+            <div class="chat-card">
+              <h3>Chat</h3>
+              <div class="chat-content view-only-chat">
+                <div
+                  v-for="(message, index) in messages"
+                  :key="index"
+                  :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
+                >
+                  <div class="message-text">{{ message.text + " " }}</div>
+                  <div class="message-time">{{ message.time + " " }}</div>
+                </div>
+              </div>
+
+              <div class="info-row-PelaksanaTeknis">
                 <strong>Nama Pelaksana Teknis:</strong>
                 <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
-            </div>
-
-            <div class="document-links">
-              <div class="info-row-docs">
-                <strong>Hasil Pemenuhan</strong>
-                <div v-if="HasilPemenuhan_Path">
-                  <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                    {{ namaFileHasilPemenuhan }}
-                  </a>
-                </div>
               </div>
 
-              <div class="info-row-docs">
-                <strong>Hasil BA</strong>
-                <div v-if="HasilBA_Path">
-                  <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                    {{ namaFileHasilBA }}
-                  </a>
-                </div>
-
+              <div v-if="status !== 3" class="document-links">
                 <div class="info-row-docs">
-                  <strong>Hasil SLA</strong>
-                  <div v-if="HasilSLA_Path">
-                    <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                      {{ namaFileHasilSLA }}
+                  <strong>Hasil Pemenuhan</strong>
+                  <div v-if="HasilPemenuhan_Path">
+                    <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                      {{ namaFileHasilPemenuhan }}
                     </a>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div> <!-- end chat-card -->
-        </div> <!-- end layout-container -->
-      </div> <!-- end informasi tab -->
 
-      <!-- Tracking Tab -->
-      <div v-else-if="activeTab === 'tracking'" class="tab-content">
-        <div>
-          <h2 class="card-title">Detail Progress<br>{{ pelayananId }}</h2>
-          <div class="step-wrapper">
-            <div
-              v-for="(step, index) in steps"
-              :key="index"
-              class="step-row"
-            >
-              <div
-                class="circle"
-                :class="stepsStatus[index] === 1 ? 'circle-blue' : 'circle-inactive'"
-              >
-                {{ index + 1 }}
+                <div class="info-row-docs">
+                  <strong>Hasil BA</strong>
+                  <div v-if="HasilBA_Path">
+                    <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                      {{ namaFileHasilBA }}
+                    </a>
+                  </div>
+
+                  <div class="info-row-docs">
+                    <strong>Hasil SLA</strong>
+                    <div v-if="HasilSLA_Path">
+                      <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                        {{ namaFileHasilSLA }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div> <!-- end chat-card -->
+          </div> <!-- end layout-container -->
+        </div> <!-- end informasi tab -->
+
+        <!-- Tracking Tab -->
+        <div v-else-if="activeTab === 'tracking'" class="tab-content">
+          <div>
+            <h2 class="card-title">Detail Progress<br>{{ pelayananId }}</h2>
+            <div class="step-wrapper">
               <div
-                class="step-label"
-                :class="stepsStatus[index] === 1 ? 'label-blue' : ''"
+                v-for="(step, index) in steps"
+                :key="index"
+                class="step-row"
               >
-                {{ step }}
+                <div
+                  class="circle"
+                  :class="stepsStatus[index] === 1 ? 'circle-blue' : 'circle-inactive'"
+                >
+                  {{ index + 1 }}
+                </div>
+                <div
+                  class="step-label"
+                  :class="stepsStatus[index] === 1 ? 'label-blue' : ''"
+                >
+                  {{ step }}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div> <!-- end tracking tab -->
-    </div> <!-- end card -->
-  </div> <!-- end isDataLoaded -->
+        </div> <!-- end tracking tab -->
+      </div> <!-- end card -->
+    </div> <!-- end isDataLoaded -->
 
-  <!-- Error State -->
-  <div v-else class="error-container">
-    <p>Gagal memuat data. Silakan coba lagi.</p>
+    <!-- Error State -->
+    <div v-else class="error-container">
+      <p>Gagal memuat data. Silakan coba lagi.</p>
+    </div>
   </div>
-</div>
 </template>
 
 <style scoped>
