@@ -146,12 +146,7 @@ const fetchPelayananData = async () => {
     }
 
     SuratDinas_Path.value = '/files' + surat_dinas.value
-
-    console.log(surat_dinas.value);
-
     Lampiran_Path.value = '/files' + lampiran.value
-
-    console.log(lampiran.value);
 
     if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 6 ) {
       progress.value = true
