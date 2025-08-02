@@ -393,7 +393,6 @@ onMounted(() => {
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  
 }
 
 .tab:hover {
