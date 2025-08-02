@@ -35,6 +35,9 @@ import ubahOrganisasi from '../views/Pengelola/LembagaOrganisasi/EditOrganisasi.
 import referensiJabatan from '../views/Pengelola/Referensi/RefJabatan/jabatan.vue'
 import TambahJabatan from '../views/Pengelola/Referensi/RefJabatan/TambahJabatan.vue'
 import UbahJabatan from '../views/Pengelola/Referensi/RefJabatan/EditJabatan.vue'
+import referensiPelayanan from '../views/Pengelola/Referensi/RefPelayanan/JenisPelayanan.vue'
+import TambahPelayanan from '../views/Pengelola/Referensi/RefPelayanan/TambahJenisPelayanan.vue'
+import UbahPelayanan from '../views/Pengelola/Referensi/RefPelayanan/EditJenisPelayanan.vue'
 
 //===============UNIT PELAKSANA===============
 import berandaUnit from '../views/UnitPelaksana/Beranda/BerandaUnit.vue'
@@ -112,6 +115,9 @@ const routes = [
   { path: '/referensi/jabatan', name: 'referensiJabatan', component: referensiJabatan},
   { path: '/tambahJabatan', name: 'TambahJabatan', component: TambahJabatan, meta: {allowedRoles: [2]}},
   { path: '/ubahJabatan', name: 'UbahJabatan', component: UbahJabatan, meta: {allowedRoles: [2]}},
+  { path: '/referensi/jenis-pelayanan', name: 'referensiPelayanan', component: referensiPelayanan, meta: {allowedRoles: [2]}},
+  { path: '/tambahPelayanan', name: 'TambahPelayanan', component: TambahPelayanan, meta: {allowedRoles: [2]}},
+  { path: '/ubahPelayanan', name: 'UbahPelayanan', component: UbahPelayanan, meta: {allowedRoles: [2]}},
 
     
   //===============UNIT PELAKSANA===============
