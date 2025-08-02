@@ -128,6 +128,18 @@ function ubahPengguna(user) {
     }
   })
 }
+function lihatPengguna(user) {
+  router.push({
+    path: '/lihatPengguna',
+    query: {
+      nama_depan: user.nama_depan,
+      nama_belakang: user.nama_belakang,
+      role: user.role,
+      organisasi: user.organisasi,
+      status: user.status,
+    }
+  })
+}
 </script>
 
 <template>
@@ -168,6 +180,7 @@ function ubahPengguna(user) {
               <div class="wrapper-aksiBtn">
                 <button class="aksiEdit-btn" title="Edit" @click="ubahPengguna(user)">Ubah</button>
                 <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
+                <button class="aksiLihat-btn" @click="lihatPengguna(user)">Detail</button>
               </div>
             </td>
           </tr>
@@ -337,6 +350,19 @@ function ubahPengguna(user) {
 }
 .aksiDelete-btn:hover {
   background: #a63a1d;
+}
+.aksiLihat-btn{
+  background: #6c757d;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  font-size: 14px;
+  color: white;
+  transition: background 0.2s;
+}
+.aksiLihat-btn:hover{
+  background: #5a6268;
 }
 /* Pengganti Halaman */
 .pagination {

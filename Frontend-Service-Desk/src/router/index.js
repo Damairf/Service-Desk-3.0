@@ -29,6 +29,7 @@ import detailPelayanan from '../views/Pengelola/Pelayanan/detailPelayanan.vue'
 import PenggunaPengelola from '../views/Pengelola/Pengguna/PenggunaPengelola.vue'
 import TambahPengguna from '../views/Pengelola/Pengguna/TambahPengguna.vue'
 import UbahPengguna from '../views/Pengelola/Pengguna/UbahPengguna.vue'
+import lihatPengguna from '../views/Pengelola/Pengguna/LihatPengguna.vue'
 import lembagaOrganisasi from '../views/Pengelola/LembagaOrganisasi/Organisasi.vue'
 import tambahOrganisasi from '../views/Pengelola/LembagaOrganisasi/TambahOrganisasi.vue'
 import ubahOrganisasi from '../views/Pengelola/LembagaOrganisasi/EditOrganisasi.vue'
@@ -114,6 +115,7 @@ const routes = [
   { path: '/pengguna', name: 'penggunaPengelola', component: PenggunaPengelola, meta: {allowedRoles: [2]}},
   { path: '/tambahPengguna', name: 'TambahPengguna', component: TambahPengguna, meta: {allowedRoles: [2]}},
   { path: '/ubahPengguna', name: 'UbahPengguna', component: UbahPengguna, meta: {allowedRoles: [2]}},
+  { path: '/lihatPengguna', name: 'lihatPengguna', component: lihatPengguna, meta: {allowedRoles: [2]}},
   { path: '/lembaga', name: 'lembaga/Organisasi', component: lembagaOrganisasi, meta: {allowedRoles: [2]}},
   { path: '/tambahLembaga', name: 'TambahLembaga', component:  tambahOrganisasi, meta: {allowedRoles: [2]}},
   { path: '/ubahLembaga', name: 'UbahLembaga', component: ubahOrganisasi, meta: {allowedRoles: [2]}},
