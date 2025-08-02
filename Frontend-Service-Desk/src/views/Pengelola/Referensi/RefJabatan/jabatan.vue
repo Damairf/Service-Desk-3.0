@@ -119,6 +119,15 @@ function startCountdown() {
     }
   }, 1000)
 }
+
+function editJabatan(jabatan) {
+  router.push({
+    path: '/ubahJabatan',
+    query: {
+      nama_jabatan: jabatan.nama
+    }
+  })
+}
 </script>
 
 

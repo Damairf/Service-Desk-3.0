@@ -1,24 +1,17 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import axios from 'axios'
 import { useRouter, useRoute } from 'vue-router'
-
-
 const router = useRouter()
-const route = useRoute() // untuk ambil params ID 
+const route = useRoute() 
 
-// ambil dari route organisasi
-const id_organisasi = ref(route.query.id_organisasi)
-const namaPerangkatDaerah = ref(route.query.nama_PerangkatDaerah)
-const email = ref(route.query.email || '')
-const status = ref(route.query.status || '')
-const nomorHP = ref('')
-const namaPengelola = ref('')
+
+// === State untuk form ===
+const namaJabatan = ref(route.query.nama_jabatan || '')
+
 const pilihanInduk = ref([])
-const idOrganisasiTerpilih = ref(route.query.id_induk_organisasi || '')
-
-// buat lihat doang
-const readonlyMode = ref(route.query.viewOnly === 'true')
+const idOrganisasiTerpilih = ref('')
+const readonlyMode = ref(false) // untuk mode lihat saja
 
 const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/organisasi', {
@@ -27,6 +20,7 @@ const token = localStorage.getItem('Token');
     }
   })
   .then(response => {
+   console.log(response.data)
    pilihanInduk.value = response.data.map(item => ({
       id_organisasi: item.ID_Organisasi,
       nama_PerangkatDaerah: item.Nama_OPD
@@ -36,126 +30,76 @@ const token = localStorage.getItem('Token');
     console.error(error); 
   });
 
-  axios.get(`http://127.0.0.1:8000/api/organisasi/${id_organisasi.value}` , {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    }
-  }) .then(response => {
-    namaPengelola.value = response.data.Nama_Pengelola,
-    nomorHP.value= response.data.No_HP_Pengelola
-  })
 
-// === Submit handler (kirim data edit) ===
+
+// === Submit handler (dengan validasi) ===
 function handleSubmit() {
   // Validasi field wajib
-  if ( !email.value || !status.value || !namaPerangkatDaerah.value || !namaPengelola.value || !nomorHP.value ) {
+  if (!namaPerangkatDaerah.value || !email.value || !status.value) {
     alert('Harap isi semua field yang bertanda *')
     return
   }
 
-  // Payload untuk backend
-  const payload = {
-    Nama_OPD: namaPerangkatDaerah.value,
-    ID_Induk_Organisasi: idOrganisasiTerpilih.value || null,
-    Nama_Pengelola: namaPengelola.value,
-    No_HP_Pengelola: nomorHP.value,
-    Email: email.value,
-    Status: status.value,
+  if (nomorHP.value.length < 10) {
+  alert("Nomor HP minimal 10 digit")
+  return
   }
 
+  // Mas Backend tolong revisi lagi
+  const payload = {
+    Nama_Jabatan: namaJabatan.value
+  }
+
+  console.log('Data yang akan dikirim ke backend:', payload)
+
   const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/organisasi/${id_organisasi.value}`, payload, {
+  axios.post(`http://127.0.0.1:8000/api/organisasi`, payload
+  , {
     headers: {
       Authorization: 'Bearer ' + token,
     }
   })
-
-  console.log('Data yang akan diupdate ke backend:', payload)
-
-  // === Backend: update organisasi by ID ===
-  // backend: axios.put(`/api/organisasi/${route.params.id}`, payload)
-
-  alert('Organisasi berhasil diperbarui')
-  router.push('/lembaga') // kembali ke daftar lembaga
+  .then(function(response){
+    console.log(response)
+  }) .catch(function(error){
+    console.log(error)
+  })
+  alert('Organisasi sudah ditambahkan')
+  router.push('/jabatan')
 }
 
 // === Reset form ===
 function handleReset() {
-  namaPerangkatDaerah.value = ''
-  idOrganisasiTerpilih.value = ''
-  namaPengelola.value = ''
-  nomorHP.value = ''
-  email.value = ''
-  status.value = ''
+  namaJabatan.value = ''
 }
+
+
 </script>
 
 <template>
   <div class="page-bg">
-    <h1 v-if="!readonlyMode" class="main-title">Edit Organisasi</h1>
-    <h1 v-if="readonlyMode" class="main-title">Detail Organisasi</h1>
+    <h1 v-if="!readonlyMode" class="main-title">Ubah Jabatan</h1>
+    <h1 v-else-if="readonlyMode" class="main-title">Detail Jabatan</h1>
     <div class="form-card">
       <div v-if="!readonlyMode" class="form-card-header">
-        Formulir Ubah Organisasi
+        Formulir Ubah Jabatan
       </div>
-      <div v-if="readonlyMode" class="form-card-header">
-        Informasi Organisasi
+      <div v-else-if="readonlyMode" class="form-card-header">
+        Informasi Jabatan
       </div>
 
+      <!-- Form pakai @submit.prevent supaya tidak reload -->
       <form class="form-content" @submit.prevent="handleSubmit">
         <div class="form-note">
           <span class="required-text">Keterangan <span class="red">*</span> Harus Diisi</span>
         </div>
 
         <div class="form-group">
-          <label>Nama Perangkat Daerah<span class="red">*</span></label>
-          <input type="text" placeholder="Nama PD" v-model="namaPerangkatDaerah" :readonly="readonlyMode" />
+          <label>Nama Jabatan<span class="red">*</span></label>
+          <input type="text" placeholder="Nama PD" v-model="namaJabatan" />
         </div>
 
-        <div class="form-group">
-          <label>Induk Perangkat Daerah</label>
-          <select v-model="idOrganisasiTerpilih" :disabled="readonlyMode">
-            <option value="">-- Pilih Perangkat Daerah --</option>
-            <option
-              v-for="item in pilihanInduk"
-              :key="item.id_organisasi"
-              :value="item.id_organisasi"
-            >
-              {{ item.nama_PerangkatDaerah }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Nama Pengelola<span class="red">*</span></label>
-          <input type="text" v-model="namaPengelola" :readonly="readonlyMode" />
-        </div>
-
-        <div class="form-group">
-          <label>Nomor HP. Pengelola<span class="red">*</span></label>
-          <input
-            type="text"
-            inputmode="numeric"
-            v-model="nomorHP"
-            @input="nomorHP = $event.target.value.replace(/\D/g, '')"
-            :readonly="readonlyMode"
-          />
-        </div>
-
-        <div class="form-group">
-          <label>Email <span class="red">*</span></label>
-          <input type="email" v-model="email" :readonly="readonlyMode" />
-        </div>
-
-        <div class="form-group">
-          <label>Status<span class="red">*</span></label>
-          <select v-model="status" :disabled="readonlyMode">
-            <option value="Aktif">Aktif</option>
-            <option value="Nonaktif">Nonaktif</option>
-          </select>
-        </div>
-
-        <div class="form-actions" v-if="!readonlyMode">
+        <div class="form-actions">
           <button type="submit" class="btn simpan">Simpan</button>
           <button type="button" class="btn hapus" @click="handleReset">Reset</button>
         </div>
@@ -163,6 +107,8 @@ function handleReset() {
     </div>
   </div>
 </template>
+
+
 
 <style scoped>
 .page-bg {
