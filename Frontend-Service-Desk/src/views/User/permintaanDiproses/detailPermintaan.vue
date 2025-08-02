@@ -21,8 +21,6 @@ const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
-const SuratDinas_Path = ref(null)
-const Lampiran_Path = ref(null)
 const activeTab = ref(route.query.tab === 'informasi' ? 'informasi' : 'tracking')
 
 // Loading states
@@ -84,8 +82,10 @@ const fetchPelayananData = async () => {
         headers: { Authorization: 'Bearer ' + token }
       })
     ])
-
+    
     // Set data
+    console.log("pelayananResponse.data:", pelayananResponse.data)
+
     const pelayananData = pelayananResponse.data
     deskripsi.value = pelayananData.Deskripsi
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
@@ -99,6 +99,7 @@ const fetchPelayananData = async () => {
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
 
+
     // Set progress data
     const progressData = progressResponse.data
     steps.value = progressData.map(item =>
@@ -107,6 +108,7 @@ const fetchPelayananData = async () => {
     stepsStatus.value = progressData.map(item => item.Is_Done)
 
     // Cache data
+    
     dataCache.value = {
       id: pelayananId.value,
       deskripsi: deskripsi.value,
@@ -132,7 +134,7 @@ const fetchPelayananData = async () => {
   }
 }
 
-SuratDinas_Path.value = '/files' + surat_dinas.value
+const SuratDinas_Path = computed(() => '/files/' + surat_dinas.value)
 const namaFileSuratDinas = computed(() => {
   const fileName = surat_dinas.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -141,7 +143,7 @@ const namaFileSuratDinas = computed(() => {
   return `${tanggal}_${waktu}_Surat_Dinas.pdf`
 })
 
-Lampiran_Path.value = '/files' + lampiran.value
+const Lampiran_Path = computed(() => '/files/' + lampiran.value)
 const namaFileLampiran = computed(() => {
   const fileName = lampiran.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -281,12 +283,12 @@ onMounted(() => {
               </div>
               <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
               <button class="send-btn" @click="addMessage">Kirim</button>
+              <div>
+                <strong>Nama Pelaksana Teknis:</strong>
+                <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
+              </div>
             </div>
-            <div>
-              <strong>Nama Pelaksana Teknis:</strong>
-              <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
             </div>
-          </div>
         </div>
 
         
