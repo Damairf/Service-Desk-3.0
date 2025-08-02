@@ -181,6 +181,7 @@ const namaFileLampiran = computed(() => {
 })
 
 const namaFileHasilPemenuhan = computed(() => {
+  if (!src_HasilPemenuhan.value) return 'Tidak ada file'
   const fileName = src_HasilPemenuhan.value.split('/').pop() 
   const parts = fileName.split('_')
   const tanggal = parts[0]
@@ -189,6 +190,7 @@ const namaFileHasilPemenuhan = computed(() => {
 })
 
 const namaFileHasilBA = computed(() => {
+  if (!src_HasilBA.value) return 'Tidak ada file'
   const fileName = src_HasilBA.value.split('/').pop() 
   const parts = fileName.split('_')
   const tanggal = parts[0]
@@ -197,6 +199,7 @@ const namaFileHasilBA = computed(() => {
 })
 
 const namaFileHasilSLA = computed(() => {
+  if (!src_HasilSLA.value) return 'Tidak ada file'
   const fileName = src_HasilSLA.value.split('/').pop() 
   const parts = fileName.split('_')
   const tanggal = parts[0]
