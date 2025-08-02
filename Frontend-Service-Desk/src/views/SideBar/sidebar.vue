@@ -91,8 +91,9 @@ if (role.value == 1) {
   role.value = "Pengelola"
   menuItem.value = [
   { icon: '🏠', label: 'Beranda', to: '/Beranda-Pengelola' },
-  { icon: '⚙️', label: 'Pelayanan', to: '/pelayanan' },
-  { icon: '📁', label: 'Referensi', children: [
+  { icon: '⚙️', label: 'Permintaan Baru', to: '/permintaanBaru' },
+  { icon: '📁', label: 'Pelayanan', to: '/pelayanan' },
+  { icon: '📁', label: 'Referensi', children: [ 
     { label: 'Lembaga/Organisasi', to: '/lembaga'},
     { label: "Jabatan", to: '/referensi/jabatan'},
     { label: "Status", to: '/referensi/status'},

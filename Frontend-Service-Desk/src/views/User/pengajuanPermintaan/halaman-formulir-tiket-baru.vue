@@ -127,7 +127,13 @@ axios.post('/api/pelayanan/tambah', {
 .then(response => {
   isSubmitted.value = true;
   isLoading.value = false; // Stop loading on success
-  router.push('/permintaanDiproses');
+  const role = parseInt(localStorage.getItem('id_role'));
+  if (role === 1){
+    router.push('/permintaanDiproses');
+  } else if (role === 2){
+    router.push('/pelayanan');
+  }
+  
 })
 .catch(error => {
   console.error(error.response?.data || error.message);

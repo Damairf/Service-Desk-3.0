@@ -87,8 +87,8 @@ const routes = [
   // User
   
   // Halaman permintaan baru 
-  { path: '/permintaanBaru', name: 'PermintaanBaru', component: permintaanBaru, meta: {allowedRoles: [1]}},
-  { path: '/FormulirTiket', name: 'FormulirTiketBaru', component: HalamanFormulirTiketBaru, meta: {allowedRoles: [1]}},
+  { path: '/permintaanBaru', name: 'PermintaanBaru', component: permintaanBaru, meta: {allowedRoles: [1, 2]}},
+  { path: '/FormulirTiket', name: 'FormulirTiketBaru', component: HalamanFormulirTiketBaru, meta: {allowedRoles: [1, 2]}},
   
   // Halaman permintaan diproses
   { path: '/permintaanDiproses', name: 'PermintaanDiproses', component: permintaanDiproses, meta: {allowedRoles: [1]}},
