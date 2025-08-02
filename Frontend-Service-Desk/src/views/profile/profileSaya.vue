@@ -68,7 +68,7 @@
   max-width: 50rem;
   max-height: 60rem;
   margin: 2rem auto;
-  padding: 2rem 4rem 5rem 0rem;
+  padding: 2rem;
   background: white;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border-radius: 8px;
@@ -139,7 +139,7 @@
   justify-content: flex-start;
   background: #f8fafc;
   border-radius: 12px;
-  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  padding: 0.5rem 4rem 0.5rem 0.5rem;
   min-width: 320px;
   max-width: 420px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
