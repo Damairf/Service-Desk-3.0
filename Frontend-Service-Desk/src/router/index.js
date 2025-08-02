@@ -26,8 +26,6 @@ import detailPermintaanRiwayat from '../views/User/Riwayat/detailPermintaanRiway
 import berandaPengelola from '../views/Pengelola/BerandaPengelola/berandaPengelola.vue'
 import pelayanan from '../views/Pengelola/Pelayanan/Pelayanan.vue'
 import detailPelayanan from '../views/Pengelola/Pelayanan/detailPelayanan.vue'
-import halamanLacakPengelola from '../views/Pengelola/Pelayanan/halaman-lacak-PelayananPengelola.vue'
-import halamanInformasiPengelola from '../views/Pengelola/Pelayanan/halaman-informasi-PelayananPengelola.vue'
 import PenggunaPengelola from '../views/Pengelola/Pengguna/PenggunaPengelola.vue'
 import TambahPengguna from '../views/Pengelola/Pengguna/TambahPengguna.vue'
 import UbahPengguna from '../views/Pengelola/Pengguna/UbahPengguna.vue'
@@ -98,7 +96,7 @@ const routes = [
   { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, meta: {allowedRoles: [1]},},
 
   // Hasil Pemenuhan BASLA
-  { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA, meta: {allowedRoles: [1]}},
+  { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA, meta: {allowedRoles: [1], keepAlive: true}},
   { path: '/detailPermintaanHasil', name: 'DetailPermintaanHasil', component: detailPermintaanHasil, meta: {allowedRoles: [1]}},
 
   // Riwayat
@@ -108,12 +106,7 @@ const routes = [
   //===============PENGELOLA===============
   { path: '/Beranda-Pengelola', name: 'Beranda-Pengelola', component: berandaPengelola, meta: {allowedRoles: [2]}},
   { path: '/pelayanan', name: 'pelayanan', component: pelayanan, meta: {allowedRoles: [2]}},
-  { path: '/DetailPelayanan', name: 'Detail-Pelayanan', component: detailPelayanan, meta: {allowedRoles: [2]},
-    children: [
-      { path: 'lacakPengelola', name: 'HalamanLacakPengelola', component: halamanLacakPengelola, meta: {allowedRoles: [2]}},
-      { path: 'informasiPengelola', name: 'HalamanInformasiPengelola', component: halamanInformasiPengelola, meta: {allowedRoles: [2]}}
-    ]
-  },
+  { path: '/DetailPelayanan', name: 'Detail-Pelayanan', component: detailPelayanan, meta: {allowedRoles: [2]}},
   { path: '/pengguna', name: 'penggunaPengelola', component: PenggunaPengelola, meta: {allowedRoles: [2]}},
   { path: '/tambahPengguna', name: 'TambahPengguna', component: TambahPengguna, meta: {allowedRoles: [2]}},
   { path: '/ubahPengguna', name: 'UbahPengguna', component: UbahPengguna, meta: {allowedRoles: [2]}},
