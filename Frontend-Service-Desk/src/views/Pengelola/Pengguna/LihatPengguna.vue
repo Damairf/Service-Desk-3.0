@@ -48,6 +48,26 @@ onMounted(async () => {
 // === Ambil data Jabatan ===
 onMounted(async () => {
   try {
+    const response = await axios.get('/api/jabatan', {
+      headers: { Authorization: 'Bearer ' + token }
+    })
+    pilihanJabatan.value = response.data.map(item => ({
+      id_jabatan: item.ID_Jabatan,
+      nama_jabatan: item.Nama_Jabatan
+    }))
+    // Set jabatan name based on id if available
+    const match = pilihanJabatan.value.find(j => j.id_jabatan === route.query.id_jabatan)
+    if (match) {
+      jabatan.value = match.nama_jabatan
+      idJabatanTerpilih.value = route.query.id_jabatan || ''
+    }
+  } catch (error) {
+    console.error(error)
+  }
+})
+// === Ambil data Organisasi ===
+onMounted(async () => {
+  try {
     const response = await axios.get('/api/organisasi', {
       headers: { Authorization: 'Bearer ' + token }
     })
@@ -65,6 +85,7 @@ onMounted(async () => {
     console.error(error)
   }
 })
+
 // === Ambil data Organisasi ===
 axios.get('/api/organisasi', {
   headers: { Authorization: 'Bearer ' + token }
@@ -131,15 +152,10 @@ function handleSubmit() {
 
       <!-- Form pakai @submit.prevent supaya tidak reload -->
       <form class="form-content" @submit.prevent="handleSubmit">
-        <div class="form-note">
-          <span class="required-text">Keterangan <span class="red">*</span> Harus Diisi</span>
-        </div>
             <strong>Nama Depan</strong>
             <p class="display-info">{{ Nama_Depan }}</p>
             <strong>Nama Belakang</strong>
             <p class="display-info">{{ Nama_Belakang }}</p>
-            <strong>NIP</strong>
-            <p class="display-info">{{ nip }}</p>
             <strong>Role</strong>
             <p class="display-info">{{ role }}</p>
             <strong>Jabatan</strong>
