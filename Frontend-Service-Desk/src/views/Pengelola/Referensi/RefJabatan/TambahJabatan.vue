@@ -90,10 +90,10 @@ function handleReset() {
 
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Tambah Organisasi</h1>
+    <h1 class="main-title">Tambah Jabatan</h1>
     <div class="form-card">
       <div class="form-card-header">
-        Formulir Tambah Organisasi
+        Formulir Tambah Jabatan
       </div>
 
       <!-- Form pakai @submit.prevent supaya tidak reload -->
@@ -103,50 +103,8 @@ function handleReset() {
         </div>
 
         <div class="form-group">
-          <label>Nama Perangkat Daerah<span class="red">*</span></label>
+          <label>Nama Jabatan<span class="red">*</span></label>
           <input type="text" placeholder="Nama PD" v-model="namaPerangkatDaerah" />
-        </div>
-
-        <div class="form-group">
-          <label>Induk Perangkat Daerah</label>
-          <select v-model="idOrganisasiTerpilih">
-            <option value="">-- Pilih Perangkat Daerah --</option>
-            <option
-              v-for="item in pilihanInduk"
-              :key="item.id_organisasi"
-              :value="item.id_organisasi"
-            >
-              {{ item.nama_PerangkatDaerah }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Nama Pengelola<span class="red">*</span></label>
-          <input type="text" v-model="namaPengelola" />
-        </div>
-
-        <div class="form-group">
-          <label>Nomor HP. Pengelola<span class="red">*</span></label>
-          <input
-            type="text"
-            inputmode="numeric"
-            v-model="nomorHP"
-            @input="nomorHP = $event.target.value.replace(/\D/g, '')"
-          />
-        </div>
-
-        <div class="form-group">
-          <label>Email <span class="red">*</span></label>
-          <input type="email" v-model="email" />
-        </div>
-
-        <div class="form-group">
-          <label>Status<span class="red">*</span></label>
-          <select v-model="status">
-            <option value="Aktif">Aktif</option>
-            <option value="Nonaktif">Nonaktif</option>
-          </select>
         </div>
 
         <div class="form-actions">
