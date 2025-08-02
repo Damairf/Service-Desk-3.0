@@ -38,6 +38,8 @@ import UbahJabatan from '../views/Pengelola/Referensi/RefJabatan/EditJabatan.vue
 import referensiPelayanan from '../views/Pengelola/Referensi/RefPelayanan/JenisPelayanan.vue'
 import TambahPelayanan from '../views/Pengelola/Referensi/RefPelayanan/TambahJenisPelayanan.vue'
 import UbahPelayanan from '../views/Pengelola/Referensi/RefPelayanan/EditJenisPelayanan.vue'
+import permintaanBaruPengelola from '../views/Pengelola/PermintaanBaruPengelola/PermintaanBaruPengelola.vue'
+import formulirTiketBaruPengelola from '../views/Pengelola/PermintaanBaruPengelola/FormulirTiketBaruPengelola.vue'
 
 //===============UNIT PELAKSANA===============
 import berandaUnit from '../views/UnitPelaksana/Beranda/BerandaUnit.vue'
@@ -121,8 +123,9 @@ const routes = [
   { path: '/referensi/jenis-pelayanan', name: 'referensiPelayanan', component: referensiPelayanan, meta: {allowedRoles: [2]}},
   { path: '/tambahPelayanan', name: 'TambahPelayanan', component: TambahPelayanan, meta: {allowedRoles: [2]}},
   { path: '/ubahPelayanan', name: 'UbahPelayanan', component: UbahPelayanan, meta: {allowedRoles: [2]}},
+  { path: '/permintaanBaruPengelola', name: 'PermintaanBaruPengelola', component: permintaanBaruPengelola, meta: {allowedRoles: [2]}},
+  { path: '/formulirTiketBaruPengelola', name: 'FormulirTiketBaruPengelola', component: formulirTiketBaruPengelola, meta: {allowedRoles: [2]}},  
 
-    
   //===============UNIT PELAKSANA===============
 
   //Beranda Unit Pelaksana

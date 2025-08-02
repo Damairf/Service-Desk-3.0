@@ -147,7 +147,6 @@ axios.post('/api/pelayanan/tambah', {
   <div class="form-container">
     <div class="form-card">
       <div class="form-title">Formulir Tiket Baru</div>
-
       <div class="info-box">
       <strong>Persyaratan Pelayanan:</strong> <br />
       <p>{{ persyaratan }}</p>
@@ -174,10 +173,6 @@ axios.post('/api/pelayanan/tambah', {
         <input type="file" accept=".pdf" @change="handleFileChange($event, 'lampiran')" />
         <p class="note">(Hanya PDF, maksimum 8MB)</p>
 
-        <button type="submit" :disabled="isLoading">
-          {{ isLoading ? 'Mengirim...' : 'Kirim' }}
-        </button>
-
         <label>Pilih Pelaksana Teknis</label>
         <select id="status" v-model="idTeknisTerpilih">
           <option value="" disabled>Pilih Pelaksana Teknis</option>
@@ -187,7 +182,9 @@ axios.post('/api/pelayanan/tambah', {
         </select>
         <label>Pesan untuk Pelaksana Teknis</label>
         <textarea class="input" v-model="pesanUnit"></textarea>
-        <button class="btn-selesai" @click="handleSelesai">Selesai</button>
+        <button type="submit" :disabled="isLoading">
+          {{ isLoading ? 'Mengirim...' : 'Kirim' }}
+        </button>
       </form>
     </div>
   </div>
