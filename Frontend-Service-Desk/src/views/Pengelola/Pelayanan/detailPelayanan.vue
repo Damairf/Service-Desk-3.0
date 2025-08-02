@@ -27,7 +27,8 @@ const activeTab = ref('informasi')
 const pelaksana = ref([])
 const idUnitTerpilih = ref('')
 const pesan = ref('')
-const status = ref((''))
+const status = ref(Number(''))
+const progress = ref(null)
 
 // Loading states
 const isLoading = ref(true)
@@ -53,7 +54,8 @@ const pelayananData = computed(() => ({
   perihal: perihal.value,
   tanggal: tanggal.value,
   steps: steps.value,
-  stepsStatus: stepsStatus.value
+  stepsStatus: stepsStatus.value,
+  status: status.value
 }))
 
 // Fungsi untuk fetch data dengan caching
@@ -68,10 +70,13 @@ const fetchPelayananData = async () => {
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_depanPengaju.value = cached.nama_depanPengaju
     nama_belakangPengaju.value = cached.nama_belakangPengaju
+    nama_depanUnit.value = cached.nama_depanUnit
+    nama_belakangUnit.value = cached.nama_belakangUnit
     perihal.value = cached.perihal
     tanggal.value = cached.tanggal
     steps.value = cached.steps
     stepsStatus.value = cached.stepsStatus
+    status.value = cached.status
     isDataLoaded.value = true
     isLoading.value = false
     return
@@ -102,8 +107,11 @@ const fetchPelayananData = async () => {
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_depanPengaju.value = pelayananData.user.Nama_Depan
     nama_belakangPengaju.value = pelayananData.user.Nama_Belakang
+    nama_depanUnit.value = pelayananData.unit_pelayanan?.Nama_Depan
+    nama_belakangUnit.value = pelayananData.unit_pelayanan?.Nama_Belakang
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
+    status.value = pelayananData.ID_Status
 
     // Set progress data
     const progressData = progressResponse.data
@@ -133,7 +141,20 @@ const fetchPelayananData = async () => {
       perihal: perihal.value,
       tanggal: tanggal.value,
       steps: steps.value,
-      stepsStatus: stepsStatus.value
+      stepsStatus: stepsStatus.value,
+      status: status.value
+    }
+
+    SuratDinas_Path.value = '/files' + surat_dinas.value
+
+    console.log(surat_dinas.value);
+
+    Lampiran_Path.value = '/files' + lampiran.value
+
+    console.log(lampiran.value);
+
+    if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 6 ) {
+      progress.value = true
     }
 
     isDataLoaded.value = true
@@ -173,23 +194,21 @@ const handleSelesai = async () => {
   }
 }
 
-SuratDinas_Path.value = '/files' + surat_dinas.value
 const namaFileSuratDinas = computed(() => {
-  const fileName = surat_dinas.value.split('/').pop() 
-  const parts = fileName.split('_')
-  const tanggal = parts[0]
-  const waktu = parts[1]
-  return `${tanggal}_${waktu}_Surat_Dinas.pdf`
-})
+      const fileName = surat_dinas.value.split('/').pop() 
+      const parts = fileName.split('_')
+      const tanggal = parts[0]
+      const waktu = parts[1]
+      return `${tanggal}_${waktu}_Surat_Dinas.pdf`
+    })
 
-Lampiran_Path.value = '/files' + lampiran.value
 const namaFileLampiran = computed(() => {
-  const fileName = lampiran.value.split('/').pop() 
-  const parts = fileName.split('_')
-  const tanggal = parts[0]
-  const waktu = parts[1]
-  return `${tanggal}_${waktu}_Lampiran.pdf`
-})
+      const fileName = lampiran.value.split('/').pop() 
+      const parts = fileName.split('_')
+      const tanggal = parts[0]
+      const waktu = parts[1]
+      return `${tanggal}_${waktu}_Lampiran.pdf`
+    })
 
 const messages = ref([
 {
@@ -318,7 +337,7 @@ onMounted(() => {
                 <strong>Nama Unit Pelaksana</strong>
                 <div>{{ nama_depanUnit + ' ' + nama_belakangUnit }}</div>
               </div>
-              <div class="tinjau-card" v-else="progress">
+              <div class="tinjau-card" v-else>
                 <h3>Tinjau Pelayanan</h3>
                 <!-- taro link pdfnya disini -->
                 <div class="wrapper-btn">
@@ -504,7 +523,7 @@ onMounted(() => {
 }
 
 .info-row {
-  display: flex;
+  display: block;
   padding: 0.8rem 0;
 }
 

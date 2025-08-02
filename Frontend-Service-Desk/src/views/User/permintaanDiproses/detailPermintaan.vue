@@ -284,9 +284,6 @@ onMounted(() => {
             </div>
           </div>
         </div>
-
-        
-
         <div v-else-if="activeTab === 'tracking'" class="tab-content">
           <div>
             <h2 class="card-title">Detail Progress<br>{{ pelayananId }}</h2>

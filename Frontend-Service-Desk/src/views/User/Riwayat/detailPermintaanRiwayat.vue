@@ -511,7 +511,7 @@ onMounted(() => {
   padding: 0.8rem 0;
 }
 
-.info-row-docs {
+.document-links {
   display: block;
   padding: 0.8rem 0;
 }

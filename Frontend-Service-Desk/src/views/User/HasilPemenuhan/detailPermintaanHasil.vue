@@ -360,7 +360,7 @@ onMounted(() => {
             <button class="send-btn" @click="addMessage">Kirim</button>
 
             <div class="document-links">
-              <div class="info-row">
+              <div>
                 <strong>Hasil Pemenuhan</strong>
                 <div v-if="HasilPemenuhan_Path">
                   <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
@@ -369,7 +369,7 @@ onMounted(() => {
                 </div>
               </div>
 
-              <div class="info-row">
+              <div>
                 <strong>Hasil BA</strong>
                 <div v-if="HasilBA_Path">
                   <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
@@ -377,7 +377,7 @@ onMounted(() => {
                   </a>
                 </div>
 
-                <div class="info-row">
+                <div>
                   <strong>Hasil SLA</strong>
                   <div v-if="HasilSLA_Path">
                     <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
@@ -549,6 +549,11 @@ onMounted(() => {
 }
 
 .info-row {
+  display: flex;
+  padding: 0.8rem 0;
+}
+
+.document-links {
   display: block;
   padding: 0.8rem 0;
 }
@@ -562,6 +567,7 @@ onMounted(() => {
   margin-left: 10px;
   flex-grow: 1;
 }
+
 
 .textarea-row {
   flex-direction: column;
