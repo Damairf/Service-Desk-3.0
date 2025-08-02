@@ -21,8 +21,6 @@ const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
-const SuratDinas_Path = ref(null)
-const Lampiran_Path = ref(null)
 const activeTab = ref(route.query.tab === 'informasi' ? 'informasi' : 'tracking')
 
 // Loading states
@@ -84,8 +82,10 @@ const fetchPelayananData = async () => {
         headers: { Authorization: 'Bearer ' + token }
       })
     ])
-
+    
     // Set data
+    console.log("pelayananResponse.data:", pelayananResponse.data)
+
     const pelayananData = pelayananResponse.data
     deskripsi.value = pelayananData.Deskripsi
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
@@ -99,6 +99,7 @@ const fetchPelayananData = async () => {
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
 
+
     // Set progress data
     const progressData = progressResponse.data
     steps.value = progressData.map(item =>
@@ -107,6 +108,7 @@ const fetchPelayananData = async () => {
     stepsStatus.value = progressData.map(item => item.Is_Done)
 
     // Cache data
+    
     dataCache.value = {
       id: pelayananId.value,
       deskripsi: deskripsi.value,
@@ -132,7 +134,7 @@ const fetchPelayananData = async () => {
   }
 }
 
-SuratDinas_Path.value = '/files' + surat_dinas.value
+const SuratDinas_Path = computed(() => '/files/' + surat_dinas.value)
 const namaFileSuratDinas = computed(() => {
   const fileName = surat_dinas.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -141,7 +143,7 @@ const namaFileSuratDinas = computed(() => {
   return `${tanggal}_${waktu}_Surat_Dinas.pdf`
 })
 
-Lampiran_Path.value = '/files' + lampiran.value
+const Lampiran_Path = computed(() => '/files/' + lampiran.value)
 const namaFileLampiran = computed(() => {
   const fileName = lampiran.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -286,7 +288,7 @@ onMounted(() => {
               <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
             </div>
             </div>
-          </div>
+            </div>
         </div>
 
         
@@ -352,8 +354,8 @@ onMounted(() => {
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #fb923c;
+  border: 4px solid #0D47A1;
+  border-top: 4px solid #64B5F6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
@@ -382,6 +384,7 @@ onMounted(() => {
   padding: 8px 16px;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 12.9rem;
 }
 
 .tab {
@@ -390,6 +393,7 @@ onMounted(() => {
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  
 }
 
 .tab:hover {
@@ -435,6 +439,16 @@ onMounted(() => {
   display: flex;
   gap: 2rem;
   align-items: flex-start;
+}
+
+.info-row {
+  display: flex;
+  padding: 0.8rem 0;
+}
+
+.info-row-PelaksanaTeknis {
+  display: block;
+  padding: 0.8rem 0;
 }
 
 .info-card,
