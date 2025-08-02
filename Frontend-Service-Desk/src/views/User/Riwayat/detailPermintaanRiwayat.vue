@@ -14,7 +14,7 @@ const perihal = ref('')
 const tanggal = ref('')
 const nama_depanPengaju = ref('') 
 const nama_belakangPengaju = ref('')
-const nama_depanTeknis = ref('') 
+const nama_depanTeknis = ref('')
 const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
@@ -320,9 +320,6 @@ onMounted(() => {
                       v-for="star in 5"
                       :key="star"
                       class="star"
-                      :class="{ 'filled': star <= (hoverRating || rating) }"
-                      @mouseover="hoverRating = star"
-                      @mouseleave="hoverRating = 0"
                     >
                       ★
                     </span>
@@ -359,7 +356,7 @@ onMounted(() => {
 
               <div class="info-row-PelaksanaTeknis" v-if="status !== 3">
                 <strong>Nama Pelaksana Teknis:</strong>
-                <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
+                <div>{{ (nama_depanTeknis || 'Belum') + ' ' + (nama_belakangTeknis || 'Tersedia') }}</div>
               </div>
 
               <div v-if="status !== 3" class="document-links">
