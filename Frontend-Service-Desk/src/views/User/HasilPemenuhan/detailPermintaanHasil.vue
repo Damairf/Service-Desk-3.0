@@ -19,11 +19,18 @@ const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const organisasi = ref('')
+
 const surat_dinas = ref('')
 const lampiran = ref('')
-const src_HasilPemenuhan = ref('-')
-const src_HasilBA = ref('-')
-const src_HasilSLA = ref('-')
+const SuratDinas_Path = ref(null)
+const Lampiran_Path = ref(null)
+const HasilBA_Path = ref(null)
+const HasilSLA_Path = ref(null)
+const HasilPemenuhan_Path = ref(null)
+const src_HasilPemenuhan = ref(route.query.hasil_pemenuhan || '-')
+const src_HasilBA = ref(route.query.hasil_ba || '-')
+const src_HasilSLA = ref(route.query.hasil_sla || '-')
+
 const activeTab = ref('informasi')
 
 // Loading states
@@ -98,9 +105,9 @@ const fetchPelayananData = async () => {
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
-    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path
-    src_HasilBA.value = pelayananData.BA_Path
-    src_HasilSLA.value = pelayananData.SLA_Path
+    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path || '-'
+    src_HasilBA.value = pelayananData.BA_Path || '-'
+    src_HasilSLA.value = pelayananData.SLA_Path || '-'
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_depanPengaju.value = pelayananData.user.Nama_Depan
     nama_belakangPengaju.value = pelayananData.user.Nama_Belakang
@@ -134,6 +141,12 @@ const fetchPelayananData = async () => {
       stepsStatus: stepsStatus.value
     }
 
+    SuratDinas_Path.value = '/files' + surat_dinas.value
+    Lampiran_Path.value = '/files' + lampiran.value
+    HasilPemenuhan_Path.value = '/files' + src_HasilPemenuhan.value
+    HasilBA_Path.value = '/files' + src_HasilBA.value
+    HasilSLA_Path.value = '/files' + src_HasilSLA.value
+
     isDataLoaded.value = true
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -142,7 +155,6 @@ const fetchPelayananData = async () => {
   }
 }
 
-const SuratDinas_Path = computed(() => '/files/' + surat_dinas.value)
 const namaFileSuratDinas = computed(() => {
   const fileName = surat_dinas.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -151,7 +163,6 @@ const namaFileSuratDinas = computed(() => {
   return `${tanggal}_${waktu}_Surat_Dinas.pdf`
 })
 
-const Lampiran_Path = computed(() => '/files/' + lampiran.value)
 const namaFileLampiran = computed(() => {
   const fileName = lampiran.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -160,8 +171,8 @@ const namaFileLampiran = computed(() => {
   return `${tanggal}_${waktu}_Lampiran.pdf`
 })
 
-const HasilPemenuhan_Path = computed(() => '/files/' + src_HasilPemenuhan.value)
 const namaFileHasilPemenuhan = computed(() => {
+  if (!src_HasilPemenuhan.value) return 'Tidak ada file'
   const fileName = src_HasilPemenuhan.value.split('/').pop() 
   const parts = fileName.split('_')
   const tanggal = parts[0]
@@ -169,8 +180,8 @@ const namaFileHasilPemenuhan = computed(() => {
   return `${tanggal}_${waktu}_HasilPemenuhan.pdf`
 })
 
-const HasilBA_Path = computed(() => '/files/' + src_HasilBA.value)
 const namaFileHasilBA = computed(() => {
+  if (!src_HasilBA.value) return 'Tidak ada file'
   const fileName = src_HasilBA.value.split('/').pop() 
   const parts = fileName.split('_')
   const tanggal = parts[0]
@@ -178,8 +189,8 @@ const namaFileHasilBA = computed(() => {
   return `${tanggal}_${waktu}_HasilBA.pdf`
 })
 
-const HasilSLA_Path = computed(() => '/files/' + src_HasilSLA.value)
 const namaFileHasilSLA = computed(() => {
+  if (!src_HasilSLA.value) return 'Tidak ada file'
   const fileName = src_HasilSLA.value.split('/').pop() 
   const parts = fileName.split('_')
   const tanggal = parts[0]
@@ -254,10 +265,6 @@ watch(() => pelayananId.value, (newId) => {
 onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
-  }
-  
-  if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
-    progress.value = true
   }
 })
 </script>
