@@ -768,4 +768,8 @@ select {
 .label-blue {
   color: #0185DA !important;
 }
+
+.input {
+  font-family: poppins, sans-serif;
+}
 </style>
