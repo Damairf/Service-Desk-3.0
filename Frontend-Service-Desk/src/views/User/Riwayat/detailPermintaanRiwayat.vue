@@ -307,7 +307,7 @@ onMounted(() => {
             <!-- Review Section (SEKARANG di dalam info-card) -->
             <div class="review-section">
               <div v-if="!reviewSubmitted">
-                <h4 class="review-title">Beri Ulasan</h4>
+                <h4 class="review-title">Ulasan Anda</h4>
                 <div class="star-rating">
                   <span
                     v-for="star in 5"
