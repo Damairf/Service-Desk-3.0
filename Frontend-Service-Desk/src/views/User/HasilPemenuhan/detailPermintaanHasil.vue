@@ -14,14 +14,23 @@ const perihal = ref('')
 const tanggal = ref('')
 const nama_depanPengaju = ref('') 
 const nama_belakangPengaju = ref('')
+const nama_depanTeknis = ref('') 
+const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const organisasi = ref('')
+
 const surat_dinas = ref('')
 const lampiran = ref('')
+const SuratDinas_Path = ref(null)
+const Lampiran_Path = ref(null)
+const HasilBA_Path = ref(null)
+const HasilSLA_Path = ref(null)
+const HasilPemenuhan_Path = ref(null)
 const src_HasilPemenuhan = ref(route.query.hasil_pemenuhan || '-')
 const src_HasilBA = ref(route.query.hasil_ba || '-')
 const src_HasilSLA = ref(route.query.hasil_sla || '-')
+
 const activeTab = ref('informasi')
 
 // Loading states
@@ -40,6 +49,8 @@ const pelayananData = computed(() => ({
   jenis_pelayanan: jenis_pelayanan.value,
   nama_depanPengaju: nama_depanPengaju.value,
   nama_belakangPengaju: nama_belakangPengaju.value,
+  nama_depanTeknis: nama_depanTeknis.value,
+  nama_belakangTeknis: nama_belakangTeknis.value,
   perihal: perihal.value,
   tanggal: tanggal.value,
   steps: steps.value,
@@ -58,6 +69,8 @@ const fetchPelayananData = async () => {
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_depanPengaju.value = cached.nama_depanPengaju
     nama_belakangPengaju.value = cached.nama_belakangPengaju
+    nama_depanTeknis.value = cached.nama_depanTeknis
+    nama_belakangTeknis.value = cached.nama_belakangTeknis
     perihal.value = cached.perihal
     tanggal.value = cached.tanggal
     steps.value = cached.steps
@@ -89,6 +102,8 @@ const fetchPelayananData = async () => {
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_depanPengaju.value = pelayananData.user.Nama_Depan
     nama_belakangPengaju.value = pelayananData.user.Nama_Belakang
+    nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan || 'Belum'
+    nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Tersedia'
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
 
@@ -109,11 +124,19 @@ const fetchPelayananData = async () => {
       jenis_pelayanan: jenis_pelayanan.value,
       nama_depanPengaju: nama_depanPengaju.value,
       nama_belakangPengaju: nama_belakangPengaju.value,
+      nama_depanTeknis: nama_depanTeknis.value,
+      nama_belakangTeknis: nama_belakangTeknis.value,
       perihal: perihal.value,
       tanggal: tanggal.value,
       steps: steps.value,
       stepsStatus: stepsStatus.value
     }
+
+    SuratDinas_Path.value = '/files' + surat_dinas.value
+    Lampiran_Path.value = '/files' + lampiran.value
+    HasilPemenuhan_Path.value = '/files' + src_HasilPemenuhan.value
+    HasilBA_Path.value = '/files' + src_HasilBA.value
+    HasilSLA_Path.value = '/files' + src_HasilSLA.value
 
     isDataLoaded.value = true
   } catch (error) {
@@ -123,7 +146,6 @@ const fetchPelayananData = async () => {
   }
 }
 
-const SuratDinas_Path = computed(() => '/files/' + surat_dinas.value)
 const namaFileSuratDinas = computed(() => {
   const fileName = surat_dinas.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -132,7 +154,6 @@ const namaFileSuratDinas = computed(() => {
   return `${tanggal}_${waktu}_Surat_Dinas.pdf`
 })
 
-const Lampiran_Path = computed(() => '/files/' + lampiran.value)
 const namaFileLampiran = computed(() => {
   const fileName = lampiran.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -141,7 +162,6 @@ const namaFileLampiran = computed(() => {
   return `${tanggal}_${waktu}_Lampiran.pdf`
 })
 
-const HasilPemenuhan_Path = computed(() => '/files/' + src_HasilPemenuhan.value)
 const namaFileHasilPemenuhan = computed(() => {
   const fileName = src_HasilPemenuhan.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -150,7 +170,6 @@ const namaFileHasilPemenuhan = computed(() => {
   return `${tanggal}_${waktu}_HasilPemenuhan.pdf`
 })
 
-const HasilBA_Path = computed(() => '/files/' + src_HasilBA.value)
 const namaFileHasilBA = computed(() => {
   const fileName = src_HasilBA.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -159,7 +178,6 @@ const namaFileHasilBA = computed(() => {
   return `${tanggal}_${waktu}_HasilBA.pdf`
 })
 
-const HasilSLA_Path = computed(() => '/files/' + src_HasilSLA.value)
 const namaFileHasilSLA = computed(() => {
   const fileName = src_HasilSLA.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -205,9 +223,10 @@ const submitReview = async () => {
   try {
     const token = localStorage.getItem('Token')
     // API masih belum ada
-    await axios.post(`/api/pelayanan/${pelayananId.value}/review`, {
-      rating: rating.value,
-      comment: reviewText.value
+    await axios.put(`/api/pelayanan/survey/${pelayananId.value}`, {
+      Rating: rating.value,
+      Isi_Survey: reviewText.value,
+      ID_Status: 6
     }, { headers: { Authorization: 'Bearer ' + token } })
     reviewSubmitted.value = true
   } catch (error) {
@@ -235,17 +254,9 @@ onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
   }
-
-  // Event listener untuk tombol back browser
-  const handlePopState = () => {
-    router.push({ name: 'PermintaanDiproses' })
-  }
   
-  window.addEventListener('popstate', handlePopState)
-  
-  // Cleanup event listener saat komponen unmount
-  return () => {
-    window.removeEventListener('popstate', handlePopState)
+  if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
+    progress.value = true
   }
 })
 </script>
@@ -352,6 +363,11 @@ onMounted(() => {
 
             <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
             <button class="send-btn" @click="addMessage">Kirim</button>
+
+            <div class ="info-row-PelaksanaTeknis">
+                <strong>Nama Pelaksana Teknis:</strong>
+                <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
+            </div>
 
             <div class="document-links">
               <div class="info-row-docs">
