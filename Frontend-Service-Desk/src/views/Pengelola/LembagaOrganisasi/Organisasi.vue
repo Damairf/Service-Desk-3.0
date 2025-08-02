@@ -34,7 +34,7 @@ onBeforeMount(() => {
 
 const fetchDataOrganisasi = () => {
 const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/organisasi', {
+  axios.get('/api/organisasi', {
     headers: {
       Authorization: 'Bearer ' + token
     }

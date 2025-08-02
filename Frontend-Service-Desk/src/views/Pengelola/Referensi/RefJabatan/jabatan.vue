@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -12,6 +12,34 @@ const referensiJabatan = ref([
   { id: 1, nama: "Kepala Dinas", tglPembuatan: "19/09/2025" },
   { id: 2, nama: "Staff Administrasi", tglPembuatan: "14/11/2025" },
 ])
+
+//===BACKEND=== 
+onBeforeMount(() => {
+  fetchDataOrganisasi();
+});
+
+
+const fetchDataOrganisasi = () => {
+const token = localStorage.getItem('Token');
+  axios.get('/api/jabatan', {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    referensiJabatan.value = response.data.map(item => ({
+      id: item.ID_Jabatan,
+      nama: item.Nama_Jabatan,
+      tglPembuatan: item.created_at || '-'
+    }))
+  })
+  .catch(error => {
+    console.error(error); 
+  })
+  .finally(() => {
+    isLoading.value = false;
+  });
+}
 
 // === Search, Sort & Pagination ===
 const search = ref('')
