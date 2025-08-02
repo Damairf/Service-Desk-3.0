@@ -105,9 +105,9 @@ const fetchPelayananData = async () => {
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
-    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path
-    src_HasilBA.value = pelayananData.BA_Path
-    src_HasilSLA.value = pelayananData.SLA_Path
+    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path || '-'
+    src_HasilBA.value = pelayananData.BA_Path || '-'
+    src_HasilSLA.value = pelayananData.SLA_Path || '-'
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_depanPengaju.value = pelayananData.user.Nama_Depan
     nama_belakangPengaju.value = pelayananData.user.Nama_Belakang
@@ -172,6 +172,7 @@ const namaFileLampiran = computed(() => {
 })
 
 const namaFileHasilPemenuhan = computed(() => {
+  if (!src_HasilPemenuhan.value) return 'Tidak ada file'
   const fileName = src_HasilPemenuhan.value.split('/').pop() 
   const parts = fileName.split('_')
   const tanggal = parts[0]
@@ -180,6 +181,7 @@ const namaFileHasilPemenuhan = computed(() => {
 })
 
 const namaFileHasilBA = computed(() => {
+  if (!src_HasilBA.value) return 'Tidak ada file'
   const fileName = src_HasilBA.value.split('/').pop() 
   const parts = fileName.split('_')
   const tanggal = parts[0]
@@ -188,6 +190,7 @@ const namaFileHasilBA = computed(() => {
 })
 
 const namaFileHasilSLA = computed(() => {
+  if (!src_HasilSLA.value) return 'Tidak ada file'
   const fileName = src_HasilSLA.value.split('/').pop() 
   const parts = fileName.split('_')
   const tanggal = parts[0]
@@ -262,10 +265,6 @@ watch(() => pelayananId.value, (newId) => {
 onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
-  }
-  
-  if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
-    progress.value = true
   }
 })
 </script>

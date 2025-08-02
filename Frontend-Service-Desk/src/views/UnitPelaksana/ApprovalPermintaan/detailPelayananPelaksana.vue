@@ -304,7 +304,7 @@ onMounted(() => {
 
             <div class="chat-card">
               <h3>Chat</h3>
-              <div class="chat-content view-only-chat">
+              <div class="chat-content">
                 <div
                   v-for="(message, index) in messages"
                   :key="index"
@@ -314,6 +314,8 @@ onMounted(() => {
                   <div class="message-time">{{ message.time + " " }}</div>
                 </div>
               </div>
+              <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
+              <button class="send-btn" @click="addMessage">Kirim</button>
               <div class="tinjau-card">
       <h3>Tinjau Pelayanan</h3>
       <div class='wrapper-setuju'>
@@ -529,11 +531,6 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-.view-only-chat {
-  min-height: 300px;
-  max-height: 400px;
 }
 
 .message-bubble {
