@@ -16,7 +16,6 @@ onBeforeMount(() => {
     }
   })
   .then(response => {
-    console.log(response);
     services.value = response.data;
   })
   .catch(error => {

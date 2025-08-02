@@ -1,133 +1,293 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
+
 const router = useRouter()
 const route = useRoute()
 
+// State management
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
 const stepsStatus = ref([])
-const perihal = ref('') 
-const tanggal = ref('') 
+const perihal = ref('')
+const tanggal = ref('')
 const nama_depanPengaju = ref('') 
 const nama_belakangPengaju = ref('')
+const nama_depanTeknis = ref('') 
+const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
+const organisasi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
-const organisasi = ref('')
+const pesanUnit = ref('')
+const src_HasilPemenuhan = ref('-')
+const src_HasilBA = ref('-')
+const src_HasilSLA = ref('-')
 const activeTab = ref('informasi')
 
-onMounted(() => {
-  if (route.query.steps) {
-    try {
-      steps.value = JSON.parse(route.query.steps);
-    } catch (e) {
-      console.error('Gagal parse steps dari query:', e);
-    }
+// Loading states
+const isLoading = ref(true)
+const isDataLoaded = ref(false)
+
+// Cache untuk mencegah API calls berulang
+const dataCache = ref(null)
+
+// Computed properties untuk optimasi
+const pelayananData = computed(() => ({
+  deskripsi: deskripsi.value,
+  organisasi: organisasi.value,
+  surat_dinas: surat_dinas.value,
+  lampiran: lampiran.value,
+  src_HasilPemenuhan: src_HasilPemenuhan.value,
+  src_HasilBA: src_HasilBA.value,
+  src_HasilSLA: src_HasilSLA.value,
+  jenis_pelayanan: jenis_pelayanan.value,
+  nama_depanPengaju: nama_depanPengaju.value,
+  nama_belakangPengaju: nama_belakangPengaju.value,
+  nama_depanTeknis: nama_depanTeknis.value,
+  nama_belakangTeknis: nama_belakangTeknis.value,
+  perihal: perihal.value,
+  tanggal: tanggal.value,
+  steps: steps.value,
+  stepsStatus: stepsStatus.value
+}))
+
+// Fungsi untuk fetch data dengan caching
+const fetchPelayananData = async () => {
+  if (dataCache.value && dataCache.value.id === pelayananId.value) {
+    // Gunakan data dari cache
+    const cached = dataCache.value
+    deskripsi.value = cached.deskripsi
+    organisasi.value = cached.organisasi
+    surat_dinas.value = cached.surat_dinas
+    lampiran.value = cached.lampiran
+    src_HasilPemenuhan.value = cached.src_HasilPemenuhan
+    src_HasilBA.value = cached.src_HasilBA
+    src_HasilSLA.value = cached.src_HasilSLA
+    jenis_pelayanan.value = cached.jenis_pelayanan
+    nama_depanPengaju.value = cached.nama_depanPengaju
+    nama_belakangPengaju.value = cached.nama_belakangPengaju
+    nama_depanTeknis.value = cached.nama_depanTeknis
+    nama_belakangTeknis.value = cached.nama_belakangTeknis
+    perihal.value = cached.perihal
+    tanggal.value = cached.tanggal
+    steps.value = cached.steps
+    stepsStatus.value = cached.stepsStatus
+    isDataLoaded.value = true
+    isLoading.value = false
+    return
   }
-});
 
-const token = localStorage.getItem('Token');
-axios.get(`http://127.0.0.1:8000/api/pelayanan/${pelayananId.value}`, {
-  headers: {
-    Authorization: 'Bearer ' + token
+  try {
+    isLoading.value = true
+    const token = localStorage.getItem('Token')
+    
+    const [pelayananResponse, progressResponse] = await Promise.all([
+      axios.get(`/api/pelayanan/${pelayananId.value}`, {
+        headers: { Authorization: 'Bearer ' + token }
+      }),
+      axios.get(`/api/pelayanan/alur/progress/${pelayananId.value}`, {
+        headers: { Authorization: 'Bearer ' + token }
+      })
+    ])
+
+    // Set data
+    const pelayananData = pelayananResponse.data
+    deskripsi.value = pelayananData.Deskripsi
+    organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
+    surat_dinas.value = pelayananData.Surat_Dinas_Path
+    lampiran.value = pelayananData.Lampiran_Path
+    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path
+    src_HasilBA.value = pelayananData.BA_Path
+    src_HasilSLA.value = pelayananData.SLA_Path
+    jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
+    nama_depanPengaju.value = pelayananData.user.Nama_Depan
+    nama_belakangPengaju.value = pelayananData.user.Nama_Belakang
+    nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan || 'Belum'
+    nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Tersedia'
+    perihal.value = pelayananData.Perihal
+    tanggal.value = pelayananData.created_at
+
+    // Set progress data
+    const progressData = progressResponse.data
+    steps.value = progressData.map(item =>
+      item.progress_to_alur?.isi_alur?.Nama_Alur || 'Tidak Diketahui'
+    )
+    stepsStatus.value = progressData.map(item => item.Is_Done)
+
+    // Cache data
+    dataCache.value = {
+      id: pelayananId.value,
+      deskripsi: deskripsi.value,
+      organisasi: organisasi.value,
+      surat_dinas: surat_dinas.value,
+      lampiran: lampiran.value,
+      jenis_pelayanan: jenis_pelayanan.value,
+      nama_depanPengaju: nama_depanPengaju.value,
+      nama_belakangPengaju: nama_belakangPengaju.value,
+      nama_depanTeknis: nama_depanTeknis.value,
+      nama_belakangTeknis: nama_belakangTeknis.value,
+      perihal: perihal.value,
+      tanggal: tanggal.value,
+      steps: steps.value,
+      stepsStatus: stepsStatus.value
+    }
+
+    isDataLoaded.value = true
+  } catch (error) {
+    console.error('Error fetching data:', error)
+  } finally {
+    isLoading.value = false
   }
+}
+
+const SuratDinas_Path = computed(() => '/files/' + surat_dinas.value)
+const namaFileSuratDinas = computed(() => {
+  const fileName = surat_dinas.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Surat_Dinas.pdf`
 })
-.then(response => {
-  deskripsi.value = response.data.Deskripsi
-  organisasi.value = response.data.user.user_organisasi.Nama_OPD
-  surat_dinas.value = response.data.Surat_Dinas_Path
-  lampiran.value = response.data.Lampiran_Path
-  jenis_pelayanan.value = response.data.jenis__pelayanan.Nama_Jenis_Pelayanan
-  nama_depanPengaju.value = response.data.user.Nama_Depan
-  nama_belakangPengaju.value = response.data.user.Nama_Belakang
-  perihal.value = response.data.Perihal
-  tanggal.value = response.data.created_at
 
-  axios.get(`http://127.0.0.1:8000/api/pelayanan/alur/progress/${pelayananId.value}`, {
-  headers: {
-    Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-  steps.value = response.data.map(item =>
-    item.progress_to_alur?.isi_alur?.Nama_Alur || 'Tidak Diketahui'
-  )
-
-  stepsStatus.value = response.data.map(item => item.Is_Done)
-
-  handleTabChange(activeTab.value)
-  })
-  .catch(error => {
-    console.error(error)
-  })
+const Lampiran_Path = computed(() => '/files/' + lampiran.value)
+const namaFileLampiran = computed(() => {
+  const fileName = lampiran.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Lampiran.pdf`
 })
-.catch(function(error) {
-  console.log(error)
-});
 
-// Fungsi untuk menangani perubahan tab
-const handleTabChange = (tab) => {
-  activeTab.value = tab;
+const HasilPemenuhan_Path = computed(() => '/files/' + src_HasilPemenuhan.value)
+const namaFileHasilPemenuhan = computed(() => {
+  const fileName = src_HasilPemenuhan.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilPemenuhan.pdf`
+})
 
-  if (tab === 'tracking') {
-    if (steps.value.length > 0) {
-      router.push({
-        name: 'HalamanLacakDisposisi',
-        query: {
-          layanan: pelayananId.value,
-          tab: 'tracking',
-          steps: JSON.stringify(steps.value),
-          stepsStatus: JSON.stringify(stepsStatus.value)
-        }
-      });
-      return;
-    }
-  } else if (tab === 'informasi') {
-    router.push({
-      name: 'HalamanInformasiDisposisi',
-      query: {
-        layanan: pelayananId.value, 
-        perihal: perihal.value, 
-        tanggal: tanggal.value, 
-        organisasi: organisasi.value, 
-        nama_depanPengaju: nama_depanPengaju.value, 
-        nama_belakangPengaju: nama_belakangPengaju.value, 
-        jenis_pelayanan: jenis_pelayanan.value,
-        deskripsi: deskripsi.value,
-        surat_dinas: surat_dinas.value,
-        lampiran: lampiran.value,
-        tab: 'informasi',
-        steps: JSON.stringify(steps.value),
-        stepsStatus: JSON.stringify(stepsStatus.value)
+const HasilBA_Path = computed(() => '/files/' + src_HasilBA.value)
+const namaFileHasilBA = computed(() => {
+  const fileName = src_HasilBA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilBA.pdf`
+})
+
+const HasilSLA_Path = computed(() => '/files/' + src_HasilSLA.value)
+const namaFileHasilSLA = computed(() => {
+  const fileName = src_HasilSLA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilSLA.pdf`
+})
+
+const rating = ref(0)
+const hoverRating = ref(0)
+const reviewText = ref('')
+const reviewSubmitted = ref(false)
+
+const messages = ref([
+{
+    text: "Halo, bagaimana saya bisa membantu?",
+    sender: "Admin",
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  }
+])
+const newMessage = ref('')
+
+const addMessage = () => {
+  if (newMessage.value.trim()) {
+    messages.value.push({
+      text: newMessage.value,
+      sender: "User",
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    })
+    newMessage.value = ''
+  }
+}
+
+const pilihan = ref('')
+function handlePilihan(klik) {
+  pilihan.value = klik
+}
+
+
+
+function handleSelesai() {
+  const token = localStorage.getItem('Token');
+  if (pilihan.value === 'Selesai') {
+    axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
+    {
+      ID_Status: 5,
+      Pesan_Unit: pesanUnit.value,
+      Is_Done: false
+    },
+    {
+      headers: {
+        Authorization: 'Bearer ' + token,
       }
-    });
+    })
+    .then(() => router.push('/Disposisi'))
+    .catch(error => console.error('Error updating status to Selesai:', error));
+  } else if (pilihan.value === 'Revisi') {
+    axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
+    {
+      ID_Status: 4,
+      Pesan_Unit: pesanUnit.value
+    },
+    {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      }
+    })
+    .then(() => router.push('/Disposisi'))
+    .catch(error => console.error('Error updating status to Revisi:', error));
   }
-};
+}
 
-// Set default route saat komponen dimount
+// Fungsi untuk menangani perubahan tab (tanpa router navigation)
+const handleTabChange = (tab) => {
+  activeTab.value = tab
+  // Update URL tanpa navigation
+  const newQuery = { ...route.query, tab }
+  router.replace({ query: newQuery })
+}
+
+// Watch untuk perubahan pelayananId
+watch(() => pelayananId.value, (newId) => {
+  if (newId && newId !== '-') {
+    fetchPelayananData()
+  }
+})
+
 onMounted(() => {
-  handleTabChange(activeTab.value)
-  
-  // Event listener untuk tombol back browser
-  const handlePopState = () => {
-    // Langsung dilempar ke permintaanDiproses
-    router.push({ name: 'Disposisi' })
+  if (pelayananId.value && pelayananId.value !== '-') {
+    fetchPelayananData()
   }
   
-  window.addEventListener('popstate', handlePopState)
-  
-  // Cleanup event listener saat komponen unmount
-  return () => {
-    window.removeEventListener('popstate', handlePopState)
+  if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
+    progress.value = true
   }
 })
 </script>
 
 <template>
-  <div class="container">
+<div class="container">
+  <!-- Loading State -->
+  <div v-if="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Memuat data...</p>
+  </div>
+
+  <!-- Content -->
+  <div v-else-if="isDataLoaded">
     <!-- Tabs -->
     <div class="tabs">
       <div
@@ -146,9 +306,145 @@ onMounted(() => {
 
     <!-- Card -->
     <div class="card">
-      <router-view/>
-    </div>
+      <!-- Tab Content -->
+      <div v-if="activeTab === 'informasi'" class="tab-content">
+        <div class="layout-container">
+          <!-- Informasi Card -->
+          <div class="info-card">
+            <h3>Informasi Umum</h3>
+            <div class="info-row"><strong>Layanan:</strong> <span>{{ jenis_pelayanan }}</span></div>
+            <div class="info-row"><strong>No. Tiket:</strong> <span>{{ pelayananId }}</span></div>
+            <div class="info-row"><strong>Pengaju:</strong> <span>{{ nama_depanPengaju + ' ' + nama_belakangPengaju }}</span></div>
+            <div class="info-row"><strong>Organisasi:</strong> <span>{{ organisasi }}</span></div>
+            <div class="info-row"><strong>Tanggal Laporan:</strong> <span>{{ new Date(tanggal).toLocaleDateString('id-ID') }}</span></div>
+            <div class="info-row"><strong>Perihal:</strong> <span>{{ perihal }}</span></div>
+            
+            <div class="info-row textarea-row">
+              <strong>Deskripsi User</strong>
+              <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
+
+              <strong>Surat Dinas</strong>
+              <div v-if="surat_dinas">
+                <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                  {{ namaFileSuratDinas }}
+                </a>
+              </div>
+
+              <strong>Lampiran</strong>
+              <div v-if="lampiran">
+                <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                  {{ namaFileLampiran }}
+                </a>
+              </div>
+            </div>
+            </div>
+
+          <!-- Chat Card -->
+          
+          <div class="chat-card">
+            <h3>Chat</h3>
+            <div class="chat-content">
+              <div
+                v-for="(message, index) in messages"
+                :key="index"
+                :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
+              >
+                <div class="message-text">{{ message.text + " " }}</div>
+                <div class="message-time">{{ message.time + " " }}</div>
+              </div>
+            </div>
+
+            <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
+            <button class="send-btn" @click="addMessage">Kirim</button>
+
+            <div class ="info-row-PelaksanaTeknis">
+                <strong>Nama Pelaksana Teknis:</strong>
+                <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
+            </div>
+
+            <div class="document-links">
+              <div class="info-row-docs">
+                <strong>Hasil Pemenuhan</strong>
+                <div v-if="HasilPemenuhan_Path">
+                  <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                    {{ namaFileHasilPemenuhan }}
+                  </a>
+                </div>
+              </div>
+
+              <div class="info-row-docs">
+                <strong>Hasil BA</strong>
+                <div v-if="HasilBA_Path">
+                  <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                    {{ namaFileHasilBA }}
+                  </a>
+                </div>
+
+                <div class="info-row-docs">
+                  <strong>Hasil SLA</strong>
+                  <div v-if="HasilSLA_Path">
+                    <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                      {{ namaFileHasilSLA }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tinjau-card">
+        <h3>Tinjau Pelayanan</h3>
+        <div class="wrapper-btn">
+          <button class="btn-selesai" @click="handlePilihan('Selesai')">Selesai</button>
+          <button class="btn-revisi" @click="handlePilihan('Revisi')">Revisi</button>
+        </div>
+        <div class="wrapper-selesai" v-if="pilihan == 'Selesai'">
+          <h4>Keterangan Selesai</h4>
+          <textarea class="input" v-model="pesanUnit"></textarea>
+          <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
+        </div>
+        <div class="wrapper-revisi" v-if="pilihan == 'Revisi'">
+          <h4>Alasan Butuh Direvisi</h4>
+          <textarea class="input" v-model="pesanUnit"></textarea>
+          <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
+        </div>
+      </div>
+          </div> <!-- end chat-card -->
+        </div> <!-- end layout-container -->
+      </div> <!-- end informasi tab -->
+
+      <!-- Tracking Tab -->
+      <div v-else-if="activeTab === 'tracking'" class="tab-content">
+        <div>
+          <h2 class="card-title">Detail Progress<br>{{ pelayananId }}</h2>
+          <div class="step-wrapper">
+            <div
+              v-for="(step, index) in steps"
+              :key="index"
+              class="step-row"
+            >
+              <div
+                class="circle"
+                :class="stepsStatus[index] === 1 ? 'circle-blue' : 'circle-inactive'"
+              >
+                {{ index + 1 }}
+              </div>
+              <div
+                class="step-label"
+                :class="stepsStatus[index] === 1 ? 'label-blue' : ''"
+              >
+                {{ step }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end tracking tab -->
+    </div> <!-- end card -->
+  </div> <!-- end isDataLoaded -->
+
+  <!-- Error State -->
+  <div v-else class="error-container">
+    <p>Gagal memuat data. Silakan coba lagi.</p>
   </div>
+</div>
 </template>
 
 <style scoped>
@@ -160,6 +456,42 @@ onMounted(() => {
   flex-direction: column;
   align-items: flex-start;
   padding: 32px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Loading States */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 100%;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #0D47A1;
+  border-top: 4px solid #64B5F6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 100%;
+  color: #ef4444;
 }
 
 /* Tabs */
@@ -171,6 +503,7 @@ onMounted(() => {
   padding: 8px 16px;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 12.9rem;
 }
 
 .tab {
@@ -202,11 +535,252 @@ onMounted(() => {
 /* Card */
 .card {
   width: 100%;
-  max-width: 1100px;
+  width: 1100px;
   background-color: white;
   padding: 32px;
   border-radius: 12px;
   border-top-left-radius: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content {
+  animation: fadeIn 0.1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Layout Container */
+.layout-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+/* Informasi */
+.info-card,
+.chat-card {
+  background-color: white;
+  padding: 0rem 1.5rem 1.5rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: 50%;
+}
+
+.info-row {
+  display: flex;
+  padding: 0.8rem 0;
+}
+
+.info-row-docs {
+  display: block;
+  padding: 0.8rem 0;
+}
+
+.info-row strong {
+  width: 12rem;
+  flex-shrink: 0;
+}
+
+.info-row span {
+  margin-left: 10px;
+  flex-grow: 1;
+}
+
+
+.textarea-row {
+  flex-direction: column;
+  align-items: start;
+}
+
+.textarea-row textarea {
+  width: 97%;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  font-family: poppins, sans-serif;
+  background-color: #e6e6e6;
+}
+
+.chat-content {
+  background-color: #e6e6e6;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  max-height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.message-bubble {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  max-width: 70%;
+  font-size: 0.9rem;
+}
+
+.received {
+  background-color: #fff;
+  align-self: flex-start;
+}
+
+.sent {
+  background-color: #2196f3;
+  color: white;
+  align-self: flex-end;
+}
+
+.message-time {
+  font-size: 0.7rem;
+  margin-top: 5px;
+  text-align: right;
+  opacity: 0.7;
+}
+
+.message {
+  width: 97%;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  padding: 0.5rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  background-color: white;
+  color: black;
+  font-family: poppins, sans-serif;
+}
+
+.send-btn {
+  background: #006920;
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.note {
+  color: #888;
+  font-size: 0.8rem;
+  margin-top: -0.3rem;
+}
+
+.input {
+  background-color: white;
+  color: black;
+}
+
+.review-section {
+  border-top: 1px solid #eee;
+  padding-top: 0.5rem;
+}
+
+.review-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.star-rating {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.star {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.review-textarea {
+  width: 95%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.75rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  background-color: white;
+  color: black;
+  font-family: poppins, sans-serif;
+}
+
+.thank-you-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Steps */
+.card-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 32px;
+}
+
+.step-wrapper {
+  position: relative;
+  padding-left: 36px;
+}
+
+.step-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+  z-index: 10;
+}
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  font-size: 16px;
+}
+
+.circle:hover {
+  transform: scale(1.1);
+}
+
+.circle-inactive {
+  background-color: #d1d5db;
+  color: white;
+}
+
+.step-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.circle-blue {
+  background-color: #0185DA !important;
+  color: white;
+}
+
+.label-blue {
+  color: #0185DA !important;
 }
 </style>

@@ -115,7 +115,8 @@ class PelayananController extends Controller
             'ID_Status',
             'ID_Teknis',
             'Pesan_Pengelola',
-            'Pesan_Unit'
+            'Pesan_Unit',
+            'Is_Done'
         ]);
 
     $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
