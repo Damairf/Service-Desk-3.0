@@ -14,17 +14,17 @@ const perihal = ref('')
 const tanggal = ref('')
 const nama_depanPengaju = ref('') 
 const nama_belakangPengaju = ref('')
+const nama_depanTeknis = ref('') 
+const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
 const activeTab = ref('informasi')
-
-
-const src_HasilPemenuhan = ref(route.query.hasil_pemenuhan || '-')
-const src_HasilBA = ref(route.query.hasil_ba || '-')
-const src_HasilSLA = ref(route.query.hasil_sla || '-')
+const src_HasilPemenuhan = ref('-')
+const src_HasilBA = ref('-')
+const src_HasilSLA = ref('-')
 
 // Loading states
 const isLoading = ref(true)
@@ -39,13 +39,20 @@ const pelayananData = computed(() => ({
   organisasi: organisasi.value,
   surat_dinas: surat_dinas.value,
   lampiran: lampiran.value,
+  src_HasilPemenuhan: src_HasilPemenuhan.value,
+  src_HasilBA: src_HasilBA.value,
+  src_HasilSLA: src_HasilSLA.value,
   jenis_pelayanan: jenis_pelayanan.value,
   nama_depanPengaju: nama_depanPengaju.value,
   nama_belakangPengaju: nama_belakangPengaju.value,
+  nama_depanTeknis: nama_depanTeknis.value,
+  nama_belakangTeknis: nama_belakangTeknis.value,
   perihal: perihal.value,
   tanggal: tanggal.value,
   steps: steps.value,
-  stepsStatus: stepsStatus.value
+  stepsStatus: stepsStatus.value,
+  rating: rating.value,
+  reviewText: reviewText.value
 }))
 
 // Fungsi untuk fetch data dengan caching
@@ -57,11 +64,18 @@ const fetchPelayananData = async () => {
     organisasi.value = cached.organisasi
     surat_dinas.value = cached.surat_dinas
     lampiran.value = cached.lampiran
+    src_HasilPemenuhan.value = cached.src_HasilPemenuhan
+    src_HasilBA.value = cached.src_HasilBA
+    src_HasilSLA.value = cached.src_HasilSLA
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_depanPengaju.value = cached.nama_depanPengaju
     nama_belakangPengaju.value = cached.nama_belakangPengaju
+    nama_depanTeknis.value = cached.nama_depanTeknis
+    nama_belakangTeknis.value = cached.nama_belakangTeknis
     perihal.value = cached.perihal
     tanggal.value = cached.tanggal
+    rating.value = cached.rating,
+    reviewText.value = cached.reviewText
     steps.value = cached.steps
     stepsStatus.value = cached.stepsStatus
     isDataLoaded.value = true
@@ -88,11 +102,18 @@ const fetchPelayananData = async () => {
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
+    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path || '-'
+    src_HasilBA.value = pelayananData.BA_Path || '-'
+    src_HasilSLA.value = pelayananData.SLA_Path || '-'
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_depanPengaju.value = pelayananData.user.Nama_Depan
     nama_belakangPengaju.value = pelayananData.user.Nama_Belakang
+    nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan || ''
+    nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || ''
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
+    rating.value = pelayananData.Rating,
+    reviewText.value = pelayananData.Isi_Survey
 
     // Set progress data
     const progressData = progressResponse.data
@@ -111,8 +132,12 @@ const fetchPelayananData = async () => {
       jenis_pelayanan: jenis_pelayanan.value,
       nama_depanPengaju: nama_depanPengaju.value,
       nama_belakangPengaju: nama_belakangPengaju.value,
+      nama_depanTeknis: nama_depanTeknis.value,
+      nama_belakangTeknis: nama_belakangTeknis.value,
       perihal: perihal.value,
       tanggal: tanggal.value,
+      rating: rating.value,
+      reviewText: reviewText.value,
       steps: steps.value,
       stepsStatus: stepsStatus.value
     }
@@ -152,7 +177,7 @@ const namaFileHasilPemenuhan = computed(() => {
   return `${tanggal}_${waktu}_HasilPemenuhan.pdf`
 })
 
-const HasiHasilBA_PathlPemenuhan_Path = computed(() => '/files/' + src_HasilBA.value)
+const HasilBA_Path = computed(() => '/files/' + src_HasilBA.value)
 const namaFileHasilBA = computed(() => {
   const fileName = src_HasilBA.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -170,7 +195,7 @@ const namaFileHasilSLA = computed(() => {
   return `${tanggal}_${waktu}_HasilSLA.pdf`
 })
 
-const rating = ref(0)
+const rating = ref(null)
 const hoverRating = ref(0)
 const reviewText = ref('')
 const reviewSubmitted = ref(false)
@@ -316,6 +341,12 @@ onMounted(() => {
                 <div class="message-time">{{ message.time + " " }}</div>
               </div>
             </div>
+
+            <div class ="info-row-PelaksanaTeknis">
+                <strong>Nama Pelaksana Teknis:</strong>
+                <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
+            </div>
+
             <div class="document-links">
               <div class="info-row-docs">
                 <strong>Hasil Pemenuhan</strong>
