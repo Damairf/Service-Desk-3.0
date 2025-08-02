@@ -29,6 +29,7 @@ const idUnitTerpilih = ref('')
 const pesan = ref('')
 const status = ref(Number(''))
 const progress = ref(null)
+const stepsID = ref([]) 
 
 // Loading states
 const isLoading = ref(true)
@@ -119,6 +120,7 @@ const fetchPelayananData = async () => {
       item.progress_to_alur?.isi_alur?.Nama_Alur || 'Tidak Diketahui'
     )
     stepsStatus.value = progressData.map(item => item.Is_Done)
+    stepsID.value = progressData.map(item => item.ID_Progress_Alur)
 
     // Set pelaksana data
     pelaksana.value = unitResponse.data.map(item => ({
@@ -181,6 +183,21 @@ const handleSelesai = async () => {
       }, {
         headers: { Authorization: 'Bearer ' + token }
       })
+    }
+    // ✅ Update langkah ke-3 menjadi selesai (Is_Done = 1)
+    const idProgressLangkah3 = stepsID.value[2] // pastikan ini terisi
+    if (idProgressLangkah3) {
+      const progressUrl = `/api/progress-alur/update-status/${idProgressLangkah3}`
+
+      await axios.put(progressUrl, {
+        Is_Done: 1
+      }, {
+        headers: { Authorization: 'Bearer ' + token }
+      })
+
+      console.log('Langkah ke-3 berhasil ditandai selesai.')
+    } else {
+      console.warn('ID Progress langkah ke-3 tidak tersedia.')
     }
 
     router.push('/pelayanan')
