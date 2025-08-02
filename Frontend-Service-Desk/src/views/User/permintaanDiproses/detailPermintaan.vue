@@ -528,6 +528,7 @@ onMounted(() => {
   margin-bottom: 1rem;
   background-color: white;
   color: black;
+  font-family: poppins, sans-serif;;
 }
 
 .send-btn {
