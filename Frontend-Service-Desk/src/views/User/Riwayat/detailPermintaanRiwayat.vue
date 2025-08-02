@@ -22,6 +22,8 @@ const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
 const activeTab = ref('informasi')
+const status = ref('')
+
 const src_HasilPemenuhan = ref('-')
 const src_HasilBA = ref('-')
 const src_HasilSLA = ref('-')
@@ -226,10 +228,6 @@ watch(() => pelayananId.value, (newId) => {
 onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
-  }
-  
-  if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
-    progress.value = true
   }
 
   // Event listener untuk tombol back browser
@@ -541,7 +539,7 @@ onMounted(() => {
   padding: 0.8rem 0;
 }
 
-.info-row-docs {
+.document-links {
   display: block;
   padding: 0.8rem 0;
 }
@@ -623,6 +621,7 @@ onMounted(() => {
   margin-bottom: 1rem;
   background-color: white;
   color: black;
+  font-family: poppins, sans-serif;
 }
 
 .note {
