@@ -138,7 +138,6 @@ watch(search, () => {
             <th>Perihal</th>
             <th>Tanggal</th>
             <th>Pelaksana Teknis</th>
-            <th>Detail Progress</th>
             <th @click="toggleSort('status')" class="cursor-pointer">Status
                 <span v-if="sortKey === 'status' || sortOrder === null">
                 <span v-if="sortOrder === 'asc'">🔼</span>
@@ -146,6 +145,7 @@ watch(search, () => {
                 <span v-else>☰</span>
               </span>
             </th>
+            <th>Detail Progress</th>
           </tr>
         </thead>
         <tbody>
@@ -161,12 +161,12 @@ watch(search, () => {
             <td>{{ formatDate(item.tanggal) }}</td>
             <td>{{ item.teknis }}</td>
             <td>
+              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+            </td>
+            <td>
               <button class="detail-button" @click="lihatDetail(item)">Lihat</button>
               <!-- nanti ganti kalo udah ada di backend jd item.terkirim mungkin -->
               <span :class="['lingkaran', item.terkirim.toString()]"></span>
-            </td>
-            <td>
-              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
             </td>
           </tr>
         </tbody>
@@ -298,5 +298,8 @@ watch(search, () => {
 .loading-data {
   text-align: center;
   font-size: 1.1rem;
+}
+.rounded-table th {
+  cursor: default !important; /* Use 'default' for arrow cursor, override any text cursor */
 }
 </style>

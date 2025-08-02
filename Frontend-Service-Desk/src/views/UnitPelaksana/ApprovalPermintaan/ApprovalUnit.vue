@@ -154,8 +154,14 @@ watch(search, () => {
             <th>Perihal</th>
             <th>Organisasi</th>
             <th>Tanggal</th>
+            <th @click="toggleSort('status')" class="cursor-pointer">Status
+                <span v-if="sortKey === 'status' || sortOrder === null">
+                <span v-if="sortOrder === 'asc'">🔼</span>
+                <span v-else-if="sortOrder === 'desc'">🔽</span>
+                <span v-else>☰</span>
+              </span>
+            </th>
             <th>Detail Progress</th>
-            <th>Status</th>
           </tr>
         </thead>
         <tbody>
@@ -170,9 +176,11 @@ watch(search, () => {
             <td>{{ item.perihal }}</td>
             <td>{{ item.organisasi }}</td>
             <td>{{ formatDate(item.tanggal) }}</td>
-            <td><button class="detail-button" @click="lihatDetail(item)">Lihat</button></td>
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+            </td>
+            <td>
+              <button class="detail-button" @click="lihatDetail(item)">Lihat</button>
             </td>
           </tr>
         </tbody>
@@ -292,5 +300,8 @@ watch(search, () => {
 .loading-data {
   text-align: center;
   font-size: 1.1rem;
+}
+.rounded-table th {
+  cursor: default !important; /* Use 'default' for arrow cursor, override any text cursor */
 }
 </style>
