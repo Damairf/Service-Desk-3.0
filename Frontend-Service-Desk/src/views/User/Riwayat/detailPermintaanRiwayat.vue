@@ -20,6 +20,7 @@ const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
 const activeTab = ref('informasi')
+const status = ref('')
 
 const SuratDinas_Path = ref(null)
 const Lampiran_Path = ref(null)
@@ -205,10 +206,6 @@ watch(() => pelayananId.value, (newId) => {
 onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
-  }
-  
-  if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
-    progress.value = true
   }
 
   // Event listener untuk tombol back browser

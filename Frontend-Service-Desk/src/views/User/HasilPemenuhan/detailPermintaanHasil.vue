@@ -241,10 +241,6 @@ onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
   }
-  
-  if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
-    progress.value = true
-  }
 
   // Event listener untuk tombol back browser
   const handlePopState = () => {
