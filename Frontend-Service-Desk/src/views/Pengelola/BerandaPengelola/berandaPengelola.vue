@@ -1,5 +1,5 @@
 <script setup>
-import { ref , onBeforeMount, onMounted} from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import ChartProgressKeseluruhan from './Chart/ChartPie-ProgressKeseluruhan.vue'
 import ChartProgressBulanIni from './Chart/ChartPie-ProgressBulanIni.vue'
@@ -17,8 +17,16 @@ const isLoading = ref(true)
 const nip_user = ref('')
 const nama_jabatan = ref('')
 const nama_organisasi = ref('')
-const nama_user = [localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' ');
+const nama_user = [localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' ')
 
+const noData = ref({
+  progressKeseluruhan: false,
+  progressBulanIni: false,
+  permintaanLayanan: false,
+  permintaanBerdasarkanStatus: false,
+  permintaanBerdasarkanPengelolaTeknis: false,
+  penilaianLayananServiceDesk: false
+})
 
 onMounted(async () => {
   const token = localStorage.getItem('Token')
@@ -63,7 +71,6 @@ const fetchDashboardData = async (token) => {
     isLoading.value = false
   }
 }
-
 </script>
 
 <template>
@@ -101,12 +108,16 @@ const fetchDashboardData = async (token) => {
 <div class="box-row">
   <div class="chart-box">
     <div class="chart-container">
-      <ChartProgressKeseluruhan />
+      <div v-if="isLoading" class="loading-data">Memuat data...</div>
+      <div v-else-if="noData.progressKeseluruhan" class="no-data">Belum ada data untuk ditampilkan</div>
+      <ChartProgressKeseluruhan v-else @no-data="noData.progressKeseluruhan = $event" />
     </div>
   </div>
   <div class="chart-box">
     <div class="chart-container">
-      <ChartProgressBulanIni />
+      <div v-if="isLoading" class="loading-data">Memuat data...</div>
+      <div v-else-if="noData.progressBulanIni" class="no-data">Belum ada data untuk ditampilkan</div>
+      <ChartProgressBulanIni v-else @no-data="noData.progressBulanIni = $event" />
     </div>
   </div>
 </div>
@@ -114,18 +125,24 @@ const fetchDashboardData = async (token) => {
 <!-- Chart Bar: 4 baris -->
 <div class="bar-chart-section">
   <div class="chart-full">
-    <ChartPermintaanLayanan/>
+    <div v-if="isLoading" class="loading-data">Memuat data...</div>
+    <div v-else-if="noData.permintaanLayanan" class="no-data">Belum ada data untuk ditampilkan</div>
+    <ChartPermintaanLayanan v-else @no-data="noData.permintaanLayanan = $event" />
   </div>
   <div class="chart-full">
-    <ChartBarPermintaanBerdasarkanStatus/>
+    <div v-if="isLoading" class="loading-data">Memuat data...</div>
+    <div v-else-if="noData.permintaanBerdasarkanStatus" class="no-data">Belum ada data untuk ditampilkan</div>
+    <ChartBarPermintaanBerdasarkanStatus v-else @no-data="noData.permintaanBerdasarkanStatus = $event" />
   </div>
-
   <div class="chart-full">
-    <ChartBarPermintaanBerdasarkanPengelolaTeknis/>
+    <div v-if="isLoading" class="loading-data">Memuat data...</div>
+    <div v-else-if="noData.permintaanBerdasarkanPengelolaTeknis" class="no-data">Belum ada data untuk ditampilkan</div>
+    <ChartBarPermintaanBerdasarkanPengelolaTeknis v-else @no-data="noData.permintaanBerdasarkanPengelolaTeknis = $event" />
   </div>
-
   <div class="chart-full">
-    <ChartBarPenilaianLayananServiceDesk/>
+    <div v-if="isLoading" class="loading-data">Memuat data...</div>
+    <div v-else-if="noData.penilaianLayananServiceDesk" class="no-data">Belum ada data untuk ditampilkan</div>
+    <ChartBarPenilaianLayananServiceDesk v-else @no-data="noData.penilaianLayananServiceDesk = $event" />
   </div>
 </div>
 </template>
@@ -197,12 +214,19 @@ const fetchDashboardData = async (token) => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding-left: 16px;
   padding-right: 16px;
+  height: 300px; /* Match the chart height for consistency */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chart-container {
   margin: 0;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .bar-chart-section {
@@ -219,6 +243,10 @@ const fetchDashboardData = async (token) => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 24px;
   box-sizing: border-box;
+  height: 300px; /* Match the chart height for consistency */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chart-title {
@@ -230,5 +258,16 @@ const fetchDashboardData = async (token) => {
 .loading-data {
   text-align: center;
   font-size: 1.1rem;
+}
+
+.no-data {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%; /* Ensure it fills the container */
 }
 </style>

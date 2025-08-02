@@ -19,21 +19,31 @@ ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement,
 // API Data
 const labelProgressBulanIni = ref([])
 const dataProgressBulanIni = ref([])
+const hasData = ref(false)
+const emit = defineEmits(['no-data'])
 
 onBeforeMount(async () => {
   try {
     const token = localStorage.getItem('Token')
     const response = await axios.get('/api/stsPelayananChartBulanIni', {
       headers: {
-        Authorization: 'Bearer ' + token
+        Authorization: `Bearer ${token}`
       }
     })
     const data = response.data
     labelProgressBulanIni.value = data.map(item => item.status)
     dataProgressBulanIni.value = data.map(item => item.total)
+    // Check if there is valid data (non-empty and not all zeros)
+    hasData.value = dataProgressBulanIni.value.length > 0 && dataProgressBulanIni.value.some(val => val > 0)
+    if (!hasData.value) {
+      emit('no-data', true)
+    }
   } catch (error) {
+    console.error('Error fetching chart data:', error)
     labelProgressBulanIni.value = ['Baru', 'Disetujui', 'Ditolak', 'Proses', 'Selesai', 'Tutup']
     dataProgressBulanIni.value = [0, 0, 0, 0, 0, 0]
+    hasData.value = false
+    emit('no-data', true)
   }
 })
 
@@ -92,7 +102,10 @@ const configProgressBulanIni = {
 
 <template>
   <div class="chart-container">
-    <Pie :data="progressBulanIniData" :options="configProgressBulanIni" />
+    <div v-if="hasData" class="chart-wrapper">
+      <Pie :data="progressBulanIniData" :options="configProgressBulanIni" />
+    </div>
+    <div v-else class="no-data">Tidak ada data untuk ditampilkan</div>
   </div>
 </template>
 
@@ -104,5 +117,17 @@ const configProgressBulanIni = {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.chart-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.no-data {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  padding: 20px;
 }
 </style>
