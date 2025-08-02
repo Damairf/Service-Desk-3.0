@@ -18,6 +18,7 @@ const nama_depanTeknis = ref('')
 const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
+const pesanPengelola = ref('')
 const organisasi = ref('')
 const status = ref('')
 
@@ -45,6 +46,7 @@ const dataCache = ref(null)
 // Computed properties untuk optimasi
 const pelayananData = computed(() => ({
   deskripsi: deskripsi.value,
+  pesanPengelola: pesanPengelola.value,
   organisasi: organisasi.value,
   surat_dinas: surat_dinas.value,
   lampiran: lampiran.value,
@@ -70,6 +72,7 @@ const fetchPelayananData = async () => {
     // Gunakan data dari cache
     const cached = dataCache.value
     deskripsi.value = cached.deskripsi
+    pesanPengelola.value = pesanPengelola.deskripsi
     organisasi.value = cached.organisasi
     surat_dinas.value = cached.surat_dinas
     lampiran.value = cached.lampiran
@@ -108,6 +111,7 @@ const fetchPelayananData = async () => {
     // Set data
     const pelayananData = pelayananResponse.data
     deskripsi.value = pelayananData.Deskripsi
+    pesanPengelola.value = pelayananData.Pesan_Pengelola
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
@@ -137,6 +141,7 @@ const fetchPelayananData = async () => {
     dataCache.value = {
       id: pelayananId.value,
       deskripsi: deskripsi.value,
+      pesanPengelola: pesanPengelola.value,
       organisasi: organisasi.value,
       surat_dinas: surat_dinas.value,
       lampiran: lampiran.value,
@@ -346,7 +351,7 @@ onMounted(() => {
               </div class="alasan-tolak" v-if="status === 3">
                 <strong>Alasan Penolakan</strong>
                 <div class="textarea-row">
-                  <textarea class="input" :value="pelayananData.deskripsi" placeholder="Alasan Penolakan" rows="5" readonly></textarea>
+                  <textarea class="input" :value="pelayananData.pesanPengelola" placeholder="Alasan Penolakan" rows="5" readonly></textarea>
                 </div>
               <div>
 
