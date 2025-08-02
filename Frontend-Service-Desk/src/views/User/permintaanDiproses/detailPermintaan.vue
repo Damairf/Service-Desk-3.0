@@ -12,8 +12,7 @@ const steps = ref([])
 const stepsStatus = ref([])
 const perihal = ref('') 
 const tanggal = ref('') 
-const nama_depanPengaju = ref('') 
-const nama_belakangPengaju = ref('')
+const nama_pelapor = ref('') 
 const nama_depanTeknis = ref('')
 const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
@@ -39,8 +38,7 @@ const pelayananData = computed(() => ({
   surat_dinas: surat_dinas.value,
   lampiran: lampiran.value,
   jenis_pelayanan: jenis_pelayanan.value,
-  nama_depanPengaju: nama_depanPengaju.value,
-  nama_belakangPengaju: nama_belakangPengaju.value,
+  nama_pelapor: nama_pelapor.value,
   nama_depanTeknis: nama_depanTeknis.value,
   nama_belakangTeknis: nama_belakangTeknis,
   perihal: perihal.value,
@@ -59,8 +57,7 @@ const fetchPelayananData = async () => {
     surat_dinas.value = cached.surat_dinas
     lampiran.value = cached.lampiran
     jenis_pelayanan.value = cached.jenis_pelayanan
-    nama_depanPengaju.value = cached.nama_depanPengaju
-    nama_belakangPengaju.value = cached.nama_belakangPengaju
+    nama_pelapor.value = cached.nama_pelapor
     nama_depanTeknis.value = cached.nama_depanTeknis
     nama_belakangTeknis.value = cached.nama_belakangTeknis
     perihal.value = cached.perihal
@@ -94,8 +91,7 @@ const fetchPelayananData = async () => {
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
-    nama_depanPengaju.value = pelayananData.user.Nama_Depan
-    nama_belakangPengaju.value = pelayananData.user.Nama_Belakang
+    nama_pelapor.value = pelayananData.Nama_Pelapor
     nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan || 'Belum'
     nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Tersedia'
     perihal.value = pelayananData.Perihal
@@ -118,8 +114,7 @@ const fetchPelayananData = async () => {
       surat_dinas: surat_dinas.value,
       lampiran: lampiran.value,
       jenis_pelayanan: jenis_pelayanan.value,
-      nama_depanPengaju: nama_depanPengaju.value,
-      nama_belakangPengaju: nama_belakangPengaju.value,
+      nama_pelapor: nama_pelapor.value,
       nama_depanTeknis: nama_depanTeknis.value,
       nama_belakangTeknis: nama_belakangTeknis.value,
       perihal: perihal.value,
@@ -128,8 +123,8 @@ const fetchPelayananData = async () => {
       stepsStatus: stepsStatus.value
     }
 
-    SuratDinas_Path.value = '/files' + surat_dinas.value
-    Lampiran_Path.value = '/files' + lampiran.value
+    SuratDinas_Path.value = '/files/' + surat_dinas.value
+    Lampiran_Path.value = '/files/' + lampiran.value
 
     isDataLoaded.value = true
   } catch (error) {
@@ -245,7 +240,7 @@ onMounted(() => {
             <h3>Informasi Umum</h3>
             <div class="info-row"><strong>Layanan:</strong> <span>{{ jenis_pelayanan }}</span></div>
             <div class="info-row"><strong>No. Tiket:</strong> <span>{{ pelayananId }}</span></div>
-            <div class="info-row"><strong>Pengaju:</strong> <span>{{ nama_depanPengaju + ' ' + nama_belakangPengaju }}</span></div>
+            <div class="info-row"><strong>Pelapor:</strong> <span>{{ nama_pelapor }}</span></div>
             <div class="info-row"><strong>Organisasi:</strong> <span>{{ organisasi }}</span></div>
             <div class="info-row"><strong>Tanggal Laporan:</strong> <span>{{ new Date(tanggal).toLocaleDateString('id-ID') }}</span></div>
             <div class="info-row"><strong>Perihal:</strong> <span>{{ perihal }}</span></div>
