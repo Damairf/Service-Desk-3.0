@@ -106,7 +106,7 @@ watch(filteredItems, () => {
             <th>No. Tiket</th>
             <th>Perihal</th>
             <th>Tanggal Laporan</th>
-            <th>PIC</th>
+            <th>Pelaksana Teknis</th>
             <th>Status</th>
             <th>Detail Proses</th>
           </tr>

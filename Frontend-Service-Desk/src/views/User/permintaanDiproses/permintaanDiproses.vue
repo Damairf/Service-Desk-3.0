@@ -167,11 +167,6 @@ watch(filteredItems, () => {
   position: relative;
 }
 
-h1 {
-  color: #333;
-  font-family: poppins, sans-serif;
-}
-
 .search-bar {
   width: 97%;
   padding: 10px;
