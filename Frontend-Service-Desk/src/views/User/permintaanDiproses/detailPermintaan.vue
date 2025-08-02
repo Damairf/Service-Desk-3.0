@@ -21,7 +21,9 @@ const deskripsi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const organisasi = ref('')
-const activeTab = ref(route.query.tab === 'informasi' ? 'informasi' : 'tracking')
+const SuratDinas_Path = ref(null)
+const Lampiran_Path = ref(null)
+const activeTab = ref('informasi')
 
 // Loading states
 const isLoading = ref(true)
@@ -126,6 +128,9 @@ const fetchPelayananData = async () => {
       stepsStatus: stepsStatus.value
     }
 
+    SuratDinas_Path.value = '/files' + surat_dinas.value
+    Lampiran_Path.value = '/files' + lampiran.value
+
     isDataLoaded.value = true
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -134,7 +139,6 @@ const fetchPelayananData = async () => {
   }
 }
 
-const SuratDinas_Path = computed(() => '/files/' + surat_dinas.value)
 const namaFileSuratDinas = computed(() => {
   const fileName = surat_dinas.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -143,7 +147,6 @@ const namaFileSuratDinas = computed(() => {
   return `${tanggal}_${waktu}_Surat_Dinas.pdf`
 })
 
-const Lampiran_Path = computed(() => '/files/' + lampiran.value)
 const namaFileLampiran = computed(() => {
   const fileName = lampiran.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -191,10 +194,6 @@ onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
   }
-  
-  if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
-    progress.value = true
-  }
 
   // Event listener untuk tombol back browser
   const handlePopState = () => {
@@ -211,120 +210,122 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container">
-    <!-- Loading State -->
-    <div v-if="isLoading" class="loading-container">
-      <div class="loading-spinner"></div>
-      <p>Memuat data...</p>
+<div class="container">
+  <!-- Loading State -->
+  <div v-if="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Memuat data...</p>
+  </div>
+
+  <!-- Content -->
+  <div v-else-if="isDataLoaded">
+    <!-- Tabs -->
+    <div class="tabs">
+      <div
+        :class="['tab', activeTab === 'informasi' ? 'active-tab-info' : 'inactive-tab']"
+        @click="handleTabChange('informasi')"
+      >
+        Informasi
+      </div>
+      <div
+        :class="['tab', activeTab === 'tracking' ? 'active-tab-track' : 'inactive-tab']"
+        @click="handleTabChange('tracking')"
+      >
+        Lacak
+      </div>
     </div>
 
-    <!-- Content -->
-    <div v-else-if="isDataLoaded">
-      <!-- Tabs -->
-      <div class="tabs">
-        <div
-          :class="['tab', activeTab === 'informasi' ? 'active-tab-info' : 'inactive-tab']"
-          @click="handleTabChange('informasi')"
-        >
-          Informasi
-        </div>
-        <div
-          :class="['tab', activeTab === 'tracking' ? 'active-tab-track' : 'inactive-tab']"
-          @click="handleTabChange('tracking')"
-        >
-          Lacak
-        </div>
-      </div>
+    <!-- Card -->
+    <div class="card">
+      <!-- Tab Content -->
+      <div v-if="activeTab === 'informasi'" class="tab-content">
+        <div class="layout-container">
+          <!-- Info Card -->
+          <div class="info-card">
+            <h3>Informasi Umum</h3>
+            <div class="info-row"><strong>Layanan:</strong> <span>{{ jenis_pelayanan }}</span></div>
+            <div class="info-row"><strong>No. Tiket:</strong> <span>{{ pelayananId }}</span></div>
+            <div class="info-row"><strong>Pengaju:</strong> <span>{{ nama_depanPengaju + ' ' + nama_belakangPengaju }}</span></div>
+            <div class="info-row"><strong>Organisasi:</strong> <span>{{ organisasi }}</span></div>
+            <div class="info-row"><strong>Tanggal Laporan:</strong> <span>{{ new Date(tanggal).toLocaleDateString('id-ID') }}</span></div>
+            <div class="info-row"><strong>Perihal:</strong> <span>{{ perihal }}</span></div>
+            <div class="info-row textarea-row">
+              <strong>Deskripsi User</strong>
+              <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
 
-      <!-- Card -->
-      <div class="card">
-        <!-- Tab Content -->
-        <div v-if="activeTab === 'informasi'" class="tab-content">
-          <div class="layout-container">
-            <div class="info-card">
-              <h3>Informasi Umum</h3>
-              <div class="info-row"><strong>Layanan:</strong> <span>{{ jenis_pelayanan }}</span></div>
-              <div class="info-row"><strong>No. Tiket:</strong> <span>{{ pelayananId }}</span></div>
-              <div class="info-row"><strong>Pengaju:</strong> <span>{{ nama_depanPengaju + ' ' + nama_belakangPengaju }}</span></div>
-              <div class="info-row"><strong>Organisasi:</strong> <span>{{ organisasi }}</span></div>
-              <div class="info-row"><strong>Tanggal Laporan:</strong> <span>{{ new Date(tanggal).toLocaleDateString('id-ID') }}</span></div>
-              <div class="info-row"><strong>Perihal:</strong> <span>{{ perihal }}</span></div>
-              <div class="info-row textarea-row">
-                <strong>Deskripsi User</strong>
-                <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
-                <strong>Surat Dinas</strong>
-                <div v-if="surat_dinas">
-                  <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                    {{ namaFileSuratDinas }}
-                  </a>
-                </div>  
-                <strong>Lampiran</strong>
-                <div v-if="lampiran">
-                  <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                    {{ namaFileLampiran }}
-                  </a>
-                </div>
+              <strong>Surat Dinas</strong>
+              <div v-if="surat_dinas">
+                <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                  {{ namaFileSuratDinas }}
+                </a>
+              </div>
+
+              <strong>Lampiran</strong>
+              <div v-if="lampiran">
+                <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                  {{ namaFileLampiran }}
+                </a>
               </div>
             </div>
-          
-            <div class="chat-card">
-              <h3>Chat</h3>
-              <div class="chat-content">
-                
-                <div
-                  v-for="(message, index) in messages"
-                  :key="index"
-                  :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
-                >
-                  <div class="message-text">{{ message.text + " " }}</div>
-                  <div class="message-time">{{ message.time + " " }}</div>
-                </div>
-              </div>
-              <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
-              <button class="send-btn" @click="addMessage">Kirim</button>
-              <div class ="info-row-PelaksanaTeknis">
-                <strong>Nama Pelaksana Teknis:</strong>
-              <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
-            </div>
-            </div>
-            </div>
-        </div>
+          </div>
 
-        
-
-        <div v-else-if="activeTab === 'tracking'" class="tab-content">
-          <div>
-            <h2 class="card-title">Detail Progress<br>{{ pelayananId }}</h2>
-            <div class="step-wrapper">
+          <!-- Chat Card -->
+          <div class="chat-card">
+            <h3>Chat</h3>
+            <div class="chat-content">
               <div
-                v-for="(step, index) in steps"
+                v-for="(message, index) in messages"
                 :key="index"
-                class="step-row"
+                :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
               >
-                <div
-                  class="circle"
-                  :class="stepsStatus[index] === 1 ? 'circle-blue' : 'circle-inactive'"
-                >
-                  {{ index + 1 }}
-                </div>
-                <div
-                  class="step-label"
-                  :class="stepsStatus[index] === 1 ? 'label-blue' : ''"
-                >
-                  {{ step }}
-                </div>
+                <div class="message-text">{{ message.text }}</div>
+                <div class="message-time">{{ message.time }}</div>
               </div>
+            </div>
+            <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
+            <button class="send-btn" @click="addMessage">Kirim</button>
+            <div class="info-row-PelaksanaTeknis">
+              <strong>Nama Pelaksana Teknis:</strong>
+              <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Error State -->
-    <div v-else class="error-container">
-      <p>Gagal memuat data. Silakan coba lagi.</p>
-    </div>
+      <!-- Tab Tracking -->
+      <div v-else-if="activeTab === 'tracking'" class="tab-content">
+        <div>
+          <h2 class="card-title">Detail Progress<br>{{ pelayananId }}</h2>
+          <div class="step-wrapper">
+            <div
+              v-for="(step, index) in steps"
+              :key="index"
+              class="step-row"
+            >
+              <div
+                class="circle"
+                :class="stepsStatus[index] === 1 ? 'circle-blue' : 'circle-inactive'"
+              >
+                {{ index + 1 }}
+              </div>
+              <div
+                class="step-label"
+                :class="stepsStatus[index] === 1 ? 'label-blue' : ''"
+              >
+                {{ step }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- End Tracking -->
+    </div> <!-- End Card -->
+  </div> <!-- End Content -->
+
+  <!-- Error State -->
+  <div v-else class="error-container">
+    <p>Gagal memuat data. Silakan coba lagi.</p>
   </div>
+</div> <!-- End Container -->
 </template>
 
 <style scoped>

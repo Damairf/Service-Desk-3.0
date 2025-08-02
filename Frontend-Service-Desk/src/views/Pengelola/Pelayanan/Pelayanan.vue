@@ -282,4 +282,8 @@ watch(search, () => {
   text-align: center;
   font-size: 1.1rem;
 }
+
+.rounded-table th {
+  cursor: default !important; /* Use 'default' for arrow cursor, override any text cursor */
+}
 </style>
