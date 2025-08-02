@@ -93,12 +93,7 @@ const routes = [
   
   // Halaman permintaan diproses
   { path: '/permintaanDiproses', name: 'PermintaanDiproses', component: permintaanDiproses, meta: {allowedRoles: [1]}},
-  { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, meta: {allowedRoles: [1]}, 
-    children: [
-      { path: 'lacak', name: 'HalamanLacak', component: halamanLacak, meta: {allowedRoles: [1]}},
-      { path: 'informasi', name: 'HalamanInformasi', component: halamanInformasi, meta: {allowedRoles: [1]}}
-    ]
-  },
+  { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, meta: {allowedRoles: [1]},},
 
   // Hasil Pemenuhan BASLA
   { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA, meta: {allowedRoles: [1]}},
