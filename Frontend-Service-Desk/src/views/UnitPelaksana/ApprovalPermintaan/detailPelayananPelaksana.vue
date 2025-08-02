@@ -25,6 +25,7 @@ const Lampiran_Path = ref(null)
 const activeTab = ref('informasi')
 const pelaksana = ref([])
 const idTeknisTerpilih = ref('')
+const pesanPengelola = ref('')
 const pesanUnit = ref('')
 const status = ref(Number(''))
 const progress = ref(null)
@@ -44,6 +45,7 @@ function handlePilihan(klik){
 // Computed properties untuk optimasi
 const pelayananData = computed(() => ({
   deskripsi: deskripsi.value,
+  pesanPengelola: pesanPengelola.value,
   organisasi: organisasi.value,
   surat_dinas: surat_dinas.value,
   lampiran: lampiran.value,
@@ -62,6 +64,7 @@ const fetchPelayananData = async () => {
     // Gunakan data dari cache
     const cached = dataCache.value
     deskripsi.value = cached.deskripsi
+    pesanPengelola.value = cached.pesanPengelola
     organisasi.value = cached.organisasi
     surat_dinas.value = cached.surat_dinas
     lampiran.value = cached.lampiran
@@ -97,6 +100,7 @@ const fetchPelayananData = async () => {
 
     // Set data
     const pelayananData = pelayananResponse.data
+    pesanPengelola.value = pelayananData.Pesan_Pengelola
     deskripsi.value = pelayananData.Deskripsi
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
@@ -128,6 +132,7 @@ const fetchPelayananData = async () => {
     dataCache.value = {
       id: pelayananId.value,
       deskripsi: deskripsi.value,
+      pesanPengelola: pesanPengelola.value,
       organisasi: organisasi.value,
       surat_dinas: surat_dinas.value,
       lampiran: lampiran.value,
@@ -228,7 +233,7 @@ onMounted(() => {
   }
 
   const handlePopState = () => {
-    router.push('/pelayanan')
+    router.push('/Approval')
   }
 
   window.addEventListener('popstate', handlePopState)
@@ -294,6 +299,8 @@ onMounted(() => {
                     {{ namaFileLampiran }}
                   </a>
                 </div>
+                <strong>Pesan dari Pengelola</strong>
+                <textarea class="input" :value="pesanPengelola" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
               </div>
             </div>
 

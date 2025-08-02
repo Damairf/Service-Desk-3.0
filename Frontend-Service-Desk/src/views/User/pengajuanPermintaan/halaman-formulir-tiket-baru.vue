@@ -24,6 +24,7 @@ const lampiran = ref('')
 const suratDinasPath = ref(null)
 const lampiranPath = ref(null)
 const isSubmitted = ref(false)
+const isLoading = ref(false)
 
 // Fungsi untuk menangani perubahan file
 function handleFileChange(e, field) {
@@ -92,11 +93,22 @@ async function handleSubmit(){
     return;
   }
 
+  if (isLoading.value) {
+    return; // Prevent multiple submissions
+  }
+
 const confirmSubmit = window.confirm("Apakah Anda yakin ingin mengirim permintaan ini?");
   if (!confirmSubmit) return;
+
+  isLoading.value = true; // Start loading
+
 const uploaded = await uploadFiles()
 
-if (!uploaded) return
+if (!uploaded) {
+  isLoading.value = false; // Stop loading if upload fails
+  return;
+}
+
 const token = localStorage.getItem('Token');
 axios.post('/api/pelayanan/tambah', {
   "ID_User": id_user,
@@ -114,11 +126,13 @@ axios.post('/api/pelayanan/tambah', {
 })
 .then(response => {
   isSubmitted.value = true;
+  isLoading.value = false; // Stop loading on success
   router.push('/permintaanDiproses');
 })
 .catch(error => {
   console.error(error.response?.data || error.message);
   console.log(namaPelapor.value)
+  isLoading.value = false; // Stop loading on error
 });
 }
 </script>
@@ -154,7 +168,9 @@ axios.post('/api/pelayanan/tambah', {
         <input type="file" accept=".pdf" @change="handleFileChange($event, 'lampiran')" />
         <p class="note">(Hanya PDF, maksimum 8MB)</p>
 
-        <button type="submit">Kirim</button>
+        <button type="submit" :disabled="isLoading">
+          {{ isLoading ? 'Mengirim...' : 'Kirim' }}
+        </button>
       </form>
     </div>
   </div>
@@ -257,6 +273,17 @@ button:hover {
 
 button:active {
   box-shadow: 0 2px 4px rgba(51, 141, 214, 0.3);
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+button:disabled:hover {
+  background-color: #cccccc;
+  box-shadow: none;
 }
 
 .info-box {
