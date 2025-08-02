@@ -546,7 +546,7 @@ onMounted(() => {
 .info-card,
 .chat-card {
   background-color: white;
-  padding: 1.5rem;
+  padding: 0rem 1.5rem 1.5rem 1.5rem;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   width: 50%;
@@ -660,7 +660,7 @@ onMounted(() => {
 .review-title {
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .star-rating {

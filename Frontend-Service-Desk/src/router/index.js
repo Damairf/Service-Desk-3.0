@@ -21,8 +21,6 @@ import detailPermintaanHasil from '../views/User/HasilPemenuhan/detailPermintaan
 //Riwayat
 import riwayat from '../views/User/Riwayat/riwayat.vue'
 import detailPermintaanRiwayat from '../views/User/Riwayat/detailPermintaanRiwayat.vue'
-import halamanLacakRiwayat from '../views/User/Riwayat/halaman-lacakRiwayat.vue'
-import halamanInformasiRiwayat from '../views/User/Riwayat/halaman-informasiRiwayat.vue'
 
 //===============PENGELOLA===============
 import berandaPengelola from '../views/Pengelola/BerandaPengelola/berandaPengelola.vue'
@@ -103,12 +101,7 @@ const routes = [
 
   // Riwayat
   { path: '/riwayat', name: 'Riwayat', component: riwayat, meta: {allowedRoles: [1]}},
-  { path: '/detailPermintaanRiwayat', name: 'DetailPermintaanRiwayat', component: detailPermintaanRiwayat, meta: {allowedRoles: [1]},
-    children: [
-      {path: 'lacakRiwayat', name: 'HalamanLacakRiwayat', component: halamanLacakRiwayat, meta: {allowedRoles: [1]}},
-      {path: 'informasiRiwayat', name: 'HalamanInformasiRiwayat', component: halamanInformasiRiwayat, meta: {allowedRoles: [1]}}
-    ]
-  },
+  { path: '/detailPermintaanRiwayat', name: 'DetailPermintaanRiwayat', component: detailPermintaanRiwayat, meta: {allowedRoles: [1]}},
 
   //===============PENGELOLA===============
   { path: '/Beranda-Pengelola', name: 'Beranda-Pengelola', component: berandaPengelola, meta: {allowedRoles: [2]}},
