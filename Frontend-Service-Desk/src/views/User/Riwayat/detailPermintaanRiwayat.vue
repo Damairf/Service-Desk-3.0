@@ -14,6 +14,8 @@ const perihal = ref('')
 const tanggal = ref('')
 const nama_depanPengaju = ref('') 
 const nama_belakangPengaju = ref('')
+const nama_depanTeknis = ref('') 
+const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const organisasi = ref('')
@@ -45,13 +47,20 @@ const pelayananData = computed(() => ({
   organisasi: organisasi.value,
   surat_dinas: surat_dinas.value,
   lampiran: lampiran.value,
+  src_HasilPemenuhan: src_HasilPemenuhan.value,
+  src_HasilBA: src_HasilBA.value,
+  src_HasilSLA: src_HasilSLA.value,
   jenis_pelayanan: jenis_pelayanan.value,
   nama_depanPengaju: nama_depanPengaju.value,
   nama_belakangPengaju: nama_belakangPengaju.value,
+  nama_depanTeknis: nama_depanTeknis.value,
+  nama_belakangTeknis: nama_belakangTeknis.value,
   perihal: perihal.value,
   tanggal: tanggal.value,
   steps: steps.value,
-  stepsStatus: stepsStatus.value
+  stepsStatus: stepsStatus.value,
+  rating: rating.value,
+  reviewText: reviewText.value
 }))
 
 // Fungsi untuk fetch data dengan caching
@@ -63,11 +72,18 @@ const fetchPelayananData = async () => {
     organisasi.value = cached.organisasi
     surat_dinas.value = cached.surat_dinas
     lampiran.value = cached.lampiran
+    src_HasilPemenuhan.value = cached.src_HasilPemenuhan
+    src_HasilBA.value = cached.src_HasilBA
+    src_HasilSLA.value = cached.src_HasilSLA
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_depanPengaju.value = cached.nama_depanPengaju
     nama_belakangPengaju.value = cached.nama_belakangPengaju
+    nama_depanTeknis.value = cached.nama_depanTeknis
+    nama_belakangTeknis.value = cached.nama_belakangTeknis
     perihal.value = cached.perihal
     tanggal.value = cached.tanggal
+    rating.value = cached.rating,
+    reviewText.value = cached.reviewText
     steps.value = cached.steps
     stepsStatus.value = cached.stepsStatus
     isDataLoaded.value = true
@@ -94,11 +110,18 @@ const fetchPelayananData = async () => {
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
+    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path || '-'
+    src_HasilBA.value = pelayananData.BA_Path || '-'
+    src_HasilSLA.value = pelayananData.SLA_Path || '-'
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_depanPengaju.value = pelayananData.user.Nama_Depan
     nama_belakangPengaju.value = pelayananData.user.Nama_Belakang
+    nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan || ''
+    nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || ''
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
+    rating.value = pelayananData.Rating,
+    reviewText.value = pelayananData.Isi_Survey
 
     // Set progress data
     const progressData = progressResponse.data
@@ -117,8 +140,12 @@ const fetchPelayananData = async () => {
       jenis_pelayanan: jenis_pelayanan.value,
       nama_depanPengaju: nama_depanPengaju.value,
       nama_belakangPengaju: nama_belakangPengaju.value,
+      nama_depanTeknis: nama_depanTeknis.value,
+      nama_belakangTeknis: nama_belakangTeknis.value,
       perihal: perihal.value,
       tanggal: tanggal.value,
+      rating: rating.value,
+      reviewText: reviewText.value,
       steps: steps.value,
       stepsStatus: stepsStatus.value
     }
@@ -177,7 +204,7 @@ const namaFileHasilSLA = computed(() => {
   return `${tanggal}_${waktu}_HasilSLA.pdf`
 })
 
-const rating = ref(0)
+const rating = ref(null)
 const hoverRating = ref(0)
 const reviewText = ref('')
 const reviewSubmitted = ref(false)
@@ -208,18 +235,6 @@ watch(() => pelayananId.value, (newId) => {
 onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
-  }
-
-  // Event listener untuk tombol back browser
-  const handlePopState = () => {
-    router.push({ name: 'PermintaanDiproses' })
-  }
-  
-  window.addEventListener('popstate', handlePopState)
-  
-  // Cleanup event listener saat komponen unmount
-  return () => {
-    window.removeEventListener('popstate', handlePopState)
   }
 })
 </script>
@@ -287,7 +302,7 @@ onMounted(() => {
             <!-- Review Section (SEKARANG di dalam info-card) -->
             <div class="review-section">
               <div v-if="!reviewSubmitted">
-                <h4 class="review-title">Beri Ulasan</h4>
+                <h4 class="review-title">Ulasan Anda</h4>
                 <div class="star-rating">
                   <span
                     v-for="star in 5"
@@ -319,6 +334,12 @@ onMounted(() => {
                 <div class="message-time">{{ message.time + " " }}</div>
               </div>
             </div>
+
+            <div class ="info-row-PelaksanaTeknis">
+                <strong>Nama Pelaksana Teknis:</strong>
+                <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
+            </div>
+
             <div class="document-links">
               <div class="info-row-docs">
                 <strong>Hasil Pemenuhan</strong>
@@ -413,8 +434,8 @@ onMounted(() => {
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #fb923c;
+  border: 4px solid #0D47A1;
+  border-top: 4px solid #64B5F6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
@@ -443,6 +464,7 @@ onMounted(() => {
   padding: 8px 16px;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 12.9rem;
 }
 
 .tab {
@@ -474,7 +496,7 @@ onMounted(() => {
 /* Card */
 .card {
   width: 100%;
-  max-width: 1100px;
+  width: 1100px;
   background-color: white;
   padding: 32px;
   border-radius: 12px;

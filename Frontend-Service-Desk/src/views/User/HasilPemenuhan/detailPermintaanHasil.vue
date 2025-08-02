@@ -16,6 +16,8 @@ const nama_depanPengaju = ref('')
 const nama_belakangPengaju = ref('')
 const nama_depanTeknis = ref('') 
 const nama_belakangTeknis = ref('')
+const nama_depanTeknis = ref('') 
+const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const organisasi = ref('')
@@ -46,6 +48,9 @@ const pelayananData = computed(() => ({
   organisasi: organisasi.value,
   surat_dinas: surat_dinas.value,
   lampiran: lampiran.value,
+  src_HasilPemenuhan: src_HasilPemenuhan.value,
+  src_HasilBA: src_HasilBA.value,
+  src_HasilSLA: src_HasilSLA.value,
   jenis_pelayanan: jenis_pelayanan.value,
   nama_depanPengaju: nama_depanPengaju.value,
   nama_belakangPengaju: nama_belakangPengaju.value,
@@ -66,6 +71,9 @@ const fetchPelayananData = async () => {
     organisasi.value = cached.organisasi
     surat_dinas.value = cached.surat_dinas
     lampiran.value = cached.lampiran
+    src_HasilPemenuhan.value = cached.src_HasilPemenuhan
+    src_HasilBA.value = cached.src_HasilBA
+    src_HasilSLA.value = cached.src_HasilSLA
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_depanPengaju.value = cached.nama_depanPengaju
     nama_belakangPengaju.value = cached.nama_belakangPengaju
@@ -99,6 +107,9 @@ const fetchPelayananData = async () => {
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
+    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path
+    src_HasilBA.value = pelayananData.BA_Path
+    src_HasilSLA.value = pelayananData.SLA_Path
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_depanPengaju.value = pelayananData.user.Nama_Depan
     nama_belakangPengaju.value = pelayananData.user.Nama_Belakang

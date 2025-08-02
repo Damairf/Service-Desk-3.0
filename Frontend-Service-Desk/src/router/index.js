@@ -32,7 +32,9 @@ import UbahPengguna from '../views/Pengelola/Pengguna/UbahPengguna.vue'
 import lembagaOrganisasi from '../views/Pengelola/LembagaOrganisasi/Organisasi.vue'
 import tambahOrganisasi from '../views/Pengelola/LembagaOrganisasi/TambahOrganisasi.vue'
 import ubahOrganisasi from '../views/Pengelola/LembagaOrganisasi/EditOrganisasi.vue'
-import referensiJabatan from '../views/Pengelola/Referensi/jabatan.vue'
+import referensiJabatan from '../views/Pengelola/Referensi/RefJabatan/jabatan.vue'
+import TambahJabatan from '../views/Pengelola/Referensi/RefJabatan/TambahJabatan.vue'
+import UbahJabatan from '../views/Pengelola/Referensi/RefJabatan/EditJabatan.vue'
 
 //===============UNIT PELAKSANA===============
 import berandaUnit from '../views/UnitPelaksana/Beranda/BerandaUnit.vue'
@@ -45,8 +47,6 @@ import halamanLacakApproval from '../views/UnitPelaksana/ApprovalPermintaan/hala
 
 // Disposisi
 import disposisi from '../views/UnitPelaksana/DisposisiPermintaan/DisposisiUnit.vue'
-import halamanLacakDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/halaman-lacak-DisposisiUnit.vue'
-import halamanInformasiDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/halaman-informasi-DisposisiUnit.vue'
 import detailPelayananDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/detailPelayananDisposisi.vue'
 
 //=============PELAKSANA TEKNIS================
@@ -94,7 +94,7 @@ const routes = [
   { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, meta: {allowedRoles: [1]},},
 
   // Hasil Pemenuhan BASLA
-  { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA, meta: {allowedRoles: [1]}},
+  { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA, meta: {allowedRoles: [1], keepAlive: true}},
   { path: '/detailPermintaanHasil', name: 'DetailPermintaanHasil', component: detailPermintaanHasil, meta: {allowedRoles: [1]}},
 
   // Riwayat
@@ -111,7 +111,10 @@ const routes = [
   { path: '/lembaga', name: 'lembaga/Organisasi', component: lembagaOrganisasi, meta: {allowedRoles: [2]}},
   { path: '/tambahLembaga', name: 'TambahLembaga', component:  tambahOrganisasi, meta: {allowedRoles: [2]}},
   { path: '/ubahLembaga', name: 'UbahLembaga', component: ubahOrganisasi, meta: {allowedRoles: [2]}},
-  { path: '/referensi/jabatan', name: 'referensiJabatan', component: referensiJabatan}, 
+  { path: '/referensi/jabatan', name: 'referensiJabatan', component: referensiJabatan},
+  { path: '/tambahJabatan', name: 'TambahJabatan', component: TambahJabatan, meta: {allowedRoles: [2]}},
+  { path: '/ubahJabatan', name: 'UbahJabatan', component: UbahJabatan, meta: {allowedRoles: [2]}},
+
     
   //===============UNIT PELAKSANA===============
 
@@ -127,12 +130,7 @@ const routes = [
     ]
   },
   //Disposisi
-  { path: '/detailPelayananDisposisi', name: 'DetailPelayananDisposisi', component: detailPelayananDisposisi, meta: {allowedRoles: [3]},
-    children: [
-      { path: 'lacakDisposisi', name: 'HalamanLacakDisposisi', component: halamanLacakDisposisi, meta: {allowedRoles: [3]}},
-      { path: 'informasiDisposisi', name: 'HalamanInformasiDisposisi', component: halamanInformasiDisposisi, meta: {allowedRoles: [3]}}
-    ]
-  },
+  { path: '/detailPelayananDisposisi', name: 'DetailPelayananDisposisi', component: detailPelayananDisposisi, meta: {allowedRoles: [3]}},
 
   //=============PELAKSANA TEKNIS===============
   { path: '/berandaTeknis', name: 'Beranda Teknis', component: berandaTeknis, meta: {allowedRoles: [4]}},

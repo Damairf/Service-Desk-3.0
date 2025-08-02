@@ -115,7 +115,8 @@ class PelayananController extends Controller
             'ID_Status',
             'ID_Teknis',
             'Pesan_Pengelola',
-            'Pesan_Unit'
+            'Pesan_Unit',
+            'Is_Done'
         ]);
 
     $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
@@ -172,14 +173,15 @@ class PelayananController extends Controller
 
         Pelayanan::where('ID_Pelayanan', $pelayananId)->update([
             'Rating' => $Rating,
-            'Isi_Survey' => $Isi_Survey
+            'Isi_Survey' => $Isi_Survey,
+            'ID_Status' => 6
         ]);
 
         $updateSurvey = Pelayanan::where('ID_Pelayanan', $pelayananId)
-        ->select('ID_Pelayanan', 'Rating', 'Isi_Survey')
+        ->select('ID_Pelayanan', 'Rating', 'Isi_Survey','ID_Status')
         ->first();
 
-        return response(["message" => "Survey ditambahkan", "data" => $updateSurvey]);
+        return response($updateSurvey);
     }
 
     // untuk role pelaksana teknis mengunggah laporan hasil 
