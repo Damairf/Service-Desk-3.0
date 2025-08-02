@@ -1,8 +1,6 @@
 <script setup>
 import { ref , onBeforeUnmount, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-// buat backend
-import axios from 'axios'
 import LogoServiceDesk from '../../assets/LogoServiceDesk.svg'
 
 const nama_depan = ref(localStorage.getItem('nama_depan'));

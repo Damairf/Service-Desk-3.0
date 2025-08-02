@@ -20,71 +20,50 @@ const nama_organisasi = ref('')
 const nama_user = [localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' ');
 
 
-onMounted(()=> {
-  const token = localStorage.getItem('Token');
-  if(!token) {
+onMounted(async () => {
+  const token = localStorage.getItem('Token')
+  if (!token) {
     router.push('/login')
+    return
   }
+
+  await fetchDashboardData(token)
 })
 
+const fetchDashboardData = async (token) => {
+  try {
+    isLoading.value = true
 
-  const token = localStorage.getItem('Token');
-  axios.get('/api/user/profile', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    nip_user.value = response.data.NIP
-    nama_jabatan.value = response.data.user_jabatan.Nama_Jabatan
-    nama_organisasi.value = response.data.user_organisasi.Nama_OPD
-    localStorage.setItem('nip_user', response.data.NIP)
-    localStorage.setItem('nama_jabatan', response.data.user_jabatan.Nama_Jabatan)
-    localStorage.setItem('nama_organisasi', response.data.user_organisasi.Nama_OPD)
-  })
-  .catch(error => {
-    console.error(error); 
-  });
+    const [profileRes, userCountRes, layananRes, organisasiRes] = await Promise.all([
+      axios.get('/api/user/profile', { headers: { Authorization: 'Bearer ' + token } }),
+      axios.get('/api/userCount', { headers: { Authorization: 'Bearer ' + token } }),
+      axios.get('/api/allPelayanan', { headers: { Authorization: 'Bearer ' + token } }),
+      axios.get('/api/organisasiCount', { headers: { Authorization: 'Bearer ' + token } }),
+    ])
 
-  axios.get('/api/userCount', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    jumlahPenggunaTerdaftar.value = (response.data)
-  })
-  .catch(error => {
-    console.error(error);
-  });
+    // Simpan data
+    const profile = profileRes.data
+    nip_user.value = profile.NIP
+    nama_jabatan.value = profile.user_jabatan.Nama_Jabatan
+    nama_organisasi.value = profile.user_organisasi.Nama_OPD
 
-  axios.get('/api/allPelayanan', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    jumlahPermintaanBaru.value = (response.data)
-  })
-  .catch(error => {
-    console.error(error);
-  })
-  .finally(() => {
-  isLoading.value = false;
-  });
-  
+    jumlahPenggunaTerdaftar.value = userCountRes.data
+    jumlahPermintaanBaru.value = layananRes.data
+    jumlahOrganisasiTerdaftar.value = organisasiRes.data
 
-  axios.get('/api/organisasiCount', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-    jumlahOrganisasiTerdaftar.value = (response.data)
-  })
-  .catch(error => {
-    console.error(error);
-  });
+    // Cache
+    localStorage.setItem('nip_user', profile.NIP)
+    localStorage.setItem('nama_jabatan', profile.user_jabatan.Nama_Jabatan)
+    localStorage.setItem('nama_organisasi', profile.user_organisasi.Nama_OPD)
+
+  } catch (error) {
+    console.error('Gagal memuat dashboard:', error)
+    router.push('/login') // Jika error karena token invalid
+  } finally {
+    isLoading.value = false
+  }
+}
+
 </script>
 
 <template>
@@ -118,7 +97,7 @@ onMounted(()=> {
   </div>
 </div>
 
-<!-- Chart Pie: 3 kotak -->
+<!-- Chart Pie: 2 kotak -->
 <div class="box-row">
   <div class="chart-box">
     <div class="chart-container">
@@ -130,13 +109,13 @@ onMounted(()=> {
       <ChartProgressBulanIni />
     </div>
   </div>
-  <div class="chart-box">
-    <ChartPermintaanLayanan/>
-  </div>
 </div>
 
-<!-- Chart Bar: 3 baris -->
+<!-- Chart Bar: 4 baris -->
 <div class="bar-chart-section">
+  <div class="chart-full">
+    <ChartPermintaanLayanan/>
+  </div>
   <div class="chart-full">
     <ChartBarPermintaanBerdasarkanStatus/>
   </div>

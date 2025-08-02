@@ -11,7 +11,6 @@ const namaJabatan = ref(route.query.nama_jabatan || '')
 
 const pilihanInduk = ref([])
 const idOrganisasiTerpilih = ref('')
-const readonlyMode = ref(false) // untuk mode lihat saja
 
 const token = localStorage.getItem('Token');
   axios.get('http://127.0.0.1:8000/api/organisasi', {
@@ -78,14 +77,10 @@ function handleReset() {
 
 <template>
   <div class="page-bg">
-    <h1 v-if="!readonlyMode" class="main-title">Ubah Jabatan</h1>
-    <h1 v-else-if="readonlyMode" class="main-title">Detail Jabatan</h1>
+    <h1 class="main-title">Ubah Jabatan</h1>
     <div class="form-card">
-      <div v-if="!readonlyMode" class="form-card-header">
+      <div class="form-card-header">
         Formulir Ubah Jabatan
-      </div>
-      <div v-else-if="readonlyMode" class="form-card-header">
-        Informasi Jabatan
       </div>
 
       <!-- Form pakai @submit.prevent supaya tidak reload -->
