@@ -16,19 +16,13 @@ const nama_depanPengaju = ref('')
 const nama_belakangPengaju = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
+const organisasi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
-const organisasi = ref('')
-const activeTab = ref('informasi')
-
-const SuratDinas_Path = ref(null)
-const Lampiran_Path = ref(null)
-const HasilPemenuhan_Path = ref(null)
 const src_HasilPemenuhan = ref(route.query.hasil_pemenuhan || '-')
-const HasilBA_Path = ref(null)
 const src_HasilBA = ref(route.query.hasil_ba || '-')
-const HasilSLA_Path = ref(null)
 const src_HasilSLA = ref(route.query.hasil_sla || '-')
+const activeTab = ref('informasi')
 
 // Loading states
 const isLoading = ref(true)
@@ -129,7 +123,7 @@ const fetchPelayananData = async () => {
   }
 }
 
-SuratDinas_Path.value = '/files' + surat_dinas.value
+const SuratDinas_Path = computed(() => '/files/' + surat_dinas.value)
 const namaFileSuratDinas = computed(() => {
   const fileName = surat_dinas.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -138,7 +132,7 @@ const namaFileSuratDinas = computed(() => {
   return `${tanggal}_${waktu}_Surat_Dinas.pdf`
 })
 
-Lampiran_Path.value = '/files' + lampiran.value
+const Lampiran_Path = computed(() => '/files/' + lampiran.value)
 const namaFileLampiran = computed(() => {
   const fileName = lampiran.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -147,7 +141,7 @@ const namaFileLampiran = computed(() => {
   return `${tanggal}_${waktu}_Lampiran.pdf`
 })
 
-HasilPemenuhan_Path.value = '/files' + src_HasilPemenuhan.value
+const HasilPemenuhan_Path = computed(() => '/files/' + src_HasilPemenuhan.value)
 const namaFileHasilPemenuhan = computed(() => {
   const fileName = src_HasilPemenuhan.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -156,7 +150,7 @@ const namaFileHasilPemenuhan = computed(() => {
   return `${tanggal}_${waktu}_HasilPemenuhan.pdf`
 })
 
-HasilBA_Path.value = '/files' + src_HasilBA.value
+const HasilBA_Path = computed(() => '/files/' + src_HasilBA.value)
 const namaFileHasilBA = computed(() => {
   const fileName = src_HasilBA.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -165,7 +159,7 @@ const namaFileHasilBA = computed(() => {
   return `${tanggal}_${waktu}_HasilBA.pdf`
 })
 
-HasilSLA_Path.value = '/files' + src_HasilSLA.value
+const HasilSLA_Path = computed(() => '/files/' + src_HasilSLA.value)
 const namaFileHasilSLA = computed(() => {
   const fileName = src_HasilSLA.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -364,7 +358,7 @@ onMounted(() => {
             <button class="send-btn" @click="addMessage">Kirim</button>
 
             <div class="document-links">
-              <div class="info-row">
+              <div class="info-row-docs">
                 <strong>Hasil Pemenuhan</strong>
                 <div v-if="HasilPemenuhan_Path">
                   <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
@@ -373,7 +367,7 @@ onMounted(() => {
                 </div>
               </div>
 
-              <div class="info-row">
+              <div class="info-row-docs">
                 <strong>Hasil BA</strong>
                 <div v-if="HasilBA_Path">
                   <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
@@ -381,7 +375,7 @@ onMounted(() => {
                   </a>
                 </div>
 
-                <div class="info-row">
+                <div class="info-row-docs">
                   <strong>Hasil SLA</strong>
                   <div v-if="HasilSLA_Path">
                     <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
@@ -553,6 +547,11 @@ onMounted(() => {
 }
 
 .info-row {
+  display: flex;
+  padding: 0.8rem 0;
+}
+
+.info-row-docs {
   display: block;
   padding: 0.8rem 0;
 }

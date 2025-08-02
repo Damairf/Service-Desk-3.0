@@ -153,7 +153,7 @@ public function delete_Photo(Request $request){
         return response()->json($users);
     }
 
-    public function getTeknis(Request $request){
+    public function getAllTeknis(Request $request){
         $users = User::select('ID_User','Nama_Depan', 'Nama_Belakang')->whereHas('user_role', function($query) {
         $query->where('ID_Role', '4');
         })->get();
