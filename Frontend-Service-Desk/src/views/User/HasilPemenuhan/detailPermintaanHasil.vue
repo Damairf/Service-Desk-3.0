@@ -239,18 +239,6 @@ onMounted(() => {
   if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 2 ) {
     progress.value = true
   }
-
-  // Event listener untuk tombol back browser
-  const handlePopState = () => {
-    router.push({ name: 'PermintaanDiproses' })
-  }
-  
-  window.addEventListener('popstate', handlePopState)
-  
-  // Cleanup event listener saat komponen unmount
-  return () => {
-    window.removeEventListener('popstate', handlePopState)
-  }
 })
 </script>
 

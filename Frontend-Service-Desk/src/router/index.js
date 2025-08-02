@@ -96,7 +96,7 @@ const routes = [
   { path: '/detailPermintaan', name: 'DetailPermintaan', component: detailPermintaan, meta: {allowedRoles: [1]},},
 
   // Hasil Pemenuhan BASLA
-  { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA, meta: {allowedRoles: [1]}},
+  { path: '/hasilPemenuhanBASLA', name: 'hasilPemenuhanBASLA', component: HasilPemenuhanBASLA, meta: {allowedRoles: [1], keepAlive: true}},
   { path: '/detailPermintaanHasil', name: 'DetailPermintaanHasil', component: detailPermintaanHasil, meta: {allowedRoles: [1]}},
 
   // Riwayat
