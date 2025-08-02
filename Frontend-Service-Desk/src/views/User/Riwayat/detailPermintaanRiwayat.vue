@@ -317,7 +317,7 @@ onMounted(() => {
               </div>
             </div>
             <div class="document-links">
-              <div class="info-row">
+              <div class="info-row-docs">
                 <strong>Hasil Pemenuhan</strong>
                 <div v-if="HasilPemenuhan_Path">
                   <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
@@ -326,7 +326,7 @@ onMounted(() => {
                 </div>
               </div>
 
-              <div class="info-row">
+              <div class="info-row-docs">
                 <strong>Hasil BA</strong>
                 <div v-if="HasilBA_Path">
                   <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
@@ -334,7 +334,7 @@ onMounted(() => {
                   </a>
                 </div>
 
-                <div class="info-row">
+                <div class="info-row-docs">
                   <strong>Hasil SLA</strong>
                   <div v-if="HasilSLA_Path">
                     <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
@@ -506,6 +506,11 @@ onMounted(() => {
 }
 
 .info-row {
+  display: flex;
+  padding: 0.8rem 0;
+}
+
+.info-row-docs {
   display: block;
   padding: 0.8rem 0;
 }

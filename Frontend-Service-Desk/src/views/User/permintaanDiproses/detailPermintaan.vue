@@ -283,10 +283,10 @@ onMounted(() => {
               </div>
               <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
               <button class="send-btn" @click="addMessage">Kirim</button>
-              <div>
+              <div class ="info-row-PelaksanaTeknis">
                 <strong>Nama Pelaksana Teknis:</strong>
-                <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
-              </div>
+              <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
+            </div>
             </div>
             </div>
         </div>
@@ -449,6 +449,11 @@ onMounted(() => {
 }
 
 .info-row {
+  display: flex;
+  padding: 0.8rem 0;
+}
+
+.info-row-PelaksanaTeknis {
   display: block;
   padding: 0.8rem 0;
 }
