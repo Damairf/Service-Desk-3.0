@@ -245,7 +245,7 @@ onMounted(() => {
             <div class="info-row"><strong>Tanggal Laporan:</strong> <span>{{ new Date(tanggal).toLocaleDateString('id-ID') }}</span></div>
             <div class="info-row"><strong>Perihal:</strong> <span>{{ perihal }}</span></div>
             <div class="info-row textarea-row">
-              <strong>Deskripsi User</strong>
+              <strong>Deskripsi</strong>
               <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
 
               <strong>Surat Dinas</strong>

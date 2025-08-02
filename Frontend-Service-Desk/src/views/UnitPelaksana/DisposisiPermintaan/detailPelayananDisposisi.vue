@@ -11,12 +11,14 @@ const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
 const stepsStatus = ref([])
 const perihal = ref('')
+const status = ref('')
 const tanggal = ref('')
 const nama_pelapor = ref('') 
 const nama_depanTeknis = ref('') 
 const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
+const pesanPengelola = ref('')
 const organisasi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
@@ -37,6 +39,8 @@ const dataCache = ref(null)
 // Computed properties untuk optimasi
 const pelayananData = computed(() => ({
   deskripsi: deskripsi.value,
+  pesanPengelola: pesanPengelola.value,
+  pesanUnit: pesanUnit.value,
   organisasi: organisasi.value,
   surat_dinas: surat_dinas.value,
   lampiran: lampiran.value,
@@ -60,6 +64,8 @@ const fetchPelayananData = async () => {
     // Gunakan data dari cache
     const cached = dataCache.value
     deskripsi.value = cached.deskripsi
+    pesanPengelola.value = cached.pesanPengelola
+    pesanUnit.value = cached.pesanUnit
     organisasi.value = cached.organisasi
     surat_dinas.value = cached.surat_dinas
     lampiran.value = cached.lampiran
@@ -96,6 +102,9 @@ const fetchPelayananData = async () => {
     // Set data
     const pelayananData = pelayananResponse.data
     deskripsi.value = pelayananData.Deskripsi
+    pesanPengelola.value = pelayananData.Pesan_Pengelola
+    pesanUnit.value = pelayananData.Pesan_Unit
+    status.value = pelayananData.ID_Status
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
@@ -121,6 +130,8 @@ const fetchPelayananData = async () => {
     dataCache.value = {
       id: pelayananId.value,
       deskripsi: deskripsi.value,
+      pesanPengelola: pesanPengelola.value,
+      pesanUnit: pesanUnit.value,
       organisasi: organisasi.value,
       surat_dinas: surat_dinas.value,
       lampiran: lampiran.value,
@@ -318,7 +329,7 @@ onMounted(() => {
             <div class="info-row"><strong>Perihal:</strong> <span>{{ perihal }}</span></div>
             
             <div class="info-row textarea-row">
-              <strong>Deskripsi User</strong>
+              <strong>Deskripsi</strong>
               <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
 
               <strong>Surat Dinas</strong>
@@ -334,6 +345,8 @@ onMounted(() => {
                   {{ namaFileLampiran }}
                 </a>
               </div>
+              <strong>Pesan dari Pengelola</strong>
+              <textarea class="input" :value="pesanPengelola" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
             </div>
             </div>
 
@@ -359,6 +372,11 @@ onMounted(() => {
                 <strong>Nama Pelaksana Teknis:</strong>
                 <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
             </div>
+            <strong>Pesan dari Unit Pelaksana</strong>
+            <div class="textarea-row">
+            <textarea class="input" :value="pesanUnit" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
+            </div>
+
             <div v-if="isDone" class="document-links" >
               <div class="info-row-docs">
                 <strong>Hasil Pemenuhan</strong>
@@ -387,7 +405,7 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-            <div class="tinjau-card" v-if="isDone">
+            <div class="tinjau-card" v-if="isDone && status !== 5 && status !== 6">
         <h3>Tinjau Pelayanan</h3>
         <div class="wrapper-btn">
           <button class="btn-selesai" @click="handlePilihan('Selesai')">Selesai</button>
