@@ -125,7 +125,7 @@ watch(search, () => {
 <template>
   <div class="container">
     <div class="card">
-      <h1 class="title">Disposisi Pelayanan</h1>
+      <h1 class="title">Hasil Pengerjaan</h1>
       <input type="text" v-model="search" placeholder="Cari" class="search-bar" />
       
       <table class="rounded-table">

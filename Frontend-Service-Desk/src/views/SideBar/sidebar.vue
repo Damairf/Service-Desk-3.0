@@ -114,7 +114,7 @@ if (role.value == 1) {
   { icon: '🏠', label: 'Beranda', to: '/berandaTeknis' },
   { icon: '⚙️', label: 'User Portal', to: '/portal' },
   { icon: '📁', label: 'Disposisi Permintaan Layanan', to: '/disposisiTeknis' },
-  { icon: '📁', label: 'Hasil Pengerjaan Permintaan Layanan', to: '/hasil' },
+  { icon: '📁', label: 'Hasil Pengerjaan Permintaan Layanan', to: '/hasilPengerjaan' },
 ];
 } else if (role.value == 5) {
   role.value = "Kepala Dinas"
