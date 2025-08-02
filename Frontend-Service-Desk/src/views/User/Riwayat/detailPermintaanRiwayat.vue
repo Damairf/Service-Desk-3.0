@@ -18,15 +18,21 @@ const nama_depanTeknis = ref('')
 const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
+const organisasi = ref('')
+
 const surat_dinas = ref('')
 const lampiran = ref('')
-const organisasi = ref('')
-const activeTab = ref('informasi')
-const status = ref('')
+const SuratDinas_Path = ref(null)
+const Lampiran_Path = ref(null)
+const HasilBA_Path = ref(null)
+const HasilSLA_Path = ref(null)
+const HasilPemenuhan_Path = ref(null)
+const src_HasilPemenuhan = ref(route.query.hasil_pemenuhan || '-')
+const src_HasilBA = ref(route.query.hasil_ba || '-')
+const src_HasilSLA = ref(route.query.hasil_sla || '-')
 
-const src_HasilPemenuhan = ref('-')
-const src_HasilBA = ref('-')
-const src_HasilSLA = ref('-')
+const activeTab = ref('informasi')
+
 
 // Loading states
 const isLoading = ref(true)
@@ -147,6 +153,12 @@ const fetchPelayananData = async () => {
       status: status.value
     }
 
+    SuratDinas_Path.value = '/files' + surat_dinas.value
+    Lampiran_Path.value = '/files' + lampiran.value
+    HasilPemenuhan_Path.value = '/files' + src_HasilPemenuhan.value
+    HasilBA_Path.value = '/files' + src_HasilBA.value
+    HasilSLA_Path.value = '/files' + src_HasilSLA.value
+
     isDataLoaded.value = true
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -155,7 +167,6 @@ const fetchPelayananData = async () => {
   }
 }
 
-const SuratDinas_Path = computed(() => '/files/' + surat_dinas.value)
 const namaFileSuratDinas = computed(() => {
   const fileName = surat_dinas.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -164,7 +175,6 @@ const namaFileSuratDinas = computed(() => {
   return `${tanggal}_${waktu}_Surat_Dinas.pdf`
 })
 
-const Lampiran_Path = computed(() => '/files/' + lampiran.value)
 const namaFileLampiran = computed(() => {
   const fileName = lampiran.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -173,7 +183,6 @@ const namaFileLampiran = computed(() => {
   return `${tanggal}_${waktu}_Lampiran.pdf`
 })
 
-const HasilPemenuhan_Path = computed(() => '/files/' + src_HasilPemenuhan.value)
 const namaFileHasilPemenuhan = computed(() => {
   const fileName = src_HasilPemenuhan.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -182,7 +191,6 @@ const namaFileHasilPemenuhan = computed(() => {
   return `${tanggal}_${waktu}_HasilPemenuhan.pdf`
 })
 
-const HasilBA_Path = computed(() => '/files/' + src_HasilBA.value)
 const namaFileHasilBA = computed(() => {
   const fileName = src_HasilBA.value.split('/').pop() 
   const parts = fileName.split('_')
@@ -191,7 +199,6 @@ const namaFileHasilBA = computed(() => {
   return `${tanggal}_${waktu}_HasilBA.pdf`
 })
 
-const HasilSLA_Path = computed(() => '/files/' + src_HasilSLA.value)
 const namaFileHasilSLA = computed(() => {
   const fileName = src_HasilSLA.value.split('/').pop() 
   const parts = fileName.split('_')

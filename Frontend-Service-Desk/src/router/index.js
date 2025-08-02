@@ -47,8 +47,6 @@ import halamanLacakApproval from '../views/UnitPelaksana/ApprovalPermintaan/hala
 
 // Disposisi
 import disposisi from '../views/UnitPelaksana/DisposisiPermintaan/DisposisiUnit.vue'
-import halamanLacakDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/halaman-lacak-DisposisiUnit.vue'
-import halamanInformasiDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/halaman-informasi-DisposisiUnit.vue'
 import detailPelayananDisposisi from '../views/UnitPelaksana/DisposisiPermintaan/detailPelayananDisposisi.vue'
 
 //=============PELAKSANA TEKNIS================
@@ -132,12 +130,7 @@ const routes = [
     ]
   },
   //Disposisi
-  { path: '/detailPelayananDisposisi', name: 'DetailPelayananDisposisi', component: detailPelayananDisposisi, meta: {allowedRoles: [3]},
-    children: [
-      { path: 'lacakDisposisi', name: 'HalamanLacakDisposisi', component: halamanLacakDisposisi, meta: {allowedRoles: [3]}},
-      { path: 'informasiDisposisi', name: 'HalamanInformasiDisposisi', component: halamanInformasiDisposisi, meta: {allowedRoles: [3]}}
-    ]
-  },
+  { path: '/detailPelayananDisposisi', name: 'DetailPelayananDisposisi', component: detailPelayananDisposisi, meta: {allowedRoles: [3]}},
 
   //=============PELAKSANA TEKNIS===============
   { path: '/berandaTeknis', name: 'Beranda Teknis', component: berandaTeknis, meta: {allowedRoles: [4]}},

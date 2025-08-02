@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -245,18 +245,17 @@ onMounted(() => {
     fetchPelayananData()
   }
 
-  // Event listener untuk tombol back browser
   const handlePopState = () => {
-    router.push({ name: 'PermintaanDiproses' })
+    router.push('/pelayanan')
   }
-  
+
   window.addEventListener('popstate', handlePopState)
-  
-  // Cleanup event listener saat komponen unmount
-  return () => {
+
+  onUnmounted(() => {
     window.removeEventListener('popstate', handlePopState)
-  }
+  })
 })
+
 </script>
 
 <template>
