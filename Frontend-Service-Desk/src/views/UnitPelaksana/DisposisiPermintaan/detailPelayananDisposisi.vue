@@ -99,9 +99,9 @@ const fetchPelayananData = async () => {
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
-    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path
-    src_HasilBA.value = pelayananData.BA_Path
-    src_HasilSLA.value = pelayananData.SLA_Path
+    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path || '-'
+    src_HasilBA.value = pelayananData.BA_Path || '-'
+    src_HasilSLA.value = pelayananData.SLA_Path || '-'
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_depanPengaju.value = pelayananData.user.Nama_Depan
     nama_belakangPengaju.value = pelayananData.user.Nama_Belakang
@@ -653,6 +653,80 @@ onMounted(() => {
   background-color: white;
   color: black;
   font-family: poppins, sans-serif;
+}
+
+.tinjau-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.wrapper-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-selesai {
+  color: white;
+  background-color: #4CAF50;
+  border-radius: 12px;
+  padding: 0.5rem 2.5rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.btn-selesai:hover {
+  background-color: #66BB6A;
+  transform: scale(1.02);
+}
+
+.btn-revisi {
+  color: white;
+  background-color: #FF9800;
+  border-radius: 12px;
+  padding: 0.5rem 2.5rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.btn-revisi:hover {
+  background-color: #FFB74D;
+  transform: scale(1.02);
+}
+
+.wrapper-selesai,
+.wrapper-revisi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-self: flex-start;
+}
+
+select {
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  color: black;
+  background-color: white;
+}
+
+.btn-confirm {
+  color: white;
+  background-color: #2BA9E4;
+  border-radius: 12px;
+  padding: 0.5rem 2rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  width: fit-content;
+  align-self: center;
+}
+.btn-confirm:hover {
+  transform: scale(1.02);
+  background-color: #48B7ED;
 }
 
 .send-btn {
