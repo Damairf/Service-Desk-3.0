@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     
     public function findAll_User(){
-        $users = User::with('user_role', 'user_organisasi')->get();
+        $users = User::with('user_role', 'user_organisasi', 'user_jabatan')->get();
         return response()->json($users);
     }
     

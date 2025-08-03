@@ -20,7 +20,9 @@ onMounted(() => {
       id: item.ID_User,
       nama_depan: item.Nama_Depan,
       nama_belakang: item.Nama_Belakang,
+      NIP: item.NIP,
       role: item.user_role.Nama_Role,
+      jabatan: item.user_jabatan.Nama_Jabatan,
       organisasi: item.user_organisasi.Nama_OPD,
       status: item.Status
     }))
@@ -123,6 +125,7 @@ function ubahPengguna(user) {
       nama_depan: user.nama_depan,
       nama_belakang: user.nama_belakang,
       role: user.role,
+      jabatan: user.jabatan,
       organisasi: user.organisasi,
       status: user.status
     }
@@ -132,9 +135,12 @@ function lihatPengguna(user) {
   router.push({
     path: '/lihatPengguna',
     query: {
+      user_id: user.id,
       nama_depan: user.nama_depan,
       nama_belakang: user.nama_belakang,
+      NIP: user.NIP,
       role: user.role,
+      jabatan: user.jabatan,
       organisasi: user.organisasi,
       status: user.status,
     }

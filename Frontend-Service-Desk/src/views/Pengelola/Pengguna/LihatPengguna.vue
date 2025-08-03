@@ -12,133 +12,11 @@ const Nama_Belakang = ref(route.query.nama_belakang || '')
 const role = ref(route.query.role || '')
 const organisasi = ref(route.query.organisasi || '')
 const status = ref(route.query.status || '')
-const password = ref('')
-
-const pilihanRole = ref([])
-const idRoleTerpilih = ref('')
-
-const pilihanJabatan = ref([])
-const idJabatanTerpilih = ref('')
-
-const pilihanInduk = ref([])
-const idOrganisasiTerpilih = ref('')
+const user_id = ref(route.query.user_id || '')
+const NIP = ref(route.query.NIP || '')
+const jabatan = ref(route.query.jabatan || '')
 
 const token = localStorage.getItem('Token')
-
-// === Ambil data Role ===
-onMounted(async () => {
-  try {
-    const response = await axios.get('/api/role', {
-      headers: { Authorization: 'Bearer ' + token }
-    })
-    pilihanRole.value = response.data.map(item => ({
-      id_role: item.ID_Role,
-      nama_role: item.Nama_Role
-    }))
-    // Set role name based on id if available
-    const match = pilihanRole.value.find(r => r.id_role === route.query.id_role)
-    if (match) {
-      role.value = match.nama_role
-      idRoleTerpilih.value = route.query.id_role || ''
-    }
-  } catch (error) {
-    console.error(error)
-  }
-})
-// === Ambil data Jabatan ===
-onMounted(async () => {
-  try {
-    const response = await axios.get('/api/jabatan', {
-      headers: { Authorization: 'Bearer ' + token }
-    })
-    pilihanJabatan.value = response.data.map(item => ({
-      id_jabatan: item.ID_Jabatan,
-      nama_jabatan: item.Nama_Jabatan
-    }))
-    // Set jabatan name based on id if available
-    const match = pilihanJabatan.value.find(j => j.id_jabatan === route.query.id_jabatan)
-    if (match) {
-      jabatan.value = match.nama_jabatan
-      idJabatanTerpilih.value = route.query.id_jabatan || ''
-    }
-  } catch (error) {
-    console.error(error)
-  }
-})
-// === Ambil data Organisasi ===
-onMounted(async () => {
-  try {
-    const response = await axios.get('/api/organisasi', {
-      headers: { Authorization: 'Bearer ' + token }
-    })
-    pilihanInduk.value = response.data.map(item => ({
-      id_organisasi: item.ID_Organisasi,
-      nama_PerangkatDaerah: item.Nama_OPD
-    }))
-    // Set organisasi name based on id if available
-    const match = pilihanInduk.value.find(o => o.id_organisasi === route.query.id_organisasi)
-    if (match) {
-      organisasi.value = match.nama_PerangkatDaerah
-      idOrganisasiTerpilih.value = route.query.id_organisasi || ''
-    }
-  } catch (error) {
-    console.error(error)
-  }
-})
-
-// === Ambil data Organisasi ===
-axios.get('/api/organisasi', {
-  headers: { Authorization: 'Bearer ' + token }
-})
-.then(response => {
-  pilihanInduk.value = response.data.map(item => ({
-    id_organisasi: item.ID_Organisasi,
-    nama_PerangkatDaerah: item.Nama_OPD
-  }))
-
-  // Set default sesuai route.query.organisasi
-  const match = pilihanInduk.value.find(o => o.nama_PerangkatDaerah === organisasi.value)
-  if (match) {
-    idOrganisasiTerpilih.value = match.id_organisasi
-  }
-})
-.catch(error => console.error(error))
-
-// === Set Status langsung (karena tidak butuh fetch) ===
-// Status sudah otomatis terisi dari v-model="status"
-
-// === Submit handler ===
-function handleSubmit() {
-  if (!Nama_Depan.value || !Nama_Belakang.value || !NIP.value || !idRoleTerpilih.value || !idJabatanTerpilih.value || !idOrganisasiTerpilih.value || !status.value || !password.value) {
-    alert('Harap isi semua kolom yang bertanda *')
-    return
-  }
-
-  if (NIP.value.length !== 18) {
-    alert('NIP harus 18 digit')
-    return
-  }
-
-  const payload = {
-    Nama_Depan: Nama_Depan.value,
-    Nama_Belakang: Nama_Belakang.value,
-    NIP: NIP.value,
-    ID_Role: idRoleTerpilih.value,
-    ID_Jabatan: idJabatanTerpilih.value,
-    ID_Organisasi: idOrganisasiTerpilih.value,
-    Password: password.value,
-    Status: status.value
-  }
-
-  axios.post('/api/user', payload, {
-    headers: { Authorization: 'Bearer ' + token }
-  })
-  .then(() => {
-    alert('Pengguna sudah ditambahkan')
-    router.push('/pengguna')
-  })
-  .catch(error => console.log(error))
-}
 </script>
 
 
@@ -151,11 +29,13 @@ function handleSubmit() {
       </div>
 
       <!-- Form pakai @submit.prevent supaya tidak reload -->
-      <form class="form-content" @submit.prevent="handleSubmit">
+      <form class="form-content">
             <strong>Nama Depan</strong>
             <p class="display-info">{{ Nama_Depan }}</p>
             <strong>Nama Belakang</strong>
             <p class="display-info">{{ Nama_Belakang }}</p>
+            <strong>NIP</strong>
+            <p class="display-info">{{ NIP }}</p>
             <strong>Role</strong>
             <p class="display-info">{{ role }}</p>
             <strong>Jabatan</strong>
