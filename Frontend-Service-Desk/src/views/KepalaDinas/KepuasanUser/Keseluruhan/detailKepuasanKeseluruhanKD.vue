@@ -20,6 +20,7 @@ const nama_belakangUnit = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const pesanPengelola = ref('')
+const pesanUnit = ref('')
 const organisasi = ref('')
 const status = ref('')
 
@@ -48,6 +49,7 @@ const dataCache = ref(null)
 const pelayananData = computed(() => ({
   deskripsi: deskripsi.value,
   pesanPengelola: pesanPengelola.value,
+  pesanUnit: pesanUnit.value,
   organisasi: organisasi.value,
   surat_dinas: surat_dinas.value,
   lampiran: lampiran.value,
@@ -74,7 +76,8 @@ const fetchPelayananData = async () => {
     // Gunakan data dari cache
     const cached = dataCache.value
     deskripsi.value = cached.deskripsi
-    pesanPengelola.value = pesanPengelola.deskripsi
+    pesanPengelola.value = cached.pesanPengelola
+    pesanUnit.value = cached.pesanUnit
     organisasi.value = cached.organisasi
     surat_dinas.value = cached.surat_dinas
     lampiran.value = cached.lampiran
@@ -115,6 +118,7 @@ const fetchPelayananData = async () => {
     const pelayananData = pelayananResponse.data
     deskripsi.value = pelayananData.Deskripsi
     pesanPengelola.value = pelayananData.Pesan_Pengelola
+    pesanUnit.value = pelayananData.Pesan_Unit
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
@@ -146,6 +150,7 @@ const fetchPelayananData = async () => {
       id: pelayananId.value,
       deskripsi: deskripsi.value,
       pesanPengelola: pesanPengelola.value,
+      pesanUnit: pesanUnit.value,
       organisasi: organisasi.value,
       surat_dinas: surat_dinas.value,
       lampiran: lampiran.value,
@@ -313,6 +318,10 @@ onMounted(() => {
                   </a>
                 </div>
               </div>
+              <div v-if="status !==3" class="info-row textarea-row">
+                <strong>Pesan dari Pengelola</strong>
+                <textarea class="input" :value="pesanPengelola" placeholder="Tidak Ada Pesan" rows="5" readonly></textarea>
+              </div>
             </div> <!-- end info-card -->
 
             <!-- Chat Card -->
@@ -326,6 +335,12 @@ onMounted(() => {
               <div v-if="status !== 3" class ="info-row-PelaksanaTeknis">
                 <strong>Nama Unit Pelaksana</strong>
               <div>{{ nama_depanUnit + ' ' + nama_belakangUnit }}</div>
+            </div>
+            <div v-if="status !==3">
+              <strong>Pesan dari {{ nama_depanUnit + ' ' + nama_belakangUnit }}</strong>
+            <div class="textarea-row">
+            <textarea class="input" :value="pesanUnit" placeholder="Tidak Ada Pesan" rows="5" readonly></textarea>
+            </div>
             </div>
             <div v-if="status !== 3" class ="info-row-PelaksanaTeknis">
                 <strong>Nama Pelaksana Teknis</strong>
