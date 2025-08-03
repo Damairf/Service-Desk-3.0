@@ -107,7 +107,7 @@ class PelayananController extends Controller
             ]);
         }
 
-        return response(["message" => "Layanan ditambahkan", "data" => $newPelayanan]);
+        return response(["message" => "Layanan ditambahkan", "data" => $newPelayanan, 'ID_Pelayanan' => $newPelayanan->ID_Pelayanan]);
     }
 
     // untuk role pengelola memberikan ID Unit Pelaksana

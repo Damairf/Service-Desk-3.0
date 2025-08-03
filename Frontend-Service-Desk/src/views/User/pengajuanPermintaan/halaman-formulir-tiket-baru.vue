@@ -163,10 +163,10 @@ axios.post('/api/pelayanan/tambah', {
         <p class="display">{{ layanan }}</p>
 
         <label>Perihal</label>
-        <input type="text" v-model="perihal" maxlength="50"/>
+        <input type="text" v-model="perihal" placeholder="Masukkan perihal" maxlength="50"/>
 
         <label>Deskripsi</label>
-        <textarea v-model="deskripsi" rows="5"></textarea>
+        <textarea v-model="deskripsi" rows="5" placeholder="Masukkan deskripsi"></textarea>
 
         <label>Surat Dinas</label>
         <input type="file" accept=".pdf" @change="handleFileChange($event, 'suratDinas')" />

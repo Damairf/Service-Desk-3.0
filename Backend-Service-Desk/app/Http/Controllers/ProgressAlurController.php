@@ -16,7 +16,10 @@ class ProgressAlurController extends Controller
             ->first();
     
         if (!$id_pelayanan) {
-            return response()->json(['message' => 'Jenis Pelayanan tidak ditemukan'], 404);
+            return response()->json(['message' => 'ID Pelayanan tidak ditemukan'], 404);
+        }
+        if ($id_pelayanan->progress_to_pelayanan->isEmpty()) {
+            return response()->json(['message' => 'Progress belum tersedia untuk pelayanan ini'], 404);
         }
     
         return response()->json($id_pelayanan->progress_to_pelayanan);

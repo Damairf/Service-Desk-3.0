@@ -12,7 +12,7 @@ onUnmounted(() => {
 const route = useRoute()
 const layanan = ref(route.query.layanan || '')
 const persyaratan = ref(route.query.persyaratan || '')
-const namaPelapor = ref([localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' '))
+const namaPelapor = ref('')
 const id_user = localStorage.getItem('ID_User')
 const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
 const id_status = 2
@@ -28,6 +28,7 @@ const suratDinasPath = ref(null)
 const lampiranPath = ref(null)
 const isSubmitted = ref(false)
 const isLoading = ref(false)
+const stepsID = ref([]) 
 
 const token = localStorage.getItem('Token');
 axios.get('/api/pelayanan/unit', {
@@ -90,7 +91,6 @@ async function uploadFiles() {
       }
     });
 
-    console.log("RESPON DARI UPLOAD:", response.data);
     suratDinasPath.value = response.data.surat_dinas;
     lampiranPath.value = response.data.lampiran;
     return true;
@@ -141,19 +141,46 @@ async function handleSubmit(){
       Authorization: 'Bearer ' + token
     }
   })
-  .then(response => {
-    isSubmitted.value = true;
-    isLoading.value = false; // Stop loading on success
-    const role = parseInt(localStorage.getItem('id_role'));
-    if (role === 1){
-      router.push('/permintaanDiproses');
-    } else if (role === 2){
-      router.push('/pelayanan');
+  .then(async response => {
+    try {
+      isSubmitted.value = true;
+      isLoading.value = false;
+
+      const role = parseInt(localStorage.getItem('id_role'));
+      if (role === 1){
+        router.push('/permintaanDiproses');
+      } else if (role === 2){
+        router.push('/pelayanan');
+      }
+
+      const pelayananIdBaru = response.data.ID_Pelayanan;
+      console.log('ID_Pelayanan: ', pelayananIdBaru);
+      await new Promise(resolve => setTimeout(resolve, 500));
+      const progressResponse = await axios.get(`/api/pelayanan/alur/progress/${pelayananIdBaru}`, {
+        headers: { Authorization: 'Bearer ' + token }
+      });
+
+      const progressData = progressResponse.data
+      stepsID.value = progressData.map(item => item.ID_Progress_Alur)
+      const idProgressLangkah3 = stepsID.value[2] // pastikan ini terisi
+      if (idProgressLangkah3) {
+        const progressUrl = `/api/progress-alur/update-status/${idProgressLangkah3}`
+
+        await axios.put(progressUrl, {
+          Is_Done: 1
+        }, {
+          headers: { Authorization: 'Bearer ' + token }
+        })
+      } else {
+      console.warn('ID Progress langkah ke-3 tidak tersedia.')
+      }
+    } catch (progressError) {
+      console.error('Gagal ambil progress:', progressError.response?.data || progressError.message);
+      isLoading.value = false;
     }
   })
   .catch(error => {
     console.error(error.response?.data || error.message);
-    console.log(namaPelapor.value)
     isLoading.value = false; // Stop loading on error
   });
 }
@@ -170,16 +197,16 @@ async function handleSubmit(){
 
       <form @submit.prevent="handleSubmit">
         <label>Pelapor</label>
-        <input type="text" v-model="namaPelapor" maxlength="50"/>
+        <input type="text" v-model="namaPelapor" placeholder="Masukkan nama pelapor" maxlength="50"/>
 
         <label>Layanan</label>
         <p class="display">{{ layanan }}</p>
 
         <label>Perihal</label>
-        <input type="text" v-model="perihal" maxlength="50"/>
+        <input type="text" v-model="perihal" placeholder="Masukkan perihal" maxlength="50"/>
 
         <label>Deskripsi</label>
-        <textarea v-model="deskripsi" rows="5"></textarea>
+        <textarea v-model="deskripsi" rows="5" placeholder="Masukkan deskripsi"></textarea>
 
         <label>Surat Dinas</label>
         <input type="file" accept=".pdf" @change="handleFileChange($event, 'suratDinas')" />
@@ -197,7 +224,7 @@ async function handleSubmit(){
           </option>
         </select>
         <label>Pesan untuk Unit Pelaksana</label>
-        <textarea class="input" v-model="pesan"></textarea>
+        <textarea class="input" v-model="pesan" placeholder="Masukkan pesan"></textarea>
         <button type="submit" :disabled="isLoading">
           {{ isLoading ? 'Mengirim...' : 'Kirim' }}
         </button>

@@ -190,7 +190,6 @@ const handleSelesai = async () => {
         headers: { Authorization: 'Bearer ' + token }
       })
 
-      console.log('Langkah ke-3 berhasil ditandai selesai.')
     } else {
       console.warn('ID Progress langkah ke-3 tidak tersedia.')
     }
@@ -529,7 +528,7 @@ onMounted(() => {
 }
 
 .info-row {
-  display: block;
+  display: flex;
   padding: 0.8rem 0;
 }
 
