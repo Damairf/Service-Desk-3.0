@@ -81,6 +81,8 @@ class PelayananController extends Controller
         $Surat_Dinas_Path = $request->Surat_Dinas_Path;
         $Lampiran_Path = $request->Lampiran_Path;
         $ID_Status = $request->ID_Status;
+        $ID_Unit = $request->ID_Unit;
+        $Pesan_Pengelola = $request->Pesan_Pengelola;
 
         $newPelayanan = Pelayanan::create([
             'ID_User' => $ID_User,
@@ -91,6 +93,8 @@ class PelayananController extends Controller
             'Surat_Dinas_Path' => $Surat_Dinas_Path,
             'Lampiran_Path' => $Lampiran_Path,
             'ID_Status' => $ID_Status,
+            'ID_Unit' => $ID_Unit,
+            'Pesan_Pengelola' => $Pesan_Pengelola,
         ]);
 
         $alurList = Alur::where('ID_Jenis_Pelayanan', $ID_Jenis_Pelayanan)->get();

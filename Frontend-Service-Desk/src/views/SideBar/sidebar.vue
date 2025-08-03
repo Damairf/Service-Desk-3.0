@@ -8,7 +8,14 @@ const nama_belakang = ref(localStorage.getItem('nama_belakang'));
 const gambar = ref(localStorage.getItem('src_gambar'));
 const role = ref(localStorage.getItem('id_role'))
 
+const imageSrc = computed(() => {
+  if (gambar.value && gambar.value !== 'null') {
+    return `/images/${gambar.value}`;
+  }
+  return '/images/default.jpeg'; // Default image
+});
 const profileRef = ref(null)
+
 // dropdown referensi
 const dropdownref = ref(false)
 function togglereferensi() {
@@ -153,7 +160,7 @@ if (role.value == 1) {
     <!-- Profile -->
     <div class="profile" ref="profileRef" @click="toggleOverlay">
       <img
-        :src="`/images/${gambar}`"
+        :src="imageSrc"
         alt="Foto Profil"
         class="gambar-profile"
       />

@@ -20,7 +20,12 @@ const fileInput = ref(null)
 const newImageFile = ref(null) // for upload
 
 const gambar = ref(localStorage.getItem('src_gambar'));
-const imageSrc = computed(() => `/images/${gambar.value}?t=${Date.now()}`);
+const imageSrc = computed(() => {
+  if (gambar.value && gambar.value !== 'null') {
+    return `/images/${gambar.value}?t=${Date.now()}`;
+  }
+  return '/images/default.jpeg'; 
+});
 const previewSrc = computed(() => selectedImage.value || imageSrc.value);
 
 const userID = localStorage.getItem("ID_User");
@@ -92,6 +97,7 @@ function removeImage() {
     newImageFile.value = null;
     showOverlay.value = false;
     alert('Foto profil berhasil dihapus!');
+    router.push('/profileSaya')
   })
   .catch(error => {
     console.error(error);

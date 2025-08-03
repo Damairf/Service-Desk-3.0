@@ -320,6 +320,7 @@ onMounted(() => {
                       v-for="star in 5"
                       :key="star"
                       class="star"
+                      :class="{ 'filled': star <= (hoverRating || rating) }"
                     >
                       ★
                     </span>

@@ -16,6 +16,12 @@
   const organisasi = localStorage.getItem('nama_organisasi')
   const gambar = localStorage.getItem('src_gambar')
   
+  const imageSrc = computed(() => {
+  if (gambar && gambar !== 'null') {
+    return `/images/${gambar}?t=${Date.now()}`;
+  }
+  return '/images/default.jpeg'; // Default image
+});
 </script>
 
 
@@ -27,7 +33,7 @@
       <!-- FOTO & NAMA -->
       <div class="left-column">
         <img
-          :src="`/images/${gambar}`"
+          :src="imageSrc"
           alt="Foto Profil"
           class="profile-img"
         />

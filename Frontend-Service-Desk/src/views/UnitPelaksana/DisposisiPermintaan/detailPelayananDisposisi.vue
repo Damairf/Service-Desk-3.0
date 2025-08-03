@@ -16,6 +16,8 @@ const tanggal = ref('')
 const nama_pelapor = ref('') 
 const nama_depanTeknis = ref('') 
 const nama_belakangTeknis = ref('')
+const nama_depanUnit = ref('') 
+const nama_belakangUnit = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const pesanPengelola = ref('')
@@ -51,6 +53,8 @@ const pelayananData = computed(() => ({
   nama_pelapor: nama_pelapor.value,
   nama_depanTeknis: nama_depanTeknis.value,
   nama_belakangTeknis: nama_belakangTeknis.value,
+  nama_depanUnit: nama_depanUnit.value,
+  nama_belakangUnit: nama_belakangUnit.value,
   perihal: perihal.value,
   isDone: isDone.value,
   tanggal: tanggal.value,
@@ -76,6 +80,8 @@ const fetchPelayananData = async () => {
     nama_pelapor.value = cached.nama_pelapor
     nama_depanTeknis.value = cached.nama_depanTeknis
     nama_belakangTeknis.value = cached.nama_belakangTeknis
+    nama_depanUnit.value = cached.nama_depanUnit
+    nama_belakangUnit.value = cached.nama_belakangUnit
     isDone.value = cached.isDone
     perihal.value = cached.perihal
     tanggal.value = cached.tanggal
@@ -115,6 +121,8 @@ const fetchPelayananData = async () => {
     nama_pelapor.value = pelayananData.Nama_Pelapor
     nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan || 'Belum'
     nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Tersedia'
+    nama_depanUnit.value = pelayananData.unit_pelayanan?.Nama_Depan || 'Belum'
+    nama_belakangUnit.value = pelayananData.unit_pelayanan?.Nama_Belakang || 'Tersedia'
     perihal.value = pelayananData.Perihal
     isDone.value = Boolean(pelayananData.Is_Done)
     tanggal.value = pelayananData.created_at
@@ -139,6 +147,8 @@ const fetchPelayananData = async () => {
       nama_pelapor: nama_pelapor.value,
       nama_depanTeknis: nama_depanTeknis.value,
       nama_belakangTeknis: nama_belakangTeknis.value,
+      nama_depanUnit: nama_depanUnit.value,
+      nama_belakangUnit: nama_belakangUnit.value,
       perihal: perihal.value,
       tanggal: tanggal.value,
       isDone: isDone.value,
@@ -282,7 +292,6 @@ watch(() => pelayananId.value, (newId) => {
 onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
-    console.log(isDone.value)
   }
 })
 </script>
@@ -369,10 +378,10 @@ onMounted(() => {
             <button class="send-btn" @click="addMessage">Kirim</button>
 
             <div class ="info-row-PelaksanaTeknis">
-                <strong>Nama Pelaksana Teknis:</strong>
+                <strong>Nama Pelaksana Teknis</strong>
                 <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
             </div>
-            <strong>Pesan dari Unit Pelaksana</strong>
+            <strong>Pesan dari {{ nama_depanUnit + ' ' + nama_belakangUnit }}</strong>
             <div class="textarea-row">
             <textarea class="input" :value="pesanUnit" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
             </div>

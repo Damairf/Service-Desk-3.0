@@ -119,6 +119,8 @@ axios.post('/api/pelayanan/tambah', {
   "Deskripsi": deskripsi.value,
   "Surat_Dinas_Path": suratDinasPath.value,
   "Lampiran_Path": lampiranPath.value,
+  "ID_Unit": null,
+  "Pesan_Pengelola": null
  },{
   headers: {
     Authorization: 'Bearer ' + token

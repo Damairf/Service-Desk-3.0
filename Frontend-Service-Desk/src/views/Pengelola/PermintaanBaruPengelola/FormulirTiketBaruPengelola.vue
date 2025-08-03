@@ -15,76 +15,91 @@ const persyaratan = ref(route.query.persyaratan || '')
 const namaPelapor = ref([localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' '))
 const id_user = localStorage.getItem('ID_User')
 const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
-const id_status = 1
+const id_status = 2
 
 const perihal = ref('')
 const deskripsi = ref('')
 const suratDinas = ref('')
 const lampiran = ref('')
+const idUnitTerpilih = ref('')
+const pesan = ref('')
+const pelaksana = ref([])
 const suratDinasPath = ref(null)
 const lampiranPath = ref(null)
 const isSubmitted = ref(false)
 const isLoading = ref(false)
 
+const token = localStorage.getItem('Token');
+axios.get('/api/pelayanan/unit', {
+  headers: { Authorization: 'Bearer ' + token }
+})
+.then (response => { 
+  pelaksana.value = response.data.map(item => ({
+      id_user: item.ID_User,
+      nama_depan: item.Nama_Depan,
+      nama_belakang: item.Nama_Belakang
+    }))
+    idUnitTerpilih.value = ''
+})
+
 // Fungsi untuk menangani perubahan file
 function handleFileChange(e, field) {
-const file = e.target.files[0]
-const maxSize = 8 * 1024 * 1024 // 8MB
+  const file = e.target.files[0]
+  const maxSize = 8 * 1024 * 1024 // 8MB
 
-if (!file) return
+  if (!file) return
 
-// ❌ Cek tipe file bukan PDF
-if (file.type !== 'application/pdf') {
-  alert('❌ Hanya file PDF yang diperbolehkan.')
-  e.target.value = ''
-  return
-}
+  // ❌ Cek tipe file bukan PDF
+  if (file.type !== 'application/pdf') {
+    alert('❌ Hanya file PDF yang diperbolehkan.')
+    e.target.value = ''
+    return
+  }
 
-// ❌ Cek ukuran file lebih dari 8MB
-if (file.size > maxSize) {
-  alert('❌ Ukuran file melebihi 8MB. Silakan pilih file yang lebih kecil.')
-  e.target.value = ''
-  return
-}
+  // ❌ Cek ukuran file lebih dari 8MB
+  if (file.size > maxSize) {
+    alert('❌ Ukuran file melebihi 8MB. Silakan pilih file yang lebih kecil.')
+    e.target.value = ''
+    return
+  }
 
-// ✅ Simpan file
-if (field === 'suratDinas') {
-  suratDinas.value = file
-} else if (field === 'lampiran') {
-  lampiran.value = file
-}
-
+  // ✅ Simpan file
+  if (field === 'suratDinas') {
+    suratDinas.value = file
+  } else if (field === 'lampiran') {
+    lampiran.value = file
+  }
 }
 
 async function uploadFiles() {
-if (!suratDinas.value && !lampiran.value) {
-  alert('Harap unggah semua keperluan');
-  return false;
-}
+  if (!suratDinas.value && !lampiran.value) {
+    alert('Harap unggah semua keperluan');
+    return false;
+  }
 
-const token = localStorage.getItem('Token');
-const formData = new FormData();
-formData.append('surat_dinas', suratDinas.value);
-formData.append('lampiran', lampiran.value);
+  const token = localStorage.getItem('Token');
+  const formData = new FormData();
+  formData.append('surat_dinas', suratDinas.value);
+  formData.append('lampiran', lampiran.value);
 
-try {
-  const response = await axios.post('/api/uploadKeperluan', formData, {
-    headers: {
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'multipart/form-data'
-    }
-  });
+  try {
+    const response = await axios.post('/api/uploadKeperluan', formData, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'multipart/form-data'
+      }
+    });
 
-  console.log("RESPON DARI UPLOAD:", response.data);
-  suratDinasPath.value = response.data.surat_dinas;
-  lampiranPath.value = response.data.lampiran;
-  return true;
+    console.log("RESPON DARI UPLOAD:", response.data);
+    suratDinasPath.value = response.data.surat_dinas;
+    lampiranPath.value = response.data.lampiran;
+    return true;
 
-} catch (error) {
-  console.log(error);
-  alert('Upload gagal: ' + (error.response?.data?.message || error.message));
-  return false;
-}
+  } catch (error) {
+    console.log(error);
+    alert('Upload gagal: ' + (error.response?.data?.message || error.message));
+    return false;
+  }
 }
 
 async function handleSubmit(){
@@ -97,49 +112,50 @@ async function handleSubmit(){
     return; // Prevent multiple submissions
   }
 
-const confirmSubmit = window.confirm("Apakah Anda yakin ingin mengirim permintaan ini?");
-  if (!confirmSubmit) return;
+  const confirmSubmit = window.confirm("Apakah Anda yakin ingin mengirim permintaan ini?");
+    if (!confirmSubmit) return;
 
   isLoading.value = true; // Start loading
 
-const uploaded = await uploadFiles()
+  const uploaded = await uploadFiles()
 
-if (!uploaded) {
-  isLoading.value = false; // Stop loading if upload fails
-  return;
-}
+  if (!uploaded) {
+    isLoading.value = false; // Stop loading if upload fails
+    return;
+  }
 
-const token = localStorage.getItem('Token');
-axios.post('/api/pelayanan/tambah', {
-  "ID_User": id_user,
-  "Nama_Pelapor": namaPelapor.value,
-  "ID_Jenis_Pelayanan": id_jenis_pelayanan,
-  "ID_Status": id_status,
-  "Perihal": perihal.value,
-  "Deskripsi": deskripsi.value,
-  "Surat_Dinas_Path": suratDinasPath.value,
-  "Lampiran_Path": lampiranPath.value,
- },{
-  headers: {
-    Authorization: 'Bearer ' + token
-  }
-})
-.then(response => {
-  isSubmitted.value = true;
-  isLoading.value = false; // Stop loading on success
-  const role = parseInt(localStorage.getItem('id_role'));
-  if (role === 1){
-    router.push('/permintaanDiproses');
-  } else if (role === 2){
-    router.push('/pelayanan');
-  }
-  
-})
-.catch(error => {
-  console.error(error.response?.data || error.message);
-  console.log(namaPelapor.value)
-  isLoading.value = false; // Stop loading on error
-});
+  const token = localStorage.getItem('Token');
+  axios.post('/api/pelayanan/tambah', {
+    "ID_User": id_user,
+    "Nama_Pelapor": namaPelapor.value,
+    "ID_Jenis_Pelayanan": id_jenis_pelayanan,
+    "ID_Status": id_status,
+    "Perihal": perihal.value,
+    "Deskripsi": deskripsi.value,
+    "Surat_Dinas_Path": suratDinasPath.value,
+    "Lampiran_Path": lampiranPath.value,
+    "ID_Unit": idUnitTerpilih.value,
+    "Pesan_Pengelola": pesan.value
+  },{
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(response => {
+    isSubmitted.value = true;
+    isLoading.value = false; // Stop loading on success
+    const role = parseInt(localStorage.getItem('id_role'));
+    if (role === 1){
+      router.push('/permintaanDiproses');
+    } else if (role === 2){
+      router.push('/pelayanan');
+    }
+  })
+  .catch(error => {
+    console.error(error.response?.data || error.message);
+    console.log(namaPelapor.value)
+    isLoading.value = false; // Stop loading on error
+  });
 }
 </script>
 
@@ -173,15 +189,15 @@ axios.post('/api/pelayanan/tambah', {
         <input type="file" accept=".pdf" @change="handleFileChange($event, 'lampiran')" />
         <p class="note">(Hanya PDF, maksimum 8MB)</p>
 
-        <label>Pilih Pelaksana Teknis</label>
-        <select id="status" v-model="idTeknisTerpilih">
-          <option value="" disabled>Pilih Pelaksana Teknis</option>
+        <label>Pilih Unit Pelaksana</label>
+        <select id="status" v-model="idUnitTerpilih">
+          <option value="" disabled>Pilih Unit Pelaksana</option>
           <option v-for="option in pelaksana" :key="option.id_user" :value="option.id_user">
             {{ option.nama_depan }} {{ option.nama_belakang }}
           </option>
         </select>
-        <label>Pesan untuk Pelaksana Teknis</label>
-        <textarea class="input" v-model="pesanUnit"></textarea>
+        <label>Pesan untuk Unit Pelaksana</label>
+        <textarea class="input" v-model="pesan"></textarea>
         <button type="submit" :disabled="isLoading">
           {{ isLoading ? 'Mengirim...' : 'Kirim' }}
         </button>
