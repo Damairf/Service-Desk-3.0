@@ -83,8 +83,6 @@ const fetchPelayananData = async () => {
     ])
     
     // Set data
-    console.log("pelayananResponse.data:", pelayananResponse.data)
-
     const pelayananData = pelayananResponse.data
     deskripsi.value = pelayananData.Deskripsi
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD

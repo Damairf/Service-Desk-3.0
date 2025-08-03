@@ -28,7 +28,7 @@ const idTeknisTerpilih = ref('')
 const pesanPengelola = ref('')
 const pesanUnit = ref('')
 const status = ref(Number(''))
-const progress = ref(null)
+const stepsID = ref([]) 
 
 // Loading states
 const isLoading = ref(true)
@@ -119,6 +119,7 @@ const fetchPelayananData = async () => {
       item.progress_to_alur?.isi_alur?.Nama_Alur || 'Tidak Diketahui'
     )
     stepsStatus.value = progressData.map(item => item.Is_Done)
+    stepsID.value = progressData.map(item => item.ID_Progress_Alur)
 
     // Set pelaksana data
     pelaksana.value = unitResponse.data.map(item => ({
@@ -148,10 +149,6 @@ const fetchPelayananData = async () => {
     SuratDinas_Path.value = '/files' + surat_dinas.value
     Lampiran_Path.value = '/files' + lampiran.value
 
-    if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 6 ) {
-      progress.value = true
-    }
-
     isDataLoaded.value = true
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -160,9 +157,10 @@ const fetchPelayananData = async () => {
   }
 }
 
-function handleSelesai() {
-  const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
+const handleSelesai = async () => {
+  try {
+    const token = localStorage.getItem('Token')
+    axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
   {
     ID_Teknis: idTeknisTerpilih.value,
     Pesan_Unit: pesanUnit.value,
@@ -173,8 +171,27 @@ function handleSelesai() {
       Authorization: 'Bearer ' + token,
     }
   })
-  router.push('/Approval')
-} 
+
+    // ✅ Update langkah ke-4 menjadi selesai (Is_Done = 1)
+    const idProgressLangkah3 = stepsID.value[3] // pastikan ini terisi
+    if (idProgressLangkah3) {
+      const progressUrl = `/api/progress-alur/update-status/${idProgressLangkah3}`
+
+      await axios.put(progressUrl, {
+        Is_Done: 1
+      }, {
+        headers: { Authorization: 'Bearer ' + token }
+      })
+
+    } else {
+      console.warn('ID Progress langkah ke-4 tidak tersedia.')
+    }
+
+    router.push('/Approval')
+  } catch (err) {
+    console.error('Gagal menyelesaikan proses:', err)
+  }
+}
 
 const namaFileSuratDinas = computed(() => {
       const fileName = surat_dinas.value.split('/').pop() 
