@@ -158,12 +158,7 @@ const routes = [
   { path: '/berandaKD', name: 'BerandaKepalaDinas', component: berandaKD, meta: {allowedRoles: [5]}},
   // Kepuasan User Keseluruhan
   { path: '/KepuasanUserKeseluruhan', name: 'KepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan, meta: {allowedRoles: [5]}},
-  { path: '/detailKepuasanUserKeseluruhan', name: 'DetailKepuasanUserKeseluruhan', component: DetailKepuasanUserKeseluruhan, meta: {allowedRoles: [5]},
-    children: [
-      { path: 'lacakKepuasanUserKeseluruhan', name: 'LacakKepuasanUserKeseluruhan', component: LacakKepuasanUserKeseluruhan, meta: {allowedRoles: [5]}},
-      { path: 'informasiKepuasanUserKeseluruhan', name: 'InformasiKepuasanUserKeseluruhan', component: InformasiKepuasanUserKeseluruhan, meta: {allowedRoles: [5]}}
-    ]
-  },
+  { path: '/detailKepuasanUserKeseluruhan', name: 'DetailKepuasanUserKeseluruhan', component: DetailKepuasanUserKeseluruhan, meta: {allowedRoles: [5]}},
   { path: '/KepuasanUserBulanIni', name: 'KepuasanUserBulanIni', component: KepuasanUserBulanIni, meta: {allowedRoles: [5]}},
   { path: '/detailKepuasanUserBulanIni', name: 'DetailKepuasanUserBulanIni', component: DetailKepuasanUserBulanIni, meta: {allowedRoles: [5]},
     children: [

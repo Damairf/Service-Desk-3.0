@@ -28,16 +28,26 @@ onMounted(() => {
     }
   })
   .then(response => {
+    const now = new Date();
+    const currentMonth = now.getMonth(); 
+    const currentYear = now.getFullYear();
     console.log(response);
-    items.value = response.data.filter(item =>
-        ['Selesai', 'Tutup', 'Ditolak'].includes(item.status_pelayanan?.Nama_Status)
-      ).map(item => ({
-      ticket: item.ID_Pelayanan,
-      perihal: item.Perihal,
-      pic: item.teknis_pelayanan?.Nama_Depan || '-',
-      date: item.created_at,
-      status: item.status_pelayanan.Nama_Status,
-    }))
+    items.value = response.data
+      .filter(item => {
+        const date = new Date(item.created_at);
+        return (
+          ['Selesai', 'Tutup', 'Ditolak'].includes(item.status_pelayanan?.Nama_Status) &&
+          date.getMonth() === currentMonth &&
+          date.getFullYear() === currentYear
+        );
+      })
+      .map(item => ({
+        ticket: item.ID_Pelayanan,
+        perihal: item.Perihal,
+        pic: item.teknis_pelayanan?.Nama_Depan || '-',
+        date: item.created_at,
+        status: item.status_pelayanan.Nama_Status,
+      }));
 
   })
   .catch(error => {

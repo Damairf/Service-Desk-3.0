@@ -346,12 +346,12 @@ onMounted(() => {
                   <div class="message-time">{{ message.time + " " }}</div>
                 </div>
 
-              </div class="alasan-tolak" v-if="status === 3">
+              <div class="alasan-tolak" v-if="status === 3">
                 <strong>Alasan Penolakan</strong>
                 <div class="textarea-row">
                   <textarea class="input" :value="pelayananData.pesanPengelola" placeholder="Alasan Penolakan" rows="5" readonly></textarea>
                 </div>
-              <div>
+              </div>
 
               </div>
 
