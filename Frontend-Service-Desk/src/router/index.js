@@ -72,11 +72,7 @@ import berandaKD from '../views/KepalaDinas/BerandaKD/BerandaKD.vue'
 import KepuasanUserKeseluruhan from '../views/KepalaDinas/KepuasanUser/Keseluruhan/KepuasanUserKeseluruhanKD.vue'
 import KepuasanUserBulanIni from '../views/KepalaDinas/KepuasanUser/BulanIni/KepuasanUserBulanKD.vue'
 import DetailKepuasanUserKeseluruhan from '../views/KepalaDinas/KepuasanUser/Keseluruhan/detailKepuasanKeseluruhanKD.vue'
-import LacakKepuasanUserKeseluruhan from '../views/KepalaDinas/KepuasanUser/Keseluruhan/halaman-lacakKepuasanKKD.vue'
-import InformasiKepuasanUserKeseluruhan from '../views/KepalaDinas/KepuasanUser/Keseluruhan/halaman-informasiKepuasannKKD.vue'
 import DetailKepuasanUserBulanIni from '../views/KepalaDinas/KepuasanUser/BulanIni/detailKepuasanBulanKD.vue'
-import LacakKepuasanUserBulanIni from '../views/KepalaDinas/KepuasanUser/BulanIni/halaman-lacakKepuasanBKD.vue'
-import InformasiKepuasanUserBulanIni from '../views/KepalaDinas/KepuasanUser/BulanIni/halaman-informasiKepuasanBKD.vue'
 
 // Daftar rute
 const routes = [
@@ -160,11 +156,7 @@ const routes = [
   { path: '/KepuasanUserKeseluruhan', name: 'KepuasanUserKeseluruhan', component: KepuasanUserKeseluruhan, meta: {allowedRoles: [5]}},
   { path: '/detailKepuasanUserKeseluruhan', name: 'DetailKepuasanUserKeseluruhan', component: DetailKepuasanUserKeseluruhan, meta: {allowedRoles: [5]}},
   { path: '/KepuasanUserBulanIni', name: 'KepuasanUserBulanIni', component: KepuasanUserBulanIni, meta: {allowedRoles: [5]}},
-  { path: '/detailKepuasanUserBulanIni', name: 'DetailKepuasanUserBulanIni', component: DetailKepuasanUserBulanIni, meta: {allowedRoles: [5]},
-    children: [
-      { path: 'lacakKepuasanUserBulanIni', name: 'LacakKepuasanUserBulanIni', component: LacakKepuasanUserBulanIni, meta: {allowedRoles: [5]}},
-      { path: 'informasiKepuasanUserBulanIni', name: 'InformasiKepuasanUserBulanIni', component: InformasiKepuasanUserBulanIni, meta: {allowedRoles: [5]}}
-    ]
+  { path: '/detailKepuasanUserBulanIni', name: 'DetailKepuasanUserBulanIni', component: DetailKepuasanUserBulanIni, meta: {allowedRoles: [5]}
   }
 ]
 
