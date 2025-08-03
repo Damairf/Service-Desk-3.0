@@ -81,7 +81,5 @@ const configpermintaanBerdasarkanStatus = {
 </script>
 
 <template>
-<div style="height: 400px">
-    <Bar :data="permintaanBerdasarkanStatusData" :options="configpermintaanBerdasarkanStatus" />
-</div>
+  <Bar :data="permintaanBerdasarkanStatusData" :options="configpermintaanBerdasarkanStatus" />
 </template>

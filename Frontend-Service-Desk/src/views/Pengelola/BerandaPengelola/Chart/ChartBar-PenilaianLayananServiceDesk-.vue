@@ -77,7 +77,5 @@ const configPenilaianLayananServiceDesk = {
 </script>
 
 <template>
-<div style="height: 400px">
-    <Bar :data="penilaianLayananServiceDeskData" :options="configPenilaianLayananServiceDesk" />
-</div>
+  <Bar :data="penilaianLayananServiceDeskData" :options="configPenilaianLayananServiceDesk" />
 </template>

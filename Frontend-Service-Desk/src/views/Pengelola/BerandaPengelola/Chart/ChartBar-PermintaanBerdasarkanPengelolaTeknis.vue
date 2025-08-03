@@ -77,7 +77,5 @@ const configpermintaanBerdasarkanPengelolaTeknis = {
 </script>
 
 <template>
-<div style="height: 400px">
-    <Bar :data="permintaanBerdasarkanPengelolaTeknisData" :options="configpermintaanBerdasarkanPengelolaTeknis" />
-</div>
+  <Bar :data="permintaanBerdasarkanPengelolaTeknisData" :options="configpermintaanBerdasarkanPengelolaTeknis" />
 </template>
