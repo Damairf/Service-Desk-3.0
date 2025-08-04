@@ -510,7 +510,7 @@ onMounted(() => {
 }
 
 .info-row {
-  display: block;
+  display: flex;
   padding: 0.8rem 0;
 }
 
