@@ -294,7 +294,7 @@ async function handleSelesai() {
         Authorization: 'Bearer ' + token
       }
     })
-    router.push('/disposisiTeknis')
+    router.push('/hasilPengerjaan')
   } catch (error) {
     alert('Gagal mengirim data: ' + (error.response?.data?.message || error.message))
     console.error(error)

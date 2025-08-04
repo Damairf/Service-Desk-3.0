@@ -26,7 +26,7 @@ onMounted(() => {
       noTiket: item.ID_Pelayanan,
       jenis: item.ID_Jenis_Pelayanan,
       perihal: item.Perihal,
-      teknis: item.teknis_pelayanan?.Nama_Depan || '-',
+      pelapor: item.Nama_Pelapor,
       tanggal: item.created_at,
       status: item.status_pelayanan.Nama_Status,
       terkirim: item.Is_Done
@@ -78,7 +78,7 @@ const filteredItems = computed(() => {
   let items = layananData.value.filter(item =>
     item.perihal.toLowerCase().includes(search.value.toLowerCase()) ||
     item.noTiket.toLowerCase().includes(search.value.toLowerCase()) ||
-    item.teknis.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.pelapor.toLowerCase().includes(search.value.toLowerCase()) ||
     formatDate(item.tanggal).toLowerCase().includes(search.value.toLowerCase()) ||
     item.status.toLowerCase().includes(search.value.toLowerCase())
   )
@@ -135,7 +135,7 @@ watch(search, () => {
             <th>No. Tiket</th>
             <th>Perihal</th>
             <th>Tanggal</th>
-            <th>Pelaksana Teknis</th>
+            <th>Pelapor</th>
             <th @click="toggleSort('status')" class="cursor-pointer">Status
                 <span v-if="sortKey === 'status' || sortOrder === null">
                 <span v-if="sortOrder === 'asc'">🔼</span>
@@ -157,7 +157,7 @@ watch(search, () => {
             <td>{{ item.noTiket }}</td>
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.tanggal) }}</td>
-            <td>{{ item.teknis }}</td>
+            <td>{{ item.pelapor }}</td>
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
             </td>
