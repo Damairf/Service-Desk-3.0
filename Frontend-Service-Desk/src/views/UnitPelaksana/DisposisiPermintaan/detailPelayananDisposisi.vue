@@ -218,6 +218,7 @@ const messages = ref([
 {
     text: "Halo, bagaimana saya bisa membantu?",
     sender: "Admin",
+    role: "Admin",
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }
 ])
@@ -228,6 +229,7 @@ const addMessage = () => {
     messages.value.push({
       text: newMessage.value,
       sender: "User",
+      role: "User",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     })
     newMessage.value = ''
@@ -372,7 +374,7 @@ onMounted(() => {
                 :key="index"
                 :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
               >
-                <div class="message-sender">{{ message.sender }}</div>
+                <div class="message-sender">{{ message.sender }} <span class="message-role">({{ message.role }})</span></div>
                 <div class="message-text">{{ message.text + " " }}</div>
                 <div class="message-time">{{ message.time + " " }}</div>
               </div>
