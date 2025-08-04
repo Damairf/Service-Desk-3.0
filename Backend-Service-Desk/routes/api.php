@@ -12,7 +12,6 @@ use App\Http\Controllers\ProgressAlurController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CekToken;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -26,6 +25,7 @@ Route::get('/user/profile',[UserController::class, 'profile']);
 Route::put('/user/profile', [UserController::class, 'update_Password']);
 Route::post('/user/profilepict', [UserController::class, 'update_Photo']);
 Route::delete('/user/profilepict', [UserController::class, 'delete_Photo']);
+Route::post('/pesan/{pelayananId}',[PesanController::class, 'kirimPesan']);
 
 
 // endpoint user
@@ -90,7 +90,6 @@ Route::put('/pelayanan/disposisi/{pelayananId}', [PelayananController::class, 'd
 Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
 
 // endpoint unit pelaksana
-Route::get('/pesan/pengelola/{pelayananId}',[PesanController::class, 'PesanPengelola']);
 
 Route::get('/unit/pelayanan/',[PelayananController::class, 'getPelayananUnit']);
 Route::get('/pelayanan/allTeknis',[UserController::class, 'getAllTeknis']);

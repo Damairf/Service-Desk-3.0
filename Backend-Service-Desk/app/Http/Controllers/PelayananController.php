@@ -80,7 +80,7 @@ class PelayananController extends Controller
             'teknis_pelayanan:ID_User,Nama_Depan,Nama_Belakang',
 
             'pelayanan_pesan' => function ($query) {
-                $query->select('ID_Pelayanan', 'ID_Pesan', 'Pesan', 'ID_User');
+                $query->select('ID_Pelayanan', 'ID_Pesan', 'Pesan', 'created_at', 'ID_User');
             },
             'pelayanan_pesan.pesan_user' => function ($query) {
                 $query->select('ID_User', 'Nama_Depan', 'Nama_Belakang', 'ID_Role');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Pesan;
 use App\Models\Pelayanan;
+use App\Models\User;
 
 
 
@@ -12,11 +13,18 @@ use function PHPUnit\Framework\returnArgument;
 
 class PesanController extends Controller
 {
-    public function PesanPengelola(Request $request){
+    public function kirimPesan(Request $request){
         $pelayananId = $request->route('pelayananId');
-        $pesan = Pelayanan::where("ID_Pelayanan", $pelayananId)->with('pelayanan_pesan')->first();
+        $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
+        $pesan = $request->Pesan;;
 
-        return response($pesan);
+        $pesan = Pesan::create([
+            "ID_Pelayanan" => $pelayananId,
+            "ID_User" => $userId,
+            "Pesan" => $pesan,
+        ]);
+
+        return response("Chat Ditambahkan");
 
     }
 }

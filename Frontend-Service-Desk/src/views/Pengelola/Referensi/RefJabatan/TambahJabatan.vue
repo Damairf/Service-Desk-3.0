@@ -28,12 +28,11 @@ function handleSubmit() {
     }
   })
   .then(function(response){
-    console.log(response)
+    alert('Jabatan sudah ditambahkan')
+    router.push('/referensi/jabatan')
   }) .catch(function(error){
     console.log(error)
   })
-  alert('Jabatan sudah ditambahkan')
-  router.push('/referensi/jabatan')
 }
 
 // === Reset form ===

@@ -24,6 +24,8 @@ const SuratDinas_Path = ref(null)
 const Lampiran_Path = ref(null)
 const activeTab = ref('informasi')
 
+
+const messages = ref([])
 // Loading states
 const isLoading = ref(true)
 const isDataLoaded = ref(false)
@@ -94,6 +96,11 @@ const fetchPelayananData = async () => {
     nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Tersedia'
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
+    messages.value = pelayananData.pelayanan_pesan.map(pesan => ({
+    text: pesan.Pesan,
+    sender: `${pesan.pesan_user.Nama_Depan} ${pesan.pesan_user.Nama_Belakang} - ${pesan.pesan_user.user_role.Nama_Role}`,
+    time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  }))
 
 
     // Set progress data
@@ -148,25 +155,46 @@ const namaFileLampiran = computed(() => {
   return `${tanggal}_${waktu}_Lampiran.pdf`
 })
 
-const messages = ref([
-{
-    text: "Halo, bagaimana saya bisa membantu?",
-    sender: "Admin",
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  }
-])
 const newMessage = ref('')
-
 const addMessage = () => {
   if (newMessage.value.trim()) {
-    messages.value.push({
+    const pesanUser = {
       text: newMessage.value,
       sender: "User",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
+
+    // Tambahkan ke UI dulu
+    messages.value.push(pesanUser)
+
+    // Simpan ke server
+    const payload = { Pesan: newMessage.value }
+    const token = localStorage.getItem('Token')
+
+    axios.post(`/api/pesan/${pelayananId.value}`, payload, {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
     })
+    .then(response => {
+      // Kalau mau, bisa tampilkan pesan balasan dari sistem (jika ada)
+      if (response.data?.balasan) {
+        messages.value.push({
+          text: response.data.balasan,
+          sender: "System",
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        })
+      }
+    })
+    .catch(error => {
+      console.error("Gagal mengirim pesan:", error)
+    })
+
+    // Kosongkan input
     newMessage.value = ''
   }
 }
+
 
 // Fungsi untuk menangani perubahan tab (tanpa router navigation)
 const handleTabChange = (tab) => {
@@ -266,11 +294,14 @@ onMounted(() => {
           <div class="chat-card">
             <h3>Chat</h3>
             <div class="chat-content">
+              <div v-if="messages.length === 0" 
+              class='message-bubble'>Belum ada pesan</div>
               <div
                 v-for="(message, index) in messages"
                 :key="index"
                 :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
               >
+                <strong class="message-text">{{ message.sender }}</strong>  
                 <div class="message-text">{{ message.text }}</div>
                 <div class="message-time">{{ message.time }}</div>
               </div>

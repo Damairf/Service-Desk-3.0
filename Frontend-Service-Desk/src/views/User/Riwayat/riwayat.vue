@@ -28,7 +28,6 @@ onMounted(() => {
     }
   })
   .then(response => {
-    console.log(response);
     items.value = response.data.filter(item =>
         ['Tutup', 'Ditolak'].includes(item.status_pelayanan?.Nama_Status)
       ).map(item => ({
