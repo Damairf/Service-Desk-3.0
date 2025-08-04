@@ -614,6 +614,10 @@ onMounted(() => {
   flex-grow: 1;
 }
 
+.info-row-PelaksanaTeknis {
+  margin-bottom: 1rem;
+  padding: 0.8rem 0;
+}
 
 .textarea-row {
   flex-direction: column;
