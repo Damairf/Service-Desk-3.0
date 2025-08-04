@@ -28,12 +28,16 @@ onMounted(() => {
   window.addEventListener('gambar-changed', () => {
     gambar.value = localStorage.getItem('src_gambar');
   });
+
   window.addEventListener('sudahLogin', () => {
     nama_depan.value = localStorage.getItem('nama_depan');
-    nama_belakang.value = ref(localStorage.getItem('nama_belakang'));
+    nama_belakang.value = localStorage.getItem('nama_belakang');
     gambar.value = localStorage.getItem('src_gambar');
   });
+  //buat close dropdown click di luar
+  document.addEventListener('click', handleClickOutside);
 });
+
 
 const tampilinOverlay = ref(false)
 
@@ -52,10 +56,6 @@ function handleClickOutside(event) {
     tampilinOverlay.value = false
   }
 }
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
@@ -153,7 +153,7 @@ if (role.value == 1) {
     </div>
 
     <!-- Tombol Toggle -->
-    <button class="tombol-toggle" @click="()=> {toggleSidebar(); toggleOverlay(); toggleOverlay();}">
+    <button class="tombol-toggle" @click="()=> {toggleSidebar(); toggleOverlay();}">
       ☰
     </button>
 
