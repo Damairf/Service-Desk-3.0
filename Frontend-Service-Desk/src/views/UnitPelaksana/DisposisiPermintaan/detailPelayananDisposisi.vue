@@ -785,6 +785,7 @@ select {
 .input {
   background-color: white;
   color: black;
+  font-family: poppins, sans-serif;
 }
 
 .review-section {
