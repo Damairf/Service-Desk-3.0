@@ -31,6 +31,17 @@ const status = ref(Number(''))
 
 const surat_dinas = ref('')
 const lampiran = ref('')
+const hasil_pemenuhan = ref('')
+const hasil_BA = ref('')
+const hasil_SLA = ref('')
+
+const filePemenuhan = ref(null)
+const fileBA = ref(null)
+const fileSLA = ref(null)
+
+const src_HasilPemenuhan = ref(null)
+const src_HasilBA = ref(null)
+const src_HasilSLA = ref(null)
 
 // Loading states
 const isLoading = ref(true)
@@ -50,6 +61,9 @@ const pelayananData = computed(() => ({
   organisasi: organisasi.value,
   surat_dinas: surat_dinas.value,
   lampiran: lampiran.value,
+  src_HasilPemenuhan: src_HasilPemenuhan.value,
+  src_HasilBA: src_HasilBA.value,
+  src_HasilSLA: src_HasilSLA.value,
   jenis_pelayanan: jenis_pelayanan.value,
   nama_pelapor: nama_pelapor.value,
   perihal: perihal.value,
@@ -68,10 +82,11 @@ const fetchPelayananData = async () => {
     organisasi.value = cached.organisasi
     surat_dinas.value = cached.surat_dinas
     lampiran.value = cached.lampiran
+    src_HasilPemenuhan.value = cached.src_HasilPemenuhan
+    src_HasilBA.value = cached.src_HasilBA
+    src_HasilSLA.value = cached.src_HasilSLA
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_pelapor.value = cached.nama_pelapor
-    nama_depanTeknis.value = cached.nama_depanTeknis
-    nama_belakangTenis.value = cached.nama_belakangTeknis
     perihal.value = cached.perihal
     tanggal.value = cached.tanggal
     steps.value = cached.steps
@@ -101,6 +116,9 @@ const fetchPelayananData = async () => {
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
+    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path
+    src_HasilBA.value = pelayananData.BA_Path
+    src_HasilSLA.value = pelayananData.SLA_Path
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_pelapor.value = pelayananData.Nama_Pelapor
     nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan
@@ -159,6 +177,27 @@ const namaFileLampiran = computed(() => {
       return `${tanggal}_${waktu}_Lampiran.pdf`
     })
 
+const namaFileHasilPemenuhan = computed(() => {
+  if (!src_HasilPemenuhan.value) return 'Tidak ada file'
+  const fileName = src_HasilPemenuhan.value.split('/').pop()
+  const parts = fileName.split('_')
+  return `${parts[0]}_${parts[1]}_HasilPemenuhan.pdf`
+})
+
+const namaFileHasilBA = computed(() => {
+  if (!src_HasilBA.value) return 'Tidak ada file'
+  const fileName = src_HasilBA.value.split('/').pop()
+  const parts = fileName.split('_')
+  return `${parts[0]}_${parts[1]}_HasilBA.pdf`
+})
+
+const namaFileHasilSLA = computed(() => {
+  if (!src_HasilSLA.value) return 'Tidak ada file'
+  const fileName = src_HasilSLA.value.split('/').pop()
+  const parts = fileName.split('_')
+  return `${parts[0]}_${parts[1]}_HasilSLA.pdf`
+})
+
 const messages = ref([
 {
     text: "Halo, bagaimana saya bisa membantu?",
@@ -178,6 +217,72 @@ const addMessage = () => {
     newMessage.value = ''
   }
 }
+
+function handleFileChange(e, field) {
+  const file = e.target.files[0]
+  const maxSize = 8 * 1024 * 1024 // 8MB
+
+  if (!file) return
+
+  if (file.type !== 'application/pdf') {
+    alert('❌ Hanya file PDF yang diperbolehkan.')
+    e.target.value = ''
+    return
+  }
+
+  if (file.size > maxSize) {
+    alert('❌ Ukuran file melebihi 8MB.')
+    e.target.value = ''
+    return
+  }
+
+  switch (field) {
+    case 'hasil_pemenuhan':
+      filePemenuhan.value = file
+      break
+    case 'hasil_BA':
+      fileBA.value = file
+      break
+    case 'hasil_SLA':
+      fileSLA.value = file
+      break
+    default:
+      alert('Field tidak dikenal.')
+  }
+}
+
+async function handleSelesai() {
+  const formData = new FormData()
+
+  if (filePemenuhan.value) {
+    formData.append('hasil_pemenuhan', filePemenuhan.value)
+  }
+  if (fileBA.value) {
+    formData.append('hasil_BA', fileBA.value)
+  }
+  if (fileSLA.value) {
+    formData.append('hasil_SLA', fileSLA.value)
+  }
+
+  formData.append('_method', 'PUT') // spoofing Laravel agar dianggap PUT
+  formData.append('status', 4)
+  formData.append('Is_Done', true)
+
+  try {
+    const token = localStorage.getItem('Token')
+    await axios.post(`/api/pelayanan/tambah/hasil/${pelayananId.value}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: 'Bearer ' + token
+      }
+    })
+    router.push('/disposisiTeknis')
+  } catch (error) {
+    alert('Gagal mengirim data: ' + (error.response?.data?.message || error.message))
+    console.error(error)
+  }
+}
+
 
 // Fungsi untuk menangani perubahan tab (tanpa router navigation)
 const handleTabChange = (tab) => {
@@ -284,27 +389,43 @@ onMounted(() => {
               <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
               <button class="send-btn" @click="addMessage">Kirim</button>
               <div class="info-row-hasil">
-                <strong>Hasil Pemenuhan</strong>
-                <div class="jarak-hasil">
-                  <input type="file" accept=".pdf" class="upload-hasil" @change="handleFileChange($event, 'suratDinas')" />
-                  <p class="note">(Hanya PDF, maksimum 8MB)</p>
-                </div>
-                <strong>Hasil BA</strong>
-                <div class="jarak-hasil">
-                  <input type="file" accept=".pdf" class="upload-hasil" @change="handleFileChange($event, 'suratDinas')" />
-                  <p class="note">(Hanya PDF, maksimum 8MB)</p>
-                </div>
-                <strong>Hasil SLA</strong>
-                <div class="jarak-hasil">
-                  <input type="file" accept=".pdf" class="upload-hasil" @change="handleFileChange($event, 'lampiran')" />
-                  <p class="note">(Hanya PDF, maksimum 8MB)</p>
-                </div>
-              </div>
-              <div class="tinjau-card">
-                <h3>Kirim Hasil Pelayanan</h3>
-                <div class="wrapper-btn">
-                  <button class="btn-selesai" @click="handleSelesai">Kirim</button>
-                </div>
+                <template v-if="!src_HasilPemenuhan && !src_HasilBA && !src_HasilSLA">
+                  <strong>Upload Hasil Pemenuhan</strong>
+                  <div class="jarak-hasil">
+                    <input type="file" accept=".pdf" class="upload-hasil" @change="(e) => handleFileChange(e, 'hasil_pemenuhan')">
+                    <p class="note">(Hanya PDF, maksimum 8MB)</p>
+                  </div>
+                  <strong>Upload Hasil BA</strong>
+                  <div class="jarak-hasil">
+                    <input type="file" accept=".pdf" class="upload-hasil" @change="(e) => handleFileChange(e, 'hasil_BA')">
+                    <p class="note">(Hanya PDF, maksimum 8MB)</p>
+                  </div>
+                  <strong>Upload Hasil SLA</strong>
+                  <div class="jarak-hasil">
+                    <input type="file" accept=".pdf" class="upload-hasil" @change="(e) => handleFileChange(e, 'hasil_SLA')">
+                    <p class="note">(Hanya PDF, maksimum 8MB)</p>
+                  </div>
+                  <div class="tinjau-card">
+                    <h3>Kirim Hasil Pelayanan</h3>
+                    <div class="wrapper-btn">
+                      <button class="btn-selesai" @click="handleSelesai">Kirim</button>
+                    </div>
+                  </div>
+                </template>
+                <template v-else>
+                  <strong>Hasil Pemenuhan</strong>
+                  <div v-if="src_HasilPemenuhan">
+                    <a :href="`/files${src_HasilPemenuhan}`" target="_blank">{{ namaFileHasilPemenuhan }}</a>
+                  </div>
+                  <strong>Hasil BA</strong>
+                  <div v-if="src_HasilBA">
+                    <a :href="`/files${src_HasilBA}`" target="_blank">{{ namaFileHasilBA }}</a>
+                  </div>
+                  <strong>Hasil SLA</strong>
+                  <div v-if="src_HasilSLA">
+                    <a :href="`/files${src_HasilSLA}`" target="_blank">{{ namaFileHasilSLA }}</a>
+                  </div>
+                </template>
               </div>
             </div>
           </div>
@@ -568,7 +689,7 @@ onMounted(() => {
 }
 
 .note {
-  color: #888;
+  color: red;
   font-size: 0.8rem;
   margin-top: -0.3rem;
 }

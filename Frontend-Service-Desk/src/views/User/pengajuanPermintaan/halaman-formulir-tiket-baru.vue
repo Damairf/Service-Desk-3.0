@@ -75,7 +75,6 @@ try {
     }
   });
 
-  console.log("RESPON DARI UPLOAD:", response.data);
   suratDinasPath.value = response.data.surat_dinas;
   lampiranPath.value = response.data.lampiran;
   return true;
