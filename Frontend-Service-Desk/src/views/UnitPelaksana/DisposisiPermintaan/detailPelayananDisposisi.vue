@@ -622,6 +622,11 @@ onMounted(() => {
   flex-grow: 1;
 }
 
+.info-row-PelaksanaTeknis {
+  margin-bottom: 1rem;
+  padding: 0.8rem 0;
+}
+
 .textarea-row {
   flex-direction: column;
   align-items: start;
@@ -780,6 +785,7 @@ select {
 .input {
   background-color: white;
   color: black;
+  font-family: poppins, sans-serif;
 }
 
 .review-section {

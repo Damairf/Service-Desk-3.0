@@ -267,34 +267,31 @@ watch(search, () => {
 }
 
 .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   margin-top: 20px;
-  text-align: center;
 }
-
 .pagination button {
-  background-color: white;
-  color: black;
-  border: 1px solid #ccc;
-  padding: 0.5rem 0.75rem;
-  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
   cursor: pointer;
-  min-width: 2rem;
-  text-align: center;
-  font-weight: 500;
+  color: black;
+  transition: background 0.2s, color 0.2s;
 }
-
+.pagination button.active, .pagination button:focus {
+  background: #2196f3;
+  color: #fff;
+  border: none;
+}
 .pagination button:disabled {
+  opacity: 30%;
+  color: black;
   cursor: not-allowed;
-  opacity: 0.3;
-}
-
-.pagination button.active {
-  background-color: #007bff;
-  color: white;
-}
-
-.pagination button:not(.active):hover {
-  background-color: #f0f0f0;
 }
 
 .loading-data {
