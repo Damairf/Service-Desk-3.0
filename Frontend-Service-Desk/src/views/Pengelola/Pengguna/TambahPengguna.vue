@@ -10,6 +10,7 @@ const Nama_Belakang = ref('')
 const NIP = ref('')
 const status = ref('')
 const password = ref('')
+const konfirmasiPassword = ref('')
 
 const pilihanRole = ref([])
 const idRoleTerpilih = ref('')
@@ -27,7 +28,6 @@ const token = localStorage.getItem('Token');
     }
   })
   .then(response => {
-   console.log(response.data)
    pilihanRole.value = response.data.map(item => ({
       id_role: item.ID_Role,
       nama_role: item.Nama_Role
@@ -43,7 +43,6 @@ const token = localStorage.getItem('Token');
     }
   })
   .then(response => {
-   console.log(response.data)
    pilihanJabatan.value = response.data.map(item => ({
       id_jabatan: item.ID_Jabatan,
       nama_jabatan: item.Nama_Jabatan
@@ -59,7 +58,6 @@ const token = localStorage.getItem('Token');
     }
   })
   .then(response => {
-   console.log(response.data)
    pilihanInduk.value = response.data.map(item => ({
       id_organisasi: item.ID_Organisasi,
       nama_PerangkatDaerah: item.Nama_OPD
@@ -71,9 +69,18 @@ const token = localStorage.getItem('Token');
 // === Submit handler (dengan validasi) ===
 function handleSubmit() {
   // Validasi field wajib
-  if (!Nama_Depan.value || !Nama_Belakang.value || !NIP.value || !idRoleTerpilih.value || !idJabatanTerpilih.value || !idOrganisasiTerpilih.value || !status.value || !password.value) {
-    alert('Harap isi semua kolom yang bertanda *')
-    return
+  if (
+    !Nama_Depan.value || 
+    !Nama_Belakang.value || 
+    !NIP.value || 
+    !idRoleTerpilih.value || 
+    !idJabatanTerpilih.value || 
+    !idOrganisasiTerpilih.value || 
+    !status.value || 
+    !password.value|| 
+    !konfirmasiPassword.value) {
+      alert('Harap isi semua kolom yang bertanda *')
+      return
   }
 
   if (NIP.value.length < 18) {
@@ -81,6 +88,16 @@ function handleSubmit() {
     return
   } else if (NIP.value.length > 18) {
     alert('NIP maksimal 18 digit')
+    return
+  }
+
+  if (password.value.length < 8) {
+    alert("Password minimal 8 karakter")
+    return
+  }
+
+  if (password.value != konfirmasiPassword.value) {
+    alert("Konfirmasi password salah!")
     return
   }
 
@@ -104,12 +121,14 @@ function handleSubmit() {
     }
   })
   .then(function(response){
-    console.log(response)
-  }) .catch(function(error){
-    console.log(error)
+    alert('Pengguna sudah ditambahkan')
+    router.push('/pengguna')
+  }) 
+  .catch(function(error){
+    if (error.response && error.response.status === 500) {
+      alert("NIP Sudah Ada!");
+    }
   })
-  alert('Pengguna sudah ditambahkan')
-  router.push('/pengguna')
 }
 
 // === Reset form ===
@@ -196,6 +215,11 @@ function handleReset() {
         <div class="form-group">
           <label>Password <span class="red">*</span></label>
           <input type="password" v-model="password" />
+        </div>
+
+        <div class="form-group">
+          <label>Konfirmasi Password <span class="red">*</span></label>
+          <input type="password" v-model="konfirmasiPassword" />
         </div>
 
 
