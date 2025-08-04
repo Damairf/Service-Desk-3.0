@@ -267,6 +267,10 @@ class PelayananController extends Controller
         } else {
             $dataUpdate['Is_Done'] = false;
         }
+
+        if ($request->has('Pesan_Revisi')) {
+            $dataUpdate['Pesan_Revisi'] = $request->input('Pesan_Revisi');
+        }
     
         // ====== Update ke database ======
         Pelayanan::where('ID_Pelayanan', $pelayananId)->update($dataUpdate);
