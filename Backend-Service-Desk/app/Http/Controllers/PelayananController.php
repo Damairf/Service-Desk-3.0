@@ -201,23 +201,63 @@ class PelayananController extends Controller
     }
 
     // untuk role pelaksana teknis mengunggah laporan hasil 
-    public function putLaporan_Hasil(Request $request){
+    public function putLaporan_Hasil(Request $request)
+    {        
         $pelayananId = $request->route('pelayananId');
-        $Surat_Laporan_Pemenuhan = $request->Surat_Laporan_Pemenuhan;
-        $Surat_Laporan_BA = $request->Surat_Laporan_BA;
-        $Surat_Laporan_SLA = $request->Surat_Laporan_SLA;
-
-        Pelayanan::where('ID_Pelayanan', $pelayananId)->update([
-            'Hasil_Pemenuhan_Path' => $Surat_Laporan_Pemenuhan,
-            'BA_Path' => $Surat_Laporan_BA,
-            'SLA_Path' => $Surat_Laporan_SLA
+        $datetime = date('d-m-Y_H-i-s');
+        
+        $dataUpdate = [];
+        
+        $request->validate([
+            'hasil_pemenuhan' => 'nullable|file|mimes:pdf|max:8192',
+            'hasil_BA' => 'nullable|file|mimes:pdf|max:8192',
+            'hasil_SLA' => 'nullable|file|mimes:pdf|max:8192',
         ]);
 
+        // ====== Cek dan simpan file hasil_pemenuhan jika dikirim ======
+        if ($request->hasFile('hasil_pemenuhan')) {
+            $suratFile = $request->file('hasil_pemenuhan');
+            $suratName = $datetime . '_' . hash('sha256', time() . $suratFile->getClientOriginalName()) . '.' . $suratFile->getClientOriginalExtension();
+            $suratPath = $suratFile->storeAs('file/Hasil_Pemenuhan', $suratName, 'public');
+            $dataUpdate['Hasil_Pemenuhan_Path'] = 'storage/' . $suratPath; // Update path hasil pemenuhan
+        }
+    
+        // ====== Cek dan simpan file BA jika dikirim ======
+        if ($request->hasFile('hasil_BA')) {
+            $baFile = $request->file('hasil_BA');
+            $baName = $datetime . '_' . hash('sha256', time() . $baFile->getClientOriginalName()) . '.' . $baFile->getClientOriginalExtension();
+            $baPath = $baFile->storeAs('file/Hasil_BA', $baName, 'public');
+            $dataUpdate['BA_Path'] = 'storage/' . $baPath; // Update path BA
+        }
+    
+        // ====== Cek dan simpan file SLA jika dikirim ======
+        if ($request->hasFile('hasil_SLA')) {
+            $slaFile = $request->file('hasil_SLA');
+            $slaName = $datetime . '_' . hash('sha256', time() . $slaFile->getClientOriginalName()) . '.' . $slaFile->getClientOriginalExtension();
+            $slaPath = $slaFile->storeAs('file/Hasil_SLA', $slaName, 'public');
+            $dataUpdate['SLA_Path'] = 'storage/' . $slaPath; // Update path SLA
+        }
+    
+        // ====== Set status dan Is_Done jika ada file yang dikirim ======
+        if (!empty($dataUpdate)) {
+            $dataUpdate['ID_Status'] = 4;
+            $dataUpdate['Is_Done'] = true;
+        } else {
+            $dataUpdate['Is_Done'] = false;
+        }
+    
+        // ====== Update ke database ======
+        Pelayanan::where('ID_Pelayanan', $pelayananId)->update($dataUpdate);
+    
+        // ====== Ambil data setelah update untuk dikembalikan ======
         $updateLaporan = Pelayanan::where('ID_Pelayanan', $pelayananId)
-        ->select('ID_Pelayanan', 'Hasil_Pemenuhan_Path', 'BA_Path', 'SLA_Path')
-        ->first();
-
-        return response(["message" => "Laporan hasil ditambahkan", "data" => $updateLaporan]);
+            ->select('ID_Pelayanan', 'Hasil_Pemenuhan_Path', 'BA_Path', 'SLA_Path', 'ID_Status', 'Is_Done')
+            ->first();
+    
+        return response([
+            "message" => "Laporan hasil ditambahkan",
+            "data" => $updateLaporan
+        ]);
     }
 
     public function Pelayanan_byUser(Request $request){

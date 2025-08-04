@@ -345,6 +345,7 @@ onMounted(() => {
                   <div class="message-text">{{ message.text + " " }}</div>
                   <div class="message-time">{{ message.time + " " }}</div>
                 </div>
+              </div>
 
               <div class="alasan-tolak" v-if="status === 3">
                 <strong>Alasan Penolakan</strong>
@@ -352,9 +353,7 @@ onMounted(() => {
                   <textarea class="input" :value="pelayananData.pesanPengelola" placeholder="Alasan Penolakan" rows="5" readonly></textarea>
                 </div>
               </div>
-
-              </div>
-
+              
               <div class="info-row-PelaksanaTeknis" v-if="status !== 3">
                 <strong>Nama Pelaksana Teknis:</strong>
                 <div>{{ (nama_depanTeknis || 'Belum') + ' ' + (nama_belakangTeknis || 'Tersedia') }}</div>

@@ -94,8 +94,6 @@ import berandaTeknis from '../views/PelaksanaTeknis/BerandaTeknis/BerandaTeknis.
 //Disposisi Teknis
 import disposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/disposisiTeknis.vue'
 import detailPelayananDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/detailPelayananDisposisiTeknis.vue'
-import halamanInformasiDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/halaman-informasi-DisposisiTeknis.vue'
-import halamanLacakDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTeknis/halaman-lacak-DisposisiTeknis.vue'
 
 // Hasil Pengerjaan
 import hasilPengerjaan from '../views/PelaksanaTeknis/HasilPengerjaan/hasilPengerjaan.vue'
@@ -206,12 +204,7 @@ const routes = [
 
   //Disposisi
   { path: '/disposisiTeknis', name: 'DisposisiTeknis', component: disposisiTeknis, meta: {allowedRoles: [4]}},
-  { path: '/detailDisposisiTeknis', name: 'DetailDisposisiTeknis', component: detailPelayananDisposisiTeknis, meta: {allowedRoles: [4]},
-    children: [
-      {path: 'informasiDisposisiTeknis', name: 'HalamanInformasiDisposisiTeknis', component: halamanInformasiDisposisiTeknis, meta: {allowedRoles: [4]}},
-      {path: 'lacakDisposisiTeknis', name: 'HalamanLacakDisposisiTeknis', component: halamanLacakDisposisiTeknis, meta: {allowedRoles: [4]}}
-    ]
-  },
+  { path: '/detailDisposisiTeknis', name: 'DetailDisposisiTeknis', component: detailPelayananDisposisiTeknis, meta: {allowedRoles: [4]}},
 
   // Hasil Pengerjaan
   { path: '/hasilPengerjaan', name: 'HasilPengerjaan', component: hasilPengerjaan, meta: {allowedRoles: [4]}},
