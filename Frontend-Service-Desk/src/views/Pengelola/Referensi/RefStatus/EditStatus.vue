@@ -1,27 +1,30 @@
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
+const route = useRoute() 
 
 
 // === State untuk form ===
-const namaJabatan = ref('')
+const namaStatus = ref(route.query.nama_status || '')
+const statusId = ref(route.query.statusId)
 
 // === Submit handler (dengan validasi) ===
 function handleSubmit() {
   // Validasi field wajib
-  if (!namaJabatan.value) {
+  if (!namaStatus.value) {
     alert('Harap isi semua field yang bertanda *')
     return
   }
 
-  // Buat payload
-  const payload = {
-    Nama_Jabatan: namaJabatan.value,
-  }
+
+  // Mas Backend tolong revisi lagi
+
   const token = localStorage.getItem('Token');
-  axios.post(`/api/jabatan`, payload
+  axios.put(`/api/status/${statusId.value}`, {
+      Nama_Status: namaStatus.value
+  }
   , {
     headers: {
       Authorization: 'Bearer ' + token,
@@ -29,25 +32,27 @@ function handleSubmit() {
   })
   .then(function(response){
     console.log(response)
+    alert('Status sudah diubah')
+    router.push('/referensi/status')
   }) .catch(function(error){
     console.log(error)
   })
-  alert('Jabatan sudah ditambahkan')
-  router.push('/referensi/jabatan')
 }
 
 // === Reset form ===
 function handleReset() {
-  namaJabatan.value = ''
+  namaStatus.value = ''
 }
+
+
 </script>
 
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Tambah Jabatan</h1>
+    <h1 class="main-title">Ubah Status</h1>
     <div class="form-card">
       <div class="form-card-header">
-        Formulir Tambah Jabatan
+        Formulir Ubah Status
       </div>
 
       <!-- Form pakai @submit.prevent supaya tidak reload -->
@@ -57,13 +62,13 @@ function handleReset() {
         </div>
 
         <div class="form-group">
-          <label>Nama Jabatan<span class="red">*</span></label>
-          <input type="text" placeholder="Nama Jabatan" v-model="namaJabatan" />
+          <label>Nama Status<span class="red">*</span></label>
+          <input type="text" placeholder="Nama Status" v-model="namaStatus" />
         </div>
 
         <div class="form-actions">
           <button type="submit" class="btn simpan">Simpan</button>
-          <button type="button" class="btn hapus" @click="handleReset">Hapus</button>
+          <button type="button" class="btn hapus" @click="handleReset">Reset</button>
         </div>
       </form>
     </div>

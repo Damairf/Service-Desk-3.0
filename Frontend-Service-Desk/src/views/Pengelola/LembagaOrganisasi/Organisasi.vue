@@ -171,7 +171,7 @@ function editOrganisasi(item) {
       id_organisasi: item.id_organisasi,
       id_induk_organisasi: item.id_induk_organisasi,
       nama_PerangkatDaerah: item.nama_PerangkatDaerah,
-      idOrganisasi: item.induk_PerangkatDaerah,
+      indukOrganisasi: item.induk_PerangkatDaerah,
       email: item.email,
       status: item.status
     }
@@ -184,7 +184,7 @@ function lihatOrganisasi(item) {
       id_organisasi: item.id_organisasi,
       id_induk_organisasi: item.id_induk_organisasi,
       nama_PerangkatDaerah: item.nama_PerangkatDaerah,
-      idOrganisasi: item.induk_PerangkatDaerah,
+      indukOrganisasi: item.induk_PerangkatDaerah,
       email: item.email,
       status: item.status,
       viewOnly: 'true'

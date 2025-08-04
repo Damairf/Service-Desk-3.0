@@ -8,10 +8,14 @@ const router = useRouter()
 const isLoading = ref(true)
 
 // === Data Referensi Jabatan ===
-const referensiJabatan = ref([
-  { id: 1, nama: "Kepala Dinas", tglPembuatan: "19/09/2025" },
-  { id: 2, nama: "Staff Administrasi", tglPembuatan: "14/11/2025" },
-])
+const referensiJabatan = ref([])
+
+function formatDate(dateString) {
+  if (!dateString) return '-';
+
+  const date = new Date(dateString);
+  return isNaN(date.getTime()) ? '-' : date.toLocaleDateString('id-ID');
+}
 
 //===BACKEND=== 
 onBeforeMount(() => {
@@ -152,7 +156,8 @@ function editJabatan(jabatan) {
   router.push({
     path: '/ubahJabatan',
     query: {
-      nama_jabatan: jabatan.nama
+      nama_jabatan: jabatan.nama,
+      jabatanId: jabatan.id
     }
   })
 }
@@ -187,7 +192,7 @@ function editJabatan(jabatan) {
             <tr v-for="(jabatan, index) in paginatedItems" :key="index">
               <td>{{ jabatan.id }}</td>
               <td>{{ jabatan.nama }}</td>
-              <td>{{ jabatan.tglPembuatan }}</td>
+              <td>{{ formatDate(jabatan.tglPembuatan) }}</td>
               <td>
                 <div class="wrapper-aksiBtn">
                     <!-- functionnya belum ada -->
