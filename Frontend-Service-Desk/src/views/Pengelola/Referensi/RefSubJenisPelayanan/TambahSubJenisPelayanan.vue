@@ -40,6 +40,15 @@ function handleSubmit() {
 function handleReset() {
   namaJabatan.value = ''
 }
+
+// array inputnya
+const inputs = ref([
+  { value: '', showDropdown: false}
+])
+// nambah input
+function tambahInput() {
+  input.value.push({ value: '', showDropdown: false })
+}
 </script>
 
 <template>
@@ -58,7 +67,9 @@ function handleReset() {
 
         <div class="form-group">
           <label>Nama Jabatan<span class="red">*</span></label>
-          <input type="text" placeholder="Nama Jabatan" v-model="namaJabatan" />
+          <input type="text" placeholder="Nama Jabatan" v-model="syaratPelayanan" />
+          <input type="text" placeholder="Langkah" v-model="langkahPelayanan" />
+          <h1> tes</h1>
         </div>
 
         <div class="form-actions">
