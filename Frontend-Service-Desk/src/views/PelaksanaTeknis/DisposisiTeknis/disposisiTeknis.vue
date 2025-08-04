@@ -29,6 +29,7 @@ onMounted(() => {
       teknis: item.teknis_pelayanan?.Nama_Depan || '-',
       tanggal: item.created_at,
       status: item.status_pelayanan.Nama_Status,
+      terkirim: item.Is_Done
     }))
   })
   .catch(error => {
@@ -162,6 +163,7 @@ watch(search, () => {
             </td>
             <td>
               <button class="detail-button" @click="lihatDetail(item)">Lihat</button>
+              <span :class="['lingkaran', item.terkirim.toString()]"></span>
             </td>
           </tr>
         </tbody>
@@ -236,6 +238,21 @@ watch(search, () => {
 
 .rounded-table tr:nth-child(even) {
   background-color: #f9f9f9;
+}
+
+.lingkaran {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.lingkaran.false{
+  background-color: #E0E0E0;
+}
+
+.lingkaran.true{
+  background-color: #22ff00;
 }
 
 .detail-button {

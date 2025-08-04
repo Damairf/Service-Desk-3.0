@@ -165,7 +165,6 @@ watch(search, () => {
             </td>
             <td>
               <button class="detail-button" @click="lihatDetail(item)">Lihat</button>
-              <!-- nanti ganti kalo udah ada di backend jd item.terkirim mungkin -->
               <span :class="['lingkaran', item.terkirim.toString()]"></span>
             </td>
           </tr>
