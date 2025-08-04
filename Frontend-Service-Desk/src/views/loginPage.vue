@@ -168,7 +168,7 @@ onMounted(() => {
   color: black;
   text-align: center;
   margin-bottom: 45px;
-  margin-top: 70px;
+  margin-top: 40px;
   font-size: 48px;
   font-weight: bold;
 }
