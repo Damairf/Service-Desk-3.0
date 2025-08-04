@@ -98,11 +98,11 @@ const fetchPelayananData = async () => {
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
     messages.value = pelayananData.pelayanan_pesan.map(pesan => ({
-    id_user: pesan.ID_User,
-    text: pesan.Pesan,
-    sender: `${pesan.pesan_user.Nama_Depan} ${pesan.pesan_user.Nama_Belakang} - ${pesan.pesan_user.user_role.Nama_Role}`,
-    time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  }))
+      id_user: pesan.ID_User,
+      text: pesan.Pesan,
+      sender: `${pesan.pesan_user.Nama_Depan} ${pesan.pesan_user.Nama_Belakang} - ${pesan.pesan_user.user_role.Nama_Role}`,
+      time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }))
 
 
     // Set progress data
@@ -171,7 +171,7 @@ const addMessage = () => {
     // Tambahkan ke UI dulu
     messages.value.push(pesanUser)
 
-    // Simpan ke server
+    // Simpan ke server 
     const payload = { Pesan: newMessage.value }
     const token = localStorage.getItem('Token')
 
@@ -180,13 +180,6 @@ const addMessage = () => {
         Authorization: 'Bearer ' + token
       }
     })
-    .then(response => {
-    })
-    .catch(error => {
-      console.error("Gagal mengirim pesan:", error)
-    })
-
-    // Kosongkan input
     newMessage.value = ''
   }
 }

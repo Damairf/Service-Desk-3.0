@@ -7,6 +7,7 @@ const router = useRouter()
 const route = useRoute()
 
 // State management
+const userId = ref(localStorage.getItem('user_id'));
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
 const stepsStatus = ref([])
@@ -128,6 +129,12 @@ const fetchPelayananData = async () => {
     rating.value = pelayananData.Rating,
     reviewText.value = pelayananData.Isi_Survey
     status.value = pelayananData.ID_Status
+    messages.value = pelayananData.pelayanan_pesan.map(pesan => ({
+      id_user: pesan.ID_User,
+      text: pesan.Pesan,
+      sender: `${pesan.pesan_user.Nama_Depan} ${pesan.pesan_user.Nama_Belakang} - ${pesan.pesan_user.user_role.Nama_Role}`,
+      time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }))
 
 
     // Set progress data
@@ -337,14 +344,17 @@ onMounted(() => {
             <div class="chat-card">
               <h3>Chat</h3>
               <div class="chat-content view-only-chat">
-                <div
-                  v-for="(message, index) in messages"
-                  :key="index"
-                  :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
-                >
-                  <div class="message-text">{{ message.text + " " }}</div>
-                  <div class="message-time">{{ message.time + " " }}</div>
-                </div>
+                <div v-if="messages.length === 0" 
+              class='message-bubble'>Belum ada pesan</div>
+              <div
+                v-for="(message, index) in messages"
+                :key="index"
+                :class="['message-bubble', message.id_user == userId ? 'sent' : 'received']"
+              >
+                  <strong class="message-text">{{ message.sender }}</strong>  
+                <div class="message-text">{{ message.text }}</div>
+                <div class="message-time">{{ message.time }}</div>
+              </div>
               </div>
 
               <div class="alasan-tolak" v-if="status === 3">

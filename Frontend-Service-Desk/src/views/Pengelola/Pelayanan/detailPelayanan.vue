@@ -7,12 +7,16 @@ const router = useRouter()
 const route = useRoute()
 
 // State management
+const userId = ref(localStorage.getItem('user_id'));
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
 const stepsStatus = ref([])
 const perihal = ref('') 
+const id_user = ref('') 
 const tanggal = ref('') 
 const nama_pelapor = ref('')
+const nama_depanTeknis = ref('') 
+const nama_belakangTeknis = ref('')
 const nama_depanUnit = ref('') 
 const nama_belakangUnit = ref('')
 const jenis_pelayanan = ref('')
@@ -23,12 +27,19 @@ const organisasi = ref('')
 const SuratDinas_Path = ref(null)
 const Lampiran_Path = ref(null)
 const activeTab = ref('informasi')
-const pelaksana = ref([])
+const unit = ref([])
 const idUnitTerpilih = ref('')
 const pesan = ref('')
 const status = ref(Number(''))
 const progress = ref(null)
 const stepsID = ref([]) 
+
+const HasilBA_Path = ref(null)
+const HasilSLA_Path = ref(null)
+const HasilPemenuhan_Path = ref(null)
+const src_HasilPemenuhan = ref('-')
+const src_HasilBA = ref('-')
+const src_HasilSLA = ref('-')
 
 // Loading states
 const isLoading = ref(true)
@@ -50,11 +61,16 @@ const pelayananData = computed(() => ({
   lampiran: lampiran.value,
   jenis_pelayanan: jenis_pelayanan.value,
   nama_pelapor: nama_pelapor.value,
+  nama_depanTeknis: nama_depanTeknis.value,
+  nama_belakangTeknis: nama_belakangTeknis.value,
   perihal: perihal.value,
   tanggal: tanggal.value,
   steps: steps.value,
   stepsStatus: stepsStatus.value,
-  status: status.value
+  status: status.value,
+  src_HasilPemenuhan: src_HasilPemenuhan.value,
+  src_HasilBA: src_HasilBA.value,
+  src_HasilSLA: src_HasilSLA.value,
 }))
 
 // Fungsi untuk fetch data dengan caching
@@ -65,9 +81,14 @@ const fetchPelayananData = async () => {
     deskripsi.value = cached.deskripsi
     organisasi.value = cached.organisasi
     surat_dinas.value = cached.surat_dinas
+    src_HasilPemenuhan.value = cached.src_HasilPemenuhan
+    src_HasilBA.value = cached.src_HasilBA
+    src_HasilSLA.value = cached.src_HasilSLA
     lampiran.value = cached.lampiran
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_pelapor.value = cached.nama_pelapor
+    nama_depanTeknis.value = cached.nama_depanTeknis
+    nama_belakangTeknis.value = cached.nama_belakangTeknis
     nama_depanUnit.value = cached.nama_depanUnit
     nama_belakangUnit.value = cached.nama_belakangUnit
     perihal.value = cached.perihal
@@ -98,17 +119,29 @@ const fetchPelayananData = async () => {
 
     // Set data
     const pelayananData = pelayananResponse.data
+    id_user.value = pelayananData.ID_User
     deskripsi.value = pelayananData.Deskripsi
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_pelapor.value = pelayananData.Nama_Pelapor
-    nama_depanUnit.value = pelayananData.unit_pelayanan?.Nama_Depan
-    nama_belakangUnit.value = pelayananData.unit_pelayanan?.Nama_Belakang
+    nama_depanUnit.value = pelayananData.unit_pelayanan?.Nama_Depan || 'Belum'
+    nama_belakangUnit.value = pelayananData.unit_pelayanan?.Nama_Belakang || 'Tersedia'
+    nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan || 'Belum'
+    nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Tersedia'
     perihal.value = pelayananData.Perihal
+    src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path || '-'
+    src_HasilBA.value = pelayananData.BA_Path || '-'
+    src_HasilSLA.value = pelayananData.SLA_Path || '-'
     tanggal.value = pelayananData.created_at
     status.value = pelayananData.ID_Status
+    messages.value = pelayananData.pelayanan_pesan.map(pesan => ({
+      id_user: pesan.ID_User,
+      text: pesan.Pesan,
+      sender: `${pesan.pesan_user.Nama_Depan} ${pesan.pesan_user.Nama_Belakang} - ${pesan.pesan_user.user_role.Nama_Role}`,
+      time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }))
 
     // Set progress data
     const progressData = progressResponse.data
@@ -118,8 +151,8 @@ const fetchPelayananData = async () => {
     stepsStatus.value = progressData.map(item => item.Is_Done)
     stepsID.value = progressData.map(item => item.ID_Progress_Alur)
 
-    // Set pelaksana data
-    pelaksana.value = unitResponse.data.map(item => ({
+    // Set unit data
+    unit.value = unitResponse.data.map(item => ({
       id_user: item.ID_User,
       nama_depan: item.Nama_Depan,
       nama_belakang: item.Nama_Belakang
@@ -135,6 +168,8 @@ const fetchPelayananData = async () => {
       lampiran: lampiran.value,
       jenis_pelayanan: jenis_pelayanan.value,
       nama_pelapor: nama_pelapor.value,
+      nama_depanTeknis: nama_depanTeknis.value,
+      nama_belakangTeknis: nama_belakangTeknis.value,
       perihal: perihal.value,
       tanggal: tanggal.value,
       steps: steps.value,
@@ -144,6 +179,9 @@ const fetchPelayananData = async () => {
 
     SuratDinas_Path.value = '/files' + surat_dinas.value
     Lampiran_Path.value = '/files' + lampiran.value
+    HasilPemenuhan_Path.value = '/files' + src_HasilPemenuhan.value
+    HasilBA_Path.value = '/files' + src_HasilBA.value
+    HasilSLA_Path.value = '/files' + src_HasilSLA.value
 
     if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 6 ) {
       progress.value = true
@@ -206,7 +244,7 @@ const namaFileSuratDinas = computed(() => {
       const tanggal = parts[0]
       const waktu = parts[1]
       return `${tanggal}_${waktu}_Surat_Dinas.pdf`
-    })
+})
 
 const namaFileLampiran = computed(() => {
       const fileName = lampiran.value.split('/').pop() 
@@ -214,7 +252,34 @@ const namaFileLampiran = computed(() => {
       const tanggal = parts[0]
       const waktu = parts[1]
       return `${tanggal}_${waktu}_Lampiran.pdf`
-    })
+})
+
+const namaFileHasilPemenuhan = computed(() => {
+  if (!src_HasilPemenuhan.value) return 'Tidak ada file'
+  const fileName = src_HasilPemenuhan.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilPemenuhan.pdf`
+})
+
+const namaFileHasilBA = computed(() => {
+  if (!src_HasilBA.value) return 'Tidak ada file'
+  const fileName = src_HasilBA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilBA.pdf`
+})
+
+const namaFileHasilSLA = computed(() => {
+  if (!src_HasilSLA.value) return 'Tidak ada file'
+  const fileName = src_HasilSLA.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_HasilSLA.pdf`
+})
 
 const messages = ref([
 {
@@ -223,16 +288,33 @@ const messages = ref([
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }
 ])
-const newMessage = ref('')
 
-const addMessage = () => {
-  if (newMessage.value.trim()) {
-    messages.value.push({
-      text: newMessage.value,
-      sender: "User",
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    })
-    newMessage.value = ''
+const rating = ref(0)
+const hoverRating = ref(0)
+const reviewText = ref('')
+const reviewSubmitted = ref(false)
+
+const setRating = (newRating) => {
+  rating.value = newRating
+}
+
+const submitReview = async () => {
+  if (rating.value === 0) {
+    alert('Mohon berikan rating bintang terlebih dahulu.')
+    return
+  }
+  try {
+    const token = localStorage.getItem('Token')
+    // API masih belum ada
+    await axios.put(`/api/pelayanan/survey/${pelayananId.value}`, {
+      Rating: rating.value,
+      Isi_Survey: reviewText.value,
+      ID_Status: 6
+    }, { headers: { Authorization: 'Bearer ' + token } })
+    reviewSubmitted.value = true
+  } catch (error) {
+    console.error('Gagal mengirim ulasan:', error)
+    alert('Gagal mengirim ulasan. Silakan coba lagi.')
   }
 }
 
@@ -324,25 +406,115 @@ onMounted(() => {
                   </a>
                 </div>
               </div>
+              <!-- Review Section -->
+              <div v-if="status === 6" class="review-section">
+                <div>
+                  <h4 class="review-title">Ulasan Pengguna</h4>
+                  <div class="star-rating">
+                    <span
+                      v-for="star in 5"
+                      :key="star"
+                      class="star"
+                      :class="{ 'filled': star <= (rating) }"
+                    >
+                      ★
+                    </span>
+                  </div>
+                  <textarea v-model="reviewText" class="review-textarea" placeholder="Belum Ada Ulasan" rows="4" readonly></textarea>
+                </div>
+              </div>
+                
+              <div v-else-if="status === 5" class="review-section">
+                <div>
+                  <h4 class="review-title">Ulasan Pengguna</h4>
+                  <div class="star-rating">
+                    <strong>Belum Ada Ulasan dari Pengguna</strong>
+                  </div>
+                  <textarea v-model="reviewText" class="review-textarea" placeholder="Belum Ada Ulasan" rows="4" readonly></textarea>
+                </div>
+              </div>
+              <div class="review-section">
+              <div v-if="status === 5 && userId == id_user">
+                <h4 class="review-title">Ulasan Pengguna</h4>
+                <div class="star-rating">
+                  <span
+                    v-for="star in 5"
+                    :key="star"
+                    class="star"
+                    :class="{ 'filled': star <= (hoverRating || rating) }"
+                    @mouseover="hoverRating = star"
+                    @mouseleave="hoverRating = 0"
+                    @click="setRating(star)"
+                  >
+                    ★
+                  </span>
+                </div>
+                <textarea v-model="reviewText" class="review-textarea" placeholder="Bagikan pengalaman pengguna..." rows="4"></textarea>
+                <button class="send-btn" @click="submitReview">Kirim Ulasan</button>
+              </div>
+            </div>
             </div>
 
             <div class="chat-card">
               <h3>Chat</h3>
               <div class="chat-content view-only-chat">
-                <div
-                  v-for="(message, index) in messages"
-                  :key="index"
-                  :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
-                >
-                  <div class="message-text">{{ message.text + " " }}</div>
-                  <div class="message-time">{{ message.time + " " }}</div>
+                <div v-if="messages.length === 0" 
+              class='message-bubble'>Belum ada pesan</div>
+              <div
+                v-for="(message, index) in messages"
+                :key="index"
+                :class="['message-bubble', message.id_user == userId ? 'sent' : 'received']"
+              >
+                <strong class="message-text">{{ message.sender }}</strong>  
+                <div class="message-text">{{ message.text }}</div>
+                <div class="message-time">{{ message.time }}</div>
+              </div>
+              </div>
+              <div class="alasan-tolak" v-if="status === 3">
+                <strong>Alasan Penolakan</strong>
+                <div class="textarea-row">
+                  <textarea class="input" :value="pelayananData.pesanPengelola" placeholder="Alasan Penolakan" rows="5" readonly></textarea>
                 </div>
               </div>
               <div v-if="progress">
                 <strong>Nama Unit Pelaksana</strong>
                 <div>{{ nama_depanUnit + ' ' + nama_belakangUnit }}</div>
               </div>
-              <div class="tinjau-card" v-else>
+              <div v-if="progress">
+                <strong>Nama Pelaksana Teknis</strong>
+                <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
+              </div>
+
+              <div v-if="status === 5 && status === 5" class="document-links">
+                <div class="info-row-docs">
+                  <strong>Hasil Pemenuhan</strong>
+                  <div v-if="HasilPemenuhan_Path">
+                    <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                      {{ namaFileHasilPemenuhan }}
+                    </a>
+                  </div>
+                </div>
+
+                <div class="info-row-docs">
+                  <strong>Hasil BA</strong>
+                  <div v-if="HasilBA_Path">
+                    <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                      {{ namaFileHasilBA }}
+                    </a>
+                  </div>
+
+                  <div class="info-row-docs">
+                    <strong>Hasil SLA</strong>
+                    <div v-if="HasilSLA_Path">
+                      <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                        {{ namaFileHasilSLA }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tinjau-card" v-if="status === 1">
                 <h3>Tinjau Pelayanan</h3>
                 <!-- taro link pdfnya disini -->
                 <div class="wrapper-btn">
@@ -354,7 +526,7 @@ onMounted(() => {
                   <h4>Unit Pelaksana</h4>
                   <select id="status" v-model="idUnitTerpilih">
                     <option value="" disabled>Pilih Unit Pelaksana</option>
-                    <option v-for="option in pelaksana" :key="option.id_user" :value="option.id_user">
+                    <option v-for="option in unit" :key="option.id_user" :value="option.id_user">
                       {{ option.nama_depan }} {{ option.nama_belakang }}
                     </option>
                   </select>
@@ -710,7 +882,45 @@ select {
   transform: scale(1.02);
   background-color: #48B7ED;
 }
+.review-section {
+  border-top: 1px solid #eee;
+  padding-top: 0.5rem;
+}
 
+.review-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.star-rating {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.star {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.review-textarea {
+  width: 95%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.75rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  background-color: white;
+  color: black;
+  font-family: poppins, sans-serif;
+}
 /* Steps */
 .card-title {
   font-size: 20px;

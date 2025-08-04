@@ -7,6 +7,7 @@ const router = useRouter()
 const route = useRoute()
 
 // State management
+const userId = ref(localStorage.getItem('user_id'));
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
 const stepsStatus = ref([])
@@ -112,6 +113,12 @@ const fetchPelayananData = async () => {
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
     status.value = pelayananData.ID_Status
+    messages.value = pelayananData.pelayanan_pesan.map(pesan => ({
+      id_user: pesan.ID_User,
+      text: pesan.Pesan,
+      sender: `${pesan.pesan_user.Nama_Depan} ${pesan.pesan_user.Nama_Belakang} - ${pesan.pesan_user.user_role.Nama_Role}`,
+      time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }))
 
     // Set progress data
     const progressData = progressResponse.data
@@ -216,14 +223,28 @@ const messages = ref([
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }
 ])
-const newMessage = ref('')
 
+const newMessage = ref('')
 const addMessage = () => {
   if (newMessage.value.trim()) {
-    messages.value.push({
+    const pesanUser = {
+      id_user: userId.value,
       text: newMessage.value,
-      sender: "User",
+      sender: `${localStorage.getItem('nama_depan')} ${localStorage.getItem('nama_belakang')} - ${localStorage.getItem('nama_role')}`,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }
+
+    // Tambahkan ke UI dulu
+    messages.value.push(pesanUser)
+
+    // Simpan ke server 
+    const payload = { Pesan: newMessage.value }
+    const token = localStorage.getItem('Token')
+
+    axios.post(`/api/pesan/${pelayananId.value}`, payload, {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
     })
     newMessage.value = ''
   }
@@ -324,14 +345,17 @@ onMounted(() => {
             <div class="chat-card">
               <h3>Chat</h3>
               <div class="chat-content">
-                <div
-                  v-for="(message, index) in messages"
-                  :key="index"
-                  :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
-                >
-                  <div class="message-text">{{ message.text + " " }}</div>
-                  <div class="message-time">{{ message.time + " " }}</div>
-                </div>
+                <div v-if="messages.length === 0" 
+              class='message-bubble'>Belum ada pesan</div>
+              <div
+                v-for="(message, index) in messages"
+                :key="index"
+                :class="['message-bubble', message.id_user == userId ? 'sent' : 'received']"
+              >
+                <strong class="message-text">{{ message.sender }}</strong>  
+                <div class="message-text">{{ message.text }}</div>
+                <div class="message-time">{{ message.time }}</div>
+              </div>
               </div>
               <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
               <button class="send-btn" @click="addMessage">Kirim</button>

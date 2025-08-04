@@ -31,9 +31,9 @@ const Lampiran_Path = ref(null)
 const HasilBA_Path = ref(null)
 const HasilSLA_Path = ref(null)
 const HasilPemenuhan_Path = ref(null)
-const src_HasilPemenuhan = ref(route.query.hasil_pemenuhan || '-')
-const src_HasilBA = ref(route.query.hasil_ba || '-')
-const src_HasilSLA = ref(route.query.hasil_sla || '-')
+const src_HasilPemenuhan = ref('-')
+const src_HasilBA = ref('-')
+const src_HasilSLA = ref('-')
 
 const activeTab = ref('informasi')
 
@@ -377,16 +377,16 @@ onMounted(() => {
               <!-- Review Section -->
               <div v-if="status === 5">
                 <div>
-                  <h4 class="review-title">Ulasan Pelapor</h4>
+                  <h4 class="review-title">Ulasan Pengguna</h4>
                   <div class="star-rating">
-                    <strong>Belum Ada Ulasan dari Pelapor</strong>
+                    <strong>Belum Ada Ulasan dari Pengguna</strong>
                   </div>
                   <textarea v-model="reviewText" class="review-textarea" placeholder="Belum Ada Ulasan" rows="4" readonly></textarea>
                 </div>
               </div>
               <div v-if="status !== 3 && status !== 5" class="review-section">
                 <div>
-                  <h4 class="review-title">Ulasan Pelapor</h4>
+                  <h4 class="review-title">Ulasan Pengguna</h4>
                   <div class="star-rating">
                     <span
                       v-for="star in 5"

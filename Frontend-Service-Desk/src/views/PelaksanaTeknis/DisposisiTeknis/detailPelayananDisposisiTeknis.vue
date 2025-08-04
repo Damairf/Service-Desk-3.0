@@ -51,11 +51,6 @@ const isDataLoaded = ref(false)
 // Cache untuk mencegah API calls berulang
 const dataCache = ref(null)
 
-const pilihan = ref('')
-function handlePilihan(klik){
-  pilihan.value = klik
-}
-
 // Computed properties untuk optimasi
 const pelayananData = computed(() => ({
   deskripsi: deskripsi.value,
