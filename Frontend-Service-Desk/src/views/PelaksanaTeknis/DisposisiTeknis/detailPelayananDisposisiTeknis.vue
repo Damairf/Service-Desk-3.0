@@ -27,7 +27,6 @@ const teknis = ref([])
 const idTeknisTerpilih = ref('')
 const pesanUnit = ref('')
 const status = ref(Number(''))
-const progress = ref(null)
 
 const surat_dinas = ref('')
 const lampiran = ref('')
@@ -88,14 +87,11 @@ const fetchPelayananData = async () => {
     isLoading.value = true
     const token = localStorage.getItem('Token')
     
-    const [pelayananResponse, progressResponse, unitResponse] = await Promise.all([
+    const [pelayananResponse, progressResponse] = await Promise.all([
       axios.get(`/api/pelayanan/${pelayananId.value}`, {
         headers: { Authorization: 'Bearer ' + token }
       }),
       axios.get(`/api/pelayanan/alur/progress/${pelayananId.value}`, {
-        headers: { Authorization: 'Bearer ' + token }
-      }),
-      axios.get('/api/pelayanan/allTeknis', {
         headers: { Authorization: 'Bearer ' + token }
       })
     ])
@@ -122,14 +118,6 @@ const fetchPelayananData = async () => {
     )
     stepsStatus.value = progressData.map(item => item.Is_Done)
 
-    // Set teknis data
-    pelaksana.value = unitResponse.data.map(item => ({
-      id_user: item.ID_User,
-      nama_depan: item.Nama_Depan,
-      nama_belakang: item.Nama_Belakang
-    }))
-    idTeknisTerpilih.value = ''
-
     // Cache data
     dataCache.value = {
       id: pelayananId.value,
@@ -150,10 +138,6 @@ const fetchPelayananData = async () => {
     SuratDinas_Path.value = '/files' + surat_dinas.value
     Lampiran_Path.value = '/files' + lampiran.value
 
-    if (status.value === 2 || status.value === 3 || status.value === 4 || status.value === 5 || status.value === 6 ) {
-      progress.value = true
-    }
-
     isDataLoaded.value = true
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -161,22 +145,6 @@ const fetchPelayananData = async () => {
     isLoading.value = false
   }
 }
-
-function handleSelesai() {
-  const token = localStorage.getItem('Token');
-  axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
-  {
-    ID_Teknis: idTeknisTerpilih.value,
-    Pesan_Unit: pesanUnit.value,
-    ID_Status: 4,
-  }
-  , {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    }
-  })
-  router.push('/Approval')
-} 
 
 const namaFileSuratDinas = computed(() => {
       const fileName = surat_dinas.value.split('/').pop() 
@@ -338,7 +306,7 @@ onMounted(() => {
               <div class="tinjau-card">
                 <h3>Kirim Hasil Pelayanan</h3>
                 <div class="wrapper-btn">
-                  <button class="btn-selesai" @click="handlePilihan('Selesai')">Kirim</button>
+                  <button class="btn-selesai" @click="handleSelesai">Kirim</button>
                 </div>
               </div>
             </div>

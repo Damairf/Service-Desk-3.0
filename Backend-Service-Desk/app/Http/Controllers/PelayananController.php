@@ -203,14 +203,18 @@ class PelayananController extends Controller
     // untuk role pelaksana teknis mengunggah laporan hasil 
     public function putLaporan_Hasil(Request $request){
         $pelayananId = $request->route('pelayananId');
-        $Surat_Laporan_Hasil = $request->Surat_Laporan_Hasil;
+        $Surat_Laporan_Pemenuhan = $request->Surat_Laporan_Pemenuhan;
+        $Surat_Laporan_BA = $request->Surat_Laporan_BA;
+        $Surat_Laporan_SLA = $request->Surat_Laporan_SLA;
 
         Pelayanan::where('ID_Pelayanan', $pelayananId)->update([
-            'Surat_Laporan_Hasil' => $Surat_Laporan_Hasil
+            'Hasil_Pemenuhan_Path' => $Surat_Laporan_Pemenuhan,
+            'BA_Path' => $Surat_Laporan_BA,
+            'SLA_Path' => $Surat_Laporan_SLA
         ]);
 
         $updateLaporan = Pelayanan::where('ID_Pelayanan', $pelayananId)
-        ->select('ID_Pelayanan', 'Surat_Laporan_Hasil')
+        ->select('ID_Pelayanan', 'Hasil_Pemenuhan_Path', 'BA_Path', 'SLA_Path')
         ->first();
 
         return response(["message" => "Laporan hasil ditambahkan", "data" => $updateLaporan]);
