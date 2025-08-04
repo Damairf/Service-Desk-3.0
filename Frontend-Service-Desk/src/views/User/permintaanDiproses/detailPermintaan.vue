@@ -7,6 +7,7 @@ const router = useRouter()
 const route = useRoute()
 
 // State management
+const userId = ref(localStorage.getItem('user_id'));
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
 const stepsStatus = ref([])
@@ -97,6 +98,7 @@ const fetchPelayananData = async () => {
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
     messages.value = pelayananData.pelayanan_pesan.map(pesan => ({
+    id_user: pesan.ID_User,
     text: pesan.Pesan,
     sender: `${pesan.pesan_user.Nama_Depan} ${pesan.pesan_user.Nama_Belakang} - ${pesan.pesan_user.user_role.Nama_Role}`,
     time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -155,12 +157,14 @@ const namaFileLampiran = computed(() => {
   return `${tanggal}_${waktu}_Lampiran.pdf`
 })
 
+
 const newMessage = ref('')
 const addMessage = () => {
   if (newMessage.value.trim()) {
     const pesanUser = {
+      id_user: userId.value,
       text: newMessage.value,
-      sender: "User",
+      sender: `${localStorage.getItem('nama_depan')} ${localStorage.getItem('nama_belakang')} - ${localStorage.getItem('nama_role')}`,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
 
@@ -177,14 +181,6 @@ const addMessage = () => {
       }
     })
     .then(response => {
-      // Kalau mau, bisa tampilkan pesan balasan dari sistem (jika ada)
-      if (response.data?.balasan) {
-        messages.value.push({
-          text: response.data.balasan,
-          sender: "System",
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        })
-      }
     })
     .catch(error => {
       console.error("Gagal mengirim pesan:", error)
@@ -299,7 +295,7 @@ onMounted(() => {
               <div
                 v-for="(message, index) in messages"
                 :key="index"
-                :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
+                :class="['message-bubble', message.id_user == userId ? 'sent' : 'received']"
               >
                 <strong class="message-text">{{ message.sender }}</strong>  
                 <div class="message-text">{{ message.text }}</div>

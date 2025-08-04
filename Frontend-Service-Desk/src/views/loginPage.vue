@@ -18,6 +18,7 @@ function login(){
     const user = response.data.data_user;
 
     localStorage.setItem('Token', token);
+    localStorage.setItem('user_id', user.ID_User);
     localStorage.setItem('nama_depan', user.Nama_Depan);
     localStorage.setItem('nama_belakang', user.Nama_Belakang);
     localStorage.setItem('src_gambar', user.Gambar_Path);

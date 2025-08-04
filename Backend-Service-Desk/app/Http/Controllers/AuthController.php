@@ -18,9 +18,9 @@ class AuthController extends Controller
         $user = User::where('NIP', $NIP)->first();
         
 
-        if(!$user){
-            return response("NIP tidak ditemukan", 404);
-        }
+            if(!$user){
+                return response("NIP tidak ditemukan", 404);
+            }
 
         if(!Hash::check($Password, $user->Password)){
             return response("Password salah", 401);
@@ -35,7 +35,7 @@ class AuthController extends Controller
         $hash = "HS256";
 
         $token = JWT::encode($payload, $key, $hash);
-        $datauser = User::select('Nama_Depan', 'Nama_Belakang', 'Gambar_Path', 'ID_Role')
+        $datauser = User::select('ID_User','Nama_Depan', 'Nama_Belakang', 'Gambar_Path', 'ID_Role')
         ->with([
             'user_role' => function ($query) {
                 $query->select('ID_Role', 'Nama_Role');
