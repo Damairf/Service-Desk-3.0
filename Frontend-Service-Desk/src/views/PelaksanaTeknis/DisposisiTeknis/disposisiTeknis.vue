@@ -49,7 +49,6 @@ function lihatDetail(item){
       layanan: item.noTiket,
     }
   })
-    
 }
 
 function toggleSort(key) {

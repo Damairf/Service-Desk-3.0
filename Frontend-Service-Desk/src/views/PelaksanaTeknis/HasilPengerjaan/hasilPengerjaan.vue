@@ -44,12 +44,11 @@ onMounted(() => {
 function lihatDetail(item){
   const pelayananId = ref(item.noTiket)
     router.push({
-    name: 'DetailDisposisiTeknis', 
+    name: 'DetailHasilPengerjaan', 
     query: {
       layanan: item.noTiket,
     }
   })
-    
 }
 
 function toggleSort(key) {
