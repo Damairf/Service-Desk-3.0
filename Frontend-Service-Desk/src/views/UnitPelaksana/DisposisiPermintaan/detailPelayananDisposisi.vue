@@ -372,6 +372,7 @@ onMounted(() => {
                 :key="index"
                 :class="['message-bubble', message.sender === 'User' ? 'sent' : 'received']"
               >
+                <div class="message-sender">{{ message.sender }}</div>
                 <div class="message-text">{{ message.text + " " }}</div>
                 <div class="message-time">{{ message.time + " " }}</div>
               </div>
@@ -423,8 +424,7 @@ onMounted(() => {
                   <button class="btn-revisi" @click="handlePilihan('Revisi')">Revisi</button>
                 </div>
                 <div class="wrapper-selesai" v-if="pilihan == 'Selesai'">
-                  <h4>Keterangan Selesai</h4>
-                  <textarea class="input" v-model="pesanUnit"></textarea>
+                  <h4>Apakah anda yakin untuk menyelesaikan pelayanan ini?</h4>
                   <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
                 </div>
                 <div class="wrapper-revisi" v-if="pilihan == 'Revisi'">
