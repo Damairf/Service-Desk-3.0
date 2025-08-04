@@ -25,6 +25,7 @@ const organisasi = ref('')
 const surat_dinas = ref('')
 const lampiran = ref('')
 const pesanUnit = ref('')
+const pesanRevisi = ref('')
 const isDone = ref(false) 
 const src_HasilPemenuhan = ref('-')
 const src_HasilBA = ref('-')
@@ -43,6 +44,7 @@ const pelayananData = computed(() => ({
   deskripsi: deskripsi.value,
   pesanPengelola: pesanPengelola.value,
   pesanUnit: pesanUnit.value,
+  pesanRevisi: pesanRevisi.value,
   organisasi: organisasi.value,
   surat_dinas: surat_dinas.value,
   lampiran: lampiran.value,
@@ -70,6 +72,7 @@ const fetchPelayananData = async () => {
     deskripsi.value = cached.deskripsi
     pesanPengelola.value = cached.pesanPengelola
     pesanUnit.value = cached.pesanUnit
+    pesanRevisi.value = cached.pesanRevisi
     organisasi.value = cached.organisasi
     surat_dinas.value = cached.surat_dinas
     lampiran.value = cached.lampiran
@@ -110,6 +113,7 @@ const fetchPelayananData = async () => {
     deskripsi.value = pelayananData.Deskripsi
     pesanPengelola.value = pelayananData.Pesan_Pengelola
     pesanUnit.value = pelayananData.Pesan_Unit
+    pesanRevisi.value = pelayananData.Pesan_Revisi
     status.value = pelayananData.ID_Status
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
@@ -140,6 +144,7 @@ const fetchPelayananData = async () => {
       deskripsi: deskripsi.value,
       pesanPengelola: pesanPengelola.value,
       pesanUnit: pesanUnit.value,
+      pesanRevisi: pesanRevisi.value,
       organisasi: organisasi.value,
       surat_dinas: surat_dinas.value,
       lampiran: lampiran.value,
@@ -261,8 +266,11 @@ function handleSelesai() {
     axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
     {
       ID_Status: 4,
-      Pesan_Unit: pesanUnit.value,
-      Is_Done: false
+      Pesan_Revisi: pesanRevisi.value,
+      Is_Done: false,
+      Hasil_Pemenuhan_Path: null,
+      BA_Path: null,
+      SLA_Path: null,
     },
     {
       headers: {
@@ -427,7 +435,7 @@ onMounted(() => {
         </div>
         <div class="wrapper-revisi" v-if="pilihan == 'Revisi'">
           <h4>Alasan Butuh Direvisi</h4>
-          <textarea class="input" v-model="pesanUnit"></textarea>
+          <textarea class="input" v-model="pesanRevisi"></textarea>
           <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
         </div>
       </div>
@@ -613,7 +621,6 @@ onMounted(() => {
   margin-left: 10px;
   flex-grow: 1;
 }
-
 
 .textarea-row {
   flex-direction: column;

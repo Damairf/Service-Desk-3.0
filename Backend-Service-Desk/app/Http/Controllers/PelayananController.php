@@ -137,6 +137,27 @@ class PelayananController extends Controller
 
     $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
 
+    if ($request->has('Hasil_Pemenuhan_Path') && $request->input('Hasil_Pemenuhan_Path') === null) {
+        if ($pelayanan->Hasil_Pemenuhan_Path) {
+            Storage::disk('public')->delete(str_replace('storage/', '', $pelayanan->Hasil_Pemenuhan_Path));
+            $dataPelayanan['Hasil_Pemenuhan_Path'] = null;
+        }
+    }
+
+    if ($request->has('BA_Path') && $request->input('BA_Path') === null) {
+        if ($pelayanan->BA_Path) {
+            Storage::disk('public')->delete(str_replace('storage/', '', $pelayanan->BA_Path));
+            $dataPelayanan['BA_Path'] = null;
+        }
+    }
+
+    if ($request->has('SLA_Path') && $request->input('SLA_Path') === null) {
+        if ($pelayanan->SLA_Path) {
+            Storage::disk('public')->delete(str_replace('storage/', '', $pelayanan->SLA_Path));
+            $dataPelayanan['SLA_Path'] = null;
+        }
+    }
+
     $pelayanan->update($dataPelayanan);
 
     return response ($pelayanan);
