@@ -23,22 +23,33 @@ import riwayat from '../views/User/Riwayat/riwayat.vue'
 import detailPermintaanRiwayat from '../views/User/Riwayat/detailPermintaanRiwayat.vue'
 
 //===============PENGELOLA===============
+// Beranda
 import berandaPengelola from '../views/Pengelola/BerandaPengelola/berandaPengelola.vue'
+// Pelayanan
 import pelayanan from '../views/Pengelola/Pelayanan/Pelayanan.vue'
 import detailPelayanan from '../views/Pengelola/Pelayanan/detailPelayanan.vue'
+// Pengguna
 import PenggunaPengelola from '../views/Pengelola/Pengguna/PenggunaPengelola.vue'
 import TambahPengguna from '../views/Pengelola/Pengguna/TambahPengguna.vue'
 import UbahPengguna from '../views/Pengelola/Pengguna/UbahPengguna.vue'
 import lihatPengguna from '../views/Pengelola/Pengguna/LihatPengguna.vue'
+// Organisasi
 import lembagaOrganisasi from '../views/Pengelola/LembagaOrganisasi/Organisasi.vue'
 import tambahOrganisasi from '../views/Pengelola/LembagaOrganisasi/TambahOrganisasi.vue'
 import ubahOrganisasi from '../views/Pengelola/LembagaOrganisasi/EditOrganisasi.vue'
+// Jabatan
 import referensiJabatan from '../views/Pengelola/Referensi/RefJabatan/jabatan.vue'
 import TambahJabatan from '../views/Pengelola/Referensi/RefJabatan/TambahJabatan.vue'
 import UbahJabatan from '../views/Pengelola/Referensi/RefJabatan/EditJabatan.vue'
+// Jabatan
+import referensiStatus from '../views/Pengelola/Referensi/RefStatus/Status.vue'
+import TambahStatus from '../views/Pengelola/Referensi/RefStatus/TambahStatus.vue'
+import UbahStatus from '../views/Pengelola/Referensi/RefStatus/EditStatus.vue'
+// Jenis Pelayanan
 import referensiPelayanan from '../views/Pengelola/Referensi/RefPelayanan/JenisPelayanan.vue'
 import TambahPelayanan from '../views/Pengelola/Referensi/RefPelayanan/TambahJenisPelayanan.vue'
 import UbahPelayanan from '../views/Pengelola/Referensi/RefPelayanan/EditJenisPelayanan.vue'
+// Permintaan Baru
 import permintaanBaruPengelola from '../views/Pengelola/PermintaanBaruPengelola/PermintaanBaruPengelola.vue'
 import formulirTiketBaruPengelola from '../views/Pengelola/PermintaanBaruPengelola/FormulirTiketBaruPengelola.vue'
 
@@ -115,12 +126,15 @@ const routes = [
   { path: '/lembaga', name: 'lembaga/Organisasi', component: lembagaOrganisasi, meta: {allowedRoles: [2]}},
   { path: '/tambahLembaga', name: 'TambahLembaga', component:  tambahOrganisasi, meta: {allowedRoles: [2]}},
   { path: '/ubahLembaga', name: 'UbahLembaga', component: ubahOrganisasi, meta: {allowedRoles: [2]}},
-  { path: '/referensi/jabatan', name: 'referensiJabatan', component: referensiJabatan},
+  { path: '/referensi/jabatan', name: 'referensiJabatan', component: referensiJabatan, meta: {allowedRoles: [2]}},
   { path: '/tambahJabatan', name: 'TambahJabatan', component: TambahJabatan, meta: {allowedRoles: [2]}},
   { path: '/ubahJabatan', name: 'UbahJabatan', component: UbahJabatan, meta: {allowedRoles: [2]}},
   { path: '/referensi/jenis-pelayanan', name: 'referensiPelayanan', component: referensiPelayanan, meta: {allowedRoles: [2]}},
   { path: '/tambahPelayanan', name: 'TambahPelayanan', component: TambahPelayanan, meta: {allowedRoles: [2]}},
   { path: '/ubahPelayanan', name: 'UbahPelayanan', component: UbahPelayanan, meta: {allowedRoles: [2]}},
+  { path: '/referensi/status', name: 'referensiStatus', component: referensiStatus, meta: {allowedRoles: [2]}},
+  { path: '/tambahStatus', name: 'TambahStatus', component: TambahStatus, meta: {allowedRoles: [2]}},
+  { path: '/ubahStatus', name: 'UbahStatus', component: UbahStatus, meta: {allowedRoles: [2]}},
   { path: '/permintaanBaruPengelola', name: 'PermintaanBaruPengelola', component: permintaanBaruPengelola, meta: {allowedRoles: [2]}},
   { path: '/formulirTiketBaruPengelola', name: 'FormulirTiketBaruPengelola', component: formulirTiketBaruPengelola, meta: {allowedRoles: [2]}},  
 

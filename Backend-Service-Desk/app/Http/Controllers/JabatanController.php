@@ -25,7 +25,7 @@ class JabatanController extends Controller
     {
         $Nama_Jabatan = $request->Nama_Jabatan;
 
-        Jabatan::insert([
+        Jabatan::create([
             'Nama_Jabatan'=>$Nama_Jabatan,
         ]); 
 

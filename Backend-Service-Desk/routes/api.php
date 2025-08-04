@@ -71,7 +71,7 @@ Route::get('/organisasiCount',[OrganisasiController::class, 'jumlah_Organisasi']
 
 
 Route::get('/status',[StatusController::class, 'findAll_Status']);
-Route::get('/status/organisasi',[StatusController::class, 'findAll_Organisasi_Status']);
+Route::put('/status/{statusId}',[StatusController::class, 'updateOne_Status']);
 Route::get('/status/pelayanan',[StatusController::class, 'findAll_Pelayanan_Status']);
 Route::get('/status/pelayanan/{statusId}',[StatusController::class, 'findOne_Status_Pelayanan']);
 Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);

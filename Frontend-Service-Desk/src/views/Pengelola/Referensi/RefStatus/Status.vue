@@ -5,31 +5,45 @@ import axios from 'axios'
 
 const router = useRouter()
 
-const services = ref([])
 const isLoading = ref(true)
 
+// === Data Referensi Status ===
+const referensiStatus = ref([])
+
+function formatDate(dateString) {
+  if (!dateString) return '-';
+
+  const date = new Date(dateString);
+  return isNaN(date.getTime()) ? '-' : date.toLocaleDateString('id-ID');
+}
+
+//===BACKEND=== 
 onBeforeMount(() => {
-  const token = localStorage.getItem('Token')
-  axios.get('/api/jenispelayanan', {
+  fetchDataStatus();
+});
+
+
+const fetchDataStatus = () => {
+const token = localStorage.getItem('Token');
+  axios.get('/api/status', {
     headers: {
       Authorization: 'Bearer ' + token
     }
   })
-    .then(response => {
-      // Map API response to match expected structure
-      services.value = response.data.map(item => ({
-        id: item.ID_Jenis_Pelayanan,
-        nama: item.Nama_Jenis_Pelayanan, // Adjust if API uses different field names
-        tglPembuatan: item.created_at // Adjust if API uses different field names
-      }))
-    })
-    .catch(error => {
-      console.error('Error fetching services:', error)
-    })
-    .finally(() => {
-      isLoading.value = false
-    })
-})
+  .then(response => {
+    referensiStatus.value = response.data.map(item => ({
+      id: item.ID_Status,
+      nama: item.Nama_Status,
+      tglPembuatan: item.created_at || '-'
+    }))
+  })
+  .catch(error => {
+    console.error(error); 
+  })
+  .finally(() => {
+    isLoading.value = false;
+  });
+}
 
 // === Search, Sort & Pagination ===
 const search = ref('')
@@ -40,15 +54,15 @@ const itemsPerPage = 10
 
 // === Filter & Sort Data ===
 const filteredItems = computed(() => {
-  let items = services.value.filter(item =>
-    (item.nama?.toLowerCase().includes(search.value.toLowerCase()) || '') ||
-    (item.tglPembuatan?.toLowerCase().includes(search.value.toLowerCase()) || '')
+  let items = referensiStatus.value.filter(item =>
+    item.nama.toLowerCase().includes(search.value.toLowerCase()) ||
+    item.tglPembuatan.toLowerCase().includes(search.value.toLowerCase())
   )
 
   if (sortKey.value) {
     items.sort((a, b) => {
-      const valA = a[sortKey.value]?.toString().toLowerCase() || ''
-      const valB = b[sortKey.value]?.toString().toLowerCase() || ''
+      const valA = a[sortKey.value]?.toString().toLowerCase()
+      const valB = b[sortKey.value]?.toString().toLowerCase()
       if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1
       if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1
       return 0
@@ -90,37 +104,37 @@ watch(search, () => {
 
 // === Modal Delete ===
 const showModal = ref(false)
-const pelayananToDelete = ref(null) // Store entire item for ID access
-
+const jabatanToDelete = ref("")
 function Delete(item) {
-  pelayananToDelete.value = item
+  jabatanToDelete.value = item.nama
   showModal.value = true
 }
 
 function cancelDelete() {
   showModal.value = false
-  pelayananToDelete.value = null
+  jabatanToDelete.value = null
 }
 
-function confirmDelete() {
-  const token = localStorage.getItem('Token')
-  axios.delete(`/api/jenispelayanan/${pelayananToDelete.value.id}`, {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-    .then(() => {
-      services.value = services.value.filter(item => item.id !== pelayananToDelete.value.id)
-      showModal.value = false
-      pelayananToDelete.value = null
-    })
-    .catch(error => {
-      console.error('Error deleting service:', error)
-      alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus pelayanan.')
-    })
-}
+// function confirmDelete() {
+//   const token = localStorage.getItem('Token');
+//   axios.delete(`http://127.0.0.1:8000/api/organisasi/${idOrganisasiToDelete.value}`, {
+//   headers: {
+//       Authorization: 'Bearer ' + token
+//     }
+//   })
+//   .then(() => {
+//   fetchDataOrganisasi();
+//   showModal.value = false
+//   idOrganisasiToDelete.value = null
+// })
 
-// Countdown
+//   .catch(error => {
+//     console.error(error);
+//     alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus organisasi.');
+//   });
+// }
+
+//Countdown
 const countdown = ref(5)
 const isCounting = ref(false)
 let timer = null
@@ -138,12 +152,12 @@ function startCountdown() {
   }, 1000)
 }
 
-function editPelayanan(pelayanan) {
+function editStatus(status) {
   router.push({
-    path: '/ubahPelayanan',
+    path: '/ubahStatus',
     query: {
-      id: pelayanan.id, // Pass ID for editing
-      nama_pelayanan: pelayanan.nama
+      nama_status: status.nama,
+      statusId: status.id
     }
   })
 }
@@ -151,63 +165,64 @@ function editPelayanan(pelayanan) {
 
 
 <template>
-  <div class="page-bg">
-    <div class="user-card">
-      <h1 class="title">Referensi Pelayanan</h1>
-      <div class="top-actions">
-        <button class="btn tambah" @click="router.push('/tambahPelayanan')">Tambah</button>
-      </div>
-      <input type="text" v-model="search" placeholder="Cari Pelayanan" class="search-bar" />
-
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th @click="sortKey = 'id'">ID</th>
-            <th @click="sortKey = 'nama'">Nama Pelayanan</th>
-            <th @click="sortKey = 'tglPembuatan'">Tanggal Pembuatan</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-if="isLoading">
-            <td colspan="4" style="text-align: center; padding: 1rem;">Memuat data...</td>
-          </tr>
-          <tr v-else-if="paginatedItems.length === 0">
-            <td colspan="4" style="text-align: center; padding: 1rem;">Tidak ada data pelayanan</td>
-          </tr>
-          <tr v-else v-for="(pelayanan, index) in paginatedItems" :key="index">
-            <td>{{ pelayanan.id }}</td>
-            <td>{{ pelayanan.nama }}</td>
-            <td>{{ pelayanan.tglPembuatan }}</td>
-            <td>
-              <div class="wrapper-aksiBtn">
-                <button class="aksiEdit-btn" title="Edit" @click="editPelayanan(pelayanan)">Ubah</button>
-                <button class="aksiDelete-btn" title="Delete" @click="Delete(pelayanan); startCountdown()">Hapus</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="pagination">
-        <button :disabled="currentPage === 1" @click="prevPage">&#60;</button>
-        <button
-          v-for="page in visiblePages"
-          :key="page"
-          :class="{ active: currentPage === page }"
-          @click="goToPage(page)"
-        >{{ page }}</button>
-        <button :disabled="currentPage === totalPages" @click="nextPage">&#62;</button>
+    <div class="page-bg">
+      <div class="user-card">
+        <h1 class="title">Referensi Status</h1>
+        <div class="top-actions">
+          <button class="btn tambah" @click="router.push('/tambahStatus')">Tambah</button>
+        </div>
+        <input type="text" v-model="search" placeholder="Cari Status" class="search-bar" />
+  
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th @click="sortKey = 'id'">ID</th>
+              <th @click="sortKey = 'nama'">Nama Status</th>
+              <th @click="sortKey = 'tglPembuatan'">Tanggal Pembuatan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr v-if="isLoading">
+              <td colspan="4" style="text-align: center; padding: 1rem;">Memuat data...</td>
+            </tr>
+            <tr v-else-if="filteredItems.length === 0">
+              <td colspan="4" style="text-align: center; padding: 1rem;">Tidak ada data jabatan</td>
+            </tr> -->
+            <tr v-for="(status, index) in paginatedItems" :key="index">
+              <td>{{ status.id }}</td>
+              <td>{{ status.nama }}</td>
+              <td>{{ formatDate(status.tglPembuatan) }}</td>
+              <td>
+                <div class="wrapper-aksiBtn">
+                    <!-- functionnya belum ada -->
+                    <button class="aksiEdit-btn" title="Edit" @click="editStatus(status)">Ubah</button>
+                    <button class="aksiDelete-btn" title="Delete" @click="Delete(status); startCountdown()">Hapus</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <div class="pagination">
+          <button :disabled="currentPage === 1" @click="prevPage">&#60;</button>
+          <button
+            v-for="page in visiblePages"
+            :key="page"
+            :class="{ active: currentPage === page }"
+            @click="goToPage(page)"
+          >{{ page }}</button>
+          <button :disabled="currentPage === totalPages" @click="nextPage">&#62;</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Modal Delete -->
+      <!-- Modal Delete -->
   <div v-if="showModal" class="modal-overlay">
     <div class="modal-box">
       <h3>Konfirmasi Hapus</h3>
       <p>
-        Apakah Anda yakin ingin menghapus pelayanan <strong>{{ pelayananToDelete?.nama }}</strong>?
+        Apakah Anda yakin ingin menghapus Status <strong>{{ jabatanToDelete }}</strong>?
       </p>
       <p v-if="isCounting">Mohon tunggu {{ countdown }} detik</p>
       <div class="modal-actions">
@@ -216,7 +231,7 @@ function editPelayanan(pelayanan) {
       </div>
     </div>
   </div>
-</template>
+  </template>
   
 
 

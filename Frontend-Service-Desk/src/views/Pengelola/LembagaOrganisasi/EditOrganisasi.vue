@@ -10,6 +10,7 @@ const route = useRoute() // untuk ambil params ID
 // ambil dari route organisasi
 const id_organisasi = ref(route.query.id_organisasi)
 const namaPerangkatDaerah = ref(route.query.nama_PerangkatDaerah)
+const indukOrganisasi = ref(route.query.indukOrganisasi)
 const email = ref(route.query.email || '')
 const status = ref(route.query.status || '')
 const nomorHP = ref('')
@@ -112,9 +113,15 @@ function handleReset() {
           <input type="text" placeholder="Nama PD" v-model="namaPerangkatDaerah" :readonly="readonlyMode" />
         </div>
 
-        <div class="form-group">
+        <div v-if="readonlyMode" class="form-group">
+          <label>Induk Perangkat Daerah<span class="red">*</span></label>
+          <input type="text" placeholder="Tidak Ada Induk Perangkat Daerah" v-model="indukOrganisasi" :readonly="readonlyMode" />
+        </div>
+
+
+        <div v-if="!readonlyMode" class="form-group">
           <label>Induk Perangkat Daerah</label>
-          <select v-model="idOrganisasiTerpilih" :disabled="readonlyMode">
+          <select v-model="idOrganisasiTerpilih">
             <option value="">-- Pilih Perangkat Daerah --</option>
             <option
               v-for="item in pilihanInduk"

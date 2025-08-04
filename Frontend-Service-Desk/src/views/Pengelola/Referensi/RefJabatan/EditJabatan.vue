@@ -8,51 +8,23 @@ const route = useRoute()
 
 // === State untuk form ===
 const namaJabatan = ref(route.query.nama_jabatan || '')
-
-const pilihanInduk = ref([])
-const idOrganisasiTerpilih = ref('')
-
-const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/organisasi', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-   console.log(response.data)
-   pilihanInduk.value = response.data.map(item => ({
-      id_organisasi: item.ID_Organisasi,
-      nama_PerangkatDaerah: item.Nama_OPD
-    }))
-  })
-  .catch(error => {
-    console.error(error); 
-  });
-
-
+const jabatanId = ref(route.query.jabatanId)
 
 // === Submit handler (dengan validasi) ===
 function handleSubmit() {
   // Validasi field wajib
-  if (!namaPerangkatDaerah.value || !email.value || !status.value) {
+  if (!namaJabatan.value) {
     alert('Harap isi semua field yang bertanda *')
     return
   }
 
-  if (nomorHP.value.length < 10) {
-  alert("Nomor HP minimal 10 digit")
-  return
-  }
 
   // Mas Backend tolong revisi lagi
-  const payload = {
-    Nama_Jabatan: namaJabatan.value
-  }
-
-  console.log('Data yang akan dikirim ke backend:', payload)
 
   const token = localStorage.getItem('Token');
-  axios.post(`http://127.0.0.1:8000/api/organisasi`, payload
+  axios.put(`/api/jabatan/${jabatanId.value}`, {
+      Nama_Jabatan: namaJabatan.value
+  }
   , {
     headers: {
       Authorization: 'Bearer ' + token,
@@ -60,11 +32,11 @@ function handleSubmit() {
   })
   .then(function(response){
     console.log(response)
+    alert('Jabatan sudah diubah')
+    router.push('/referensi/jabatan')
   }) .catch(function(error){
     console.log(error)
   })
-  alert('Organisasi sudah ditambahkan')
-  router.push('/jabatan')
 }
 
 // === Reset form ===
@@ -91,7 +63,7 @@ function handleReset() {
 
         <div class="form-group">
           <label>Nama Jabatan<span class="red">*</span></label>
-          <input type="text" placeholder="Nama PD" v-model="namaJabatan" />
+          <input type="text" placeholder="Nama Jabatan" v-model="namaJabatan" />
         </div>
 
         <div class="form-actions">

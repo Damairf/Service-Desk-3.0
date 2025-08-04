@@ -90,10 +90,10 @@ function handleReset() {
 
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Tambah Jabatan</h1>
+    <h1 class="main-title">Tambah Jenis Pelayanan</h1>
     <div class="form-card">
       <div class="form-card-header">
-        Formulir Tambah Jabatan
+        Formulir Tambah Jenis Pelayanan
       </div>
 
       <!-- Form pakai @submit.prevent supaya tidak reload -->
@@ -103,8 +103,13 @@ function handleReset() {
         </div>
 
         <div class="form-group">
-          <label>Nama Jabatan<span class="red">*</span></label>
-          <input type="text" placeholder="Nama PD" v-model="namaPerangkatDaerah" />
+          <label>Nama Jenis Pelayanan<span class="red">*</span></label>
+          <input type="text" placeholder="Nama Jenis Pelayanan" v-model="namaJenisPelayanan" />
+        </div>
+
+        <div class="form-group">
+          <label>Persyaratan<span class="red">*</span></label>
+          <input type="text" placeholder="Persyaratan untuk Jenis Pelayanan" v-model="persyaratan" />
         </div>
 
         <div class="form-actions">
