@@ -428,8 +428,8 @@ onMounted(() => {
                   <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
                 </div>
                 <div class="wrapper-revisi" v-if="pilihan == 'Revisi'">
-                  <h4>Alasan Butuh Direvisi</h4>
-                  <textarea class="input" v-model="pesanRevisi"></textarea>
+                  <h4>Pesan untuk revisi</h4>
+                  <textarea class="input" v-model="pesanRevisi" placeholder="Tulis pesan revisi"></textarea>
                   <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
                 </div>
               </div>
