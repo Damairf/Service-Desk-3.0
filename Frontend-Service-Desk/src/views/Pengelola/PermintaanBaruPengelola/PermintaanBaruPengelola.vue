@@ -1,46 +1,57 @@
 <script setup>
-import { ref, computed , onBeforeMount, onMounted , watch} from 'vue'
+import { ref, computed, onBeforeMount, watch } from 'vue'
 import axios from 'axios'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
-// buat push layanan ke halaman formulir tiket baru
 const router = useRouter()
-
 const services = ref([])
 const isLoading = ref(true)
+const searchTerm = ref("")
+const showModal = ref(false)
+const isChecked = ref(false)
+const selectedItem = ref("")
+const page = ref(1)
+const itemsPerPage = 10
+
 onBeforeMount(() => {
-  const token = localStorage.getItem('Token');
+  const token = localStorage.getItem('Token')
   axios.get('/api/jenispelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
     }
   })
   .then(response => {
-    services.value = response.data;
+    services.value = response.data
   })
   .catch(error => {
-    console.error(error);
+    console.error(error)
   })
   .finally(() => {
-    isLoading.value = false;
-  });
-});
+    isLoading.value = false
+  })
+})
 
-const page = ref(1)
-const searchTerm = ref("")
-const showModal = ref(false)
-const isChecked = ref(false)
-const selectedItem = ref("")
+const totalPages = computed(() => {
+  return Math.ceil(services.value.length / itemsPerPage)
+})
 
-watch(searchTerm, () => {
-  page.value = 1
+const visiblePages = computed(() => {
+  const pages = []
+  const start = Math.max(1, page.value - 2)
+  const end = Math.min(totalPages.value, page.value + 2)
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  return pages
 })
 
 const filteredServices = computed(() => {
-  const term = searchTerm.value.toLowerCase();
-  return services.value
-    .filter((s) => s.Nama_Jenis_Pelayanan.toLowerCase().includes(term))
-    .slice((page.value - 1) * 10, page.value * 10);
+  const term = searchTerm.value.toLowerCase()
+  const filtered = services.value.filter((s) =>
+    s.Nama_Jenis_Pelayanan.toLowerCase().includes(term)
+  )
+  const start = (page.value - 1) * itemsPerPage
+  return filtered.slice(start, start + itemsPerPage)
 })
 
 function prevPage() {
@@ -48,18 +59,27 @@ function prevPage() {
 }
 
 function nextPage() {
-  if (page.value * 5 < services.value.length) page.value++
+  if (page.value < totalPages.value) page.value++
+}
+
+function goToPage(pageNumber) {
+  page.value = pageNumber
 }
 
 function openModal(item) {
   selectedItem.value = item
   showModal.value = true
   router.push({
-    name: 'FormulirTiketBaruPengelola', query: {layanan: selectedItem.value.Nama_Jenis_Pelayanan , persyaratan: selectedItem.value.Persyaratan}
+    name: 'FormulirTiketBaruPengelola',
+    query: { layanan: selectedItem.value.Nama_Jenis_Pelayanan, persyaratan: selectedItem.value.Persyaratan }
   })
   localStorage.setItem('ID_Jenis_Pelayanan', item.ID_Jenis_Pelayanan)
   console.log(item)
 }
+
+watch(searchTerm, () => {
+  page.value = 1
+})
 </script>
 
 <template>
@@ -95,28 +115,27 @@ function openModal(item) {
           </div>
           <button class="tombol-tambah" @click="openModal(item)">+</button>
         </div>
-    </div>
+      </div>
     </div>
 
     <!-- Paging -->
-    <div class="paging">
-      <button @click="prevPage" :disabled="page === 1"><</button>
-      <button :class="{ active: page === 1 }" @click="page = 1">1</button>
-      <button :class="{ active: page === 2 }" @click="page = 2">2</button>
-      <button @click="nextPage">></button>
+    <div class="pagination">
+      <button :disabled="page === 1" @click="prevPage">&lt;</button>
+      <button
+        v-for="pageNumber in visiblePages"
+        :key="pageNumber"
+        :class="{ active: page === pageNumber }"
+        @click="goToPage(pageNumber)"
+      >{{ pageNumber }}</button>
+      <button :disabled="page === totalPages" @click="nextPage">&gt;</button>
     </div>
-
-    <!-- Modal Overlay -->
-    
-
   </div>
 </template>
 
 <style scoped>
-input[type="checkbox"]{
+input[type="checkbox"] {
   cursor: pointer;
 }
-
 
 .container {
   background-color: #faf4ff;
@@ -213,34 +232,33 @@ input[type="checkbox"]{
   transform: scale(1.1);
 }
 
-.paging {
-  margin-top: 2rem;
+/* Pengganti Halaman */
+.pagination {
   display: flex;
   justify-content: center;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 20px;
 }
-
-.paging button {
-  background-color: white;
-  color: black;
-  border: 1px solid #ccc;
-  padding: 0.5rem 0.75rem;
-  border-radius: 50%;
+.pagination button {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
   cursor: pointer;
-  min-width: 2rem;
-  text-align: center;
-  font-weight: 500;
-  font-family: poppins, sans-serif;
+  color: black;
+  transition: background 0.2s, color 0.2s;
 }
-
-.paging .active {
-  background-color: #2196f3;
-  color: white;
-  border-color: #2196f3;
+.pagination button.active, .pagination button:focus {
+  background: #2196f3;
+  color: #fff;
+  border: none;
 }
-
-.paging button:not(.active):hover {
-  background-color: #f0f0f0;
+.pagination button:disabled {
+  opacity: 30%;
+  color: black;
+  cursor: not-allowed;
 }
 
 /* Overlay Persyaratan */
@@ -257,15 +275,15 @@ input[type="checkbox"]{
   z-index: 1000;
 }
 
-.overlay h3{
+.overlay h3 {
   margin-bottom: 3.5rem;
 }
 
-.overlay p{
+.overlay p {
   margin-bottom: 3rem;
 }
 
-.overlay label{
+.overlay label {
   margin: 1rem;
 }
 
@@ -274,8 +292,8 @@ input[type="checkbox"]{
   padding: 1rem;
   border-radius: 18px;
   position: relative;
-  min-width: 200px; /*--*/
-  max-width: 90%; /* Menyesuaikan isi overlay */
+  min-width: 200px;
+  max-width: 90%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
@@ -293,7 +311,7 @@ input[type="checkbox"]{
 }
 
 .tombol-ok {
-  background-color: #cccccc; /* Disable warna by default */
+  background-color: #cccccc;
   color: white;
   border: none;
   padding: 0.5rem 1rem;

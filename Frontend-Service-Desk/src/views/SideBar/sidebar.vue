@@ -28,12 +28,16 @@ onMounted(() => {
   window.addEventListener('gambar-changed', () => {
     gambar.value = localStorage.getItem('src_gambar');
   });
+
   window.addEventListener('sudahLogin', () => {
     nama_depan.value = localStorage.getItem('nama_depan');
-    nama_belakang.value = ref(localStorage.getItem('nama_belakang'));
+    nama_belakang.value = localStorage.getItem('nama_belakang');
     gambar.value = localStorage.getItem('src_gambar');
   });
+  //buat close dropdown click di luar
+  document.addEventListener('click', handleClickOutside);
 });
+
 
 const tampilinOverlay = ref(false)
 
@@ -52,10 +56,6 @@ function handleClickOutside(event) {
     tampilinOverlay.value = false
   }
 }
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
@@ -99,12 +99,15 @@ if (role.value == 1) {
   menuItem.value = [
   { icon: '🏠', label: 'Beranda', to: '/Beranda-Pengelola' },
   { icon: '⚙️', label: 'Permintaan Baru', to: '/permintaanBaruPengelola' },
-  { icon: '📁', label: 'Pelayanan', to: '/pelayanan' },
+  { icon: '📁', label: 'Daftar Pelayanan', to: '/pelayanan' },
   { icon: '📁', label: 'Referensi', children: [ 
     { label: 'Lembaga/Organisasi', to: '/lembaga'},
     { label: "Jabatan", to: '/referensi/jabatan'},
     { label: "Status", to: '/referensi/status'},
-    { label: "Jenis Pelayanan", to: '/referensi/jenis-pelayanan'}
+    { label: "Jenis Pelayanan", to: '/referensi/jenis-pelayanan'},
+    { label: "Sub Jenis Pelayanan", to: '/referensi/sub-jenis-pelayanan'},
+    { label: "Tipe Permintaan", to: '/referensi/tipe-permintaan'},
+    { label: "Urgensi", to: '/referensi/urgensi'},
   ] },
   { icon: '📁', label: 'Pengguna', to: '/pengguna' },
 ];
@@ -153,7 +156,7 @@ if (role.value == 1) {
     </div>
 
     <!-- Tombol Toggle -->
-    <button class="tombol-toggle" @click="()=> {toggleSidebar(); toggleOverlay(); toggleOverlay();}">
+    <button class="tombol-toggle" @click="()=> {toggleSidebar(); toggleOverlay();}">
       ☰
     </button>
 
