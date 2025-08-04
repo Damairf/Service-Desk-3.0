@@ -191,7 +191,9 @@ function editStatus(status) {
             </tr> -->
             <tr v-for="(status, index) in paginatedItems" :key="index">
               <td>{{ status.id }}</td>
-              <td>{{ status.nama }}</td>
+              <td>
+                <span :class="['status', status.nama.toLowerCase()]">{{ status.nama }}</span>
+              </td>
               <td>{{ formatDate(status.tglPembuatan) }}</td>
               <td>
                 <div class="wrapper-aksiBtn">
