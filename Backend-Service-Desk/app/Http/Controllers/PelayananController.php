@@ -65,12 +65,35 @@ class PelayananController extends Controller
         return response()->json($pelayanans);
     }
 
-    public function getByID_Layanan(Request $request){
-        $pelayananId = $request->route('pelayananId');
-        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->with('User.user_organisasi', 'Jenis_Pelayanan', 'unit_pelayanan', 'teknis_pelayanan')->first();
+    public function getByID_Layanan(Request $request)
+{
+    $pelayananId = $request->route('pelayananId');
 
-        return response()->json($pelayanan);
-    }
+    $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)
+        ->with([
+            'User:user.ID_User,Nama_Depan,Nama_Belakang,ID_Organisasi',
+            'User.user_organisasi:ID_Organisasi,Nama_OPD',
+
+            'Jenis_Pelayanan:ID_Jenis_Pelayanan,Nama_Jenis_Pelayanan',
+
+            'unit_pelayanan:ID_User,Nama_Depan,Nama_Belakang',
+            'teknis_pelayanan:ID_User,Nama_Depan,Nama_Belakang',
+
+            'pelayanan_pesan' => function ($query) {
+                $query->select('ID_Pelayanan', 'ID_Pesan', 'Pesan', 'ID_User');
+            },
+            'pelayanan_pesan.pesan_user' => function ($query) {
+                $query->select('ID_User', 'Nama_Depan', 'Nama_Belakang', 'ID_Role');
+            },
+            'pelayanan_pesan.pesan_user.user_role' => function ($query) {
+                $query->select('ID_Role', 'Nama_Role');
+            }
+        ])
+        ->first();
+
+    return response()->json($pelayanan);
+}
+
 
     public function getByID_Pelayanan_Jenis_User($id)
     {
