@@ -33,6 +33,7 @@ const HasilPemenuhan_Path = ref(null)
 const src_HasilPemenuhan = ref(route.query.hasil_pemenuhan || '-')
 const src_HasilBA = ref(route.query.hasil_ba || '-')
 const src_HasilSLA = ref(route.query.hasil_sla || '-')
+const messages = ref([])
 
 const activeTab = ref('informasi')
 
@@ -228,14 +229,6 @@ const hoverRating = ref(0)
 const reviewText = ref('')
 const reviewSubmitted = ref(false)
 
-const messages = ref([
-{
-    text: "Halo, bagaimana saya bisa membantu?",
-    sender: "Admin",
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  }
-])
-
 // Fungsi untuk menangani perubahan tab (tanpa router navigation)
 const handleTabChange = (tab) => {
   activeTab.value = tab
@@ -254,6 +247,18 @@ watch(() => pelayananId.value, (newId) => {
 onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
+  }
+
+  // Event listener untuk tombol back browser
+  const handlePopState = () => {
+    router.push({ name: 'Riwayat' })
+  }
+  
+  window.addEventListener('popstate', handlePopState)
+  
+  // Cleanup event listener saat komponen unmount
+  return () => {
+    window.removeEventListener('popstate', handlePopState)
   }
 })
 </script>
