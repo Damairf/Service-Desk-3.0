@@ -87,26 +87,19 @@ Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
 Route::get('/pdf/{filename}', [PelayananController::class, 'getPdfUrl']);
 Route::put('/pelayanan/disposisi/{pelayananId}', [PelayananController::class, 'disposisi']);
 
-
-
 Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
-
-
-
-
 
 // endpoint unit pelaksana
 Route::get('/pesan/pengelola/{pelayananId}',[PesanController::class, 'PesanPengelola']);
-
 
 Route::get('/unit/pelayanan/',[PelayananController::class, 'getPelayananUnit']);
 Route::get('/pelayanan/allTeknis',[UserController::class, 'getAllTeknis']);
 Route::get('/unit/pelayanan/disposisi',[PelayananController::class, 'getDisposisiUnit']);
 
-
 // endpoint pelaksana teknis
 Route::get('/teknis/pelayanan/proses', [PelayananController::class, 'getPelayananTeknisNotDone']);
 Route::get('/teknis/pelayanan/selesai', [PelayananController::class, 'getPelayananTeknisDone']);
+Route::get('/pelayanan/disposisi/teknis', [PelayananController::class, 'getDisposisiPelayananIDTeknis']);
 
 Route::put('/pelayanan/tambah/hasil/{pelayananId}',[PelayananController::class, 'putLaporan_Hasil']);
 Route::get('/status/pelayanan/{statusId}',[StatusController::class, 'findOne_Status_Pelayanan']);

@@ -23,6 +23,7 @@ const SuratDinas_Path = ref(null)
 const Lampiran_Path = ref(null)
 const activeTab = ref('informasi')
 const pelaksana = ref([])
+const teknis = ref([])
 const idTeknisTerpilih = ref('')
 const pesanUnit = ref('')
 const status = ref(Number(''))
@@ -121,7 +122,7 @@ const fetchPelayananData = async () => {
     )
     stepsStatus.value = progressData.map(item => item.Is_Done)
 
-    // Set pelaksana data
+    // Set teknis data
     pelaksana.value = unitResponse.data.map(item => ({
       id_user: item.ID_User,
       nama_depan: item.Nama_Depan,
