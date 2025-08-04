@@ -476,11 +476,11 @@ onMounted(() => {
                   <textarea class="input" :value="pelayananData.pesanPengelola" placeholder="Alasan Penolakan" rows="5" readonly></textarea>
                 </div>
               </div>
-              <div v-if="progress">
+              <div v-if="progress" class="nama-pelaksana">
                 <strong>Nama Unit Pelaksana</strong>
                 <div>{{ nama_depanUnit + ' ' + nama_belakangUnit }}</div>
               </div>
-              <div v-if="progress">
+              <div v-if="progress" class="nama-pelaksana">
                 <strong>Nama Pelaksana Teknis</strong>
                 <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
               </div>
@@ -792,6 +792,10 @@ onMounted(() => {
   border-radius: 12px;
   cursor: pointer;
   margin-bottom: 1rem;
+}
+
+.nama-pelaksana {
+  margin-top: 1rem;
 }
 
 .note {

@@ -421,6 +421,8 @@ nav {
   text-decoration: none;
   color: white;
   transition: all 0.3s ease;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .menu-item:hover {

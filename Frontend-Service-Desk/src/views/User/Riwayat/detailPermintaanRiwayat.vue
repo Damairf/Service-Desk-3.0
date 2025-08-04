@@ -700,7 +700,7 @@ onMounted(() => {
   padding: 0.75rem;
   resize: vertical;
   margin-bottom: 1rem;
-  background-color: white;
+  background-color: #e6e6e6;
   color: black;
   font-family: poppins, sans-serif;
 }
