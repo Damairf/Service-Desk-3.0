@@ -158,10 +158,10 @@ watch(search, () => {
             <td>{{ formatDate(item.tanggal) }}</td>
             <td>{{ item.teknis }}</td>
             <td>
-              <button class="detail-button" @click="lihatDetail(item)">Lihat</button>
+              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
             </td>
             <td>
-              <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
+              <button class="detail-button" @click="lihatDetail(item)">Lihat</button>
             </td>
           </tr>
         </tbody>
