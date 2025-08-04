@@ -284,6 +284,7 @@ async function handleSelesai() {
   formData.append('_method', 'PUT') // spoofing Laravel agar dianggap PUT
   formData.append('status', 4)
   formData.append('Is_Done', true)
+  formData.append('Pesan_Revisi', '')
 
   try {
     const token = localStorage.getItem('Token')
