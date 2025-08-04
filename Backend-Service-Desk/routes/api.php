@@ -100,6 +100,7 @@ Route::get('/unit/pelayanan/disposisi',[PelayananController::class, 'getDisposis
 Route::get('/teknis/pelayanan/proses', [PelayananController::class, 'getPelayananTeknisNotDone']);
 Route::get('/teknis/pelayanan/selesai', [PelayananController::class, 'getPelayananTeknisDone']);
 Route::get('/pelayanan/disposisi/teknis', [PelayananController::class, 'getDisposisiPelayananIDTeknis']);
+Route::get('/pelayanan/hasil/teknis', [PelayananController::class, 'getHasilPelayananIDTeknis']);
 
 Route::put('/pelayanan/tambah/hasil/{pelayananId}',[PelayananController::class, 'putLaporan_Hasil']);
 Route::get('/status/pelayanan/{statusId}',[StatusController::class, 'findOne_Status_Pelayanan']);
