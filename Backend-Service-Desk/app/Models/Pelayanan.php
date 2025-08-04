@@ -30,6 +30,7 @@ class Pelayanan extends Model
         'Pesan_Pengelola',
         'ID_Teknis',
         'Pesan_Unit',
+        'Pesan_Revisi',
         'Is_Done',
         'BA_Path',
         'SLA_Path',

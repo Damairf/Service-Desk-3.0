@@ -13,8 +13,8 @@ const stepsStatus = ref([])
 const perihal = ref('') 
 const tanggal = ref('')
 const nama_pelapor = ref('')
-const nama_depanPengaju = ref('') 
-const nama_belakangPengaju = ref('')
+const nama_depanUnit = ref('') 
+const nama_belakangUnit = ref('')
 const nama_depanTeknis = ref('') 
 const nama_belakangTeknis = ref('')
 const jenis_pelayanan = ref('')
@@ -27,6 +27,7 @@ const pelaksana = ref([])
 const teknis = ref([])
 const idTeknisTerpilih = ref('')
 const pesanUnit = ref('')
+const pesanRevisi = ref('')
 const status = ref(Number(''))
 
 const surat_dinas = ref('')
@@ -64,8 +65,12 @@ const pelayananData = computed(() => ({
   src_HasilPemenuhan: src_HasilPemenuhan.value,
   src_HasilBA: src_HasilBA.value,
   src_HasilSLA: src_HasilSLA.value,
+  pesanRevisi: pesanRevisi.value,
+  pesanUnit: pesanUnit.value,
   jenis_pelayanan: jenis_pelayanan.value,
   nama_pelapor: nama_pelapor.value,
+  nama_depanUnit: nama_depanUnit.value,
+  nama_belakangUnit: nama_belakangUnit.value,
   perihal: perihal.value,
   tanggal: tanggal.value,
   steps: steps.value,
@@ -80,6 +85,8 @@ const fetchPelayananData = async () => {
     const cached = dataCache.value
     deskripsi.value = cached.deskripsi
     organisasi.value = cached.organisasi
+    pesanRevisi.value = cached.pesanRevisi
+    pesanUnit.value = cached.pesanUnit
     surat_dinas.value = cached.surat_dinas
     lampiran.value = cached.lampiran
     src_HasilPemenuhan.value = cached.src_HasilPemenuhan
@@ -87,6 +94,8 @@ const fetchPelayananData = async () => {
     src_HasilSLA.value = cached.src_HasilSLA
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_pelapor.value = cached.nama_pelapor
+    nama_depanUnit.value = cached.nama_depanUnit
+    nama_belakangUnit.value = cached.nama_belakangUnit
     perihal.value = cached.perihal
     tanggal.value = cached.tanggal
     steps.value = cached.steps
@@ -114,6 +123,8 @@ const fetchPelayananData = async () => {
     const pelayananData = pelayananResponse.data
     deskripsi.value = pelayananData.Deskripsi
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
+    pesanRevisi.value = pelayananData.Pesan_Revisi
+    pesanUnit.value = pelayananData.Pesan_Unit
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
     src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path
@@ -123,6 +134,8 @@ const fetchPelayananData = async () => {
     nama_pelapor.value = pelayananData.Nama_Pelapor
     nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan
     nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang
+    nama_depanUnit.value = pelayananData.unit_pelayanan?.Nama_Depan || 'Belum'
+    nama_belakangUnit.value = pelayananData.unit_pelayanan?.Nama_Belakang || 'Tersedia'
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
     status.value = pelayananData.ID_Status
@@ -139,10 +152,14 @@ const fetchPelayananData = async () => {
       id: pelayananId.value,
       deskripsi: deskripsi.value,
       organisasi: organisasi.value,
+      pesanRevisi: pesanRevisi.value,
+      pesanUnit: pesanUnit.value,
       surat_dinas: surat_dinas.value,
       lampiran: lampiran.value,
       jenis_pelayanan: jenis_pelayanan.value,
       nama_pelapor: nama_pelapor.value,
+      nama_depanUnit: nama_depanUnit.value,
+      nama_belakangUnit: nama_belakangUnit.value,
       perihal: perihal.value,
       tanggal: tanggal.value,
       steps: steps.value,
@@ -372,6 +389,10 @@ onMounted(() => {
                   </a>
                 </div>
               </div>
+              <strong>Pesan dari {{ nama_depanUnit + ' ' + nama_belakangUnit }}</strong>
+              <div class="textarea-row">
+                <textarea class="input" :value="pesanUnit" placeholder="Pesan dari unit" rows="5" readonly></textarea>
+              </div>
             </div>
 
             <div class="chat-card">
@@ -390,6 +411,10 @@ onMounted(() => {
               <button class="send-btn" @click="addMessage">Kirim</button>
               <div class="info-row-hasil">
                 <template v-if="!src_HasilPemenuhan && !src_HasilBA && !src_HasilSLA">
+                  <strong>Revisi</strong>
+                  <div class="textarea-row">
+                    <textarea class="input" :value="pesanRevisi" placeholder="Tidak ada revisi" rows="5" readonly></textarea>
+                  </div>
                   <strong>Upload Hasil Pemenuhan</strong>
                   <div class="jarak-hasil">
                     <input type="file" accept=".pdf" class="upload-hasil" @change="(e) => handleFileChange(e, 'hasil_pemenuhan')">

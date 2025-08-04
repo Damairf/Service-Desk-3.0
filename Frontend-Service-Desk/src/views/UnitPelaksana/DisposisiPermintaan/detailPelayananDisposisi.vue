@@ -214,11 +214,6 @@ const namaFileHasilSLA = computed(() => {
   return `${tanggal}_${waktu}_HasilSLA.pdf`
 })
 
-const rating = ref(0)
-const hoverRating = ref(0)
-const reviewText = ref('')
-const reviewSubmitted = ref(false)
-
 const messages = ref([
 {
     text: "Halo, bagaimana saya bisa membantu?",
@@ -421,25 +416,30 @@ onMounted(() => {
                   </div>
                 </div>
               </div>
+              <div class="tinjau-card" v-if="isDone && status !== 5 && status !== 6">
+                <h3>Tinjau Pelayanan</h3>
+                <div class="wrapper-btn">
+                  <button class="btn-selesai" @click="handlePilihan('Selesai')">Selesai</button>
+                  <button class="btn-revisi" @click="handlePilihan('Revisi')">Revisi</button>
+                </div>
+                <div class="wrapper-selesai" v-if="pilihan == 'Selesai'">
+                  <h4>Keterangan Selesai</h4>
+                  <textarea class="input" v-model="pesanUnit"></textarea>
+                  <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
+                </div>
+                <div class="wrapper-revisi" v-if="pilihan == 'Revisi'">
+                  <h4>Alasan Butuh Direvisi</h4>
+                  <textarea class="input" v-model="pesanRevisi"></textarea>
+                  <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
+                </div>
+              </div>
             </div>
-            <div class="tinjau-card" v-if="isDone && status !== 5 && status !== 6">
-        <h3>Tinjau Pelayanan</h3>
-        <div class="wrapper-btn">
-          <button class="btn-selesai" @click="handlePilihan('Selesai')">Selesai</button>
-          <button class="btn-revisi" @click="handlePilihan('Revisi')">Revisi</button>
-        </div>
-        <div class="wrapper-selesai" v-if="pilihan == 'Selesai'">
-          <h4>Keterangan Selesai</h4>
-          <textarea class="input" v-model="pesanUnit"></textarea>
-          <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
-        </div>
-        <div class="wrapper-revisi" v-if="pilihan == 'Revisi'">
-          <h4>Alasan Butuh Direvisi</h4>
-          <textarea class="input" v-model="pesanRevisi"></textarea>
-          <button class="btn-confirm" @click="handleSelesai">Konfirmasi</button>
-        </div>
-      </div>
-      
+            <div v-else>
+              <strong>Revisi</strong>
+              <div class="textarea-row">
+              <textarea class="input" :value="pesanRevisi" placeholder="Tidak ada revisi" rows="5" readonly></textarea>
+              </div>
+            </div>
           </div> <!-- end chat-card -->
         </div> <!-- end layout-container -->
       </div> <!-- end informasi tab -->
