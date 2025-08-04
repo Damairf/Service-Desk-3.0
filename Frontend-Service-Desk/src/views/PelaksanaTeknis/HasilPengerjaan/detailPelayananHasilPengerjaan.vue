@@ -51,6 +51,11 @@ const isDataLoaded = ref(false)
 // Cache untuk mencegah API calls berulang
 const dataCache = ref(null)
 
+const pilihan = ref('')
+function handlePilihan(klik){
+  pilihan.value = klik
+}
+
 // Computed properties untuk optimasi
 const pelayananData = computed(() => ({
   deskripsi: deskripsi.value,
@@ -230,73 +235,6 @@ const addMessage = () => {
   }
 }
 
-function handleFileChange(e, field) {
-  const file = e.target.files[0]
-  const maxSize = 8 * 1024 * 1024 // 8MB
-
-  if (!file) return
-
-  if (file.type !== 'application/pdf') {
-    alert('❌ Hanya file PDF yang diperbolehkan.')
-    e.target.value = ''
-    return
-  }
-
-  if (file.size > maxSize) {
-    alert('❌ Ukuran file melebihi 8MB.')
-    e.target.value = ''
-    return
-  }
-
-  switch (field) {
-    case 'hasil_pemenuhan':
-      filePemenuhan.value = file
-      break
-    case 'hasil_BA':
-      fileBA.value = file
-      break
-    case 'hasil_SLA':
-      fileSLA.value = file
-      break
-    default:
-      alert('Field tidak dikenal.')
-  }
-}
-
-async function handleSelesai() {
-  const formData = new FormData()
-
-  if (filePemenuhan.value) {
-    formData.append('hasil_pemenuhan', filePemenuhan.value)
-  }
-  if (fileBA.value) {
-    formData.append('hasil_BA', fileBA.value)
-  }
-  if (fileSLA.value) {
-    formData.append('hasil_SLA', fileSLA.value)
-  }
-
-  formData.append('_method', 'PUT') // spoofing Laravel agar dianggap PUT
-  formData.append('status', 4)
-  formData.append('Is_Done', true)
-  formData.append('Pesan_Revisi', '')
-
-  try {
-    const token = localStorage.getItem('Token')
-    await axios.post(`/api/pelayanan/tambah/hasil/${pelayananId.value}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: 'Bearer ' + token
-      }
-    })
-    router.push('/hasilPengerjaan')
-  } catch (error) {
-    alert('Gagal mengirim data: ' + (error.response?.data?.message || error.message))
-    console.error(error)
-  }
-}
-
-
 // Fungsi untuk menangani perubahan tab (tanpa router navigation)
 const handleTabChange = (tab) => {
   activeTab.value = tab
@@ -406,47 +344,18 @@ onMounted(() => {
               <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
               <button class="send-btn" @click="addMessage">Kirim</button>
               <div class="info-row-hasil">
-                <template v-if="!src_HasilPemenuhan && !src_HasilBA && !src_HasilSLA">
-                  <strong>Revisi</strong>
-                  <div class="textarea-row">
-                    <textarea class="input" :value="pesanRevisi" placeholder="Tidak ada revisi" rows="5" readonly></textarea>
-                  </div>
-                  <strong>Upload Hasil Pemenuhan</strong>
-                  <div class="jarak-hasil">
-                    <input type="file" accept=".pdf" class="upload-hasil" @change="(e) => handleFileChange(e, 'hasil_pemenuhan')">
-                    <p class="note">(Hanya PDF, maksimum 8MB)</p>
-                  </div>
-                  <strong>Upload Hasil BA</strong>
-                  <div class="jarak-hasil">
-                    <input type="file" accept=".pdf" class="upload-hasil" @change="(e) => handleFileChange(e, 'hasil_BA')">
-                    <p class="note">(Hanya PDF, maksimum 8MB)</p>
-                  </div>
-                  <strong>Upload Hasil SLA</strong>
-                  <div class="jarak-hasil">
-                    <input type="file" accept=".pdf" class="upload-hasil" @change="(e) => handleFileChange(e, 'hasil_SLA')">
-                    <p class="note">(Hanya PDF, maksimum 8MB)</p>
-                  </div>
-                  <div class="tinjau-card">
-                    <h3>Kirim Hasil Pelayanan</h3>
-                    <div class="wrapper-btn">
-                      <button class="btn-selesai" @click="handleSelesai">Kirim</button>
-                    </div>
-                  </div>
-                </template>
-                <template v-else>
-                  <strong>Hasil Pemenuhan</strong>
-                  <div v-if="src_HasilPemenuhan">
-                    <a :href="`/files${src_HasilPemenuhan}`" target="_blank">{{ namaFileHasilPemenuhan }}</a>
-                  </div>
-                  <strong>Hasil BA</strong>
-                  <div v-if="src_HasilBA">
-                    <a :href="`/files${src_HasilBA}`" target="_blank">{{ namaFileHasilBA }}</a>
-                  </div>
-                  <strong>Hasil SLA</strong>
-                  <div v-if="src_HasilSLA">
-                    <a :href="`/files${src_HasilSLA}`" target="_blank">{{ namaFileHasilSLA }}</a>
-                  </div>
-                </template>
+                <strong>Hasil Pemenuhan</strong>
+                <div v-if="src_HasilPemenuhan">
+                  <a :href="`/files${src_HasilPemenuhan}`" target="_blank">{{ namaFileHasilPemenuhan }}</a>
+                </div>
+                <strong>Hasil BA</strong>
+                <div v-if="src_HasilBA">
+                  <a :href="`/files${src_HasilBA}`" target="_blank">{{ namaFileHasilBA }}</a>
+                </div>
+                <strong>Hasil SLA</strong>
+                <div v-if="src_HasilSLA">
+                  <a :href="`/files${src_HasilSLA}`" target="_blank">{{ namaFileHasilSLA }}</a>
+                </div>
               </div>
             </div>
           </div>

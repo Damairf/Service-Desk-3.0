@@ -97,6 +97,7 @@ import detailPelayananDisposisiTeknis from '../views/PelaksanaTeknis/DisposisiTe
 
 // Hasil Pengerjaan
 import hasilPengerjaan from '../views/PelaksanaTeknis/HasilPengerjaan/hasilPengerjaan.vue'
+import detailPelayananHasilPengerjaan from '../views/PelaksanaTeknis/HasilPengerjaan/detailPelayananHasilPengerjaan.vue'
 
 //===============KEPALA DINAS===============
 import berandaKD from '../views/KepalaDinas/BerandaKD/BerandaKD.vue'
@@ -208,6 +209,7 @@ const routes = [
 
   // Hasil Pengerjaan
   { path: '/hasilPengerjaan', name: 'HasilPengerjaan', component: hasilPengerjaan, meta: {allowedRoles: [4]}},
+  { path: '/detailPelayananHasilPengerjaan', name: 'DetailHasilPengerjaan', component: detailPelayananHasilPengerjaan, meta: {allowedRoles: [4]}},
 
   //===============KEPALA DINAS===============
   { path: '/berandaKD', name: 'BerandaKepalaDinas', component: berandaKD, meta: {allowedRoles: [5]}},
