@@ -25,12 +25,12 @@ function generateNewCaptcha() {
 }
 
 function login() {
-  const answer = parseInt(userAnswer.value)
-  if (isNaN(answer) || answer !== correctAnswer.value || userAnswer.value.trim() === '') {
-    alert('CAPTCHA salah. Silakan coba lagi.')
-    generateNewCaptcha()
-    return
-  }
+  // const answer = parseInt(userAnswer.value)
+  // if (isNaN(answer) || answer !== correctAnswer.value || userAnswer.value.trim() === '') {
+  //   alert('CAPTCHA salah. Silakan coba lagi.')
+  //   generateNewCaptcha()
+  //   return
+  // }
 
   axios
     .post('/api/user/login', {

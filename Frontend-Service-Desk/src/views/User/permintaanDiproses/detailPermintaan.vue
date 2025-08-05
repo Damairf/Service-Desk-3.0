@@ -101,7 +101,8 @@ const fetchPelayananData = async () => {
       id_user: pesan.ID_User,
       text: pesan.Pesan,
       sender: `${pesan.pesan_user.Nama_Depan} ${pesan.pesan_user.Nama_Belakang} - ${pesan.pesan_user.user_role.Nama_Role}`,
-      time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      dokumen_path:pesan.Dokumen_Path
     }))
 
 
@@ -157,32 +158,55 @@ const namaFileLampiran = computed(() => {
   return `${tanggal}_${waktu}_Lampiran.pdf`
 })
 
-
+const dokumen = ref(null)
 const newMessage = ref('')
-const addMessage = () => {
-  if (newMessage.value.trim()) {
-    const pesanUser = {
+const fileInput = ref(null);
+
+
+// Cek ekstensi file apakah gambar
+const isImage = (path) => {
+  return /\.(jpg|jpeg|png)$/i.test(path);
+};
+
+const handleFileUpload = (event) => {
+  dokumen.value = event.target.files[0];
+};
+
+const addMessage = async () => {
+  if (!newMessage.value && !dokumen.value) return
+
+  const formData = new FormData()
+  formData.append('ID_User', userId.value)
+  formData.append('Pesan', newMessage.value)
+  if (dokumen.value) {
+    formData.append('Dokumen_Path', dokumen.value)
+  }
+
+  const token = localStorage.getItem('Token')
+
+  try {
+    const res = await axios.post(`/api/pesan/${pelayananId.value}`, formData, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+
+    messages.value.push({
       id_user: userId.value,
       text: newMessage.value,
+      dokumen_path: res.data.dokumen, 
       sender: `${localStorage.getItem('nama_depan')} ${localStorage.getItem('nama_belakang')} - ${localStorage.getItem('nama_role')}`,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }
-
-    // Tambahkan ke UI dulu
-    messages.value.push(pesanUser)
-
-    // Simpan ke server 
-    const payload = { Pesan: newMessage.value }
-    const token = localStorage.getItem('Token')
-
-    axios.post(`/api/pesan/${pelayananId.value}`, payload, {
-      headers: {
-        Authorization: 'Bearer ' + token
-      }
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     })
+
     newMessage.value = ''
+    dokumen.value = null
+  } catch (error) {
+    console.error('Gagal mengirim pesan:', error)
   }
 }
+
 
 
 // Fungsi untuk menangani perubahan tab (tanpa router navigation)
@@ -292,11 +316,35 @@ onMounted(() => {
               >
                 <strong class="message-text">{{ message.sender }}</strong>  
                 <div class="message-text">{{ message.text }}</div>
+                <div v-if="message.dokumen_path" class="message-doc">
+                  <template v-if="isImage(message.dokumen_path)">
+                    <img :src="'/files/' + message.dokumen_path" alt="dokumen" class="message-image" />
+                  </template>
+                  <template v-else>
+                    <a :href="'/files/' + message.dokumen_path" target="_blank" class="message-link">📎 Lihat Dokumen</a>
+                  </template>
+                </div>
                 <div class="message-time">{{ message.time }}</div>
               </div>
             </div>
-            <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
-            <button class="send-btn" @click="addMessage">Kirim</button>
+            <div class="chat-input">
+              <label for="file-upload" class="upload-btn">+</label>
+                <input
+                  type="file"
+                  id="file-upload"
+                  ref="fileInput"
+                  @change="handleFileUpload"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  style="display: none;"
+                />
+                <textarea
+                  v-model="newMessage"
+                  class="message"
+                  placeholder="Pesan"
+                  @keyup.enter="addMessage"
+                ></textarea>
+              <button class="send-btn" @click="addMessage">Kirim</button>
+            </div>
             <div class="info-row-PelaksanaTeknis">
               <strong>Nama Pelaksana Teknis:</strong>
               <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
@@ -342,6 +390,37 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.upload-btn {
+  display: inline-block;
+  background-color: #ddd;
+  padding: 8px 12px;
+  margin-right: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.message-image {
+  max-width: 200px;
+  max-height: 200px;
+  margin-top: 8px;
+  border-radius: 8px;
+}
+
+.message-link {
+  color: #007bff;
+  text-decoration: underline;
+  display: inline-block;
+  margin-top: 8px;
+}
+
+
+.message-doc {
+  margin-top: 8px;
+}
+
+
 .container {
   width: 100%;
   padding: 24px;

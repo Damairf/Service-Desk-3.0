@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ID_User')->nullable(false);
             $table->string('ID_Pelayanan', 10)->nullable(false);
             $table->string('Pesan')->nullable(false);
+            $table->string('Dokumen_Path')->nullable(true);
             $table->timestamps();
 
             $table->foreign('ID_User')->references('ID_User')->on('user');

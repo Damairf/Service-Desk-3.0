@@ -11,7 +11,7 @@ class Pesan extends Model
 {
     protected $table = 'pesan';
     protected $primaryKey = 'ID_Pesan';
-    protected $fillable = ['ID_User', 'ID_Pelayanan','Pesan'];
+    protected $fillable = ['ID_User', 'ID_Pelayanan','Pesan', 'Dokumen_Path'];
 
     public function pesan_user(): BelongsTo{
         return $this->belongsTo(User::class, 'ID_User'); 
