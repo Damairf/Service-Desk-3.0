@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -41,6 +42,19 @@ class AuthController extends Controller
                 $query->select('ID_Role', 'Nama_Role');
             }
         ])->where("ID_User", $user->ID_User)->first();
+
+        $recaptchaToken = $request->input('recaptcha_token');
+        $secretKey = env('RECAPTCHA_SECRET');
+
+    $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+        'secret' => $secretKey,
+        'response' => $recaptchaToken
+    ]);
+
+    $result = $response->json();
+    if (!$result['success'] || $result['score'] < 0.5) {
+        return response()->json(['message' => 'reCAPTCHA gagal, terdeteksi aktivitas mencurigakan'], 400);
+    }
 
 
         return response([

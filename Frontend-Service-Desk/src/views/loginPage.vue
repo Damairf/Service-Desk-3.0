@@ -1,98 +1,74 @@
-```vue
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { useReCaptcha } from 'vue-recaptcha-v3'
 
 const router = useRouter()
+const { executeRecaptcha } = useReCaptcha()
 
 const NIP = ref('')
 const Password = ref('')
-const userAnswer = ref('')
 const errorMessage = ref('')
 
-// Generate random math problem
-const num1 = ref(Math.floor(Math.random() * 10) + 1) // Random number 1-10
-const num2 = ref(Math.floor(Math.random() * 10) + 1) // Random number 1-10
-const operator = ref('+') // Can extend to '-' or '*' later
-const correctAnswer = computed(() => num1.value + num2.value)
+async function login() {
+  if (!NIP.value || !Password.value) {
+    errorMessage.value = 'Harap isi NIP dan Password.'
+    return
+  }
 
-function generateNewCaptcha() {
-  num1.value = Math.floor(Math.random() * 10) + 1
-  num2.value = Math.floor(Math.random() * 10) + 1
-  userAnswer.value = ''
-  errorMessage.value = ''
-}
+  // Jalankan reCAPTCHA v3
+  const tokenRecaptcha = await executeRecaptcha('login')
 
-function login() {
-  // const answer = parseInt(userAnswer.value)
-  // if (isNaN(answer) || answer !== correctAnswer.value || userAnswer.value.trim() === '') {
-  //   alert('CAPTCHA salah. Silakan coba lagi.')
-  //   generateNewCaptcha()
-  //   return
-  // }
+  axios.post('/api/user/login', {
+    NIP: NIP.value,
+    Password: Password.value,
+    recaptcha_token: tokenRecaptcha // <-- kirim token ke backend
+  })
+  .then((response) => {
+    const token = response.data.token
+    const user = response.data.data_user
 
-  axios
-    .post('/api/user/login', {
-      NIP: NIP.value,
-      Password: Password.value
-    })
-    .then(function (response) {
-      const token = response.data.token
-      const user = response.data.data_user
+    localStorage.setItem('Token', token)
+    localStorage.setItem('user_id', user.ID_User)
+    localStorage.setItem('nama_depan', user.Nama_Depan)
+    localStorage.setItem('nama_belakang', user.Nama_Belakang)
+    localStorage.setItem('src_gambar', user.Gambar_Path)
+    localStorage.setItem('id_role', user.ID_Role)
+    localStorage.setItem('nama_role', user.user_role.Nama_Role)
 
-      localStorage.setItem('Token', token)
-      localStorage.setItem('user_id', user.ID_User)
-      localStorage.setItem('nama_depan', user.Nama_Depan)
-      localStorage.setItem('nama_belakang', user.Nama_Belakang)
-      localStorage.setItem('src_gambar', user.Gambar_Path)
-      localStorage.setItem('id_role', user.ID_Role)
-      localStorage.setItem('nama_role', user.user_role.Nama_Role)
-
-      const role = user.ID_Role
-
-      if (role === 1) {
-        router.push('/beranda')
-      } else if (role === 2) {
-        router.push('/beranda-Pengelola')
-      } else if (role === 3) {
-        router.push('/berandaUnit')
-      } else if (role === 4) {
-        router.push('/berandaTeknis')
-      } else if (role === 5) {
-        router.push('/berandaKD')
-      }
-    })
-    .catch(function (error) {
-      if (error.response && error.response.status === 401) {
-        errorMessage.value = 'Password salah!'
-      } else if (error.response && error.response.status === 404) {
-        errorMessage.value = 'NIP tidak ditemukan!'
-      } else {
-        errorMessage.value = 'Terjadi kesalahan server.'
-      }
-    })
+    const role = user.ID_Role
+    if (role === 1) router.push('/beranda')
+    else if (role === 2) router.push('/beranda-Pengelola')
+    else if (role === 3) router.push('/berandaUnit')
+    else if (role === 4) router.push('/berandaTeknis')
+    else if (role === 5) router.push('/berandaKD')
+  })
+  .catch((error) => {
+    if (error.response && error.response.status === 401) {
+      errorMessage.value = 'Password salah!'
+    } else if (error.response && error.response.status === 404) {
+      errorMessage.value = 'NIP tidak ditemukan!'
+    } else {
+      errorMessage.value = 'Terjadi kesalahan server.'
+    }
+  })
 }
 
 onMounted(() => {
-  generateNewCaptcha() // Initialize CAPTCHA on mount
-
   const token = localStorage.getItem('Token')
   const role = parseInt(localStorage.getItem('id_role'))
 
-  if (token && role === 1) {
-    router.push('/beranda')
-  } else if (token && role === 2) {
-    router.push('/beranda-Pengelola')
-  } else if (token && role === 3) {
-    router.push('/BerandaUnit')
-  } else if (token && role === 4) {
-    router.push('/berandaTeknis')
-  } else if (token && role === 5) {
-    router.push('/berandaKD')
+  if (token) {
+    if (role === 1) router.push('/beranda')
+    else if (role === 2) router.push('/beranda-Pengelola')
+    else if (role === 3) router.push('/BerandaUnit')
+    else if (role === 4) router.push('/berandaTeknis')
+    else if (role === 5) router.push('/berandaKD')
   }
 })
 </script>
+
 
 <template>
   <div class="container">
@@ -106,11 +82,6 @@ onMounted(() => {
         <h2 class="loginTitle">Login</h2>
         <input class="placeholderLgn" v-model="NIP" type="text" placeholder="NIP" />
         <input class="placeholderLgn" v-model="Password" @keyup.enter="login" type="password" placeholder="Password" />
-        <div class="captcha-container">
-          <p class="captcha-text">Berapa {{ num1 }} {{ operator }} {{ num2 }}? <input v-model="userAnswer" type="number" class="captcha-input" placeholder="Jawaban" /></p>
-          <button class="refresh-btn" @click="generateNewCaptcha">Refresh CAPTCHA</button>
-        </div>
-        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
         <button class="login" @click="login">Login</button>
       </div>
     </div>
@@ -168,7 +139,7 @@ onMounted(() => {
   color: black;
   text-align: center;
   margin-bottom: 45px;
-  margin-top: 40px;
+  margin-top: 100px;
   font-size: 48px;
   font-weight: bold;
 }
