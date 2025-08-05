@@ -11,7 +11,13 @@ const daftarInputPelayanan = ref([
   { namaYangDipilih: '', dropdownTerbuka: false }
 ])
 
+// apus pelayanan
+function hapuskontakInput(urutanInput) {
+    daftarInputPelayanan.value.splice(urutanInput, 1)
+}
+
 // Daftar langkah pelayanan yang tersedia untuk dipilih
+// nanti ambil dari backend ato gmn idk
 const daftarLangkahPelayanan = ref([
   'Pendaftaran', 'Verifikasi Dokumen', 'Pemeriksaan', 'Pembayaran', 'Pengambilan'
 ])
@@ -151,12 +157,18 @@ function handleReset() {
 
         <div v-for="(inputPelayanan, urutanInput) in daftarInputPelayanan" :key="urutanInput" class="form-group dropdown-container">
           <label>Langkah Pelayanan<span class="red">*</span></label>
+          <div class="form-Layanan">
           <input
             v-model="inputPelayanan.namaYangDipilih"
             @focus="inputPelayanan.dropdownTerbuka = true"
             @blur="tutupDropdownSetelahFokusHilang(urutanInput)"
             placeholder="Ketik atau pilih langkah pelayanan..."
           />
+          <button type="button" class="hapus-btn" 
+          @click="hapuskontakInput(urutanInput)" v-if="daftarInputPelayanan.length > 1 ">
+            -
+          </button>
+          </div>
           <ul v-if="inputPelayanan.dropdownTerbuka" class="dropdown">
             <li
               v-for="(namaLangkah, urutanLangkah) in cariLangkahYangCocok(inputPelayanan.namaYangDipilih)"
@@ -172,7 +184,7 @@ function handleReset() {
 
         <div class="form-actions">
           <button type="submit" class="btn simpan">Simpan</button>
-          <button type="button" class="btn hapus" @click="handleReset">Hapus</button>
+          <button type="button" class="btn hapus" @click="handleReset">Reset</button>
         </div>
       </form>
     </div>
@@ -230,13 +242,13 @@ function handleReset() {
   display: flex;
   flex-direction: column;
 }
-.form-group label {
+.form-group label, .form-Layanan label {
   font-weight: 500;
   margin-bottom: 0.4rem;
   color: #222;
 }
-.form-group input,
-.form-group select {
+.form-group input, .form-group select, 
+.form-Layanan input, .form-Layanan select {
   padding: 0.6rem 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -244,12 +256,19 @@ function handleReset() {
   background: #fafafa;
   transition: border 0.2s;
   color: black;
+  flex: 1;
 }
-.form-group input:focus,
-.form-group select:focus {
+.form-group input:focus, .form-group select:focus,
+.form-Layanan input:focus, .form-Layanan select:focus {
   border: 1.5px solid #2196f3;
   outline: none;
 }
+/* buat layanan */
+.form-Layanan {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+} 
 .dropdown-container {
   position: relative;
 }
@@ -310,5 +329,25 @@ function handleReset() {
 }
 .btn.tambah:hover {
   background: #388e3c;
+}
+.hapus-btn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+  font-size: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.hapus-btn:hover {
+  background-color: #dc2626;
+  transform: scale(1.1);
 }
 </style>
