@@ -22,5 +22,14 @@ class JenisPelayananController extends Controller
 
         return response()->json($jnspelayananId);
     }
-    
+    public function postJenis_Pelayanan(Request $request){
+        $Nama_Jenis_Pelayanan = $request->Nama_Jenis_Pelayanan;
+        $Persyaratan = $request->Persyaratan;
+
+        $newJenisPelayanan = JenisPelayanan::create([
+            'Nama_Jenis_Pelayanan' => $Nama_Jenis_Pelayanan,
+            'Persyaratan' => $Persyaratan,
+        ]);
+        return response(["message" => "Jenis Pelayanan ditambahkan", "data" => $newJenisPelayanan]);
+    }
 }

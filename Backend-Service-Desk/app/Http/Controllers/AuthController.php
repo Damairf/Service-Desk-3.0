@@ -11,13 +11,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-     public function login(Request $request){
+    public function login(Request $request){
 
         $NIP = $request->NIP;
         $Password = $request->Password;
 
         $user = User::where('NIP', $NIP)->first();
-        
 
             if(!$user){
                 return response("NIP tidak ditemukan", 404);
@@ -26,7 +25,6 @@ class AuthController extends Controller
         if(!Hash::check($Password, $user->Password)){
             return response("Password salah", 401);
         }
-       
 
         $key = env("JWT_SECRET");
         $payload = [
@@ -43,25 +41,31 @@ class AuthController extends Controller
             }
         ])->where("ID_User", $user->ID_User)->first();
 
+        // untuk debugging (hapus jika production)
+        if (!$request->has('recaptcha_token')) {
+            // Skip reCAPTCHA verification
+            return response([
+                "token" => $token,
+                "data_user" => $datauser,
+                "bypass_recaptcha" => true,
+            ]);
+        }
+
         $recaptchaToken = $request->input('recaptcha_token');
         $secretKey = env('RECAPTCHA_SECRET');
 
-    $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-        'secret' => $secretKey,
-        'response' => $recaptchaToken
-    ]);
-
-    $result = $response->json();
-    if (!$result['success'] || $result['score'] < 0.5) {
-        return response()->json(['message' => 'reCAPTCHA gagal, terdeteksi aktivitas mencurigakan'], 400);
-    }
-
-
-        return response([
-            "token" => $token,
-            "data_user" => $datauser,
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => $secretKey,
+            'response' => $recaptchaToken
         ]);
 
+        $result = $response->json();
+        if (!$result['success'] || $result['score'] < 0.5) {
+            return response()->json(['message' => 'reCAPTCHA gagal, terdeteksi aktivitas mencurigakan'], 400);
+        }
+            return response([
+                "token" => $token,
+                "data_user" => $datauser,
+            ]);
     }
-
 }

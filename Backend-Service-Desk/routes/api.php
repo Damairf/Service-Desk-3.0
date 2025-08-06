@@ -12,6 +12,7 @@ use App\Http\Controllers\ProgressAlurController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CekToken;
+use App\Models\JenisPelayanan;
 use Illuminate\Support\Facades\Route;
 
 
@@ -87,6 +88,8 @@ Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
 Route::get('/pdf/{filename}', [PelayananController::class, 'getPdfUrl']);
 Route::put('/pelayanan/disposisi/{pelayananId}', [PelayananController::class, 'disposisi']);
 
+Route::post('/jenis_pelayanan/tambah',[JenisPelayananController::class, 'postJenis_Pelayanan']);
+Route::post('/isi_alur/tambah',[AlurController::class, 'postIsi_Alur']);
 Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
 
 // endpoint unit pelaksana

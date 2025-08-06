@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Alur;
+use App\Models\Isi_Alur;
 use App\Models\JenisPelayanan;
 use Illuminate\Http\Request;
 
@@ -28,5 +29,13 @@ class AlurController extends Controller
             'ID_Isi_Alur' => $ID_Isi_Alur,
         ]);
         return response(["message" => "Alur dari jenis layanan ditambahkan", "data" => $newAlurPelayanan]);
+    }
+    public function postIsi_Alur(Request $request){
+        $Nama_Alur = $request->Nama_Alur;
+
+        $newIsiAlur = Isi_Alur::create([
+            'Nama_Alur' => $Nama_Alur
+        ]);
+        return response(["message" => "Nama Alur berhasil ditambahkan", "data" => $newIsiAlur]);
     }
 }
