@@ -444,9 +444,29 @@ onMounted(() => {
                 </div>
                 <div class="message-time">{{ message.time }}</div>
               </div>
-            </div>
-            <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
-            <button class="send-btn" @click="addMessage">Kirim</button>
+                </div>
+                <div class="chat-input">
+              <label for="file-upload" class="upload-btn">+</label>
+              <input
+                type="file"
+                id="file-upload"
+                ref="fileInput"
+                @change="handleFileUpload"
+                accept=".pdf,.jpg,.jpeg,.png"
+                style="display: none;"
+              />
+              <!-- Tampilkan nama file -->
+              <span v-if="dokumen" class="file-info">
+                File terpilih: {{ dokumen.name }}
+              </span>
+                <textarea
+                  v-model="newMessage"
+                  class="message"
+                  placeholder="Pesan"
+                  @keyup.enter="addMessage"
+                ></textarea>
+                  <button class="send-btn" @click="addMessage">Kirim</button>
+              </div>
               <div class="info-row-hasil">
                 <template v-if="!src_HasilPemenuhan && !src_HasilBA && !src_HasilSLA">
                   <strong>Revisi</strong>

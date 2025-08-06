@@ -88,9 +88,11 @@ Route::get('/allPelayanan',[PelayananController::class, 'jumlah_Pelayanan']);
 Route::get('/pdf/{filename}', [PelayananController::class, 'getPdfUrl']);
 Route::put('/pelayanan/disposisi/{pelayananId}', [PelayananController::class, 'disposisi']);
 
+Route::get('/isi_alur',[AlurController::class, 'getAll_IsiAlur']);
 Route::post('/jenis_pelayanan/tambah',[JenisPelayananController::class, 'postJenis_Pelayanan']);
 Route::post('/isi_alur/tambah',[AlurController::class, 'postIsi_Alur']);
 Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
+Route::post('/jenis_pelayanan/tambah/full',[JenisPelayananController::class, 'postJenisPelayananFull']);
 
 // endpoint unit pelaksana
 
