@@ -31,6 +31,7 @@ const HasilPemenuhan_Path = ref(null)
 const src_HasilPemenuhan = ref(route.query.hasil_pemenuhan || '-')
 const src_HasilBA = ref(route.query.hasil_ba || '-')
 const src_HasilSLA = ref(route.query.hasil_sla || '-')
+const messages = ref([])
 
 const activeTab = ref('informasi')
 
@@ -120,7 +121,8 @@ const fetchPelayananData = async () => {
       id_user: pesan.ID_User,
       text: pesan.Pesan,
       sender: `${pesan.pesan_user.Nama_Depan} ${pesan.pesan_user.Nama_Belakang} - ${pesan.pesan_user.user_role.Nama_Role}`,
-      time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      dokumen_path:pesan.Dokumen_Path
     }))
 
     // Set progress data
@@ -210,55 +212,50 @@ const hoverRating = ref(0)
 const reviewText = ref('')
 const reviewSubmitted = ref(false)
 
-const messages = ref([])
-
+const dokumen = ref(null)
 const newMessage = ref('')
-const addMessage = () => {
-  if (newMessage.value.trim()) {
-    const pesanUser = {
+const fileInput = ref(null);
+
+const isImage = (path) => {
+  return /\.(jpg|jpeg|png)$/i.test(path);
+};
+
+const handleFileUpload = (event) => {
+  dokumen.value = event.target.files[0];
+};
+
+const addMessage = async () => {
+  if (!newMessage.value && !dokumen.value) return
+
+  const formData = new FormData()
+  formData.append('ID_User', userId.value)
+  formData.append('Pesan', newMessage.value)
+  if (dokumen.value) {
+    formData.append('Dokumen_Path', dokumen.value)
+  }
+
+  const token = localStorage.getItem('Token')
+
+  try {
+    const res = await axios.post(`/api/pesan/${pelayananId.value}`, formData, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+
+    messages.value.push({
       id_user: userId.value,
       text: newMessage.value,
+      dokumen_path: res.data.dokumen, 
       sender: `${localStorage.getItem('nama_depan')} ${localStorage.getItem('nama_belakang')} - ${localStorage.getItem('nama_role')}`,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    }
-
-    // Tambahkan ke UI dulu
-    messages.value.push(pesanUser)
-
-    // Simpan ke server 
-    const payload = { Pesan: newMessage.value }
-    const token = localStorage.getItem('Token')
-
-    axios.post(`/api/pesan/${pelayananId.value}`, payload, {
-      headers: {
-        Authorization: 'Bearer ' + token
-      }
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     })
+
     newMessage.value = ''
-  }
-}
-
-const setRating = (newRating) => {
-  rating.value = newRating
-}
-
-const submitReview = async () => {
-  if (rating.value === 0) {
-    alert('Mohon berikan rating bintang terlebih dahulu.')
-    return
-  }
-  try {
-    const token = localStorage.getItem('Token')
-    // API masih belum ada
-    await axios.put(`/api/pelayanan/survey/${pelayananId.value}`, {
-      Rating: rating.value,
-      Isi_Survey: reviewText.value,
-      ID_Status: 6
-    }, { headers: { Authorization: 'Bearer ' + token } })
-    reviewSubmitted.value = true
+    dokumen.value = null
   } catch (error) {
-    console.error('Gagal mengirim ulasan:', error)
-    alert('Gagal mengirim ulasan. Silakan coba lagi.')
+    console.error('Gagal mengirim pesan:', error)
   }
 }
 
@@ -383,13 +380,39 @@ onMounted(() => {
               >
                 <strong class="message-text">{{ message.sender }}</strong>  
                 <div class="message-text">{{ message.text }}</div>
+                <div v-if="message.dokumen_path" class="message-doc">
+                  <template v-if="isImage(message.dokumen_path)">
+                    <img :src="'/files/' + message.dokumen_path" alt="dokumen" class="message-image" />
+                  </template>
+                  <template v-else>
+                    <a :href="'/files/' + message.dokumen_path" target="_blank" class="message-link">📎 Lihat Dokumen</a>
+                  </template>
+                </div>
                 <div class="message-time">{{ message.time }}</div>
               </div>
             </div>
-
-            <textarea v-model="newMessage" class="message" placeholder="Pesan" @keyup.enter="addMessage"></textarea>
-            <button class="send-btn" @click="addMessage">Kirim</button>
-
+            <div class="chat-input">
+              <label for="file-upload" class="upload-btn">+</label>
+              <input
+                type="file"
+                id="file-upload"
+                ref="fileInput"
+                @change="handleFileUpload"
+                accept=".pdf,.jpg,.jpeg,.png"
+                style="display: none;"
+              />
+              <!-- Tampilkan nama file -->
+            <span v-if="dokumen" class="file-info">
+              File terpilih: {{ dokumen.name }}
+            </span>
+              <textarea
+                v-model="newMessage"
+                class="message"
+                placeholder="Pesan"
+                @keyup.enter="addMessage"
+              ></textarea>
+              <button class="send-btn" @click="addMessage">Kirim</button>
+            </div>
             <div class ="info-row-PelaksanaTeknis">
                 <strong>Nama Pelaksana Teknis:</strong>
                 <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>

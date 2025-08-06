@@ -390,43 +390,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.upload-btn {
-  display: inline-block;
-  background: #006920;
-  padding: 4px 12px;
-  margin-right: 8px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 20px;
-  color: white;
-  transition: transform 0.2s ease, background-color 0.3s ease;
-}
-.upload-btn:hover {
-  background: #005a1b;
-  transform: scale(1.01);
-}
-
-.message-image {
-  max-width: 200px;
-  max-height: 200px;
-  margin-top: 8px;
-  border-radius: 8px;
-}
-
-.message-link {
-  color: #007bff;
-  text-decoration: underline;
-  display: inline-block;
-  margin-top: 8px;
-}
-
-
-.message-doc {
-  margin-top: 8px;
-}
-
-
 .container {
   width: 100%;
   padding: 24px;
@@ -556,11 +519,7 @@ onMounted(() => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   width: 50%;
 }
-.file-info {
-  font-size: 0.8rem;
-  color: #555;
-  margin-bottom: 0.5rem;
-}
+
 .info-row {
   display: flex;
   padding: 0.8rem 0;

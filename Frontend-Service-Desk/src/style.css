@@ -24,6 +24,49 @@ a:hover {
   color: #535bf2;
 }
 
+.upload-btn {
+  display: inline-block;
+  background: #006920;
+  padding: 4px 12px;
+  margin-right: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+  color: white;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.upload-btn:hover {
+  background: #005a1b;
+  transform: scale(1.01);
+}
+
+.file-info {
+  font-size: 0.8rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.message-image {
+  max-width: 200px;
+  max-height: 200px;
+  margin-top: 8px;
+  border-radius: 8px;
+}
+
+.message-link {
+  color: #007bff;
+  text-decoration: underline;
+  display: inline-block;
+  margin-top: 8px;
+}
+
+
+.message-doc {
+  margin-top: 8px;
+}
+
 .status {
   padding: 4px 10px;
   border-radius: 12px;

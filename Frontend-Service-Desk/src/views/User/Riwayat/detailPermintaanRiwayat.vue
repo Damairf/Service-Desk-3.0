@@ -134,7 +134,8 @@ const fetchPelayananData = async () => {
       id_user: pesan.ID_User,
       text: pesan.Pesan,
       sender: `${pesan.pesan_user.Nama_Depan} ${pesan.pesan_user.Nama_Belakang} - ${pesan.pesan_user.user_role.Nama_Role}`,
-      time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      time: new Date(pesan.created_at || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      dokumen_path:pesan.Dokumen_Path
     }))
 
 
@@ -228,6 +229,10 @@ const rating = ref(null)
 const hoverRating = ref(0)
 const reviewText = ref('')
 const reviewSubmitted = ref(false)
+
+const isImage = (path) => {
+  return /\.(jpg|jpeg|png)$/i.test(path);
+};
 
 // Fungsi untuk menangani perubahan tab (tanpa router navigation)
 const handleTabChange = (tab) => {
@@ -358,6 +363,14 @@ onMounted(() => {
               >
                   <strong class="message-text">{{ message.sender }}</strong>  
                 <div class="message-text">{{ message.text }}</div>
+                <div v-if="message.dokumen_path" class="message-doc">
+                  <template v-if="isImage(message.dokumen_path)">
+                    <img :src="'/files/' + message.dokumen_path" alt="dokumen" class="message-image" />
+                  </template>
+                  <template v-else>
+                    <a :href="'/files/' + message.dokumen_path" target="_blank" class="message-link">📎 Lihat Dokumen</a>
+                  </template>
+                </div>
                 <div class="message-time">{{ message.time }}</div>
               </div>
               </div>
