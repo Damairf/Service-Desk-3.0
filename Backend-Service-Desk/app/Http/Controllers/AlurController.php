@@ -38,4 +38,11 @@ class AlurController extends Controller
         ]);
         return response(["message" => "Nama Alur berhasil ditambahkan", "data" => $newIsiAlur]);
     }
+    public function getAll_IsiAlur(){
+        $Nama_Alur = Isi_Alur::get();
+        return response()->json([
+            'message' => 'Berhasil mengambil data',
+            'data' => $Nama_Alur
+        ]);
+    }
 }

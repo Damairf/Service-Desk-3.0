@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 const router = useRouter()
@@ -7,47 +7,35 @@ const router = useRouter()
 // State untuk form
 const namaJenisPelayanan = ref('')
 const persyaratan = ref('')
-const daftarInputPelayanan = ref([
-  { namaYangDipilih: '', dropdownTerbuka: false }
-])
+const daftarInputPelayanan = ref([])
+const daftarLangkahPelayanan = ref([])
 
-// apus pelayanan
+onMounted(() => {
+  const token = localStorage.getItem('Token')
+  axios.get('/api/isi_alur', {
+    headers: { Authorization: 'Bearer ' + token }
+  })
+  .then(res => {
+      const allLangkah = res.data.data.map(item => item.Nama_Alur)
+      daftarLangkahPelayanan.value = allLangkah
+
+      // Tambahkan 3 default pertama ke form
+      const langkahDefault = allLangkah.slice(0, 3).map(nama => ({
+        namaYangDipilih: nama,
+        dropdownTerbuka: false,
+        default: true
+      }))
+      daftarInputPelayanan.value = langkahDefault
+    })
+    .catch(err => {
+      console.error('Gagal mengambil isi_alur:', err)
+    })
+})
+
+// hapus jenis pelayanan
 function hapuskontakInput(urutanInput) {
     daftarInputPelayanan.value.splice(urutanInput, 1)
 }
-
-// Daftar langkah pelayanan yang tersedia untuk dipilih
-// nanti ambil dari backend ato gmn idk
-const daftarLangkahPelayanan = ref([
-  'Pendaftaran', 'Verifikasi Dokumen', 'Pemeriksaan', 'Pembayaran', 'Pengambilan'
-])
-
-// State untuk organisasi
-const namaPerangkatDaerah = ref('')
-const namaPengelola = ref('')
-const nomorHP = ref('')
-const email = ref('')
-const status = ref('')
-const pilihanInduk = ref([])
-const idOrganisasiTerpilih = ref('')
-
-// Fetch data organisasi
-const token = localStorage.getItem('Token')
-axios.get('http://127.0.0.1:8000/api/organisasi', {
-  headers: {
-    Authorization: 'Bearer ' + token
-  }
-})
-.then(response => {
-  console.log(response.data)
-  pilihanInduk.value = response.data.map(item => ({
-    id_organisasi: item.ID_Organisasi,
-    nama_PerangkatDaerah: item.Nama_OPD
-  }))
-})
-.catch(error => {
-  console.error(error)
-})
 
 // Fungsi untuk menambah input baru
 function tambahKotakInputBaru() {
@@ -56,6 +44,12 @@ function tambahKotakInputBaru() {
 
 // Mencari langkah pelayanan yang sesuai dengan teks yang diketik
 function cariLangkahYangCocok(teksYangDiketik) {
+  // Kalau kosong, return semua langkah
+  if (!teksYangDiketik || teksYangDiketik.trim() === '') {
+    return daftarLangkahPelayanan.value
+  }
+
+  // Kalau ada teks, filter seperti biasa
   return daftarLangkahPelayanan.value.filter(namaLangkah =>
     namaLangkah.toLowerCase().includes(teksYangDiketik.toLowerCase())
   )
@@ -76,59 +70,42 @@ function tutupDropdownSetelahFokusHilang(urutanInput) {
 
 // Submit handler
 function handleSubmit() {
-  // Validasi field wajib
-  if (!namaJenisPelayanan.value || !persyaratan.value || !daftarInputPelayanan.value.some(input => input.namaYangDipilih)) {
-    alert('Harap isi semua field yang bertanda *')
-    return
+  const langkahValid = daftarInputPelayanan.value.map(i => i.namaYangDipilih).filter(Boolean)
+  if (!namaJenisPelayanan.value || !persyaratan.value || langkahValid.length < 3) {
+    alert('Harap isi semua field dan minimal 3 langkah pelayanan yang valid');
+    return;
   }
 
-  if (nomorHP.value && nomorHP.value.length < 10) {
-    alert("Nomor HP minimal 10 digit")
-    return
-  }
-
-  // Buat payload
   const payload = {
-    Nama_OPD: namaPerangkatDaerah.value,
-    ID_Induk_Organisasi: idOrganisasiTerpilih.value || null,
-    Nama_Pengelola: namaPengelola.value,
-    No_HP_Pengelola: nomorHP.value,
-    Email: email.value,
-    Status: status.value,
     Nama_Jenis_Pelayanan: namaJenisPelayanan.value,
     Persyaratan: persyaratan.value,
-    Langkah_Pelayanan: daftarInputPelayanan.value.map(input => input.namaYangDipilih).filter(Boolean)
+    Langkah_Pelayanan: daftarInputPelayanan.value.map(i => i.namaYangDipilih).filter(Boolean)
   }
 
-  console.log('Data yang akan dikirim ke backend:', payload)
-
-  axios.post('http://127.0.0.1:8000/api/organisasi', payload, {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
+  const token = localStorage.getItem('Token')
+  axios.post('/api/jenis_pelayanan/tambah/full', payload,{
+    headers: { Authorization: 'Bearer ' + token }
   })
-  .then(response => {
-    console.log(response)
-    alert('Jenis Pelayanan sudah ditambahkan')
-    router.push('/jabatan')
-  })
-  .catch(error => {
-    console.log(error)
-    alert('Gagal menambahkan Jenis Pelayanan')
-  })
+    .then(res => {
+      alert(res.data.message)
+      handleReset()
+      router.push('/referensi/jenis-pelayanan')
+    })
+    .catch(err => {
+      const errorMessage = err.response?.data?.error || err.message || 'Terjadi kesalahan';
+      alert('Gagal menyimpan: ' + errorMessage)
+    })
 }
 
 // Reset form
 function handleReset() {
   namaJenisPelayanan.value = ''
   persyaratan.value = ''
-  daftarInputPelayanan.value = [{ namaYangDipilih: '', dropdownTerbuka: false }]
-  namaPerangkatDaerah.value = ''
-  idOrganisasiTerpilih.value = ''
-  namaPengelola.value = ''
-  nomorHP.value = ''
-  email.value = ''
-  status.value = ''
+  daftarInputPelayanan.value = daftarLangkahPelayanan.value.slice(0, 3).map(nama => ({
+    namaYangDipilih: nama,
+    dropdownTerbuka: false,
+    default: true
+  }))
 }
 </script>
 
@@ -155,32 +132,61 @@ function handleReset() {
           <input type="text" placeholder="Persyaratan untuk Jenis Pelayanan" v-model="persyaratan" />
         </div>
 
-        <div v-for="(inputPelayanan, urutanInput) in daftarInputPelayanan" :key="urutanInput" class="form-group dropdown-container">
-          <label>Langkah Pelayanan<span class="red">*</span></label>
-          <div class="form-Layanan">
-          <input
-            v-model="inputPelayanan.namaYangDipilih"
-            @focus="inputPelayanan.dropdownTerbuka = true"
-            @blur="tutupDropdownSetelahFokusHilang(urutanInput)"
-            placeholder="Ketik atau pilih langkah pelayanan..."
-          />
-          <button type="button" class="hapus-btn" 
-          @click="hapuskontakInput(urutanInput)" v-if="daftarInputPelayanan.length > 1 ">
-            -
-          </button>
+        <!-- Bagian Langkah Pelayanan Default -->
+        <div class="form-group">
+          <label>Langkah Pelayanan Tetap</label>
+          <div v-for="(inputPelayanan, index) in daftarInputPelayanan.slice(0, 3)" :key="'default-' + index" class="form-Layanan">
+            <input
+              v-model="inputPelayanan.namaYangDipilih"
+              placeholder="Langkah default"
+              readonly
+            />
           </div>
-          <ul v-if="inputPelayanan.dropdownTerbuka" class="dropdown">
-            <li
-              v-for="(namaLangkah, urutanLangkah) in cariLangkahYangCocok(inputPelayanan.namaYangDipilih)"
-              :key="urutanLangkah"
-              @mousedown="pilihLangkahDariDropdown(urutanInput, namaLangkah)"
-            >
-              {{ namaLangkah }}
-            </li>
-          </ul>
         </div>
 
-        <button type="button" class="btn tambah" @click="tambahKotakInputBaru">Tambah Langkah</button>
+        <!-- Bagian Langkah Pelayanan Tambahan -->
+        <div class="form-group">
+          <label>Langkah Pelayanan Spesifik<span class="red">*</span></label>
+
+          <div
+            v-for="(inputPelayanan, index) in daftarInputPelayanan.slice(3)"
+            :key="'tambahan-' + index"
+            class="form-Layanan"
+            style="position: relative; margin-bottom: 12px"
+          >
+            <input
+              v-model="inputPelayanan.namaYangDipilih"
+              @focus="inputPelayanan.dropdownTerbuka = true"
+              @blur="tutupDropdownSetelahFokusHilang(index + 3)"
+              placeholder="Ketik atau pilih langkah pelayanan spesifik..."
+              class="input-langkah"
+            />
+            <button
+              type="button"
+              class="hapus-btn"
+              @click="hapuskontakInput(index + 3)"
+            >
+              -
+            </button>
+
+            <ul
+              v-if="inputPelayanan.dropdownTerbuka"
+              class="dropdown"
+            >
+              <li
+                v-for="(namaLangkah, i) in cariLangkahYangCocok(inputPelayanan.namaYangDipilih)"
+                :key="'pilihan-' + i"
+                @mousedown="pilihLangkahDariDropdown(index + 3, namaLangkah)"
+              >
+                {{ namaLangkah }}
+              </li>
+            </ul>
+          </div>
+
+          <button type="button" class="btn tambah" @click="tambahKotakInputBaru">
+            Tambah Langkah
+          </button>
+        </div>
 
         <div class="form-actions">
           <button type="submit" class="btn simpan">Simpan</button>
@@ -274,24 +280,25 @@ function handleReset() {
 }
 .dropdown {
   position: absolute;
-  top: 100%;
+  top: 100%; /* di bawah input */
   left: 0;
-  right: 0;
-  border: 1px solid #ccc;
-  background: white;
-  max-height: 120px;
+  width: 100%; /* samakan dengan input */
+  max-height: 200px; /* batas ketinggian */
   overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   list-style: none;
-  padding: 0;
   margin: 0;
-  z-index: 99999;
+  padding: 0;
 }
 .dropdown li {
-  padding: 6px;
+  padding: 8px 12px;
   cursor: pointer;
 }
 .dropdown li:hover {
-  background: #eee;
+  background-color: #f0f0f0;
 }
 .form-actions {
   display: flex;
@@ -329,6 +336,13 @@ function handleReset() {
 }
 .btn.tambah:hover {
   background: #388e3c;
+}
+.input-langkah {
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  font-size: 14px;
 }
 .hapus-btn {
   background-color: #ef4444;
