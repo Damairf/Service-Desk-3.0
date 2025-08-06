@@ -72,7 +72,7 @@ function tutupDropdownSetelahFokusHilang(urutanInput) {
 function handleSubmit() {
   const langkahValid = daftarInputPelayanan.value.map(i => i.namaYangDipilih).filter(Boolean)
   if (!namaJenisPelayanan.value || !persyaratan.value || langkahValid.length < 3) {
-    alert('Harap isi semua field dan minimal 3 langkah pelayanan yang valid');
+    alert('Harap isi semua keperluan *');
     return;
   }
 
@@ -135,7 +135,7 @@ function handleReset() {
         <!-- Bagian Langkah Pelayanan Default -->
         <div class="form-group">
           <label>Langkah Pelayanan Tetap</label>
-          <div v-for="(inputPelayanan, index) in daftarInputPelayanan.slice(0, 3)" :key="'default-' + index" class="form-Layanan">
+          <div v-for="(inputPelayanan, index) in daftarInputPelayanan.slice(0, 3)" :key="'default-' + index" class="form-Layanan langkah-tetap">
             <input
               v-model="inputPelayanan.namaYangDipilih"
               placeholder="Langkah default"
@@ -274,7 +274,10 @@ function handleReset() {
   display: flex;
   align-items: center;
   flex-direction: row;
-} 
+}
+.langkah-tetap {
+  margin-bottom: 1rem;
+}
 .dropdown-container {
   position: relative;
 }
