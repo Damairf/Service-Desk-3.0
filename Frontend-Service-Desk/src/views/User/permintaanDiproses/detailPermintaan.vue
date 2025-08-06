@@ -390,37 +390,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.upload-btn {
-  display: inline-block;
-  background-color: #ddd;
-  padding: 8px 12px;
-  margin-right: 8px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.message-image {
-  max-width: 200px;
-  max-height: 200px;
-  margin-top: 8px;
-  border-radius: 8px;
-}
-
-.message-link {
-  color: #007bff;
-  text-decoration: underline;
-  display: inline-block;
-  margin-top: 8px;
-}
-
-
-.message-doc {
-  margin-top: 8px;
-}
-
-
 .container {
   width: 100%;
   padding: 24px;
