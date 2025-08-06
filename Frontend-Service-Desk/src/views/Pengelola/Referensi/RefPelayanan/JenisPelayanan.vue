@@ -7,6 +7,7 @@ const router = useRouter()
 
 const services = ref([])
 const isLoading = ref(true)
+const langkahDefault = ref([])
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token')
@@ -16,11 +17,10 @@ onBeforeMount(() => {
     }
   })
     .then(response => {
-      // Map API response to match expected structure
       services.value = response.data.map(item => ({
         id: item.ID_Jenis_Pelayanan,
-        nama: item.Nama_Jenis_Pelayanan, // Adjust if API uses different field names
-        tglPembuatan: item.created_at // Adjust if API uses different field names
+        nama: item.Nama_Jenis_Pelayanan,
+        tglPembuatan: item.created_at
       }))
     })
     .catch(error => {
@@ -29,6 +29,26 @@ onBeforeMount(() => {
     .finally(() => {
       isLoading.value = false
     })
+})
+
+function fetchLangkahDefault() {
+  const token = localStorage.getItem('Token')
+  axios.get('/api/isi_alur', {
+    headers: { Authorization: 'Bearer ' + token }
+  })
+  .then(res => {
+    langkahDefault.value = res.data.data
+      .slice(0, 3)
+      .map(item => item.Nama_Alur)
+  })
+  .catch(err => {
+    console.error('Gagal mengambil langkah default:', err)
+  })
+}
+
+onBeforeMount(() => {
+  fetchLangkahDefault()
+  // ... kode lainnya
 })
 
 // === Search, Sort & Pagination ===
@@ -78,6 +98,15 @@ function prevPage() {
 
 function nextPage() {
   if (currentPage.value < totalPages.value) currentPage.value++
+}
+
+const goToTambahPelayanan = () => {
+  router.push({
+    path: '/tambahPelayanan',
+    query: {
+      defaultLangkah: JSON.stringify(langkahDefault.value)
+    }
+  })
 }
 
 function goToPage(page) {
@@ -155,7 +184,7 @@ function editPelayanan(pelayanan) {
     <div class="user-card">
       <h1 class="title">Referensi Pelayanan</h1>
       <div class="top-actions">
-        <button class="btn tambah" @click="router.push('/tambahPelayanan')">Tambah</button>
+        <button class="btn tambah" @click="goToTambahPelayanan">Tambah</button>
       </div>
       <input type="text" v-model="search" placeholder="Cari Pelayanan" class="search-bar" />
 

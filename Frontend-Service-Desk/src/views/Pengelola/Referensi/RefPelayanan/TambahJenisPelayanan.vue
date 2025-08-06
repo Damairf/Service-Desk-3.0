@@ -1,8 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
+const route = useRoute()
 
 // State untuk form
 const namaJenisPelayanan = ref('')
@@ -11,21 +12,33 @@ const daftarInputPelayanan = ref([])
 const daftarLangkahPelayanan = ref([])
 
 onMounted(() => {
+  const defaultLangkahQuery = route.query.defaultLangkah
+  let defaultLangkah = []
+
+  try {
+    if (defaultLangkahQuery) {
+      defaultLangkah = JSON.parse(defaultLangkahQuery)
+    }
+  } catch (e) {
+    console.error('Gagal parse defaultLangkah dari query:', e)
+  }
+
+  // Inisialisasi daftarInputPelayanan hanya dari query
+  const langkahDefault = defaultLangkah.map(nama => ({
+    namaYangDipilih: nama,
+    dropdownTerbuka: false,
+    default: true
+  }))
+  daftarInputPelayanan.value = langkahDefault
+
+  // Ambil semua langkah (hanya untuk dropdown)
   const token = localStorage.getItem('Token')
   axios.get('/api/isi_alur', {
     headers: { Authorization: 'Bearer ' + token }
   })
-  .then(res => {
+    .then(res => {
       const allLangkah = res.data.data.map(item => item.Nama_Alur)
       daftarLangkahPelayanan.value = allLangkah
-
-      // Tambahkan 3 default pertama ke form
-      const langkahDefault = allLangkah.slice(0, 3).map(nama => ({
-        namaYangDipilih: nama,
-        dropdownTerbuka: false,
-        default: true
-      }))
-      daftarInputPelayanan.value = langkahDefault
     })
     .catch(err => {
       console.error('Gagal mengambil isi_alur:', err)
@@ -129,7 +142,7 @@ function handleReset() {
 
         <div class="form-group">
           <label>Persyaratan<span class="red">*</span></label>
-          <input type="text" placeholder="Persyaratan untuk Jenis Pelayanan" v-model="persyaratan" />
+          <textarea placeholder="Persyaratan untuk Jenis Pelayanan" v-model="persyaratan" />
         </div>
 
         <!-- Bagian Langkah Pelayanan Default -->
@@ -277,6 +290,17 @@ function handleReset() {
 }
 .langkah-tetap {
   margin-bottom: 1rem;
+}
+textarea {
+  resize: vertical;
+  background-color: white;
+  color: black;
+  padding: 0.6rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  height: 5rem;
+  font-family: poppins, sans-serif;
 }
 .dropdown-container {
   position: relative;
