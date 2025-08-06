@@ -495,7 +495,7 @@ onMounted(() => {
                 <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
               </div>
 
-              <div v-if="status === 5 && status === 5" class="document-links">
+              <div v-if="status === 5 || status === 6" class="document-links">
                 <div class="info-row-docs">
                   <strong>Hasil Pemenuhan</strong>
                   <div v-if="HasilPemenuhan_Path">
