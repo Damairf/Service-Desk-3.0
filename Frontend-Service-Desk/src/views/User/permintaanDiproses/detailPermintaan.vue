@@ -329,25 +329,25 @@ onMounted(() => {
             </div>
             <div class="chat-input">
               <label for="file-upload" class="upload-btn">+</label>
-                <input
-                  type="file"
-                  id="file-upload"
-                  ref="fileInput"
-                  @change="handleFileUpload"
-                  accept=".pdf,.jpg,.jpeg,.png"
-                  style="display: none;"
-                />
-                <textarea
-                  v-model="newMessage"
-                  class="message"
-                  placeholder="Pesan"
-                  @keyup.enter="addMessage"
-                ></textarea>
+              <input
+                type="file"
+                id="file-upload"
+                ref="fileInput"
+                @change="handleFileUpload"
+                accept=".pdf,.jpg,.jpeg,.png"
+                style="display: none;"
+              />
+              <!-- Tampilkan nama file -->
+            <span v-if="dokumen" class="file-info">
+              File terpilih: {{ dokumen.name }}
+            </span>
+              <textarea
+                v-model="newMessage"
+                class="message"
+                placeholder="Pesan"
+                @keyup.enter="addMessage"
+              ></textarea>
               <button class="send-btn" @click="addMessage">Kirim</button>
-            </div>
-            <div class="info-row-PelaksanaTeknis">
-              <strong>Nama Pelaksana Teknis:</strong>
-              <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
             </div>
           </div>
         </div>
@@ -392,13 +392,19 @@ onMounted(() => {
 <style scoped>
 .upload-btn {
   display: inline-block;
-  background-color: #ddd;
-  padding: 8px 12px;
+  background: #006920;
+  padding: 4px 12px;
   margin-right: 8px;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
   font-size: 20px;
+  color: white;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+.upload-btn:hover {
+  background: #005a1b;
+  transform: scale(1.01);
 }
 
 .message-image {
@@ -550,7 +556,11 @@ onMounted(() => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   width: 50%;
 }
-
+.file-info {
+  font-size: 0.8rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
 .info-row {
   display: flex;
   padding: 0.8rem 0;
