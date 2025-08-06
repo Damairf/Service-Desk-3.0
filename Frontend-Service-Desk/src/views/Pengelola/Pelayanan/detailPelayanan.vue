@@ -138,6 +138,8 @@ const fetchPelayananData = async () => {
     src_HasilSLA.value = pelayananData.SLA_Path || '-'
     tanggal.value = pelayananData.created_at
     status.value = pelayananData.ID_Status
+    rating.value = pelayananData.Rating
+    reviewText.value = pelayananData.Isi_Survey
     messages.value = pelayananData.pelayanan_pesan.map(pesan => ({
       id_user: pesan.ID_User,
       text: pesan.Pesan,
@@ -301,13 +303,13 @@ const submitReview = async () => {
   }
   try {
     const token = localStorage.getItem('Token')
-    // API masih belum ada
     await axios.put(`/api/pelayanan/survey/${pelayananId.value}`, {
       Rating: rating.value,
       Isi_Survey: reviewText.value,
       ID_Status: 6
     }, { headers: { Authorization: 'Bearer ' + token } })
     reviewSubmitted.value = true
+    router.push('/pelayanan')
   } catch (error) {
     console.error('Gagal mengirim ulasan:', error)
     alert('Gagal mengirim ulasan. Silakan coba lagi.')
@@ -424,7 +426,7 @@ onMounted(() => {
                 </div>
               </div>
                 
-              <div v-else-if="status === 5" class="review-section">
+              <div v-else-if="status === 5 && userId != id_user" class="review-section">
                 <div>
                   <h4 class="review-title">Ulasan Pengguna</h4>
                   <div class="star-rating">

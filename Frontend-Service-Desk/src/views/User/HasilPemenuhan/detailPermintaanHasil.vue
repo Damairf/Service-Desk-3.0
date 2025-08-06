@@ -117,6 +117,7 @@ const fetchPelayananData = async () => {
     nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Tersedia'
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
+    rating.value = pelayananData.Rating
     messages.value = pelayananData.pelayanan_pesan.map(pesan => ({
       id_user: pesan.ID_User,
       text: pesan.Pesan,
@@ -259,6 +260,29 @@ const addMessage = async () => {
   }
 }
 
+const setRating = (newRating) => {
+  rating.value = newRating
+}
+
+const submitReview = async () => {
+  if (rating.value === 0) {
+    alert('Mohon berikan rating bintang terlebih dahulu.')
+    return
+  }
+  try {
+    const token = localStorage.getItem('Token')
+    await axios.put(`/api/pelayanan/survey/${pelayananId.value}`, {
+      Rating: rating.value,
+      Isi_Survey: reviewText.value,
+      ID_Status: 6
+    }, { headers: { Authorization: 'Bearer ' + token } })
+    reviewSubmitted.value = true
+  } catch (error) {
+    console.error('Gagal mengirim ulasan:', error)
+    alert('Gagal mengirim ulasan. Silakan coba lagi.')
+  }
+}
+
 // Fungsi untuk menangani perubahan tab (tanpa router navigation)
 const handleTabChange = (tab) => {
   activeTab.value = tab
@@ -343,7 +367,7 @@ onMounted(() => {
 
             <!-- Review Section (SEKARANG di dalam info-card) -->
             <div class="review-section">
-              <div v-if="!reviewSubmitted">
+              <div v-if="!rating">
                 <h4 class="review-title">Beri Ulasan</h4>
                 <div class="star-rating">
                   <span
@@ -361,7 +385,7 @@ onMounted(() => {
                 <textarea v-model="reviewText" class="review-textarea" placeholder="Bagikan pengalaman Anda..." rows="4"></textarea>
                 <button class="send-btn" @click="submitReview">Kirim Ulasan</button>
               </div>
-              <div v-else class="thank-you-message">
+              <div v-if="rating" class="thank-you-message">
                 <p>Terima kasih! Ulasan Anda telah kami terima.</p>
               </div>
             </div>
