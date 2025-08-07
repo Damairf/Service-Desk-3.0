@@ -122,7 +122,6 @@ if (role.value == 1) {
   role.value = "Pelaksana Teknis"
   menuItem.value = [
   { icon: '🏠', label: 'Beranda', to: '/berandaTeknis' },
-  { icon: '⚙️', label: 'User Portal', to: '/portal' },
   { icon: '📁', label: 'Disposisi Permintaan Layanan', to: '/disposisiTeknis' },
   { icon: '📁', label: 'Hasil Pengerjaan Permintaan Layanan', to: '/hasilPengerjaan' },
 ];
@@ -219,16 +218,21 @@ if (role.value == 1) {
 <style scoped>
 .nama-profile{
   text-align: center;
-  padding-bottom: 5px;
-  padding-top: 5px;
+  /* padding-bottom: 5px;
+  padding-top: 5px; */
+  color: white;
+  font-size: 16px;
   font-weight: 600;
+  line-height: 1.3;
+  padding: 8px 12px;
   transition: all 0.3s ease;
 }
 
 /* Profile Dropdown Menu */
 .profile-dropdown {
   width: 100%;
-  background: #07883e;
+  background: #ffffff; /*07883e Warna Lama*/
+  color: #0F172A;
   align-items: center;
   gap: 10px;
   overflow: hidden;
@@ -266,18 +270,18 @@ if (role.value == 1) {
   gap: 0.75rem;
   width: 100%;
   padding: 0.7rem;
-  padding-left: 8px;
   border: none;
   background: none;
-  color: #ffffff;
-  font-size: 15px;
+  color: #0F172A;
+  font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   text-align: left;
 }
 
 .dropdown-item:hover {
-  background-color: #077b39;
+  background-color: #E0F2F1; /*077b39 Warna Lama*/
+  font-size: 15px;
 }
 
 .dropdown-icon {
@@ -286,7 +290,8 @@ if (role.value == 1) {
 }
 
 .dropdown-text {
-  font-weight: 500;
+  font-weight: 550;
+  font-size: 13px;
 }
 
 /* Responsive untuk sidebar collapsed */
@@ -308,7 +313,7 @@ if (role.value == 1) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #006920;
+  background-color: #14B8A6; /*006920 Warna Lama*/
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -320,7 +325,7 @@ if (role.value == 1) {
   object-fit: cover;
   border-radius: 100%;
   margin-top: 0.5rem;
-  border: 3px solid #099D49;
+  border: 3px solid #bcbcbc;
   transition: all 0.3s ease;
 }
 
@@ -343,12 +348,14 @@ if (role.value == 1) {
   top: 0;
   left: 0;
   height: 100vh;
-  background: #099D49;
-  color: white;
+  background: #F8FAFC; /*099D49 Warna Lama*/
+  color: #0F172A;
   width: 16rem;
   transition: all 0.3s ease;
+  font-size: 13px;
   /* overflow: hidden; */
   overflow-y: auto; /* Scrollable if content overflows */
+  overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* IE and Edge */
   display: flex;
@@ -368,7 +375,7 @@ if (role.value == 1) {
 /* Tambahan untuk bungkus logo */
 .logo-wrapper {
   width: 100%;
-  background-color: #0185DA;
+  background-color: #14B8A6; /*0185DA Warna Lama*/
   display: flex;
   justify-content: center;
   align-items: center;
@@ -384,7 +391,7 @@ if (role.value == 1) {
   padding: 30px 30px 30px 10px;
   width: 100%;
   box-sizing: border-box;
-  color: white;
+  color: #F1F5F9;
   transition: all 0.3s ease;
 }
 
@@ -392,13 +399,15 @@ if (role.value == 1) {
   display: inline-block;
   text-align: left;
   margin-left: 0;
+  margin-top: 10px;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: bolder;
+  line-height: 1.2;
 }
 
 .tombol-toggle {
-  background: none;
-  color: white;
+  background:#E0F2F1; /*a1a1a1*/
+  color: #0F172A;
   border: none;
   cursor: pointer;
   padding: 5px;
@@ -419,22 +428,30 @@ nav {
   gap: 10px;
   padding: 8px;
   text-decoration: none;
-  color: white;
+  color: #0F172A;
   transition: all 0.3s ease;
   cursor: pointer;
   font-weight: bold;
 }
 
 .menu-item:hover {
-  background: #07883e;
+  background: #E0F2F1; /*07883e Warna Lama*/
+  font-size: 15px;
 }
+
+.menu-container {
+  flex-grow: 1;
+  padding-top: 20px;
+  overflow-y: auto;
+}
+
 /* Dropdown referensi */
 .dropdown-list{
-  background: #07883e;
+  background: #ffffff;
   margin-top: 0px;
 }
 .tombol-toggle:hover {
-  background: #07883e;
+  background: #CCFBF1;
 }
 
 .icon {
