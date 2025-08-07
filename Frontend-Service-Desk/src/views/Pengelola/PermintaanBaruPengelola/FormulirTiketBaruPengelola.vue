@@ -201,7 +201,7 @@ async function handleSubmit(){
       <div class="form-title">Formulir Tiket Baru</div>
       <div class="info-box">
       <strong>Persyaratan Pelayanan:</strong> <br />
-      <p>{{ persyaratan }}</p>
+      <p class="multiline">{{ persyaratan }}</p>
     </div>
 
       <form @submit.prevent="handleSubmit">
@@ -383,5 +383,7 @@ button:disabled:hover {
   margin: 2px;
   font-family: poppins, sans-serif;
 }
-
+.multiline {
+  white-space: pre-line;
+}
 </style>
