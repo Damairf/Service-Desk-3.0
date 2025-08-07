@@ -43,7 +43,7 @@ function handleReset() {
 
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Tambah Jabatan</h1>
+    <h1 class="main-title">Tambah Status</h1>
     <div class="form-card">
       <div class="form-card-header">
         Formulir Tambah Jabatan
@@ -94,7 +94,7 @@ function handleReset() {
   overflow: hidden;
 }
 .form-card-header {
-  background: #bdbdbd;
+  background-color: #419A4C;
   color: #fff;
   font-size: 1.3rem;
   font-weight: 600;

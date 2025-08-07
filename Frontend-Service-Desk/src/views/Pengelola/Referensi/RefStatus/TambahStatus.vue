@@ -95,7 +95,7 @@ function handleReset() {
   overflow: hidden;
 }
 .form-card-header {
-  background: #bdbdbd;
+  background-color: #419A4C;
   color: #fff;
   font-size: 1.3rem;
   font-weight: 600;

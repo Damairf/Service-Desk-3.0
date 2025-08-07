@@ -168,9 +168,6 @@ function editStatus(status) {
     <div class="page-bg">
       <div class="user-card">
         <h1 class="title">Referensi Status</h1>
-        <div class="top-actions">
-          <button class="btn tambah" @click="router.push('/tambahStatus')">Tambah</button>
-        </div>
         <input type="text" v-model="search" placeholder="Cari Status" class="search-bar" />
   
         <table class="data-table">
@@ -284,11 +281,6 @@ function editStatus(status) {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-.btn.tambah {
-  background: #009e3c;
-  color: #fff;
-  margin-left: auto;
 }
 .search-bar {
   width: 100%;
