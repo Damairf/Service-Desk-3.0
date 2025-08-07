@@ -86,11 +86,10 @@ onBeforeMount(() => {
     <style scoped>
     
     .container{
-      background-color: #FAF4FF;
+      /* background-color: #FAF4FF; */
       min-height: 100vh;
       padding: 1rem;
       position: relative;
-
     }
     
     .greet h1{
@@ -148,11 +147,12 @@ onBeforeMount(() => {
       margin: 0;
     }
     .box p {
-      margin: 0 1rem; /* supaya gak mepet kiri-kanan */
+      margin: 0 1rem;
       color: #333;
       font-size: 0.9rem;
       text-align: left;
       font-weight: lighter;
+      text-align: center;
     }
 
     .box:hover {

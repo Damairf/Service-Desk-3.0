@@ -251,7 +251,7 @@ function cancelChanges() {
   border-radius: 50%;
   background: #d3d3d3;
   margin-bottom: 1.5rem;
-  border: 4px solid #e0e0e0;
+  border: 4px solid #989898;
 }
 .profile-btn-group {
   display: flex;
@@ -335,11 +335,11 @@ function cancelChanges() {
   gap: 1rem;
 }
 .btn.save {
-  background: #006920;
+  background: #00a130;
   color: #fff;
 }
 .btn.save:hover {
-  background: #52AE6E;
+  background: #006920;
 }
 .btn.cancel {
   background: #f44336;

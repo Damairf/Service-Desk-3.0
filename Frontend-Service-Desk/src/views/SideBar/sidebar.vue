@@ -17,11 +17,7 @@ const imageSrc = computed(() => {
 const profileRef = ref(null)
 
 // dropdown referensi
-const dropdownref = ref(false)
-function togglereferensi() {
-  dropdownref.value = !dropdownref.value
-}
-
+const dropdownref = ref(null)
 
 // biar auto update
 onMounted(() => {
@@ -38,11 +34,14 @@ onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 });
 
-
 const tampilinOverlay = ref(false)
 
-// Refs untuk elemen wrapper
+function togglereferensi() {
+  dropdownref.value = !dropdownref.value;
+  tampilinOverlay.value = !tampilinOverlay.value;
+}
 
+// Refs untuk elemen wrapper
 function toggleOverlay() {
   tampilinOverlay.value = !tampilinOverlay.value
 }
@@ -52,6 +51,13 @@ function handleClickOutside(event) {
     tampilinOverlay.value &&
     profileRef.value &&
     !profileRef.value.contains(event.target)
+  ) {
+    tampilinOverlay.value = false
+  }
+  else if (
+    tampilinOverlay.value &&
+    dropdownref.value &&
+    !dropdownref.value.contains(event.target)
   ) {
     tampilinOverlay.value = false
   }
@@ -72,7 +78,6 @@ function logout(){
 function toProfile(){
     router.push('/profileSaya')
   }
-
 
 // biar bisa buka tutup
 const isOpen = ref(true)
@@ -184,17 +189,18 @@ if (role.value == 1) {
 
     <!-- Menu -->
     <template v-for="item in menuItem" :key="item.label">
+      <!-- Menu dengan dropdown -->
       <template v-if="item.children">
-        <!-- Menu dengan dropdown -->
         <div class="menu-item" @click="togglereferensi">
           <span class="icon">{{ item.icon }}</span>
           <span v-if="isOpen">{{ item.label }}</span>
         </div>
         <!-- Dropdown anak -->
         <ul v-if="dropdownref" class="dropdown-list">
-          <li v-for="child in item.children" :key="child.label">
-            <router-link :to="child.to" class="dropdown-item" active-class="active">
-              {{ child.label }}
+          <li v-for="child in item.children" :key="child.label" class="dropdown-list-child">
+            <router-link :to="child.to" class="dropdown-item-ref" active-class="active">
+              <span class="dropdown-icon">📁</span>
+              <span class="text-child-ref">{{ child.label }}</span>
             </router-link>
           </li>
         </ul>
@@ -206,15 +212,12 @@ if (role.value == 1) {
           class="menu-item"
         >
           <span class="icon">{{ item.icon }}</span>
-          <span v-if="isOpen">{{ item.label }}</span>
+          <span v-if="isOpen" class="font-sidebar">{{ item.label }}</span>
         </router-link>
       </template>
     </template>
   </div>
 </template>
-
-
-
 
 <style scoped>
 .nama-profile{
@@ -228,7 +231,7 @@ if (role.value == 1) {
 /* Profile Dropdown Menu */
 .profile-dropdown {
   width: 100%;
-  background: #07883e;
+  background: #56a6ce;
   align-items: center;
   gap: 10px;
   overflow: hidden;
@@ -269,15 +272,37 @@ if (role.value == 1) {
   padding-left: 8px;
   border: none;
   background: none;
-  color: #ffffff;
-  font-size: 15px;
+  color: #202020;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
 }
 
+.dropdown-item-ref {
+  display: flex;
+  align-items: center;
+  /* gap: 0.75rem; */
+  width: 100%;
+  padding: 0.5rem;
+  padding-left: 8px;
+  border: none;
+  background: none;
+  color: #202020;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-family: 'Poppins';
+  font-weight: 500;
+}
+
 .dropdown-item:hover {
-  background-color: #077b39;
+  background-color: #3694c3;
+}
+
+.dropdown-item-ref:hover {
+  background-color: #b2b2b2;
 }
 
 .dropdown-icon {
@@ -286,6 +311,7 @@ if (role.value == 1) {
 }
 
 .dropdown-text {
+  font-family: 'Poppins';
   font-weight: 500;
 }
 
@@ -308,7 +334,7 @@ if (role.value == 1) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #006920;
+  background-color: #68b8e1;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -320,7 +346,7 @@ if (role.value == 1) {
   object-fit: cover;
   border-radius: 100%;
   margin-top: 0.5rem;
-  border: 3px solid #099D49;
+  border: 3px solid #468db0;
   transition: all 0.3s ease;
 }
 
@@ -331,20 +357,22 @@ if (role.value == 1) {
   object-fit: cover;
   transition: all 0.3s ease;
   margin-top: 0;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  border: none;
 }
 
 .sidebar.collapsed .nama-profile {
   display: none;
 }
 
-
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  background: #099D49;
-  color: white;
+  background: #f0f0f0;
+  color: rgb(50, 50, 50);
   width: 16rem;
   transition: all 0.3s ease;
   /* overflow: hidden; */
@@ -354,7 +382,7 @@ if (role.value == 1) {
   display: flex;
   flex-direction: column;
   /* gap: 5px; */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px rgba(180, 180, 180, 0.5);
 }
 
 .sidebar.collapsed {
@@ -368,7 +396,7 @@ if (role.value == 1) {
 /* Tambahan untuk bungkus logo */
 .logo-wrapper {
   width: 100%;
-  background-color: #0185DA;
+  background-color: #3099ce;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -384,12 +412,13 @@ if (role.value == 1) {
   padding: 30px 30px 30px 10px;
   width: 100%;
   box-sizing: border-box;
-  color: white;
+  color: rgb(50, 50, 50);
   transition: all 0.3s ease;
 }
 
 .logo-text {
   display: inline-block;
+  color: rgb(255, 208, 0);
   text-align: left;
   margin-left: 0;
   font-size: 20px;
@@ -398,7 +427,8 @@ if (role.value == 1) {
 
 .tombol-toggle {
   background: none;
-  color: white;
+  background-color: #68b8e1;
+  color: rgb(50, 50, 50);
   border: none;
   cursor: pointer;
   padding: 5px;
@@ -419,27 +449,46 @@ nav {
   gap: 10px;
   padding: 8px;
   text-decoration: none;
-  color: white;
+  color: rgb(50, 50, 50);
   transition: all 0.3s ease;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border-bottom: 0.7px solid #cacaca;
 }
 
 .menu-item:hover {
-  background: #07883e;
+  background: #b2b2b2;
 }
 /* Dropdown referensi */
 .dropdown-list{
-  background: #07883e;
-  margin-top: 0px;
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+.dropdown-list-child {
+  background-color: #dddddd;
+}
+.text-child-ref {
+  color: rgb(50, 50, 50);
+  padding-left: 0.7rem;
 }
 .tombol-toggle:hover {
-  background: #07883e;
+  background: #48a1ce;
 }
 
 .icon {
   font-size: 25px;
   transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .menu-item {
+  border-bottom: none;
+}
+
+.font-sidebar {
+  font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .label {

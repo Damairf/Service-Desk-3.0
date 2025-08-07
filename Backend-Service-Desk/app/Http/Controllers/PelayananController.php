@@ -94,7 +94,6 @@ class PelayananController extends Controller
     return response()->json($pelayanan);
 }
 
-
     public function getByID_Pelayanan_Jenis_User($id)
     {
         $pelayanan = Pelayanan::select('ID_Pelayanan', 'ID_Jenis_Pelayanan')->find($id);

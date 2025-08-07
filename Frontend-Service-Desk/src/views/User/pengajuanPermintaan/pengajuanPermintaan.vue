@@ -58,7 +58,6 @@ function openModal(item) {
     name: 'FormulirTiketBaru', query: {layanan: selectedItem.value.Nama_Jenis_Pelayanan , persyaratan: selectedItem.value.Persyaratan}
   })
   localStorage.setItem('ID_Jenis_Pelayanan', item.ID_Jenis_Pelayanan)
-  console.log(item)
 }
 </script>
 

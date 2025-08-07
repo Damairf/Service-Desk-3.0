@@ -74,7 +74,6 @@ function openModal(item) {
     query: { layanan: selectedItem.value.Nama_Jenis_Pelayanan, persyaratan: selectedItem.value.Persyaratan }
   })
   localStorage.setItem('ID_Jenis_Pelayanan', item.ID_Jenis_Pelayanan)
-  console.log(item)
 }
 
 watch(searchTerm, () => {
