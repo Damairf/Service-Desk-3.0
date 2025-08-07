@@ -424,7 +424,7 @@ if (role.value == 1) {
 
 .logo-text {
   display: inline-block;
-  color: rgb(255, 208, 0);
+  color: white;
   text-align: left;
   margin-left: 0;
   margin-top: 10px;
