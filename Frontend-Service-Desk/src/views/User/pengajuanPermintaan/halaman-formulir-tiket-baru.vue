@@ -92,6 +92,14 @@ async function handleSubmit(){
     return;
   }
 
+  if (
+    !namaPelapor.value || 
+    !perihal.value || 
+    !deskripsi.value) {
+      alert('Harap isi semua kolom yang bertanda *')
+      return
+  }
+
   if (isLoading.value) {
     return; // Prevent multiple submissions
   }
@@ -155,23 +163,26 @@ axios.post('/api/pelayanan/tambah', {
     </div>
 
       <form @submit.prevent="handleSubmit">
-        <label>Pelapor</label>
+        <div class="form-note">
+          <span class="required-text">Keterangan <span class="red">*</span> Harus Diisi</span>
+        </div>
+        <label>Pelapor<span class="red">*</span></label>
         <input type="text" v-model="namaPelapor" maxlength="50"/>
 
         <label>Layanan</label>
         <p class="display">{{ layanan }}</p>
 
-        <label>Perihal</label>
+        <label>Perihal<span class="red">*</span></label>
         <input type="text" v-model="perihal" placeholder="Masukkan perihal" maxlength="50"/>
 
-        <label>Deskripsi</label>
+        <label>Deskripsi<span class="red">*</span></label>
         <textarea v-model="deskripsi" rows="5" placeholder="Masukkan deskripsi"></textarea>
 
-        <label>Surat Dinas</label>
+        <label>Surat Dinas<span class="red">*</span></label>
         <input type="file" accept=".pdf" @change="handleFileChange($event, 'suratDinas')" />
         <p class="note">(Hanya PDF, maksimum 8MB)</p>
 
-        <label>Lampiran</label>
+        <label>Lampiran<span class="red">*</span></label>
         <input type="file" accept=".pdf" @change="handleFileChange($event, 'lampiran')" />
         <p class="note">(Hanya PDF, maksimum 8MB)</p>
 
@@ -250,6 +261,18 @@ textarea {
   resize: vertical;
   border: 2px solid #4285f4;
   font-family: poppins, sans-serif;
+}
+
+.form-note {
+  margin-bottom: 1.2rem;
+}
+.required-text {
+  color: #e60000;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.red {
+  color: #e60000;
 }
 
 .note {

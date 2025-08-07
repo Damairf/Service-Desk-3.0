@@ -66,6 +66,7 @@ onBeforeMount(() => {
           <div class="box" @click="router.push('/disposisi')">
             <img src="../../../../public/Disposisi.svg" alt="Disposisi Permintaan">
             <h3>Disposisi Permintaan</h3>
+            <p>Disposisikan permintaan pelayanan yang telah disetujui</p>
             <button class="lacak" @click="router.push('/disposisi')">Disposisi</button>
           </div>
           <div class="box">

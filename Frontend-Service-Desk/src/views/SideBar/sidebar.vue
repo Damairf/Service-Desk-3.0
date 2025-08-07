@@ -127,7 +127,6 @@ if (role.value == 1) {
   role.value = "Pelaksana Teknis"
   menuItem.value = [
   { icon: '🏠', label: 'Beranda', to: '/berandaTeknis' },
-  { icon: '⚙️', label: 'User Portal', to: '/portal' },
   { icon: '📁', label: 'Disposisi Permintaan Layanan', to: '/disposisiTeknis' },
   { icon: '📁', label: 'Hasil Pengerjaan Permintaan Layanan', to: '/hasilPengerjaan' },
 ];
@@ -222,9 +221,13 @@ if (role.value == 1) {
 <style scoped>
 .nama-profile{
   text-align: center;
-  padding-bottom: 5px;
-  padding-top: 5px;
+  /* padding-bottom: 5px;
+  padding-top: 5px; */
+  color: white;
+  font-size: 16px;
   font-weight: 600;
+  line-height: 1.3;
+  padding: 8px 12px;
   transition: all 0.3s ease;
 }
 
@@ -269,7 +272,6 @@ if (role.value == 1) {
   gap: 0.75rem;
   width: 100%;
   padding: 0.7rem;
-  padding-left: 8px;
   border: none;
   background: none;
   color: #202020;
@@ -277,6 +279,8 @@ if (role.value == 1) {
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
+  font-family: 'Poppins';
+  font-weight: 500;
 }
 
 .dropdown-item-ref {
@@ -375,8 +379,10 @@ if (role.value == 1) {
   color: rgb(50, 50, 50);
   width: 16rem;
   transition: all 0.3s ease;
+  font-size: 13px;
   /* overflow: hidden; */
   overflow-y: auto; /* Scrollable if content overflows */
+  overflow-x: hidden;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* IE and Edge */
   display: flex;
@@ -421,8 +427,10 @@ if (role.value == 1) {
   color: rgb(255, 208, 0);
   text-align: left;
   margin-left: 0;
+  margin-top: 10px;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: bolder;
+  line-height: 1.2;
 }
 
 .tombol-toggle {
@@ -460,6 +468,7 @@ nav {
 .menu-item:hover {
   background: #b2b2b2;
 }
+
 /* Dropdown referensi */
 .dropdown-list{
   list-style: none;
