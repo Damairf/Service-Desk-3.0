@@ -149,6 +149,7 @@ class PelayananController extends Controller
         $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
         $pelayananId = $request->route('pelayananId');
         $dataPelayanan = $request->only([
+            'ID_Urgensi',
             'ID_Unit',
             'ID_Status',
             'ID_Teknis',

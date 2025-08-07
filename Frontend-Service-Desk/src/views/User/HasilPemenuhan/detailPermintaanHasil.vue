@@ -367,7 +367,7 @@ onMounted(() => {
 
             <!-- Review Section (SEKARANG di dalam info-card) -->
             <div class="review-section">
-              <div v-if="!rating">
+              <div v-if="!reviewSubmitted">
                 <h4 class="review-title">Beri Ulasan</h4>
                 <div class="star-rating">
                   <span
@@ -385,7 +385,7 @@ onMounted(() => {
                 <textarea v-model="reviewText" class="review-textarea" placeholder="Bagikan pengalaman Anda..." rows="4"></textarea>
                 <button class="send-btn" @click="submitReview">Kirim Ulasan</button>
               </div>
-              <div v-if="rating" class="thank-you-message">
+              <div v-else class="thank-you-message">
                 <p>Terima kasih! Ulasan Anda telah kami terima.</p>
               </div>
             </div>

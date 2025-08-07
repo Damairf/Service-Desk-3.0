@@ -7,13 +7,13 @@ const route = useRoute()
 
 
 // === State untuk form ===
-const namaJabatan = ref(route.query.nama_jabatan || '')
-const jabatanId = ref(route.query.jabatanId)
+const namaUrgensi = ref(route.query.nama_urgensi || '')
+const urgensiId = ref(route.query.urgensiId)
 
 // === Submit handler (dengan validasi) ===
 function handleSubmit() {
   // Validasi field wajib
-  if (!namaJabatan.value) {
+  if (!namaUrgensi.value) {
     alert('Harap isi semua field yang bertanda *')
     return
   }
@@ -22,8 +22,8 @@ function handleSubmit() {
   // Mas Backend tolong revisi lagi
 
   const token = localStorage.getItem('Token');
-  axios.put(`/api/jabatan/${jabatanId.value}`, {
-      Nama_Jabatan: namaJabatan.value
+  axios.put(`/api/urgensi/${uId.value}`, {
+      Nama_Urgensi: namaUrgensi.value
   }
   , {
     headers: {
@@ -32,8 +32,8 @@ function handleSubmit() {
   })
   .then(function(response){
     console.log(response)
-    alert('Jabatan sudah diubah')
-    router.push('/referensi/jabatan')
+    alert('Urgensi sudah diubah')
+    router.push('/referensi/urgensi')
   }) .catch(function(error){
     console.log(error)
   })
@@ -41,7 +41,7 @@ function handleSubmit() {
 
 // === Reset form ===
 function handleReset() {
-  namaJabatan.value = ''
+  namaUrgensi.value = ''
 }
 
 
@@ -49,10 +49,10 @@ function handleReset() {
 
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Ubah Jabatan</h1>
+    <h1 class="main-title">Ubah Urgensi</h1>
     <div class="form-card">
       <div class="form-card-header">
-        Formulir Ubah Jabatan
+        Formulir Ubah Urgensi
       </div>
 
       <!-- Form pakai @submit.prevent supaya tidak reload -->
@@ -62,8 +62,8 @@ function handleReset() {
         </div>
 
         <div class="form-group">
-          <label>Nama Jabatan<span class="red">*</span></label>
-          <input type="text" placeholder="Nama Jabatan" v-model="namaJabatan" />
+          <label>Nama Urgensi<span class="red">*</span></label>
+          <input type="text" placeholder="Nama Urgensi" v-model="namaUrgensi" />
         </div>
 
         <div class="form-actions">

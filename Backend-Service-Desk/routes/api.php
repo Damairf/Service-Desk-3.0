@@ -11,6 +11,7 @@ use App\Http\Controllers\AlurController;
 use App\Http\Controllers\ProgressAlurController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UrgensiController;
 use App\Http\Middleware\CekToken;
 use App\Models\JenisPelayanan;
 use Illuminate\Support\Facades\Route;
@@ -77,6 +78,10 @@ Route::get('/status/pelayanan',[StatusController::class, 'findAll_Pelayanan_Stat
 Route::get('/status/pelayanan/{statusId}',[StatusController::class, 'findOne_Status_Pelayanan']);
 Route::get('/status/{statusId}',[StatusController::class, 'findOne_Status']);
 Route::put('/progress-alur/update-status/{id}', [ProgressAlurController::class, 'updateStatus']);
+
+Route::get('/urgensi',[UrgensiController::class, 'findAll_Urgensi']);
+Route::put('/urgensi/{urgensiId}',[UrgensiController::class, 'updateOne_Urgensi']);
+Route::post('/urgensi',[UrgensiController::class, 'insertOne_Urgensi']);
 
 Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
 Route::get('/stsPelayananChart',[PelayananController::class, 'Chart_PelayananSts']);
