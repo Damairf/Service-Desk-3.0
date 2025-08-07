@@ -11,6 +11,7 @@ const userId = ref(localStorage.getItem('user_id'));
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
 const stepsStatus = ref([])
+const stepsID = ref([]) 
 const status = ref('')
 const perihal = ref('')
 const tanggal = ref('')
@@ -145,6 +146,7 @@ const fetchPelayananData = async () => {
       item.progress_to_alur?.isi_alur?.Nama_Alur || 'Tidak Diketahui'
     )
     stepsStatus.value = progressData.map(item => item.Is_Done)
+    stepsID.value = progressData.map(item => item.ID_Progress_Alur)
 
     // Cache data
     dataCache.value = {
@@ -283,7 +285,7 @@ function handlePilihan(klik) {
   pilihan.value = klik
 }
 
-function handleSelesai() {
+async function handleSelesai() {
   const token = localStorage.getItem('Token');
   if (pilihan.value === 'Selesai') {
     axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
@@ -297,8 +299,22 @@ function handleSelesai() {
         Authorization: 'Bearer ' + token,
       }
     })
-    .then(() => router.push('/Disposisi'))
-    .catch(error => console.error('Error updating status to Selesai:', error));
+    const lastIndex = stepsID.value.length - 1
+    const lastStepId = stepsID.value[lastIndex]
+    if (lastStepId) {
+      await axios.put(`http://127.0.0.1:8000/api/progress-alur/update-status/${lastStepId}`, 
+      {
+        Is_Done: 1
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
+      })
+    } else {
+      console.warn('ID langkah terakhir tidak ditemukan di stepsID')
+    }
+    router.push('/Disposisi')
   } else if (pilihan.value === 'Revisi') {
     axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
     {
