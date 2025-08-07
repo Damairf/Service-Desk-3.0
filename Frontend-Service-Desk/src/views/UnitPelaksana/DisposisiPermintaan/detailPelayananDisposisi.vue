@@ -283,8 +283,6 @@ function handlePilihan(klik) {
   pilihan.value = klik
 }
 
-
-
 function handleSelesai() {
   const token = localStorage.getItem('Token');
   if (pilihan.value === 'Selesai') {

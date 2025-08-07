@@ -197,7 +197,6 @@ const handleSelesai = async () => {
     } else {
       console.warn('ID Progress langkah ke-4 tidak tersedia.')
     }
-
     router.push('/Approval')
   } catch (err) {
     console.error('Gagal menyelesaikan proses:', err)

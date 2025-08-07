@@ -27,6 +27,8 @@ const activeTab = ref('informasi')
 const pesanUnit = ref('')
 const pesanRevisi = ref('')
 const status = ref(Number(''))
+const stepsID = ref([])
+const lacak = ref([])
 
 const surat_dinas = ref('')
 const lampiran = ref('')
@@ -145,6 +147,7 @@ const fetchPelayananData = async () => {
       item.progress_to_alur?.isi_alur?.Nama_Alur || 'Tidak Diketahui'
     )
     stepsStatus.value = progressData.map(item => item.Is_Done)
+    stepsID.value = progressData.map(item => item.ID_Progress_Alur)
 
     // Cache data
     dataCache.value = {
@@ -294,6 +297,38 @@ function handleFileChange(e, field) {
   }
 }
 
+const isSelesaiEnabled = computed(() => {
+  if (lacak.value.length === 0) return false
+
+  return lacak.value.every((item, i) => {
+    // Izinkan index terakhir tetap 0
+    if (i === lacak.value.length - 1) return true
+    return item.Is_Done === 1
+  })
+})
+
+watch(lacak, (newVal) => {
+      console.log('Lacak berubah:', newVal)
+      console.log('Status tombol kirim aktif:', isSelesaiEnabled.value)
+    }, { deep: true, immediate: true })
+
+onMounted(async () => {
+  const token = localStorage.getItem('Token');
+  try {
+    const response = await axios.get(`/api/pelayanan/alur/progress/${pelayananId.value}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+    console.log('Data dari API:', response.data)
+    lacak.value = response.data
+    console.log('Semua Is_Done:', lacak.value.map(item => item.Is_Done));
+  }
+  catch(error) {
+    console.error('Gagal fetch lacak:', error)
+  }
+})
+
 async function handleSelesai() {
   const formData = new FormData()
 
@@ -327,6 +362,50 @@ async function handleSelesai() {
   }
 }
 
+const handleStepSelesai = async (index) => {
+  const token = localStorage.getItem('Token')
+  const idProgress = stepsID.value[index]
+
+  if (!idProgress) {
+    console.warn(`ID Progress langkah ke-${index + 1} tidak tersedia.`)
+    return
+  }
+
+  try {
+    const progressUrl = `/api/progress-alur/update-status/${idProgress}`
+    await axios.put(progressUrl, {
+      Is_Done: 1
+    }, {
+      headers: { Authorization: 'Bearer ' + token }
+    })
+
+    stepsStatus.value[index] = 1 // Update langsung setelah sukses
+  } catch (err) {
+    console.error('Gagal update status:', err)
+  }
+}
+
+const isButtonDisabled = (index) => {
+  // Jika sudah selesai, tidak bisa ditekan
+  if (stepsStatus.value[index] === 1) return true
+
+  // Hanya bisa ditekan jika semua sebelumnya sudah selesai
+  for (let i = 4; i < index; i++) {
+    if (stepsStatus.value[i] !== 1) return true
+  }
+
+  return false
+}
+
+const buttonClass = (index) => {
+  if (stepsStatus.value[index] === 1) {
+    return 'btn-selesai-lacak done'
+  }
+
+  // Semua langkah sebelumnya harus selesai
+  const canClick = isButtonDisabled(index) === false
+  return canClick ? 'btn-selesai-lacak active' : 'btn-selesai-lacak inactive'
+}
 
 // Fungsi untuk menangani perubahan tab (tanpa router navigation)
 const handleTabChange = (tab) => {
@@ -465,7 +544,7 @@ onMounted(() => {
                   placeholder="Pesan"
                   @keyup.enter="addMessage"
                 ></textarea>
-                  <button class="send-btn" @click="addMessage">Kirim</button>
+                <button class="send-btn" @click="addMessage">Kirim</button>
               </div>
               <div class="info-row-hasil">
                 <template v-if="!src_HasilPemenuhan && !src_HasilBA && !src_HasilSLA">
@@ -491,7 +570,7 @@ onMounted(() => {
                   <div class="tinjau-card">
                     <h3>Kirim Hasil Pelayanan</h3>
                     <div class="wrapper-btn">
-                      <button class="btn-selesai" @click="handleSelesai">Kirim</button>
+                      <button class="btn-selesai" :class="{ disabled: !isSelesaiEnabled }" :disabled="!isSelesaiEnabled" @click="handleSelesai">Kirim</button>
                     </div>
                   </div>
                 </template>
@@ -542,6 +621,8 @@ onMounted(() => {
                 <button
                   v-if="index >= 4 && index < steps.length - 1"
                   class="btn-selesai-lacak"
+                  :class="buttonClass(index)"
+                  :disabled="isButtonDisabled(index)"
                   @click="handleStepSelesai(index)"
                 >
                   Selesai
@@ -864,12 +945,18 @@ select {
   border: none;
   cursor: pointer;
   transition: transform 0.2s ease;
-  width: fit-content;         /* <-- biar lebarnya mengikuti konten */
+  width: fit-content;
   align-self: center;     
 }
 .btn-selesai:hover{
   transform: scale(1.02);
   background-color: #48B7ED;
+}
+.btn-selesai.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  pointer-events: none;
+  color: #666;
 }
 
 /* Steps */
@@ -933,8 +1020,22 @@ select {
   align-self: center;     
 }
 
-.btn-selesai-lacak:hover {
+.btn-selesai-lacak.active {
+  background-color: #4CAF50; /* hijau */
+}
+
+.btn-selesai-lacak.active:hover {
   background-color: #66BB6A;
+}
+
+.btn-selesai-lacak.inactive {
+  background-color: #e53935; /* merah */
+  cursor: not-allowed;
+}
+
+.btn-selesai-lacak.done {
+  background-color: #9e9e9e; /* abu-abu */
+  cursor: not-allowed;
 }
 
 .circle-blue {
