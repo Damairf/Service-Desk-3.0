@@ -306,7 +306,7 @@ if (role.value == 1) {
 }
 
 .dropdown-item-ref:hover {
-  background-color: #b2b2b2;
+  background-color: #c0c0c0;
 }
 
 .dropdown-icon {
@@ -466,7 +466,7 @@ nav {
 }
 
 .menu-item:hover {
-  background: #b2b2b2;
+  background: #cecece;
 }
 
 /* Dropdown referensi */
