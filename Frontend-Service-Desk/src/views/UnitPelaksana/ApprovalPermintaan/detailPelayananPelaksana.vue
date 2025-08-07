@@ -484,8 +484,8 @@ onMounted(() => {
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #fb923c;
+  border: 4px solid #0D47A1;
+  border-top: 4px solid #64B5F6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
@@ -514,6 +514,7 @@ onMounted(() => {
   padding: 8px 16px;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 12.9rem;
 }
 
 .tab {
@@ -545,7 +546,7 @@ onMounted(() => {
 /* Card */
 .card {
   width: 100%;
-  max-width: 1100px;
+  width: 1100px;
   background-color: white;
   padding: 32px;
   border-radius: 12px;

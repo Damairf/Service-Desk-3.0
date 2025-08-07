@@ -7,8 +7,8 @@ const router = useRouter()
 
 const isLoading = ref(true)
 
-// === Data Referensi Jabatan ===
-const referensiJabatan = ref([])
+// === Data Referensi Urgensi ===
+const referensiUrgensi = ref([])
 
 function formatDate(dateString) {
   if (!dateString) return '-';
@@ -25,15 +25,15 @@ onBeforeMount(() => {
 
 const fetchDataOrganisasi = () => {
 const token = localStorage.getItem('Token');
-  axios.get('/api/jabatan', {
+  axios.get('/api/urgensi', {
     headers: {
       Authorization: 'Bearer ' + token
     }
   })
   .then(response => {
-    referensiJabatan.value = response.data.map(item => ({
-      id: item.ID_Jabatan,
-      nama: item.Nama_Jabatan,
+    referensiUrgensi.value = response.data.map(item => ({
+      id: item.ID_Urgensi,
+      nama: item.Nama_Urgensi,
       tglPembuatan: item.created_at || '-'
     }))
   })
@@ -54,7 +54,7 @@ const itemsPerPage = 10
 
 // === Filter & Sort Data ===
 const filteredItems = computed(() => {
-  let items = referensiJabatan.value.filter(item =>
+  let items = referensiUrgensi.value.filter(item =>
     item.nama.toLowerCase().includes(search.value.toLowerCase()) ||
     item.tglPembuatan.toLowerCase().includes(search.value.toLowerCase())
   )
@@ -104,15 +104,15 @@ watch(search, () => {
 
 // === Modal Delete ===
 const showModal = ref(false)
-const jabatanToDelete = ref("")
+const urgensiToDelete = ref("")
 function Delete(item) {
-  jabatanToDelete.value = item.nama
+  urgensiToDelete.value = item.nama
   showModal.value = true
 }
 
 function cancelDelete() {
   showModal.value = false
-  jabatanToDelete.value = null
+  urgensiToDelete.value = null
 }
 
 // function confirmDelete() {
@@ -152,12 +152,12 @@ function startCountdown() {
   }, 1000)
 }
 
-function editJabatan(jabatan) {
+function editUrgensi(urgensi) {
   router.push({
-    path: '/ubahJabatan',
+    path: '/ubahUrgensi',
     query: {
-      nama_jabatan: jabatan.nama,
-      jabatanId: jabatan.id
+      nama_urgensi: urgensi.nama,
+      urgensiId: urgensi.id
     }
   })
 }
@@ -169,9 +169,9 @@ function editJabatan(jabatan) {
       <div class="user-card">
         <h1 class="title">Referensi Urgensi</h1>
         <div class="top-actions">
-          <button class="btn tambah" @click="router.push('/tambahJabatan')">Tambah</button>
+          <button class="btn tambah" @click="router.push('/tambahUrgensi')">Tambah</button>
         </div>
-        <input type="text" v-model="search" placeholder="Cari Jabatan" class="search-bar" />
+        <input type="text" v-model="search" placeholder="Cari Urgensi" class="search-bar" />
   
         <table class="data-table">
           <thead>
@@ -187,17 +187,17 @@ function editJabatan(jabatan) {
               <td colspan="4" style="text-align: center; padding: 1rem;">Memuat data...</td>
             </tr>
             <tr v-else-if="filteredItems.length === 0">
-              <td colspan="4" style="text-align: center; padding: 1rem;">Tidak ada data jabatan</td>
+              <td colspan="4" style="text-align: center; padding: 1rem;">Tidak ada data urgensi</td>
             </tr> -->
-            <tr v-for="(jabatan, index) in paginatedItems" :key="index">
-              <td>{{ jabatan.id }}</td>
-              <td>{{ jabatan.nama }}</td>
-              <td>{{ formatDate(jabatan.tglPembuatan) }}</td>
+            <tr v-for="(urgensi, index) in paginatedItems" :key="index">
+              <td>{{ urgensi.id }}</td>
+              <td>{{ urgensi.nama }}</td>
+              <td>{{ formatDate(urgensi.tglPembuatan) }}</td>
               <td>
                 <div class="wrapper-aksiBtn">
                     <!-- functionnya belum ada -->
-                    <button class="aksiEdit-btn" title="Edit" @click="editJabatan(jabatan)">Ubah</button>
-                    <button class="aksiDelete-btn" title="Delete" @click="Delete(jabatan); startCountdown()">Hapus</button>
+                    <button class="aksiEdit-btn" title="Edit" @click="editUrgensi(urgensi)">Ubah</button>
+                    <button class="aksiDelete-btn" title="Delete" @click="Delete(urgensi); startCountdown()">Hapus</button>
                 </div>
               </td>
             </tr>
@@ -222,7 +222,7 @@ function editJabatan(jabatan) {
     <div class="modal-box">
       <h3>Konfirmasi Hapus</h3>
       <p>
-        Apakah Anda yakin ingin menghapus jabatan <strong>{{ jabatanToDelete }}</strong>?
+        Apakah Anda yakin ingin menghapus urgensi <strong>{{ urgensiToDelete }}</strong>?
       </p>
       <p v-if="isCounting">Mohon tunggu {{ countdown }} detik</p>
       <div class="modal-actions">

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('ID_Pelayanan', 10)->primary();
             $table->unsignedBigInteger('ID_User')->nullable(false);
             $table->string('Nama_Pelapor')->nullable(false);
+            $table->unsignedBigInteger('ID_Urgensi')->nullable(true);
             $table->unsignedBigInteger('ID_Jenis_Pelayanan')->nullable(false);
             $table->string('Perihal')->nullable(false);
             $table->text('Deskripsi')->nullable(false);
@@ -40,6 +41,7 @@ return new class extends Migration
             $table->foreign('ID_Unit')->references('ID_User')->on('user');
             $table->foreign('ID_Teknis')->references('ID_User')->on('user');
             $table->foreign('ID_Jenis_Pelayanan')->references('ID_Jenis_Pelayanan')->on('reff_jenis_pelayanan');
+            $table->foreign('ID_Urgensi')->references('ID_Urgensi')->on('reff_urgensi');
         });
     }
 

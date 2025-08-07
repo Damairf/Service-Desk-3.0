@@ -43,5 +43,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ProgressAlurSeeder::class,
         ]);
+        $this->call([
+            UrgensiSeeder::class,
+        ]);
     }
 }

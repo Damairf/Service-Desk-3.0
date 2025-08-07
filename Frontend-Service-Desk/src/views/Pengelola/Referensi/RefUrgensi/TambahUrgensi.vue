@@ -6,22 +6,22 @@ const router = useRouter()
 
 
 // === State untuk form ===
-const namaJabatan = ref('')
+const namaUrgensi = ref('')
 
 // === Submit handler (dengan validasi) ===
 function handleSubmit() {
   // Validasi field wajib
-  if (!namaJabatan.value) {
+  if (!namaUrgensi.value) {
     alert('Harap isi semua field yang bertanda *')
     return
   }
 
   // Buat payload
   const payload = {
-    Nama_Jabatan: namaJabatan.value,
+    Nama_Urgensi: namaUrgensi.value,
   }
   const token = localStorage.getItem('Token');
-  axios.post(`/api/jabatan`, payload
+  axios.post(`/api/urgensi`, payload
   , {
     headers: {
       Authorization: 'Bearer ' + token,
@@ -32,22 +32,22 @@ function handleSubmit() {
   }) .catch(function(error){
     console.log(error)
   })
-  alert('Jabatan sudah ditambahkan')
-  router.push('/referensi/jabatan')
+  alert('Urgensi sudah ditambahkan')
+  router.push('/referensi/urgensi')
 }
 
 // === Reset form ===
 function handleReset() {
-  namaJabatan.value = ''
+  namaUrgensi.value = ''
 }
 </script>
 
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Tambah Jabatan</h1>
+    <h1 class="main-title">Tambah Urgensi</h1>
     <div class="form-card">
       <div class="form-card-header">
-        Formulir Tambah Jabatan
+        Formulir Tambah Urgensi
       </div>
 
       <!-- Form pakai @submit.prevent supaya tidak reload -->
@@ -57,8 +57,8 @@ function handleReset() {
         </div>
 
         <div class="form-group">
-          <label>Nama Jabatan<span class="red">*</span></label>
-          <input type="text" placeholder="Nama Jabatan" v-model="namaJabatan" />
+          <label>Nama Urgensi<span class="red">*</span></label>
+          <input type="text" placeholder="Nama Urgensi" v-model="namaUrgensi" />
         </div>
 
         <div class="form-actions">

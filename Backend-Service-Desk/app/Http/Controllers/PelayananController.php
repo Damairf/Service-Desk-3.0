@@ -17,7 +17,7 @@ use Carbon\Carbon;
 class PelayananController extends Controller
 {
     public function getAll_Layanan(){
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')->get();
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi', 'urgensi_pelayanan')->get();
         return response()->json($pelayanans);
     }
 
@@ -149,6 +149,7 @@ class PelayananController extends Controller
         $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
         $pelayananId = $request->route('pelayananId');
         $dataPelayanan = $request->only([
+            'ID_Urgensi',
             'ID_Unit',
             'ID_Status',
             'ID_Teknis',
