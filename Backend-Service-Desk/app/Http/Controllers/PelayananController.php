@@ -17,7 +17,7 @@ use Carbon\Carbon;
 class PelayananController extends Controller
 {
     public function getAll_Layanan(){
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')->get();
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi', 'urgensi_pelayanan')->get();
         return response()->json($pelayanans);
     }
 
