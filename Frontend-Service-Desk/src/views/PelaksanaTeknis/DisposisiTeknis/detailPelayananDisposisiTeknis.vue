@@ -522,19 +522,30 @@ onMounted(() => {
                 v-for="(step, index) in steps"
                 :key="index"
                 class="step-row"
+                style="display: flex; align-items: center; justify-content: space-between;"
               >
-                <div
-                  class="circle"
-                  :class="stepsStatus[index] === 1 ? 'circle-blue' : 'circle-inactive'"
-                >
-                  {{ index + 1 }}
+                <div style="display: flex; align-items: center;">
+                  <div
+                    class="circle"
+                    :class="stepsStatus[index] === 1 ? 'circle-blue' : 'circle-inactive'"
+                  >
+                    {{ index + 1 }}
+                  </div>
+                  <div
+                    class="step-label"
+                    :class="stepsStatus[index] === 1 ? 'label-blue' : ''"
+                  >
+                    {{ step }}
+                  </div>
                 </div>
-                <div
-                  class="step-label"
-                  :class="stepsStatus[index] === 1 ? 'label-blue' : ''"
+
+                <button
+                  v-if="index >= 4 && index < steps.length - 1"
+                  class="btn-selesai-lacak"
+                  @click="handleStepSelesai(index)"
                 >
-                  {{ step }}
-                </div>
+                  Selesai
+                </button>
               </div>
             </div>
           </div>
@@ -908,6 +919,22 @@ select {
   font-size: 16px;
   font-weight: 600;
   color: #1f2937;
+}
+
+.btn-selesai-lacak {
+  color: white;
+  background-color: #4CAF50;
+  border-radius: 20px;
+  padding: 0.5rem 2rem;
+  border: none;
+  font-family: 'Poppins';
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  align-self: center;     
+}
+
+.btn-selesai-lacak:hover {
+  background-color: #66BB6A;
 }
 
 .circle-blue {
