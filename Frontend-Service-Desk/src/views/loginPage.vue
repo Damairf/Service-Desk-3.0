@@ -10,8 +10,10 @@ const { executeRecaptcha } = useReCaptcha()
 const NIP = ref('')
 const Password = ref('')
 const errorMessage = ref('')
+const isLoading = ref(false)
 
 async function login() {
+  isLoading.value = true
   if (!NIP.value || !Password.value) {
     errorMessage.value = 'Harap isi NIP dan Password.'
     return
@@ -45,6 +47,7 @@ async function login() {
     else if (role === 5) router.push('/berandaKD')
   })
   .catch((error) => {
+    isLoading.value = false
     if (error.response && error.response.status === 401) {
       errorMessage.value = 'Password salah!'
     } else if (error.response && error.response.status === 404) {
@@ -52,6 +55,7 @@ async function login() {
     } else {
       errorMessage.value = 'Terjadi kesalahan server.'
     }
+    alert(errorMessage.value)
   })
 }
 
@@ -82,7 +86,12 @@ onMounted(() => {
         <h2 class="loginTitle">Login</h2>
         <input class="placeholderLgn" v-model="NIP" type="text" placeholder="NIP" />
         <input class="placeholderLgn" v-model="Password" @keyup.enter="login" type="password" placeholder="Password" />
-        <button class="login" @click="login">Login</button>
+        <!-- Loading State -->
+        <div v-if="isLoading" class="loading-container">
+          <div class="loading-spinner"></div>
+          <p>Mohon tunggu, sedang masuk...</p>
+        </div>
+        <button v-if="!isLoading" class="login" @click="login">Login</button>
       </div>
     </div>
   </div>
@@ -192,38 +201,27 @@ p.error {
   color: #ef4444;
 }
 
-.captcha-container {
-  margin: 1rem auto;
-  text-align: center;
+/* Loading States */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100%;
 }
 
-.captcha-text {
-  margin-bottom: 0.5rem;
+.loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 4px solid #0D47A1;
+  border-top: 4px solid #64B5F6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-.captcha-input {
-  width: 60px;
-  padding: 0.25rem;
-  margin-left: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: white;
-  font-family: poppins, sans-serif;
-  display: inline-block;
-  color: black;
-}
-
-.refresh-btn {
-  background-color: #e0e0e0;
-  color: black;
-  padding: 0.25rem 0.75rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 0.5rem;
-}
-
-.refresh-btn:hover {
-  background-color: #c0c0c0;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
