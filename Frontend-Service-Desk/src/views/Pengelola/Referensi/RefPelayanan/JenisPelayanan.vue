@@ -37,9 +37,18 @@ function fetchLangkahDefault() {
     headers: { Authorization: 'Bearer ' + token }
   })
   .then(res => {
-    langkahDefault.value = res.data.data
-      .slice(0, 3)
+    const data = res.data.data
+
+    const langkahAwal = data
+      .filter(item => [1, 2, 3].includes(item.ID_Isi_Alur))
       .map(item => item.Nama_Alur)
+
+    const langkahAkhir = data.find(item => item.ID_Isi_Alur === 4)
+
+    langkahDefault.value = [
+      ...langkahAwal,
+      langkahAkhir?.Nama_Alur || 'Selesai'
+    ]
   })
   .catch(err => {
     console.error('Gagal mengambil langkah default:', err)
@@ -48,7 +57,6 @@ function fetchLangkahDefault() {
 
 onBeforeMount(() => {
   fetchLangkahDefault()
-  // ... kode lainnya
 })
 
 // === Search, Sort & Pagination ===

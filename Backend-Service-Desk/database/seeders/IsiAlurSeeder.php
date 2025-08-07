@@ -18,6 +18,7 @@ class IsiAlurSeeder extends Seeder
             ["Nama_Alur" => "Permintaan Masuk"],
             ["Nama_Alur" => "Verifikasi Dokumen"],
             ["Nama_Alur" => "Permintaan Diproses"],
+            ["Nama_Alur" => "Selesai"],
             ["Nama_Alur" => "Perbaikan Server Dikerjakan"],
             ["Nama_Alur" => "Desain Laman Web Dikerjakan"],
             ["Nama_Alur" => "Pembuatan Website Dikerjakan"],

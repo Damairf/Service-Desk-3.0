@@ -10,6 +10,7 @@ const namaJenisPelayanan = ref('')
 const persyaratan = ref('')
 const daftarInputPelayanan = ref([])
 const daftarLangkahPelayanan = ref([])
+const semuaLangkah = ref([])
 
 onMounted(() => {
   const defaultLangkahQuery = route.query.defaultLangkah
@@ -36,23 +37,34 @@ onMounted(() => {
   axios.get('/api/isi_alur', {
     headers: { Authorization: 'Bearer ' + token }
   })
-    .then(res => {
-      const allLangkah = res.data.data.map(item => item.Nama_Alur)
-      daftarLangkahPelayanan.value = allLangkah
-    })
-    .catch(err => {
+  .then(res => {
+    semuaLangkah.value = res.data.data
+    daftarLangkahPelayanan.value = res.data.data
+      .filter(item => ![1, 2, 3, 4].includes(item.ID_Isi_Alur))
+      .map(item => item.Nama_Alur)
+  })
+  .catch(err => {
       console.error('Gagal mengambil isi_alur:', err)
-    })
+  })
 })
 
-// hapus jenis pelayanan
+// Fungsi hapus jenis pelayanan
 function hapuskontakInput(urutanInput) {
-    daftarInputPelayanan.value.splice(urutanInput, 1)
+  if (daftarInputPelayanan.value[urutanInput].default || daftarInputPelayanan.value[urutanInput].isLast) return
+  daftarInputPelayanan.value.splice(urutanInput, 1)
 }
 
 // Fungsi untuk menambah input baru
 function tambahKotakInputBaru() {
-  daftarInputPelayanan.value.push({ namaYangDipilih: '', dropdownTerbuka: false })
+  const langkahSelesai = daftarInputPelayanan.value.pop()
+
+  daftarInputPelayanan.value.push({
+    namaYangDipilih: '',
+    id: null,
+    dropdownTerbuka: false
+  })
+
+  daftarInputPelayanan.value.push(langkahSelesai)
 }
 
 // Mencari langkah pelayanan yang sesuai dengan teks yang diketik
@@ -64,7 +76,7 @@ function cariLangkahYangCocok(teksYangDiketik) {
 
   // Kalau ada teks, filter seperti biasa
   return daftarLangkahPelayanan.value.filter(namaLangkah =>
-    namaLangkah.toLowerCase().includes(teksYangDiketik.toLowerCase())
+    langkah.toLowerCase().includes(teksYangDiketik.toLowerCase())
   )
 }
 
@@ -83,8 +95,11 @@ function tutupDropdownSetelahFokusHilang(urutanInput) {
 
 // Submit handler
 function handleSubmit() {
-  const langkahValid = daftarInputPelayanan.value.map(i => i.namaYangDipilih).filter(Boolean)
-  if (!namaJenisPelayanan.value || !persyaratan.value || langkahValid.length < 3) {
+  const langkahValid = daftarInputPelayanan.value
+    .filter(i => !i.default && !i.isLast)
+    .map(i => i.namaYangDipilih)
+    .filter(Boolean)
+  if (!namaJenisPelayanan.value || !persyaratan.value || langkahValid.length === 0) {
     alert('Harap isi semua keperluan *');
     return;
   }
@@ -92,7 +107,7 @@ function handleSubmit() {
   const payload = {
     Nama_Jenis_Pelayanan: namaJenisPelayanan.value,
     Persyaratan: persyaratan.value,
-    Langkah_Pelayanan: daftarInputPelayanan.value.map(i => i.namaYangDipilih).filter(Boolean)
+    Langkah_Pelayanan: daftarInputPelayanan.value.map(i => i.namaYangDipilih)
   }
 
   const token = localStorage.getItem('Token')
@@ -114,11 +129,15 @@ function handleSubmit() {
 function handleReset() {
   namaJenisPelayanan.value = ''
   persyaratan.value = ''
-  daftarInputPelayanan.value = daftarLangkahPelayanan.value.slice(0, 3).map(nama => ({
-    namaYangDipilih: nama,
-    dropdownTerbuka: false,
-    default: true
-  }))
+  const defaultID = [1, 2, 3, 4]
+  const defaultLangkah = semuaLangkah.value
+    .filter(item => defaultID.includes(item.ID_Isi_Alur))
+    .map(item => ({
+      namaYangDipilih: item.Nama_Alur,
+      dropdownTerbuka: false,
+      default: true
+    }))
+  daftarInputPelayanan.value = defaultLangkah
 }
 </script>
 
@@ -145,53 +164,47 @@ function handleReset() {
           <textarea placeholder="Persyaratan untuk Jenis Pelayanan" v-model="persyaratan" />
         </div>
 
-        <!-- Bagian Langkah Pelayanan Default -->
+        <!-- Langkah Pelayanan -->
         <div class="form-group">
-          <label>Langkah Pelayanan Tetap</label>
-          <div v-for="(inputPelayanan, index) in daftarInputPelayanan.slice(0, 3)" :key="'default-' + index" class="form-Layanan langkah-tetap">
-            <input
-              v-model="inputPelayanan.namaYangDipilih"
-              placeholder="Langkah default"
-              readonly
-            />
-          </div>
-        </div>
-
-        <!-- Bagian Langkah Pelayanan Tambahan -->
-        <div class="form-group">
-          <label>Langkah Pelayanan Spesifik<span class="red">*</span></label>
+          <label>Langkah Pelayanan<span class="red">*</span></label>
 
           <div
-            v-for="(inputPelayanan, index) in daftarInputPelayanan.slice(3)"
-            :key="'tambahan-' + index"
+            v-for="(inputPelayanan, index) in daftarInputPelayanan"
+            :key="'langkah-' + index"
             class="form-Layanan"
             style="position: relative; margin-bottom: 12px"
           >
             <input
               v-model="inputPelayanan.namaYangDipilih"
-              @focus="inputPelayanan.dropdownTerbuka = true"
-              @blur="tutupDropdownSetelahFokusHilang(index + 3)"
+              :readonly="inputPelayanan.default || inputPelayanan.isLast"
+              @focus="!inputPelayanan.default && !inputPelayanan.isLast && (inputPelayanan.dropdownTerbuka = true)"
+              @input="!inputPelayanan.default && !inputPelayanan.isLast && (inputPelayanan.dropdownTerbuka = true)"
+              @blur="tutupDropdownSetelahFokusHilang(index)"
               placeholder="Ketik atau pilih langkah pelayanan spesifik..."
               class="input-langkah"
             />
+
+            <!-- Tombol hapus hanya untuk non-default dan bukan terakhir -->
             <button
+              v-if="!inputPelayanan.default && !inputPelayanan.isLast"
               type="button"
               class="hapus-btn"
-              @click="hapuskontakInput(index + 3)"
+              @click="hapuskontakInput(index)"
             >
               -
             </button>
 
+            <!-- Dropdown -->
             <ul
               v-if="inputPelayanan.dropdownTerbuka"
               class="dropdown"
             >
               <li
-                v-for="(namaLangkah, i) in cariLangkahYangCocok(inputPelayanan.namaYangDipilih)"
+                v-for="(langkah, i) in cariLangkahYangCocok(inputPelayanan.namaYangDipilih)"
                 :key="'pilihan-' + i"
-                @mousedown="pilihLangkahDariDropdown(index + 3, namaLangkah)"
+                @mousedown="pilihLangkahDariDropdown(index, langkah)"
               >
-                {{ namaLangkah }}
+                {{ langkah }}
               </li>
             </ul>
           </div>
