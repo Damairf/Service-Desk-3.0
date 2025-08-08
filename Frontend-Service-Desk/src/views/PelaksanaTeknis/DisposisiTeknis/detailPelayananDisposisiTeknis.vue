@@ -28,7 +28,7 @@ const pesanUnit = ref('')
 const pesanRevisi = ref('')
 const status = ref(Number(''))
 const stepsID = ref([])
-const lacak = ref([])
+const loadingSteps = ref([])
 
 const surat_dinas = ref('')
 const lampiran = ref('')
@@ -297,38 +297,6 @@ function handleFileChange(e, field) {
   }
 }
 
-const isSelesaiEnabled = computed(() => {
-  if (lacak.value.length === 0) return false
-
-  return lacak.value.every((item, i) => {
-    // Izinkan index terakhir tetap 0
-    if (i === lacak.value.length - 1) return true
-    return item.Is_Done === 1
-  })
-})
-
-watch(lacak, (newVal) => {
-      console.log('Lacak berubah:', newVal)
-      console.log('Status tombol kirim aktif:', isSelesaiEnabled.value)
-    }, { deep: true, immediate: true })
-
-onMounted(async () => {
-  const token = localStorage.getItem('Token');
-  try {
-    const response = await axios.get(`/api/pelayanan/alur/progress/${pelayananId.value}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-    console.log('Data dari API:', response.data)
-    lacak.value = response.data
-    console.log('Semua Is_Done:', lacak.value.map(item => item.Is_Done));
-  }
-  catch(error) {
-    console.error('Gagal fetch lacak:', error)
-  }
-})
-
 async function handleSelesai() {
   const formData = new FormData()
 
@@ -342,7 +310,7 @@ async function handleSelesai() {
     formData.append('hasil_SLA', fileSLA.value)
   }
 
-  formData.append('_method', 'PUT') // spoofing Laravel agar dianggap PUT
+  formData.append('_method', 'PUT')
   formData.append('status', 4)
   formData.append('Is_Done', true)
   formData.append('Pesan_Revisi', '')
@@ -372,6 +340,7 @@ const handleStepSelesai = async (index) => {
   }
 
   try {
+    loadingSteps.value[index] = true
     const progressUrl = `/api/progress-alur/update-status/${idProgress}`
     await axios.put(progressUrl, {
       Is_Done: 1
@@ -379,17 +348,19 @@ const handleStepSelesai = async (index) => {
       headers: { Authorization: 'Bearer ' + token }
     })
 
-    stepsStatus.value[index] = 1 // Update langsung setelah sukses
+    stepsStatus.value[index] = 1
   } catch (err) {
     console.error('Gagal update status:', err)
+  } finally {
+    loadingSteps.value[index] = false
   }
 }
 
 const isButtonDisabled = (index) => {
-  // Jika sudah selesai, tidak bisa ditekan
+  if (loadingSteps.value[index]) return true
+
   if (stepsStatus.value[index] === 1) return true
 
-  // Hanya bisa ditekan jika semua sebelumnya sudah selesai
   for (let i = 4; i < index; i++) {
     if (stepsStatus.value[i] !== 1) return true
   }
@@ -401,7 +372,9 @@ const buttonClass = (index) => {
   if (stepsStatus.value[index] === 1) {
     return 'btn-selesai-lacak done'
   }
-
+  if (loadingSteps.value[index]) {
+    return 'btn-selesai-lacak active'
+  }
   // Semua langkah sebelumnya harus selesai
   const canClick = isButtonDisabled(index) === false
   return canClick ? 'btn-selesai-lacak active' : 'btn-selesai-lacak inactive'
@@ -570,7 +543,7 @@ onMounted(() => {
                   <div class="tinjau-card">
                     <h3>Kirim Hasil Pelayanan</h3>
                     <div class="wrapper-btn">
-                      <button class="btn-selesai" :class="{ disabled: !isSelesaiEnabled }" :disabled="!isSelesaiEnabled" @click="handleSelesai">Kirim</button>
+                      <button class="btn-selesai" @click="handleSelesai">Kirim</button>
                     </div>
                   </div>
                 </template>
@@ -625,7 +598,8 @@ onMounted(() => {
                   :disabled="isButtonDisabled(index)"
                   @click="handleStepSelesai(index)"
                 >
-                  Selesai
+                  <span v-if="loadingSteps[index]" class="btn-loading-lacak">....</span>
+                  <span v-else>Selesai</span>
                 </button>
               </div>
             </div>
@@ -952,12 +926,6 @@ select {
   transform: scale(1.02);
   background-color: #48B7ED;
 }
-.btn-selesai.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  pointer-events: none;
-  color: #666;
-}
 
 /* Steps */
 .card-title {
@@ -1021,7 +989,7 @@ select {
 }
 
 .btn-selesai-lacak.active {
-  background-color: #4CAF50; /* hijau */
+  background-color: #4CAF50;
 }
 
 .btn-selesai-lacak.active:hover {
@@ -1029,13 +997,26 @@ select {
 }
 
 .btn-selesai-lacak.inactive {
-  background-color: #e53935; /* merah */
+  background-color: #e53935;
   cursor: not-allowed;
 }
 
 .btn-selesai-lacak.done {
-  background-color: #9e9e9e; /* abu-abu */
+  background-color: #9e9e9e;
   cursor: not-allowed;
+}
+
+.btn-loading-lacak {
+  color: white;
+  background-color: #66BB6A;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  border: none;
+  font-family: 'Poppins';
+  cursor: not-allowed;
+  transition: transform 0.2s ease;
+  align-self: center;     
+  font-weight: bolder;
 }
 
 .circle-blue {
