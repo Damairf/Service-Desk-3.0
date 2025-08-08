@@ -181,20 +181,20 @@ const fetchPelayananData = async () => {
 }
 
 const namaFileSuratDinas = computed(() => {
-      const fileName = surat_dinas.value.split('/').pop() 
-      const parts = fileName.split('_')
-      const tanggal = parts[0]
-      const waktu = parts[1]
-      return `${tanggal}_${waktu}_Surat_Dinas.pdf`
-    })
+  const fileName = surat_dinas.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Surat_Dinas.pdf`
+})
 
 const namaFileLampiran = computed(() => {
-      const fileName = lampiran.value.split('/').pop() 
-      const parts = fileName.split('_')
-      const tanggal = parts[0]
-      const waktu = parts[1]
-      return `${tanggal}_${waktu}_Lampiran.pdf`
-    })
+  const fileName = lampiran.value.split('/').pop() 
+  const parts = fileName.split('_')
+  const tanggal = parts[0]
+  const waktu = parts[1]
+  return `${tanggal}_${waktu}_Lampiran.pdf`
+})
 
 const namaFileHasilPemenuhan = computed(() => {
   if (!src_HasilPemenuhan.value) return 'Tidak ada file'
@@ -298,8 +298,16 @@ function handleFileChange(e, field) {
 }
 
 async function handleSelesai() {
-  const formData = new FormData()
+  const semuaSelesaiKecualiTerakhir = stepsStatus.value
+    .slice(0, stepsStatus.value.length - 1)
+    .every(status => status === 1)
 
+  if (!semuaSelesaiKecualiTerakhir) {
+    alert('Semua tahapan lacak harus selesai')
+    return
+  }
+
+  const formData = new FormData()
   if (filePemenuhan.value) {
     formData.append('hasil_pemenuhan', filePemenuhan.value)
   }
@@ -323,7 +331,12 @@ async function handleSelesai() {
         Authorization: 'Bearer ' + token
       }
     })
-    router.push('/hasilPengerjaan')
+    if (!filePemenuhan.value || !fileBA.value || !fileSLA.value) {
+      alert('Harap unggah semua keperluan dokumen')
+      return;
+    } else {
+      router.push('/hasilPengerjaan')
+    }
   } catch (error) {
     alert('Gagal mengirim data: ' + (error.response?.data?.message || error.message))
     console.error(error)
@@ -410,7 +423,6 @@ onMounted(() => {
     window.removeEventListener('popstate', handlePopState)
   })
 })
-
 </script>
 
 <template>
