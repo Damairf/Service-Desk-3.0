@@ -26,30 +26,54 @@ onBeforeMount(() => {
   });
 });
 
-const page = ref(1)
 const searchTerm = ref("")
 const showModal = ref(false)
-const isChecked = ref(false)
-const selectedItem = ref("")
-
-watch(searchTerm, () => {
-  page.value = 1
-})
+const selectedItem = ref(null)
+const currentPage = ref(1)
+const itemsPerPage = 10
 
 const filteredServices = computed(() => {
   const term = searchTerm.value.toLowerCase();
-  return services.value
-    .filter((s) => s.Nama_Jenis_Pelayanan.toLowerCase().includes(term))
-    .slice((page.value - 1) * 10, page.value * 10);
+  return services.value.filter((s) =>
+    s.Nama_Jenis_Pelayanan.toLowerCase().includes(term)
+  )
+})
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredServices.value.length / itemsPerPage)
+})
+
+const visiblePages = computed(() => {
+  const pages = []
+  const start = Math.max(1, currentPage.value - 2)
+  const end = Math.min(totalPages.value, currentPage.value + 2)
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  return pages
+})
+
+const paginatedServices = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  return filteredServices.value.slice(start, start + itemsPerPage)
 })
 
 function prevPage() {
-  if (page.value > 1) page.value--
+  if (currentPage.value > 1) currentPage.value--
 }
 
 function nextPage() {
-  if (page.value * 5 < services.value.length) page.value++
+  if (currentPage.value < totalPages.value) currentPage.value++
 }
+
+function goToPage(page) {
+  currentPage.value = page
+}
+
+watch(searchTerm, () => {
+  currentPage.value = 1
+})
+
 
 function openModal(item) {
   selectedItem.value = item
@@ -60,6 +84,7 @@ function openModal(item) {
   localStorage.setItem('ID_Jenis_Pelayanan', item.ID_Jenis_Pelayanan)
 }
 </script>
+
 
 <template>
   <div class="container">
@@ -83,7 +108,7 @@ function openModal(item) {
       <div class="container-pelayanan">
         <div
           class="list-wrapper"
-          v-for="(item, index) in filteredServices"
+          v-for="(item, index) in paginatedServices"
           :key="index"
         >
           <div
@@ -98,16 +123,16 @@ function openModal(item) {
     </div>
 
     <!-- Paging -->
-    <div class="paging">
-      <button @click="prevPage" :disabled="page === 1"><</button>
-      <button :class="{ active: page === 1 }" @click="page = 1">1</button>
-      <button :class="{ active: page === 2 }" @click="page = 2">2</button>
-      <button @click="nextPage">></button>
+    <div class="pagination">
+      <button :disabled="currentPage === 1" @click="prevPage">&#60;</button>
+      <button
+        v-for="page in visiblePages"
+        :key="page"
+        :class="{ active: currentPage === page }"
+        @click="goToPage(page)"
+      >{{ page }}</button>
+      <button :disabled="currentPage === totalPages" @click="nextPage">&#62;</button>
     </div>
-
-    <!-- Modal Overlay -->
-    
-
   </div>
 </template>
 
@@ -212,34 +237,33 @@ input[type="checkbox"]{
   transform: scale(1.1);
 }
 
-.paging {
-  margin-top: 2rem;
+/* Pengganti Halaman */
+.pagination {
   display: flex;
   justify-content: center;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 20px;
 }
-
-.paging button {
-  background-color: white;
-  color: black;
-  border: 1px solid #ccc;
-  padding: 0.5rem 0.75rem;
-  border-radius: 50%;
+.pagination button {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
   cursor: pointer;
-  min-width: 2rem;
-  text-align: center;
-  font-weight: 500;
-  font-family: poppins, sans-serif;
+  color: black;
+  transition: background 0.2s, color 0.2s;
 }
-
-.paging .active {
-  background-color: #2196f3;
-  color: white;
-  border-color: #2196f3;
+.pagination button.active, .pagination button:focus {
+  background: #2196f3;
+  color: #fff;
+  border: none;
 }
-
-.paging button:not(.active):hover {
-  background-color: #f0f0f0;
+.pagination button:disabled {
+  opacity: 30%;
+  color: black;
+  cursor: not-allowed;
 }
 
 /* Overlay Persyaratan */
