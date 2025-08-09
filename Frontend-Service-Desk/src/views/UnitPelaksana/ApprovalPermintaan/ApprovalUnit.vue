@@ -23,14 +23,16 @@ onMounted(() => {
     }
   })
   .then(response => {
+    console.log(response.data)
     layananData.value = response.data.map(item => ({
       noTiket: item.ID_Pelayanan,
       jenis: item.ID_Jenis_Pelayanan,
       sub_jenis: item.ID_Sub_Jenis_Pelayanan,
       perihal: item.Perihal,
       tanggal: item.created_at,
-      organisasi: item.user.user_organisasi.Nama_OPD,
+      organisasi: item.user.user_organisasi?.Nama_OPD || '-',
       status: item.status_pelayanan.Nama_Status,
+      urgensi: item.urgensi_pelayanan?.Nama_Urgensi || '-',
     }))
     if (layananData.value.length > 0) {
       const jenis = layananData.value[0].jenis;
@@ -155,6 +157,7 @@ watch(search, () => {
             <th>Perihal</th>
             <th>Organisasi</th>
             <th>Tanggal</th>
+            <th>Urgensi</th>
             <th @click="toggleSort('status')" class="cursor-pointer">Status
                 <span v-if="sortKey === 'status' || sortOrder === null">
                 <span v-if="sortOrder === 'asc'">🔼</span>
@@ -177,6 +180,7 @@ watch(search, () => {
             <td>{{ item.perihal }}</td>
             <td>{{ item.organisasi }}</td>
             <td>{{ formatDate(item.tanggal) }}</td>
+            <td>{{ item.urgensi }}</td>
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
             </td>
