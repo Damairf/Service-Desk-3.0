@@ -30,7 +30,8 @@ onMounted(() => {
       teknis: item.teknis_pelayanan?.Nama_Depan || '-',
       tanggal: item.created_at,
       status: item.status_pelayanan.Nama_Status,
-      terkirim: item.Is_Done
+      terkirim: item.Is_Done,
+      urgensi: item.urgensi_pelayanan?.Nama_Urgensi || '-',
     }))
   })
   .catch(error => {
@@ -138,6 +139,7 @@ watch(search, () => {
             <th>No. Tiket</th>
             <th>Perihal</th>
             <th>Tanggal</th>
+            <th>Urgensi</th>
             <th>Pelaksana Teknis</th>
             <th @click="toggleSort('status')" class="cursor-pointer">Status
                 <span v-if="sortKey === 'status' || sortOrder === null">
@@ -160,6 +162,7 @@ watch(search, () => {
             <td>{{ item.noTiket }}</td>
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.tanggal) }}</td>
+            <td>{{ item.urgensi }}</td>
             <td>{{ item.teknis }}</td>
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>

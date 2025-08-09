@@ -7,11 +7,7 @@ const router = useRouter()
 const route = useRoute()
 
 // dummy for insiden
-const urgensi = ref([
-  { id_urgensi: 1, nama_urgensi: 'Urgensi Tinggi'},
-  { id_urgensi: 2, nama_urgensi: 'Urgensi sedang'},
-  { id_urgensi: 3, nama_urgensi: 'G urgen'}
-])
+const urgensi = ref([])
 const idUrgensiTerpilih = ref('')
 
 // State management
@@ -23,6 +19,7 @@ const perihal = ref('')
 const id_user = ref('') 
 const tanggal = ref('') 
 const nama_pelapor = ref('')
+const nama_urgensi = ref('')
 const nama_depanTeknis = ref('') 
 const nama_belakangTeknis = ref('')
 const nama_depanUnit = ref('') 
@@ -72,6 +69,7 @@ const pelayananData = computed(() => ({
   lampiran: lampiran.value,
   sub_jenis_pelayanan: sub_jenis_pelayanan.value,
   jenis_pelayanan: jenis_pelayanan.value,
+  nama_urgensi: nama_urgensi.value,
   nama_pelapor: nama_pelapor.value,
   nama_depanTeknis: nama_depanTeknis.value,
   nama_belakangTeknis: nama_belakangTeknis.value,
@@ -99,6 +97,7 @@ const fetchPelayananData = async () => {
     lampiran.value = cached.lampiran
     sub_jenis_pelayanan.value = cached.sub_jenis_pelayanan
     jenis_pelayanan.value = cached.jenis_pelayanan
+    nama_urgensi.value = cached.nama_urgensi
     nama_pelapor.value = cached.nama_pelapor
     nama_depanTeknis.value = cached.nama_depanTeknis
     nama_belakangTeknis.value = cached.nama_belakangTeknis
@@ -118,7 +117,7 @@ const fetchPelayananData = async () => {
     isLoading.value = true
     const token = localStorage.getItem('Token')
     
-    const [pelayananResponse, progressResponse, unitResponse] = await Promise.all([
+    const [pelayananResponse, progressResponse, unitResponse, urgensiResponse] = await Promise.all([
       axios.get(`/api/pelayanan/${pelayananId.value}`, {
         headers: { Authorization: 'Bearer ' + token }
       }),
@@ -126,6 +125,9 @@ const fetchPelayananData = async () => {
         headers: { Authorization: 'Bearer ' + token }
       }),
       axios.get('/api/pelayanan/unit', {
+        headers: { Authorization: 'Bearer ' + token }
+      }),
+      axios.get('/api/urgensi', {
         headers: { Authorization: 'Bearer ' + token }
       })
     ])
@@ -140,10 +142,11 @@ const fetchPelayananData = async () => {
     sub_jenis_pelayanan.value = pelayananData.sub__jenis__pelayanan.Nama_Sub_Jenis_Pelayanan
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_pelapor.value = pelayananData.Nama_Pelapor
+    nama_urgensi.value = pelayananData.urgensi_pelayanan?.Nama_Urgensi || 'Belum Ditetapkan'
     nama_depanUnit.value = pelayananData.unit_pelayanan?.Nama_Depan || 'Belum'
-    nama_belakangUnit.value = pelayananData.unit_pelayanan?.Nama_Belakang || 'Tersedia'
+    nama_belakangUnit.value = pelayananData.unit_pelayanan?.Nama_Belakang || 'Ditetapkan'
     nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan || 'Belum'
-    nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Tersedia'
+    nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Ditetapkan'
     perihal.value = pelayananData.Perihal
     src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path || '-'
     src_HasilBA.value = pelayananData.BA_Path || '-'
@@ -176,6 +179,13 @@ const fetchPelayananData = async () => {
     }))
     idUnitTerpilih.value = ''
 
+    // Set urgensi data
+    urgensi.value = urgensiResponse.data.map(item => ({
+      id_urgensi: item.ID_Urgensi,
+      nama_urgensi: item.Nama_Urgensi,
+    }))
+    idUrgensiTerpilih.value = ''
+
     // Cache data
     dataCache.value = {
       id: pelayananId.value,
@@ -185,6 +195,7 @@ const fetchPelayananData = async () => {
       lampiran: lampiran.value,
       sub_jenis_pelayanan: sub_jenis_pelayanan.value,
       jenis_pelayanan: jenis_pelayanan.value,
+      nama_urgensi: nama_urgensi.value,
       nama_pelapor: nama_pelapor.value,
       nama_depanTeknis: nama_depanTeknis.value,
       nama_belakangTeknis: nama_belakangTeknis.value,
@@ -222,7 +233,8 @@ const handleSelesai = async () => {
       await axios.put(url, {
         ID_Unit: idUnitTerpilih.value,
         ID_Status: 2,
-        Pesan_Pengelola: pesan.value
+        Pesan_Pengelola: pesan.value,
+        ID_Urgensi: idUrgensiTerpilih.value
       }, {
         headers: { Authorization: 'Bearer ' + token }
       })
@@ -501,10 +513,10 @@ onMounted(() => {
                 </div>
               </div>
               <div v-if="progress" class="nama-pelaksana">
+                <strong>Urgensi</strong>
+                <div>{{ nama_urgensi }}</div>
                 <strong>Nama Unit Pelaksana</strong>
                 <div>{{ nama_depanUnit + ' ' + nama_belakangUnit }}</div>
-              </div>
-              <div v-if="progress" class="nama-pelaksana">
                 <strong>Nama Pelaksana Teknis</strong>
                 <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
               </div>
@@ -547,7 +559,7 @@ onMounted(() => {
                 </div>
                 <!-- Setuju  -->
                 <div class='wrapper-setuju'v-if='pilihan == "Setuju"'>
-                  <h4>Insiden</h4>
+                  <h4>Urgensi</h4>
                   <select id="urgensi" v-model="idUrgensiTerpilih">
                     <option value="" disabled>Pilih Urgensi</option>
                     <option

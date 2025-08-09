@@ -23,5 +23,8 @@ export default defineConfig({
         secure: false
       }
     }
+  },
+  preview: {
+    port:3001
   }
 })

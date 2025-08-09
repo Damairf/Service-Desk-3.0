@@ -24,7 +24,7 @@ class PelayananController extends Controller
 
     public function getPelayananUnit(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'Sub_Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'Sub_Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi', 'urgensi_pelayanan')
         ->where('ID_Unit', $ID_User)->whereNull('ID_Teknis')
         ->get();
         return response()->json($pelayanans);
@@ -32,7 +32,7 @@ class PelayananController extends Controller
 
     public function getDisposisiUnit(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'Sub_Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'Sub_Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi', 'urgensi_pelayanan')
         ->where('ID_Unit', $ID_User)->whereNotNull('ID_Teknis')
         ->get();
         return response()->json($pelayanans);
@@ -89,6 +89,9 @@ class PelayananController extends Controller
                 },
                 'pelayanan_pesan.pesan_user.user_role' => function ($query) {
                     $query->select('ID_Role', 'Nama_Role');
+                },
+                'urgensi_pelayanan' => function ($query) {
+                    $query->select('ID_Urgensi', 'Nama_Urgensi');
                 }
             ])
             ->first();
