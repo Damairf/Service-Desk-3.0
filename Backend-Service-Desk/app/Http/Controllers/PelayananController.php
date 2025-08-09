@@ -110,7 +110,6 @@ class PelayananController extends Controller
     // hanya untuk role user mengajukan layanan baru
     public function postLayanan(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        $ID_Jenis_Pelayanan = $request->ID_Jenis_Pelayanan;
         $ID_Sub_Jenis_Pelayanan = $request->ID_Sub_Jenis_Pelayanan;
         $Perihal = $request->Perihal;
         $Nama_Pelapor = $request->Nama_Pelapor;
@@ -121,11 +120,14 @@ class PelayananController extends Controller
         $ID_Unit = $request->ID_Unit;
         $Pesan_Pengelola = $request->Pesan_Pengelola;
 
+        $ID_Jenis_Pelayanan = SubJenisPelayanan::where('ID_Sub_Jenis_Pelayanan', $request->ID_Sub_Jenis_Pelayanan)
+            ->value('ID_Jenis_Pelayanan');
+
         $newPelayanan = Pelayanan::create([
             'ID_User' => $ID_User,
             'Nama_Pelapor' => $Nama_Pelapor,
-            'ID_Jenis_Pelayanan' => $ID_Jenis_Pelayanan,
             'ID_Sub_Jenis_Pelayanan' => $ID_Sub_Jenis_Pelayanan,
+            'ID_Jenis_Pelayanan' => $ID_Jenis_Pelayanan,
             'Perihal' => $Perihal,
             'Deskripsi' => $Deskripsi,
             'Surat_Dinas_Path' => $Surat_Dinas_Path,

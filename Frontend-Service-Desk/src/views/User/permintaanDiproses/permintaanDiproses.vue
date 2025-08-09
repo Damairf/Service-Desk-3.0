@@ -35,6 +35,7 @@ onMounted(() => {
       id: item.ID_Pelayanan,
       ticket: item.ID_Pelayanan,
       jenis: item.ID_Jenis_Pelayanan,
+      sub_jenis: item.ID_Sub_Jenis_Pelayanan,
       perihal: item.Perihal,
       teknis: item.teknis_pelayanan?.Nama_Depan || '-',
       date: item.created_at,

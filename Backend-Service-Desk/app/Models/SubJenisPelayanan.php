@@ -19,7 +19,7 @@ class SubJenisPelayanan extends Model
         'Persyaratan'
     ];
 
-    public function pelayanan():HasMany
+    public function sub_jenis_pelayanan():HasMany
     {
         return $this->hasMany(Pelayanan::class, 'ID_Sub_Jenis_Pelayanan'); 
     }

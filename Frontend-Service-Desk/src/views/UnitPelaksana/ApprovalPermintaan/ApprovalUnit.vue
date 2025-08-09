@@ -26,6 +26,7 @@ onMounted(() => {
     layananData.value = response.data.map(item => ({
       noTiket: item.ID_Pelayanan,
       jenis: item.ID_Jenis_Pelayanan,
+      sub_jenis: item.ID_Sub_Jenis_Pelayanan,
       perihal: item.Perihal,
       tanggal: item.created_at,
       organisasi: item.user.user_organisasi.Nama_OPD,
@@ -35,7 +36,7 @@ onMounted(() => {
       const jenis = layananData.value[0].jenis;
 
       // ambil alur berdasarkan jenis
-      axios.get(`/api/alur/jenis_pelayanan/${jenis}`, {
+      axios.get(`/api/alur/sub_jenis_pelayanan/${jenis}`, {
         headers: { Authorization: 'Bearer ' + token }
       })
       .then(response => {

@@ -15,7 +15,7 @@ class JenisPelayanan extends Model
         'Nama_Jenis_Pelayanan'
     ];
 
-    public function pelayanan():HasMany
+    public function jenis_pelayanan():HasMany
     {
         return $this->hasMany(Pelayanan::class, 'ID_Jenis_Pelayanan'); 
     }

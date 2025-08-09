@@ -10,7 +10,7 @@ const services = ref([])
 const isLoading = ref(true)
 onBeforeMount(() => {
   const token = localStorage.getItem('Token');
-  axios.get('/api/jenispelayanan', {
+  axios.get('/api/subjenispelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -35,7 +35,7 @@ const itemsPerPage = 10
 const filteredServices = computed(() => {
   const term = searchTerm.value.toLowerCase();
   return services.value.filter((s) =>
-    s.Nama_Jenis_Pelayanan.toLowerCase().includes(term)
+    s.Nama_Sub_Jenis_Pelayanan.toLowerCase().includes(term)
   )
 })
 
@@ -79,9 +79,9 @@ function openModal(item) {
   selectedItem.value = item
   showModal.value = true
   router.push({
-    name: 'FormulirTiketBaru', query: {layanan: selectedItem.value.Nama_Jenis_Pelayanan , persyaratan: selectedItem.value.Persyaratan}
+    name: 'FormulirTiketBaru', query: {layanan: selectedItem.value.Nama_Sub_Jenis_Pelayanan , persyaratan: selectedItem.value.Persyaratan}
   })
-  localStorage.setItem('ID_Jenis_Pelayanan', item.ID_Jenis_Pelayanan)
+  localStorage.setItem('ID_Sub_Jenis_Pelayanan', item.ID_Sub_Jenis_Pelayanan)
 }
 </script>
 
@@ -115,7 +115,7 @@ function openModal(item) {
             class="list-item"
             :class="index % 2 === 0 ? 'grey-bg' : 'white-bg'"
           >
-            {{ item.Nama_Jenis_Pelayanan }}
+            {{ item.Nama_Sub_Jenis_Pelayanan }}
           </div>
           <button class="tombol-tambah" @click="openModal(item)">+</button>
         </div>

@@ -5,7 +5,7 @@ const router = useRouter()
 import axios from 'axios'
 
 onUnmounted(() => {
-  localStorage.removeItem('ID_Jenis_Pelayanan');
+  localStorage.removeItem('ID_Sub_Jenis_Pelayanan');
 });
 
 // nerima dari pengajuanPermintaan.vue
@@ -14,7 +14,8 @@ const layanan = ref(route.query.layanan || '')
 const persyaratan = ref(route.query.persyaratan || '')
 const namaPelapor = ref([localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' '))
 const id_user = localStorage.getItem('ID_User')
-const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
+const id_sub_jenis_pelayanan = localStorage.getItem('ID_Sub_Jenis_Pelayanan')
+const id_jenis_pelayanan = ref('')
 const id_status = 1
 
 const perihal = ref('')
@@ -121,6 +122,8 @@ axios.post('/api/pelayanan/tambah', {
   "ID_User": id_user,
   "Nama_Pelapor": namaPelapor.value,
   "ID_Jenis_Pelayanan": id_jenis_pelayanan,
+  "ID_Sub_Jenis_Pelayanan": id_sub_jenis_pelayanan,
+  "ID_Jenis_Pelayanan": id_jenis_pelayanan,
   "ID_Status": id_status,
   "Perihal": perihal.value,
   "Deskripsi": deskripsi.value,
@@ -146,7 +149,6 @@ axios.post('/api/pelayanan/tambah', {
 })
 .catch(error => {
   console.error(error.response?.data || error.message);
-  console.log(namaPelapor.value)
   isLoading.value = false; // Stop loading on error
 });
 }

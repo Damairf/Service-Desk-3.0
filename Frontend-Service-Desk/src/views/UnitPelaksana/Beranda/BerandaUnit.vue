@@ -44,8 +44,6 @@ onBeforeMount(() => {
     console.error(error); 
   });
 });
-
-
 </script>
   
   <template>

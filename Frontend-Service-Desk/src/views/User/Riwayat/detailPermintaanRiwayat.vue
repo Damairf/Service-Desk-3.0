@@ -17,6 +17,7 @@ const nama_depanPengaju = ref('')
 const nama_belakangPengaju = ref('')
 const nama_depanTeknis = ref('')
 const nama_belakangTeknis = ref('')
+const sub_jenis_pelayanan = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const pesanPengelola = ref('')
@@ -55,6 +56,7 @@ const pelayananData = computed(() => ({
   src_HasilPemenuhan: src_HasilPemenuhan.value,
   src_HasilBA: src_HasilBA.value,
   src_HasilSLA: src_HasilSLA.value,
+  sub_jenis_pelayanan: sub_jenis_pelayanan.value,
   jenis_pelayanan: jenis_pelayanan.value,
   nama_depanPengaju: nama_depanPengaju.value,
   nama_belakangPengaju: nama_belakangPengaju.value,
@@ -81,6 +83,7 @@ const fetchPelayananData = async () => {
     src_HasilPemenuhan.value = cached.src_HasilPemenuhan
     src_HasilBA.value = cached.src_HasilBA
     src_HasilSLA.value = cached.src_HasilSLA
+    sub_jenis_pelayanan.value = cached.sub_jenis_pelayanan
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_depanPengaju.value = cached.nama_depanPengaju
     nama_belakangPengaju.value = cached.nama_belakangPengaju
@@ -120,6 +123,7 @@ const fetchPelayananData = async () => {
     src_HasilPemenuhan.value = pelayananData.Hasil_Pemenuhan_Path || '-'
     src_HasilBA.value = pelayananData.BA_Path || '-'
     src_HasilSLA.value = pelayananData.SLA_Path || '-'
+    sub_jenis_pelayanan.value = pelayananData.sub__jenis__pelayanan.Nama_Sub_Jenis_Pelayanan
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_depanPengaju.value = pelayananData.user.Nama_Depan
     nama_belakangPengaju.value = pelayananData.user.Nama_Belakang
@@ -154,6 +158,7 @@ const fetchPelayananData = async () => {
       organisasi: organisasi.value,
       surat_dinas: surat_dinas.value,
       lampiran: lampiran.value,
+      sub_jenis_pelayanan: sub_jenis_pelayanan.value,
       jenis_pelayanan: jenis_pelayanan.value,
       nama_depanPengaju: nama_depanPengaju.value,
       nama_belakangPengaju: nama_belakangPengaju.value,
@@ -302,7 +307,8 @@ onMounted(() => {
             <!-- Informasi Card -->
             <div class="info-card">
               <h3>Informasi Umum</h3>
-              <div class="info-row"><strong>Layanan:</strong> <span>{{ jenis_pelayanan }}</span></div>
+              <div class="info-row"><strong>Layanan:</strong> <span>{{ sub_jenis_pelayanan }}</span></div>
+              <div class="info-row"><strong>Tipe Layanan:</strong> <span>{{ jenis_pelayanan }}</span></div>
               <div class="info-row"><strong>No. Tiket:</strong> <span>{{ pelayananId }}</span></div>
               <div class="info-row"><strong>Pengaju:</strong> <span>{{ nama_depanPengaju + ' ' + nama_belakangPengaju }}</span></div>
               <div class="info-row"><strong>Organisasi:</strong> <span>{{ organisasi }}</span></div>
