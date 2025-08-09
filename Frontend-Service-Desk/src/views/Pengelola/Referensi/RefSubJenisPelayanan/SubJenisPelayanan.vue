@@ -215,8 +215,14 @@ const goToTambahPelayanan = () => {
           </tr>
         </thead>
         <tbody>
+          <!-- Loading State -->
           <tr v-if="isLoading">
-            <td colspan="4" style="text-align: center; padding: 1rem;">Memuat data...</td>
+            <td colspan="6" style="text-align: center; padding: 1rem;">
+              <div v-if="isLoading" class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Memuat data...</p>
+              </div>
+            </td>
           </tr>
           <tr v-else-if="filteredItems.length === 0">
             <td colspan="4" style="text-align: center; padding: 1rem;">Tidak ada data sub jenis pelayanan</td>
@@ -475,5 +481,29 @@ const goToTambahPelayanan = () => {
 .status.nonaktif {
   background-color: #fff9c4;
   color: #e53935;
+}
+/* Loading States */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 100%;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #0D47A1;
+  border-top: 4px solid #64B5F6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
