@@ -19,7 +19,8 @@ class PelayananSeeder extends Seeder
             
                 "ID_User" => 1,
                 "Nama_Pelapor" => "Damai Raya",
-                "ID_Jenis_Pelayanan" => 1,
+                "ID_Jenis_Pelayanan" => 2,
+                "ID_Sub_Jenis_Pelayanan" => 1,
                 "Perihal" => "Perbaikan Server",
                 "Deskripsi" => "Server error sampai terjadi down",
                 "Surat_Dinas_Path" => "storage/file/Surat-Dinas/20-07-2025_10-41-02_574da.pdf",
@@ -28,7 +29,8 @@ class PelayananSeeder extends Seeder
         Pelayanan::create([
                 "ID_User" => 6,
                 "Nama_Pelapor" => "User Lain",
-                "ID_Jenis_Pelayanan" => 2,
+                "ID_Jenis_Pelayanan" => 3,
+                "ID_Sub_Jenis_Pelayanan" => 2,
                 "Perihal" => "Desain untuk website",
                 "Deskripsi" => "Buatkan desain website yang mengusung tema olahraga",
                 "Surat_Dinas_Path" => "storage/file/Surat-Dinas/20-07-2025_10-41-02_574da.pdf",
@@ -37,7 +39,8 @@ class PelayananSeeder extends Seeder
         Pelayanan::create([
                 "ID_User" => 1,
                 "Nama_Pelapor" => "Damai Raya",
-                "ID_Jenis_Pelayanan" => 3,
+                "ID_Jenis_Pelayanan" => 1,
+                "ID_Sub_Jenis_Pelayanan" => 3,
                 "Perihal" => "Buatkan website",
                 "Deskripsi" => "Buatkan website dengan tenggat waktu 2 minggu",
                 "Surat_Dinas_Path" => "Surat Dinas C",
@@ -46,9 +49,10 @@ class PelayananSeeder extends Seeder
         Pelayanan::create([
                 "ID_User" => 6,
                 "Nama_Pelapor" => "User Lain",
-                "ID_Jenis_Pelayanan" => 4,
-                "Perihal" => "Selesaikan Masalah",
-                "Deskripsi" => "Selesaikan masalah yang diberikan",
+                "ID_Jenis_Pelayanan" => 3,
+                "ID_Sub_Jenis_Pelayanan" => 5,
+                "Perihal" => "Buatkan Desain Logo",
+                "Deskripsi" => "Buatkan logo untuk hut ri 80",
                 "Surat_Dinas_Path" => "storage/file/Surat-Dinas/20-07-2025_10-41-02_574da.pdf",
                 "Lampiran_Path" => "storage/file/lampiran/20-07-2025_10-41-02_2a494f9b.pdf",
         ]);

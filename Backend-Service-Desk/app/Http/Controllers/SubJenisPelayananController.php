@@ -32,6 +32,7 @@ class SubJenisPelayananController extends Controller
         $newSubJenisPelayanan = SubJenisPelayanan::create([
             'Nama_Sub_Jenis_Pelayanan' => $Nama_Sub_Jenis_Pelayanan,
             'Persyaratan' => $Persyaratan,
+            'ID_Jenis_Pelayanan' => $request->ID_Jenis_Pelayanan,
         ]);
         return response(["message" => "Sub Jenis Pelayanan ditambahkan", "data" => $newSubJenisPelayanan]);
     }
@@ -39,6 +40,7 @@ class SubJenisPelayananController extends Controller
         $request->validate([
             'Nama_Sub_Jenis_Pelayanan' => 'required|string',
             'Persyaratan' => 'required|string',
+            'ID_Jenis_Pelayanan' => 'required|integer|exists:reff_jenis_pelayanan,ID_Jenis_Pelayanan',
             'Langkah_Pelayanan' => 'required|array|min:3',
             'Langkah_Pelayanan.*' => 'required|string'
         ]);
@@ -49,6 +51,7 @@ class SubJenisPelayananController extends Controller
             $subjenisPelayanan = SubJenisPelayanan::create([
                 'Nama_Sub_Jenis_Pelayanan' => $request->Nama_Sub_Jenis_Pelayanan,
                 'Persyaratan' => $request->Persyaratan,
+                'ID_Jenis_Pelayanan' => $request->ID_Jenis_Pelayanan,
             ]);
     
             // 2. Tambah setiap Langkah Pelayanan
@@ -78,5 +81,4 @@ class SubJenisPelayananController extends Controller
             return response()->json(["error" => "Terjadi kesalahan: " . $e->getMessage()], 500);
         }
     }
-    
 }

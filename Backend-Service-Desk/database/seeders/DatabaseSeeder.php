@@ -35,6 +35,9 @@ class DatabaseSeeder extends Seeder
             JenisPelayananSeeder::class,
         ]);
         $this->call([
+            SubJenisPelayananSeeder::class,
+        ]);
+        $this->call([
             PelayananSeeder::class,
         ]);
         $this->call([

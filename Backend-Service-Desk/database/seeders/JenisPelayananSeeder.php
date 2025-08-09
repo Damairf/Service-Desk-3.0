@@ -16,24 +16,16 @@ class JenisPelayananSeeder extends Seeder
     {
         DB::table("reff_jenis_pelayanan")->insert([
             [
-                "Nama_Jenis_Pelayanan" => "Perbaikan Server",
-                "Persyaratan" => "Website harus sudah ada"
+                "Nama_Jenis_Pelayanan" => "Aptika",
             ],
             [
-                "Nama_Jenis_Pelayanan" => "Desain Laman Web",
-                "Persyaratan" => "Konsep harus sudah ada"
+                "Nama_Jenis_Pelayanan" => "Server",
             ],
             [
-                "Nama_Jenis_Pelayanan" => "Pembuatan Website",
-                "Persyaratan" => "Peruntukannya jelas"
+                "Nama_Jenis_Pelayanan" => "Multimedia",
             ],
             [
-                "Nama_Jenis_Pelayanan" => "Hosting Website",
-                "Persyaratan" => "Harus sudah memiliki website"
-            ],
-            [
-                "Nama_Jenis_Pelayanan" => "Pembuatan Desain Logo",
-                "Persyaratan" => "Memiliki konsep logo"
+                "Nama_Jenis_Pelayanan" => "Administrasi",
             ],
         ]);
     }

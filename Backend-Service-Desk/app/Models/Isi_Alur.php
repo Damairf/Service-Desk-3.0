@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\JenisPelayanan;
+use App\Models\SubJenisPelayanan;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Isi_Alur extends Model
