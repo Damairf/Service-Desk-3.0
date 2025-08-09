@@ -11,15 +11,15 @@ const langkahDefault = ref([])
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token')
-  axios.get('/api/jenispelayanan', {
+  axios.get('/api/subjenispelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
     }
   })
     .then(response => {
       services.value = response.data.map(item => ({
-        id: item.ID_Jenis_Pelayanan,
-        nama: item.Nama_Jenis_Pelayanan,
+        id: item.ID_Sub_Jenis_Pelayanan,
+        nama: item.Nama_Sub_Jenis_Pelayanan,
         tglPembuatan: item.created_at
       }))
     })
@@ -141,7 +141,7 @@ function cancelDelete() {
 
 function confirmDelete() {
   const token = localStorage.getItem('Token')
-  axios.delete(`/api/jenispelayanan/${pelayananToDelete.value.id}`, {
+  axios.delete(`/api/subjenispelayanan/${pelayananToDelete.value.id}`, {
     headers: {
       Authorization: 'Bearer ' + token
     }

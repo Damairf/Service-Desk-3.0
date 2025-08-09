@@ -111,7 +111,7 @@ function handleSubmit() {
   }
 
   const token = localStorage.getItem('Token')
-  axios.post('/api/jenis_pelayanan/tambah/full', payload,{
+  axios.post('/api/sub_jenis_pelayanan/tambah/full', payload,{
     headers: { Authorization: 'Bearer ' + token }
   })
     .then(res => {
