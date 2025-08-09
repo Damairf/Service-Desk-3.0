@@ -49,15 +49,15 @@ function fetchLangkahDefault() {
 
 const fetchDataSubJenisPelayanan = () => {
   const token = localStorage.getItem('Token');
-  axios.get('/api/jabatan', { // axios tetap utuh
+  axios.get('/api/subjenispelayanan', { // axios tetap utuh
     headers: {
       Authorization: 'Bearer ' + token
     }
   })
   .then(response => {
     referensiSubJenisPelayanan.value = response.data.map(item => ({
-      id: item.ID_Jabatan,
-      nama: item.Nama_Jabatan,
+      id: item.ID_Sub_Jenis_Pelayanan,
+      nama: item.Nama_Sub_Jenis_Pelayanan,
       tglPembuatan: item.created_at || '-'
     }))
   })
@@ -196,12 +196,12 @@ const goToTambahPelayanan = () => {
           </tr>
         </thead>
         <tbody>
-          <!-- <tr v-if="isLoading">
+          <tr v-if="isLoading">
             <td colspan="4" style="text-align: center; padding: 1rem;">Memuat data...</td>
           </tr>
           <tr v-else-if="filteredItems.length === 0">
             <td colspan="4" style="text-align: center; padding: 1rem;">Tidak ada data sub jenis pelayanan</td>
-          </tr> -->
+          </tr>
           <tr v-for="(subJenisPelayanan, index) in paginatedItems" :key="index">
             <td>{{ subJenisPelayanan.id }}</td>
             <td>{{ subJenisPelayanan.nama }}</td>

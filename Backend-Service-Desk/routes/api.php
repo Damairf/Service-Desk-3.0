@@ -72,7 +72,6 @@ Route::put('/organisasi/{organisasiId}',[OrganisasiController::class, 'updateOne
 Route::delete('/organisasi/{organisasiId}',[OrganisasiController::class, 'deleteOne_Organisasi']);
 Route::get('/organisasiCount',[OrganisasiController::class, 'jumlah_Organisasi']);
 
-
 Route::get('/status',[StatusController::class, 'findAll_Status']);
 Route::put('/status/{statusId}',[StatusController::class, 'updateOne_Status']);
 Route::get('/status/pelayanan',[StatusController::class, 'findAll_Pelayanan_Status']);
