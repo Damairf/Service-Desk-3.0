@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('Persyaratan')->nullable(false);
             $table->timestamps();
             
-            $table->foreign('ID_Jenis_Pelayanan')->references('ID_Jenis_Pelayanan')->on('reff_jenis_pelayanan');
+            $table->foreign('ID_Jenis_Pelayanan')->references('ID_Jenis_Pelayanan')->on('reff_jenis_pelayanan')->onDelete('cascade');
         });
     }
 

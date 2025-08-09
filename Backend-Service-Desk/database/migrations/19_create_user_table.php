@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('user', function (Blueprint $table) {
             $table->id('ID_User');
             $table->unsignedBigInteger('ID_Role')->nullable(false);
-            $table->unsignedBigInteger('ID_Jabatan')->nullable(false);
-            $table->unsignedBigInteger('ID_Organisasi')->nullable(false)->nullable();
+            $table->unsignedBigInteger('ID_Jabatan')->nullable(true);
+            $table->unsignedBigInteger('ID_Organisasi')->nullable(true);
             $table->decimal('NIP', 18, 0)->nullable(false)->unique();
             $table->string('Nama_Depan')->nullable(false);
             $table->string('Nama_Belakang')->nullable(false);
@@ -25,8 +25,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('ID_Role')->references('ID_Role')->on('reff_role');
-            $table->foreign('ID_Jabatan')->references('ID_Jabatan')->on('reff_jabatan');
-            $table->foreign('ID_Organisasi')->references('ID_Organisasi')->on('reff_organisasi')->nullOnDelete();
+            $table->foreign('ID_Jabatan')->references('ID_Jabatan')->on('reff_jabatan')->onDelete('cascade');
+            $table->foreign('ID_Organisasi')->references('ID_Organisasi')->on('reff_organisasi')->onDelete('cascade');
         });
     }
 
