@@ -15,13 +15,16 @@ import IconDaftarPelayanan from '../../../public/icondaftarpelayanan.svg'
 import IconReferensi from '../../../public/iconreferensi.svg'
 import IconLembagaOrganisasi from '../../../public/iconlembagaorganisasi.svg'
 import IconJabatan from '../../../public/iconjabatan.svg'
-// import IconStatus from '../../../public/iconstatus.svg'
+import IconStatus from '../../../public/iconstatus.svg'
 import IconUrgensi from '../../../public/iconurgensi.svg'
 import IconPersetujuanPelayanan from '../../../public/iconpersetujuanpelayanan.svg'
 import IconDisposisiPelayanan from '../../../public/icondisposisipelayanan.svg'
 import IconHasilPengerjaan from '../../../public/iconhasilpengerjaan.svg'
 import IconKepuasanUserKeseluruhan from '../../../public/iconlaporankepuasanuserkeseluruhan.svg'
 import IconKepuasanUserBulanIni from '../../../public/iconlaporankepuasanuserbulan.svg'
+import IconJenisPelayanan from '../../../public/iconjenispelayanan.svg'
+import IconSubJenisPelayanan from '../../../public/iconsubjenispelayanan.svg'
+import IconTipePermintaan from '../../../public/icontipepermintaan.svg'
 
 const nama_depan = ref(localStorage.getItem('nama_depan'));
 const nama_belakang = ref(localStorage.getItem('nama_belakang'));
@@ -128,10 +131,10 @@ if (role.value == 1) {
   { icon: IconReferensi, label: 'Referensi', children: [ 
     { icon: IconLembagaOrganisasi, label: 'Lembaga/Organisasi', to: '/lembaga'},
     { icon: IconJabatan, label: "Jabatan", to: '/referensi/jabatan'},
-    { label: "Status", to: '/referensi/status'},
-    { label: "Jenis Pelayanan", to: '/referensi/jenis-pelayanan'},
-    { label: "Sub Jenis Pelayanan", to: '/referensi/sub-jenis-pelayanan'},
-    { label: "Tipe Permintaan", to: '/referensi/tipe-permintaan'},
+    { icon: IconStatus, label: "Status", to: '/referensi/status'},
+    { icon: IconJenisPelayanan, label: "Jenis Pelayanan", to: '/referensi/jenis-pelayanan'},
+    { icon: IconSubJenisPelayanan, label: "Sub Jenis Pelayanan", to: '/referensi/sub-jenis-pelayanan'},
+    { icon: IconTipePermintaan, label: "Tipe Permintaan", to: '/referensi/tipe-permintaan'},
     { icon: IconUrgensi, label: "Urgensi", to: '/referensi/urgensi'},
   ] },
   { icon: IconProfile, label: 'Pengguna', to: '/pengguna' },

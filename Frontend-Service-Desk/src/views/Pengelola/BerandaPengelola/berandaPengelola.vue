@@ -8,6 +8,10 @@ import ChartBarPermintaanBerdasarkanStatus from './Chart/ChartBar-PermintaanBerd
 import ChartBarPermintaanBerdasarkanPengelolaTeknis from './Chart/ChartBar-PermintaanBerdasarkanPengelolaTeknis.vue'
 import ChartBarPenilaianLayananServiceDesk from './Chart/ChartBar-PenilaianLayananServiceDesk-.vue'
 import { useRouter } from 'vue-router'
+import IconPermintaanBaru from '../../../../public/iconpermintaanbaru.svg'
+import IconProfile from '../../../../public/profileicon.svg'
+import IconLembagaOrganisasi from '../../../../public/iconlembagaorganisasi.svg'
+
 const router = useRouter()
 // ceritanya backend
 const jumlahPermintaanBaru = ref('')
@@ -81,7 +85,7 @@ const fetchDashboardData = async (token) => {
   <div class="summary-box">
     <p class="label">Permintaan Baru</p>
     <div class="summary-content">
-      <div class="icon">📄</div>
+      <img :src="IconPermintaanBaru" alt="📄" class="icon"/>
       <div class="loading-data" v-if="isLoading">Memuat data...</div>
       <p class="value">{{ jumlahPermintaanBaru }}</p>
     </div>
@@ -89,7 +93,7 @@ const fetchDashboardData = async (token) => {
   <div class="summary-box">
     <p class="label">Pengguna Terdaftar</p>
     <div class="summary-content">
-      <div class="icon">👤</div>
+      <img :src="IconProfile" alt="👤" class="icon"/>
       <div class="loading-data" v-if="isLoading">Memuat data...</div>
       <p class="value">{{ jumlahPenggunaTerdaftar }}</p>
     </div>
@@ -97,7 +101,7 @@ const fetchDashboardData = async (token) => {
   <div class="summary-box">
     <p class="label">Organisasi Terdaftar</p>
     <div class="summary-content">
-      <div class="icon">👥</div>
+      <img :src="IconLembagaOrganisasi" alt="👥" class="icon"/>
       <div class="loading-data" v-if="isLoading">Memuat data...</div>
       <p class="value">{{ jumlahOrganisasiTerdaftar }}</p>
     </div>
@@ -197,6 +201,7 @@ const fetchDashboardData = async (token) => {
 
 .icon {
   font-size: 40px;
+  width: 55px;
 }
 
 .value {
