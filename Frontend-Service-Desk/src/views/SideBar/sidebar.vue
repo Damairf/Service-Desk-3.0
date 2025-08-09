@@ -1,7 +1,27 @@
 <script setup>
+
+// Imports
 import { ref , onBeforeUnmount, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import LogoServiceDesk from '../../assets/LogoServiceDesk.svg'
+import LogoServiceDesk from '../../../public/LogoServiceDesk.svg'
+import IconProfile from '../../../public/profileicon.svg'
+import IconKeluar from '../../../public/iconkeluar.svg'
+import IconBeranda from '../../../public/iconberanda.svg'
+import IconPermintaanBaru from '../../../public/iconpermintaanbaru.svg'
+import IconPermintaanDiproses from '../../../public/iconpermintaandiproses.svg'
+import IconHasilPemenuhanBASLA from '../../../public/iconpemenuhanbasla.svg'
+import IconRiwayat from '../../../public/iconriwayat.svg'
+import IconDaftarPelayanan from '../../../public/icondaftarpelayanan.svg'
+import IconReferensi from '../../../public/iconreferensi.svg'
+import IconLembagaOrganisasi from '../../../public/iconlembagaorganisasi.svg'
+import IconJabatan from '../../../public/iconjabatan.svg'
+// import IconStatus from '../../../public/iconstatus.svg'
+import IconUrgensi from '../../../public/iconurgensi.svg'
+import IconPersetujuanPelayanan from '../../../public/iconpersetujuanpelayanan.svg'
+import IconDisposisiPelayanan from '../../../public/icondisposisipelayanan.svg'
+import IconHasilPengerjaan from '../../../public/iconhasilpengerjaan.svg'
+import IconKepuasanUserKeseluruhan from '../../../public/iconlaporankepuasanuserkeseluruhan.svg'
+import IconKepuasanUserBulanIni from '../../../public/iconlaporankepuasanuserbulan.svg'
 
 const nama_depan = ref(localStorage.getItem('nama_depan'));
 const nama_belakang = ref(localStorage.getItem('nama_belakang'));
@@ -93,49 +113,49 @@ function toggleSidebar() {
 if (role.value == 1) {
   role.value = "User"
   menuItem.value = [
-  { icon: '🏠', label: 'Beranda', to: '/beranda' },
-  { icon: '⚙️', label: 'Permintaan Baru', to: '/permintaanBaru' },
-  { icon: '🔍', label: 'Permintaan Diproses', to: '/permintaanDiproses' },
-  { icon: '📁', label: 'Hasil Pemenuhan BA dan SLA', to: '/hasilPemenuhanBASLA' },
-  { icon: '📁', label: 'Riwayat', to: '/riwayat' },
+  { icon: IconBeranda, label: 'Beranda', to: '/beranda' },
+  { icon: IconPermintaanBaru, label: 'Permintaan Baru', to: '/permintaanBaru' },
+  { icon: IconPermintaanDiproses, label: 'Permintaan Diproses', to: '/permintaanDiproses' },
+  { icon: IconHasilPemenuhanBASLA, label: 'Hasil Pemenuhan BA dan SLA', to: '/hasilPemenuhanBASLA' },
+  { icon: IconRiwayat, label: 'Riwayat', to: '/riwayat' },
 ];
 } else if (role.value == 2) {
   role.value = "Pengelola"
   menuItem.value = [
-  { icon: '🏠', label: 'Beranda', to: '/Beranda-Pengelola' },
-  { icon: '⚙️', label: 'Permintaan Baru', to: '/permintaanBaruPengelola' },
-  { icon: '📁', label: 'Daftar Pelayanan', to: '/pelayanan' },
-  { icon: '📁', label: 'Referensi', children: [ 
-    { label: 'Lembaga/Organisasi', to: '/lembaga'},
-    { label: "Jabatan", to: '/referensi/jabatan'},
+  { icon: IconBeranda, label: 'Beranda', to: '/Beranda-Pengelola' },
+  { icon: IconPermintaanBaru, label: 'Permintaan Baru', to: '/permintaanBaruPengelola' },
+  { icon: IconDaftarPelayanan, label: 'Daftar Pelayanan', to: '/pelayanan' },
+  { icon: IconReferensi, label: 'Referensi', children: [ 
+    { icon: IconLembagaOrganisasi, label: 'Lembaga/Organisasi', to: '/lembaga'},
+    { icon: IconJabatan, label: "Jabatan", to: '/referensi/jabatan'},
     { label: "Status", to: '/referensi/status'},
     { label: "Jenis Pelayanan", to: '/referensi/jenis-pelayanan'},
     { label: "Sub Jenis Pelayanan", to: '/referensi/sub-jenis-pelayanan'},
     { label: "Tipe Permintaan", to: '/referensi/tipe-permintaan'},
-    { label: "Urgensi", to: '/referensi/urgensi'},
+    { icon: IconUrgensi, label: "Urgensi", to: '/referensi/urgensi'},
   ] },
-  { icon: '📁', label: 'Pengguna', to: '/pengguna' },
+  { icon: IconProfile, label: 'Pengguna', to: '/pengguna' },
 ];
 } else if (role.value == 3) {
   role.value = "Unit Pelaksana"
   menuItem.value = [
-  { icon: '🏠', label: 'Beranda', to: '/berandaUnit' },
-  { icon: '⚙️', label: 'Persetujuan Permintaan Layanan', to: '/approval' },
-  { icon: '📁', label: 'Disposisi Permintaan Layanan', to: '/disposisi' },
+  { icon: IconBeranda, label: 'Beranda', to: '/berandaUnit' },
+  { icon: IconPersetujuanPelayanan, label: 'Persetujuan Permintaan Layanan', to: '/approval' },
+  { icon: IconDisposisiPelayanan, label: 'Disposisi Permintaan Layanan', to: '/disposisi' },
 ];
 } else if (role.value == 4) {
   role.value = "Pelaksana Teknis"
   menuItem.value = [
-  { icon: '🏠', label: 'Beranda', to: '/berandaTeknis' },
-  { icon: '📁', label: 'Disposisi Permintaan Layanan', to: '/disposisiTeknis' },
-  { icon: '📁', label: 'Hasil Pengerjaan Permintaan Layanan', to: '/hasilPengerjaan' },
+  { icon: IconBeranda, label: 'Beranda', to: '/berandaTeknis' },
+  { icon: IconDisposisiPelayanan, label: 'Disposisi Permintaan Layanan', to: '/disposisiTeknis' },
+  { icon: IconHasilPengerjaan, label: 'Hasil Pengerjaan Permintaan Layanan', to: '/hasilPengerjaan' },
 ];
 } else if (role.value == 5) {
   role.value = "Kepala Dinas"
   menuItem.value = [
-  { icon: '🏠', label: 'Beranda', to: '/berandaKD' },
-  { icon: '📁', label: 'Reporting dan Hasil Kepuasaan User Keseluruhan', to: '/KepuasanUserKeseluruhan'},
-  { icon: '📁', label: 'Reporting dan Hasil Kepuasaan User Bulan ini', to: '/KepuasanUserBulanIni'}
+  { icon: IconBeranda, label: 'Beranda', to: '/berandaKD' },
+  { icon: IconKepuasanUserKeseluruhan, label: 'Reporting dan Hasil Kepuasaan User Keseluruhan', to: '/KepuasanUserKeseluruhan'},
+  { icon: IconKepuasanUserBulanIni, label: 'Reporting dan Hasil Kepuasaan User Bulan ini', to: '/KepuasanUserBulanIni'}
 ];
 } else {
   role.value = null
@@ -176,11 +196,11 @@ if (role.value == 1) {
       <!-- Profile Dropdown Menu -->
       <div v-if="tampilinOverlay" class="profile-dropdown" :class="{ collapsed : !isOpen }">
         <button class="dropdown-item" @click="() => { toggleOverlay(); toProfile() }">
-          <span class="dropdown-icon">👤</span>
+          <img :src="IconProfile" alt="Icon Profil" class="Icon"/>
           <span v-if="isOpen" class="dropdown-text">Profil Saya</span>
         </button>
         <button class="dropdown-item" @click="logout()">
-          <span class="dropdown-icon">🚪</span>
+          <img :src="IconKeluar" alt="Icon Keluar" class="Icon-Keluar"/>
           <span v-if="isOpen" class="dropdown-text">Keluar</span>
         </button>
       </div>
@@ -191,14 +211,14 @@ if (role.value == 1) {
       <!-- Menu dengan dropdown -->
       <template v-if="item.children">
         <div class="menu-item" @click="togglereferensi">
-          <span class="icon">{{ item.icon }}</span>
+          <img :src="item.icon" alt="Icon" class="Icon"/>
           <span v-if="isOpen">{{ item.label }}</span>
         </div>
         <!-- Dropdown anak -->
         <ul v-if="dropdownref" class="dropdown-list">
           <li v-for="child in item.children" :key="child.label" class="dropdown-list-child">
             <router-link :to="child.to" class="dropdown-item-ref" active-class="active">
-              <span class="dropdown-icon">📁</span>
+              <img :src="child.icon" alt="Icon" class="Icon"/>
               <span v-if="isOpen" class="text-child-ref">{{ child.label }}</span>
             </router-link>
           </li>
@@ -210,7 +230,7 @@ if (role.value == 1) {
           :to="item.to"
           class="menu-item"
         >
-          <span class="icon">{{ item.icon }}</span>
+          <img :src="item.icon" alt="Icon" class="Icon"/>
           <span v-if="isOpen" class="font-sidebar">{{ item.label }}</span>
         </router-link>
       </template>
@@ -249,6 +269,20 @@ if (role.value == 1) {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.Icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 20%;
+  object-fit: cover;
+}
+
+.Icon-Keluar {
+  width: 25px;
+  height: 25px;
+  object-fit: cover;
+  margin-right: 5px;
 }
 
 .sidebar-logo-large {
