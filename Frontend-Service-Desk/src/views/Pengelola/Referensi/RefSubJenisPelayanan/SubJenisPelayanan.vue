@@ -264,10 +264,7 @@ const goToTambahPelayanan = () => {
   </div>
 </template>
 
-  
-
-
-  <style scoped>
+<style scoped>
 .page-bg {
   min-height: 100vh;
   background: #f6f0fa;
