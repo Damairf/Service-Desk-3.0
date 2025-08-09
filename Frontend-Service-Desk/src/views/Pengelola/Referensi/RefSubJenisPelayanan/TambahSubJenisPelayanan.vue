@@ -11,6 +11,12 @@ const persyaratan = ref('')
 const daftarInputPelayanan = ref([])
 const daftarLangkahPelayanan = ref([])
 const semuaLangkah = ref([])
+const daftarJenisPelayanan = ref([])
+
+const jenisPelayananNama = ref('')
+const jenisPelayananId = ref(null)
+
+const dropdownTerbukaJenisPelayanan = ref(false)
 
 onMounted(() => {
   const defaultLangkahQuery = route.query.defaultLangkah
@@ -46,6 +52,17 @@ onMounted(() => {
   .catch(err => {
       console.error('Gagal mengambil isi_alur:', err)
   })
+
+  axios.get('/api/jenispelayanan', {
+    headers: { Authorization: 'Bearer ' + token }
+  })
+  .then(res => {
+      daftarJenisPelayanan.value = res.data
+      console.log(daftarJenisPelayanan.value)
+    })
+  .catch(err => {
+    console.error('Gagal mengambil jenis pelayanan:', err)
+  })
 })
 
 // Fungsi hapus jenis pelayanan
@@ -69,15 +86,19 @@ function tambahKotakInputBaru() {
 
 // Mencari langkah pelayanan yang sesuai dengan teks yang diketik
 function cariLangkahYangCocok(teksYangDiketik) {
-  // Kalau kosong, return semua langkah
   if (!teksYangDiketik || teksYangDiketik.trim() === '') {
     return daftarLangkahPelayanan.value
   }
 
-  // Kalau ada teks, filter seperti biasa
   return daftarLangkahPelayanan.value.filter(namaLangkah =>
     langkah.toLowerCase().includes(teksYangDiketik.toLowerCase())
   )
+}
+
+function pilihJenisPelayanan(pelayanan) {
+  jenisPelayananNama.value = pelayanan.Nama_Jenis_Pelayanan
+  jenisPelayananId.value = pelayanan.ID_Jenis_Pelayanan
+  dropdownTerbukaJenisPelayanan.value = false
 }
 
 // Ketika langkah pelayanan dipilih dari dropdown
@@ -107,6 +128,7 @@ function handleSubmit() {
   const payload = {
     Nama_Sub_Jenis_Pelayanan: namaSubJenisPelayanan.value,
     Persyaratan: persyaratan.value,
+    ID_Jenis_Pelayanan: jenisPelayananId.value,
     Langkah_Pelayanan: daftarInputPelayanan.value.map(i => i.namaYangDipilih)
   }
 
@@ -117,7 +139,7 @@ function handleSubmit() {
     .then(res => {
       alert(res.data.message)
       handleReset()
-      router.push('/referensi/jenis-pelayanan')
+      router.push('/referensi/sub-jenis-pelayanan')
     })
     .catch(err => {
       const errorMessage = err.response?.data?.error || err.message || 'Terjadi kesalahan';
@@ -149,7 +171,7 @@ function handleReset() {
         Formulir Tambah Sub Jenis Pelayanan
       </div>
 
-      <form class="form-content" @submit.prevent="handleSubmit">
+      <form class="form-content" @keydown.enter.prevent @submit.prevent="handleSubmit">
         <div class="form-note">
           <span class="required-text">Keterangan <span class="red">*</span> Harus Diisi</span>
         </div>
@@ -164,7 +186,30 @@ function handleReset() {
           <textarea placeholder="Persyaratan untuk Jenis Pelayanan" v-model="persyaratan" />
         </div>
 
-        <!-- Langkah Pelayanan -->
+        <div class="form-group dropdown-container">
+          <label>Jenis Pelayanan<span class="red">*</span></label>
+          <input
+            type="text"
+            placeholder="Pilih Jenis Pelayanan"
+            v-model="jenisPelayananNama"
+            readonly
+            @focus="dropdownTerbukaJenisPelayanan = true"
+            @blur="setTimeout(() => dropdownTerbukaJenisPelayanan = false, 100)"
+          >
+          <ul
+            v-if="dropdownTerbukaJenisPelayanan"
+            class="dropdown"
+          >
+            <li
+              v-for="pelayanan in daftarJenisPelayanan"
+              :key="pelayanan.ID_Jenis_Pelayanan"
+              @mousedown="pilihJenisPelayanan(pelayanan)"
+            >
+              {{ pelayanan.Nama_Jenis_Pelayanan }}
+            </li>
+          </ul>
+        </div>
+
         <div class="form-group">
           <label>Langkah Pelayanan<span class="red">*</span></label>
 
@@ -184,7 +229,6 @@ function handleReset() {
               class="input-langkah"
             />
 
-            <!-- Tombol hapus hanya untuk non-default dan bukan terakhir -->
             <button
               v-if="!inputPelayanan.default && !inputPelayanan.isLast"
               type="button"
@@ -194,7 +238,6 @@ function handleReset() {
               -
             </button>
 
-            <!-- Dropdown -->
             <ul
               v-if="inputPelayanan.dropdownTerbuka"
               class="dropdown"
