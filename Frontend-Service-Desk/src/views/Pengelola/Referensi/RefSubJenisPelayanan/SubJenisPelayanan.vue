@@ -169,7 +169,7 @@ function editJabatan(jabatan) {
       <div class="user-card">
         <h1 class="title">Referensi Sub Jenis Pelayanan</h1>
         <div class="top-actions">
-          <button class="btn tambah" @click="router.push('/tambahJabatan')">Tambah</button>
+          <button class="btn tambah" @click="router.push('/tambahSubJenisPelayanan')">Tambah</button>
         </div>
         <input type="text" v-model="search" placeholder="Cari Jabatan" class="search-bar" />
   
