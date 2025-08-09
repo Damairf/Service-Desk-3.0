@@ -110,7 +110,7 @@ watch(searchTerm, () => {
             class="list-item"
             :class="index % 2 === 0 ? 'grey-bg' : 'white-bg'"
           >
-            {{ item.Nama_Jenis_Pelayanan }}
+            {{ item.Nama_Sub_Jenis_Pelayanan }}
           </div>
           <button class="tombol-tambah" @click="openModal(item)">+</button>
         </div>
