@@ -81,4 +81,10 @@ class SubJenisPelayananController extends Controller
             return response()->json(["error" => "Terjadi kesalahan: " . $e->getMessage()], 500);
         }
     }
+    public function deleteOne_SubJnsPelayanan(Request $request){
+        $subjnspelayananId = $request->route('subjnspelayananId');
+        SubJenisPelayanan::where('ID_Sub_Jenis_Pelayanan', $subjnspelayananId)->delete();
+
+        return response("Sub Jenis Pelayanan Dihapus");
+    }   
 }

@@ -128,7 +128,7 @@ function confirmDelete() {
     })
     .catch(error => {
       console.error('Error deleting service:', error)
-      alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus pelayanan.')
+      alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus jenis pelayanan.')
     })
 }
 

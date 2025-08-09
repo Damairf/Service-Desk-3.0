@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ID_Isi_Alur')->nullable(false);
             $table->timestamps();
             
-            $table->foreign('ID_Sub_Jenis_Pelayanan')->references('ID_Sub_Jenis_Pelayanan')->on('reff_sub_jenis_pelayanan');
+            $table->foreign('ID_Sub_Jenis_Pelayanan')->references('ID_Sub_Jenis_Pelayanan')->on('reff_sub_jenis_pelayanan')->onDelete('cascade');
             $table->foreign('ID_Isi_Alur')->references('ID_Isi_Alur')->on('reff_isi_alur');
         });
     }

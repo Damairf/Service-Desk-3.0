@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reff_sub_jenis_pelayanan', function (Blueprint $table) {
             $table->id('ID_Sub_Jenis_Pelayanan');
             $table->text('Nama_Sub_Jenis_Pelayanan')->nullable(false);
-            $table->unsignedBigInteger('ID_Jenis_Pelayanan')->nullable(false);
+            $table->unsignedBigInteger('ID_Jenis_Pelayanan')->nullable(true);
             $table->string('Persyaratan')->nullable(false);
             $table->timestamps();
             

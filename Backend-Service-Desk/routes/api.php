@@ -88,6 +88,7 @@ Route::post('/jenispelayanan/tambah',[JenisPelayananController::class, 'post_Jen
 Route::get('/jenispelayanan/{jnspelayananId}',[JenisPelayananController::class, 'findOne_JnsPelayanan']);
 Route::put('/jenispelayanan/update/{jnspelayananId}',[JenisPelayananController::class, 'update_JnsPelayanan']);
 Route::delete('/jenispelayanan/delete/{jnspelayananId}',[JenisPelayananController::class, 'deleteOne_JnsPelayanan']);
+Route::delete('/subjenispelayanan/delete/{subjnspelayananId}',[SubJenisPelayananController::class, 'deleteOne_SubJnsPelayanan']);
 Route::get('/stsPelayananChart',[PelayananController::class, 'Chart_PelayananSts']);
 Route::get('/stsPelayananChartBulanIni',[PelayananController::class, 'Chart_PelayananStsBulanIni']);
 Route::get('/jnsPelayananChart',[PelayananController::class, 'Chart_PelayananJns']);

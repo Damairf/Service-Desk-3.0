@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ID_User')->nullable(false);
             $table->string('Nama_Pelapor')->nullable(false);
             $table->unsignedBigInteger('ID_Urgensi')->nullable(true);
-            $table->unsignedBigInteger('ID_Jenis_Pelayanan')->nullable(false);
+            $table->unsignedBigInteger('ID_Jenis_Pelayanan')->nullable(true);
             $table->unsignedBigInteger('ID_Sub_Jenis_Pelayanan')->nullable(false);
             $table->string('Perihal')->nullable(false);
             $table->text('Deskripsi')->nullable(false);

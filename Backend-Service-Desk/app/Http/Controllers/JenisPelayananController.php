@@ -33,9 +33,9 @@ class JenisPelayananController extends Controller
         ]);
         return response(["message" => "Jenis Pelayanan ditambahkan", "data" => $newJenisPelayanan]);
     }
-        public function deleteOne_JnsPelayanan(Request $request){
+    public function deleteOne_JnsPelayanan(Request $request){
         $jnspelayananId = $request->route('jnspelayananId');
-        jenispelayanan::where('ID_Jenis_Pelayanan', $jnspelayananId)->delete();
+        JenisPelayanan::where('ID_Jenis_Pelayanan', $jnspelayananId)->delete();
 
         return response("Jenis Pelayanan Dihapus");
     }   

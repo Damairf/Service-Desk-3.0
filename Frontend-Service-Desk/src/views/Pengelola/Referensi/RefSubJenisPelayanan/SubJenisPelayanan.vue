@@ -7,7 +7,7 @@ const router = useRouter()
 
 const isLoading = ref(true)
 const langkahDefault = ref([])
-// === Data Referensi Sub Jenis Pelayanan ===
+
 const referensiSubJenisPelayanan = ref([])
 
 function formatDate(dateString) {
@@ -130,13 +130,32 @@ watch(search, () => {
 const showModal = ref(false)
 const subJenisPelayananToDelete = ref("")
 function Delete(item) {
-  subJenisPelayananToDelete.value = item.nama
+  subJenisPelayananToDelete.value = item
   showModal.value = true
+  console.log(subJenisPelayananToDelete.value)
 }
 
 function cancelDelete() {
   showModal.value = false
   subJenisPelayananToDelete.value = null
+}
+
+function confirmDelete() {
+  const token = localStorage.getItem('Token')
+  axios.delete(`/api/subjenispelayanan/delete/${subJenisPelayananToDelete.value.id}`, {
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+    .then(() => {
+      referensiSubJenisPelayanan.value = referensiSubJenisPelayanan.value.filter(item => item.id !== subJenisPelayananToDelete.value.id)
+      showModal.value = false
+      subJenisPelayananToDelete.value = null
+    })
+    .catch(error => {
+      console.error('Error deleting service:', error)
+      alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus sub jenid pelayanan.')
+    })
 }
 
 //Countdown
@@ -234,7 +253,7 @@ const goToTambahPelayanan = () => {
     <div class="modal-box">
       <h3>Konfirmasi Hapus</h3>
       <p>
-        Apakah Anda yakin ingin menghapus sub jenis pelayanan <strong>{{ subJenisPelayananToDelete }}</strong>?
+        Apakah Anda yakin ingin menghapus sub jenis pelayanan <strong>{{ subJenisPelayananToDelete.nama }}</strong>?
       </p>
       <p v-if="isCounting">Mohon tunggu {{ countdown }} detik</p>
       <div class="modal-actions">
