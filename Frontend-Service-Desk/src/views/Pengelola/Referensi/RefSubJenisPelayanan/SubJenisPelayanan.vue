@@ -7,8 +7,8 @@ const router = useRouter()
 
 const isLoading = ref(true)
 const langkahDefault = ref([])
-// === Data Referensi Jabatan ===
-const referensiJabatan = ref([])
+// === Data Referensi Sub Jenis Pelayanan ===
+const referensiSubJenisPelayanan = ref([])
 
 function formatDate(dateString) {
   if (!dateString) return '-';
@@ -19,7 +19,7 @@ function formatDate(dateString) {
 
 //===BACKEND=== 
 onBeforeMount(() => {
-  fetchDataOrganisasi();
+  fetchDataSubJenisPelayanan();
   fetchLangkahDefault();
 });
 
@@ -47,15 +47,15 @@ function fetchLangkahDefault() {
   })
 }
 
-const fetchDataOrganisasi = () => {
-const token = localStorage.getItem('Token');
-  axios.get('/api/jabatan', {
+const fetchDataSubJenisPelayanan = () => {
+  const token = localStorage.getItem('Token');
+  axios.get('/api/jabatan', { // axios tetap utuh
     headers: {
       Authorization: 'Bearer ' + token
     }
   })
   .then(response => {
-    referensiJabatan.value = response.data.map(item => ({
+    referensiSubJenisPelayanan.value = response.data.map(item => ({
       id: item.ID_Jabatan,
       nama: item.Nama_Jabatan,
       tglPembuatan: item.created_at || '-'
@@ -78,7 +78,7 @@ const itemsPerPage = 10
 
 // === Filter & Sort Data ===
 const filteredItems = computed(() => {
-  let items = referensiJabatan.value.filter(item =>
+  let items = referensiSubJenisPelayanan.value.filter(item =>
     item.nama.toLowerCase().includes(search.value.toLowerCase()) ||
     item.tglPembuatan.toLowerCase().includes(search.value.toLowerCase())
   )
@@ -128,35 +128,16 @@ watch(search, () => {
 
 // === Modal Delete ===
 const showModal = ref(false)
-const jabatanToDelete = ref("")
+const subJenisPelayananToDelete = ref("")
 function Delete(item) {
-  jabatanToDelete.value = item.nama
+  subJenisPelayananToDelete.value = item.nama
   showModal.value = true
 }
 
 function cancelDelete() {
   showModal.value = false
-  jabatanToDelete.value = null
+  subJenisPelayananToDelete.value = null
 }
-
-// function confirmDelete() {
-//   const token = localStorage.getItem('Token');
-//   axios.delete(`http://127.0.0.1:8000/api/organisasi/${idOrganisasiToDelete.value}`, {
-//   headers: {
-//       Authorization: 'Bearer ' + token
-//     }
-//   })
-//   .then(() => {
-//   fetchDataOrganisasi();
-//   showModal.value = false
-//   idOrganisasiToDelete.value = null
-// })
-
-//   .catch(error => {
-//     console.error(error);
-//     alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus organisasi.');
-//   });
-// }
 
 //Countdown
 const countdown = ref(5)
@@ -176,12 +157,12 @@ function startCountdown() {
   }, 1000)
 }
 
-function editJabatan(jabatan) {
+function editSubJenisPelayanan(subJenisPelayanan) {
   router.push({
-    path: '/ubahJabatan',
+    path: '/ubahSubJenisPelayanan',
     query: {
-      nama_jabatan: jabatan.nama,
-      jabatanId: jabatan.id
+      nama_sub_jenis_pelayanan: subJenisPelayanan.nama,
+      subJenisPelayananId: subJenisPelayanan.id
     }
   })
 }
@@ -197,64 +178,63 @@ const goToTambahPelayanan = () => {
 
 
 <template>
-    <div class="page-bg">
-      <div class="user-card">
-        <h1 class="title">Referensi Sub Jenis Pelayanan</h1>
-        <div class="top-actions">
-          <button class="btn tambah" @click="goToTambahPelayanan">Tambah</button>
-        </div>
-        <input type="text" v-model="search" placeholder="Cari Jabatan" class="search-bar" />
-  
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th @click="sortKey = 'id'">ID</th>
-              <th @click="sortKey = 'nama'">Nama Sub Jenis Pelayanan</th>
-              <th @click="sortKey = 'tglPembuatan'">Tanggal Pembuatan</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- <tr v-if="isLoading">
-              <td colspan="4" style="text-align: center; padding: 1rem;">Memuat data...</td>
-            </tr>
-            <tr v-else-if="filteredItems.length === 0">
-              <td colspan="4" style="text-align: center; padding: 1rem;">Tidak ada data jabatan</td>
-            </tr> -->
-            <tr v-for="(jabatan, index) in paginatedItems" :key="index">
-              <td>{{ jabatan.id }}</td>
-              <td>{{ jabatan.nama }}</td>
-              <td>{{ formatDate(jabatan.tglPembuatan) }}</td>
-              <td>
-                <div class="wrapper-aksiBtn">
-                    <!-- functionnya belum ada -->
-                    <button class="aksiEdit-btn" title="Edit" @click="editJabatan(jabatan)">Ubah</button>
-                    <button class="aksiDelete-btn" title="Delete" @click="Delete(jabatan); startCountdown()">Hapus</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-  
-        <div class="pagination">
-          <button :disabled="currentPage === 1" @click="prevPage">&#60;</button>
-          <button
-            v-for="page in visiblePages"
-            :key="page"
-            :class="{ active: currentPage === page }"
-            @click="goToPage(page)"
-          >{{ page }}</button>
-          <button :disabled="currentPage === totalPages" @click="nextPage">&#62;</button>
-        </div>
+  <div class="page-bg">
+    <div class="user-card">
+      <h1 class="title">Referensi Sub Jenis Pelayanan</h1>
+      <div class="top-actions">
+        <button class="btn tambah" @click="goToTambahPelayanan">Tambah</button>
+      </div>
+      <input type="text" v-model="search" placeholder="Cari Sub Jenis Pelayanan" class="search-bar" />
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th @click="sortKey = 'id'">ID</th>
+            <th @click="sortKey = 'nama'">Nama Sub Jenis Pelayanan</th>
+            <th @click="sortKey = 'tglPembuatan'">Tanggal Pembuatan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr v-if="isLoading">
+            <td colspan="4" style="text-align: center; padding: 1rem;">Memuat data...</td>
+          </tr>
+          <tr v-else-if="filteredItems.length === 0">
+            <td colspan="4" style="text-align: center; padding: 1rem;">Tidak ada data sub jenis pelayanan</td>
+          </tr> -->
+          <tr v-for="(subJenisPelayanan, index) in paginatedItems" :key="index">
+            <td>{{ subJenisPelayanan.id }}</td>
+            <td>{{ subJenisPelayanan.nama }}</td>
+            <td>{{ formatDate(subJenisPelayanan.tglPembuatan) }}</td>
+            <td>
+              <div class="wrapper-aksiBtn">
+                <button class="aksiEdit-btn" title="Edit" @click="editSubJenisPelayanan(subJenisPelayanan)">Ubah</button>
+                <button class="aksiDelete-btn" title="Delete" @click="Delete(subJenisPelayanan); startCountdown()">Hapus</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination">
+        <button :disabled="currentPage === 1" @click="prevPage">&#60;</button>
+        <button
+          v-for="page in visiblePages"
+          :key="page"
+          :class="{ active: currentPage === page }"
+          @click="goToPage(page)"
+        >{{ page }}</button>
+        <button :disabled="currentPage === totalPages" @click="nextPage">&#62;</button>
       </div>
     </div>
+  </div>
 
-      <!-- Modal Delete -->
+  <!-- Modal Delete -->
   <div v-if="showModal" class="modal-overlay">
     <div class="modal-box">
       <h3>Konfirmasi Hapus</h3>
       <p>
-        Apakah Anda yakin ingin menghapus jabatan <strong>{{ jabatanToDelete }}</strong>?
+        Apakah Anda yakin ingin menghapus sub jenis pelayanan <strong>{{ subJenisPelayananToDelete }}</strong>?
       </p>
       <p v-if="isCounting">Mohon tunggu {{ countdown }} detik</p>
       <div class="modal-actions">
@@ -263,7 +243,8 @@ const goToTambahPelayanan = () => {
       </div>
     </div>
   </div>
-  </template>
+</template>
+
   
 
 

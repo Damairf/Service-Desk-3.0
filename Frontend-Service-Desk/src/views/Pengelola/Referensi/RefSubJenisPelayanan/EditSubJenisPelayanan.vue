@@ -49,10 +49,10 @@ function handleReset() {
 
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Ubah Jabatan</h1>
+    <h1 class="main-title">Ubah Sub Jenis Pelayanan</h1>
     <div class="form-card">
       <div class="form-card-header">
-        Formulir Ubah Jabatan
+        Formulir Ubah Sub Jenis Pelayanan
       </div>
 
       <!-- Form pakai @submit.prevent supaya tidak reload -->
