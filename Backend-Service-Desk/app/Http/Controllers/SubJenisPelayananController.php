@@ -4,39 +4,40 @@ namespace App\Http\Controllers;
 use App\Models\Alur;
 use App\Models\Isi_Alur;
 use App\Models\JenisPelayanan;
+use App\Models\SubJenisPelayanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class JenisPelayananController extends Controller
+class SubJenisPelayananController extends Controller
 {
-    public function getAll_JnsPelayanan(){
-        $jenispelayanan = JenisPelayanan::get();
-        return response()->json($jenispelayanan);
+    public function getAll_SubJnsPelayanan(){
+        $sub_jenispelayanan = SubJenisPelayanan::get();
+        return response()->json($sub_jenispelayanan);
     }
-    public function getAll_Alur_JnsPelayanan_byId(Request $request){
+    public function getAll_Alur_SubJnsPelayanan_byId(Request $request){
         $alurId = $request->route("alurId");
-        $alur = Alur::with("alur_jnsPelayanan")->where('ID_Alur', $alurId)->get();
+        $alur = Alur::with("alur_subjnsPelayanan")->where('ID_Alur', $alurId)->get();
         return response()->json($alur);
     }
-    public function findOne_JnsPelayanan(Request $request){
-        $jnspelayananId = $request->route('jnspelayananId');
-        $jnspelayananId = JenisPelayanan::where('ID_Jenis_Pelayanan', $jnspelayananId)->get();
+    public function findOne_SubJnsPelayanan(Request $request){
+        $subjnspelayananId = $request->route('subjnspelayananId');
+        $subjnspelayananId = SubJenisPelayanan::where('ID_Sub_Jenis_Pelayanan', $subjnspelayananId)->get();
 
-        return response()->json($jnspelayananId);
+        return response()->json($subjnspelayananId);
     }
-    public function postJenis_Pelayanan(Request $request){
-        $Nama_Jenis_Pelayanan = $request->Nama_Jenis_Pelayanan;
+    public function post_Sub_Jenis_Pelayanan(Request $request){
+        $Nama_Sub_Jenis_Pelayanan = $request->Nama_Sub_Jenis_Pelayanan;
         $Persyaratan = $request->Persyaratan;
 
-        $newJenisPelayanan = JenisPelayanan::create([
-            'Nama_Jenis_Pelayanan' => $Nama_Jenis_Pelayanan,
+        $newSubJenisPelayanan = SubJenisPelayanan::create([
+            'Nama_Sub_Jenis_Pelayanan' => $Nama_Sub_Jenis_Pelayanan,
             'Persyaratan' => $Persyaratan,
         ]);
-        return response(["message" => "Jenis Pelayanan ditambahkan", "data" => $newJenisPelayanan]);
+        return response(["message" => "Sub Jenis Pelayanan ditambahkan", "data" => $newSubJenisPelayanan]);
     }
-    public function postJenisPelayananFull(Request $request){
+    public function post_Sub_Jenis_Pelayanan_Full(Request $request){
         $request->validate([
-            'Nama_Jenis_Pelayanan' => 'required|string',
+            'Nama_Sub_Jenis_Pelayanan' => 'required|string',
             'Persyaratan' => 'required|string',
             'Langkah_Pelayanan' => 'required|array|min:3',
             'Langkah_Pelayanan.*' => 'required|string'
@@ -45,8 +46,8 @@ class JenisPelayananController extends Controller
         DB::beginTransaction();
         try {
             // 1. Tambah Jenis Pelayanan
-            $jenisPelayanan = JenisPelayanan::create([
-                'Nama_Jenis_Pelayanan' => $request->Nama_Jenis_Pelayanan,
+            $subjenisPelayanan = SubJenisPelayanan::create([
+                'Nama_Sub_Jenis_Pelayanan' => $request->Nama_Sub_Jenis_Pelayanan,
                 'Persyaratan' => $request->Persyaratan,
             ]);
     
@@ -58,7 +59,7 @@ class JenisPelayananController extends Controller
     
                 // 3. Hubungkan ke tabel Alur
                 Alur::create([
-                    'ID_Jenis_Pelayanan' => $jenisPelayanan->ID_Jenis_Pelayanan,
+                    'ID_Sub_Jenis_Pelayanan' => $subjenisPelayanan->ID_Sub_Jenis_Pelayanan,
                     'ID_Isi_Alur' => $isiAlur->ID_Isi_Alur
                 ]);
             }
@@ -68,7 +69,7 @@ class JenisPelayananController extends Controller
             return response()->json([
                 "message" => "Semua data berhasil disimpan",
                 "data" => [
-                    "jenis_pelayanan" => $jenisPelayanan,
+                    "sub_jenis_pelayanan" => $subjenisPelayanan,
                     "langkah_pelayanan" => $request->Langkah_Pelayanan
                 ]
             ], 201);

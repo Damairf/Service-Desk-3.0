@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Status;
 use App\Models\JenisPelayanan;
+use App\Models\SubJenisPelayanan;
 use Illuminate\Http\Request;
 use App\Models\Pelayanan;
 use App\Models\User;
@@ -17,13 +18,13 @@ use Carbon\Carbon;
 class PelayananController extends Controller
 {
     public function getAll_Layanan(){
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi', 'urgensi_pelayanan')->get();
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'Sub_Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi', 'urgensi_pelayanan')->get();
         return response()->json($pelayanans);
     }
 
     public function getPelayananUnit(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'Sub_Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
         ->where('ID_Unit', $ID_User)->whereNull('ID_Teknis')
         ->get();
         return response()->json($pelayanans);
@@ -31,7 +32,7 @@ class PelayananController extends Controller
 
     public function getDisposisiUnit(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'Sub_Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
         ->where('ID_Unit', $ID_User)->whereNotNull('ID_Teknis')
         ->get();
         return response()->json($pelayanans);
@@ -39,7 +40,7 @@ class PelayananController extends Controller
 
     public function getPelayananTeknisNotDone(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'Sub_Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
         ->where('ID_Teknis', $ID_User)->where('Is_Done', false)
         ->get();
         return response()->json($pelayanans);
@@ -59,44 +60,45 @@ class PelayananController extends Controller
 
     public function getPelayananTeknisDone(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
+        $pelayanans = Pelayanan::with('Jenis_Pelayanan', 'Sub_Jenis_Pelayanan', 'status_pelayanan', 'teknis_pelayanan', 'User.user_organisasi')
         ->where('ID_Teknis', $ID_User)->where('Is_Done', true)
         ->get();
         return response()->json($pelayanans);
     }
 
     public function getByID_Layanan(Request $request)
-{
-    $pelayananId = $request->route('pelayananId');
-
-    $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)
-        ->with([
-            'User:user.ID_User,Nama_Depan,Nama_Belakang,ID_Organisasi',
-            'User.user_organisasi:ID_Organisasi,Nama_OPD',
-
-            'Jenis_Pelayanan:ID_Jenis_Pelayanan,Nama_Jenis_Pelayanan',
-
-            'unit_pelayanan:ID_User,Nama_Depan,Nama_Belakang',
-            'teknis_pelayanan:ID_User,Nama_Depan,Nama_Belakang',
-
-            'pelayanan_pesan' => function ($query) {
-                $query->select('ID_Pelayanan', 'ID_Pesan', 'Pesan', 'Dokumen_Path', 'created_at', 'ID_User');
-            },
-            'pelayanan_pesan.pesan_user' => function ($query) {
-                $query->select('ID_User', 'Nama_Depan', 'Nama_Belakang', 'ID_Role');
-            },
-            'pelayanan_pesan.pesan_user.user_role' => function ($query) {
-                $query->select('ID_Role', 'Nama_Role');
-            }
-        ])
-        ->first();
-
-    return response()->json($pelayanan);
-}
-
-    public function getByID_Pelayanan_Jenis_User($id)
     {
-        $pelayanan = Pelayanan::select('ID_Pelayanan', 'ID_Jenis_Pelayanan')->find($id);
+        $pelayananId = $request->route('pelayananId');
+
+        $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)
+            ->with([
+                'User:user.ID_User,Nama_Depan,Nama_Belakang,ID_Organisasi',
+                'User.user_organisasi:ID_Organisasi,Nama_OPD',
+
+                'Jenis_Pelayanan:ID_Jenis_Pelayanan,Nama_Jenis_Pelayanan',
+                'Sub_Jenis_Pelayanan:ID_Sub_Jenis_Pelayanan,Nama_Sub_Jenis_Pelayanan',
+
+                'unit_pelayanan:ID_User,Nama_Depan,Nama_Belakang',
+                'teknis_pelayanan:ID_User,Nama_Depan,Nama_Belakang',
+
+                'pelayanan_pesan' => function ($query) {
+                    $query->select('ID_Pelayanan', 'ID_Pesan', 'Pesan', 'Dokumen_Path', 'created_at', 'ID_User');
+                },
+                'pelayanan_pesan.pesan_user' => function ($query) {
+                    $query->select('ID_User', 'Nama_Depan', 'Nama_Belakang', 'ID_Role');
+                },
+                'pelayanan_pesan.pesan_user.user_role' => function ($query) {
+                    $query->select('ID_Role', 'Nama_Role');
+                }
+            ])
+            ->first();
+
+        return response()->json($pelayanan);
+    }
+
+    public function getByID_Pelayanan_Sub_Jenis_User($id)
+    {
+        $pelayanan = Pelayanan::select('ID_Pelayanan', 'ID_Jenis_Pelayanan', 'ID_Sub_Jenis_Pelayanan')->find($id);
 
         if (!$pelayanan) {
             return response()->json(['message' => 'Pelayanan tidak ditemukan'], 404);
@@ -109,6 +111,7 @@ class PelayananController extends Controller
     public function postLayanan(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
         $ID_Jenis_Pelayanan = $request->ID_Jenis_Pelayanan;
+        $ID_Sub_Jenis_Pelayanan = $request->ID_Sub_Jenis_Pelayanan;
         $Perihal = $request->Perihal;
         $Nama_Pelapor = $request->Nama_Pelapor;
         $Deskripsi = $request->Deskripsi;
@@ -122,6 +125,7 @@ class PelayananController extends Controller
             'ID_User' => $ID_User,
             'Nama_Pelapor' => $Nama_Pelapor,
             'ID_Jenis_Pelayanan' => $ID_Jenis_Pelayanan,
+            'ID_Sub_Jenis_Pelayanan' => $ID_Sub_Jenis_Pelayanan,
             'Perihal' => $Perihal,
             'Deskripsi' => $Deskripsi,
             'Surat_Dinas_Path' => $Surat_Dinas_Path,
@@ -131,7 +135,7 @@ class PelayananController extends Controller
             'Pesan_Pengelola' => $Pesan_Pengelola,
         ]);
 
-        $alurList = Alur::where('ID_Jenis_Pelayanan', $ID_Jenis_Pelayanan)->get();
+        $alurList = Alur::where('ID_Sub_Jenis_Pelayanan', $ID_Sub_Jenis_Pelayanan)->get();
 
         foreach ($alurList as $index => $alur) {
             ProgressAlur::create([
@@ -186,45 +190,6 @@ class PelayananController extends Controller
 
     return response ($pelayanan);
     }
-
-    // public function getTeknis(Request $request){
-    //     $pelayananId = $request->route('pelayananId');
-    //     $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->select('ID_Teknis')->with([
-    //         'teknis_pelayanan' => function ($query) {
-    //             $query->select('ID_User', 'Nama_Depan', 'Nama_Belakang');
-    //         }
-    //         ])->first();
-
-    //     return response()->json($pelayanan);
-    // } 
-
-
-    // public function tolak(Request $request){
-    //     $pelayananId = $request->route('pelayananId');
-    //     $dataPelayanan = $request->only([
-    //         'Insiden',
-    //         'ID_Status',
-    //         'ID_Unit'
-    //     ]);
-
-    //     $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
-
-    //     $pelayanan->update($dataPelayanan);
-    // }
-
-    // public function disposisi(Request $request){
-    //     $pelayananId = $request->route('pelayananId');
-    //     $dataPelayanan = $request->only([
-    //         'ID_Teknis',
-    //         'ID_Status'
-    //     ]);
-
-    //     $pelayanan = Pelayanan::where('ID_Pelayanan', $pelayananId)->first();
-
-    //     $pelayanan->update($dataPelayanan);
-
-    //     return response()->json($pelayanan);
-    // }
         
     // hanya untuk role user memberikan survey
     public function putSurvey(Request $request){
@@ -259,7 +224,6 @@ class PelayananController extends Controller
             'hasil_SLA' => 'nullable|file|mimes:pdf|max:8192',
         ]);
 
-        // ====== Cek dan simpan file hasil_pemenuhan jika dikirim ======
         if ($request->hasFile('hasil_pemenuhan')) {
             $suratFile = $request->file('hasil_pemenuhan');
             $suratName = $datetime . '_' . hash('sha256', time() . $suratFile->getClientOriginalName()) . '.' . $suratFile->getClientOriginalExtension();
@@ -267,7 +231,6 @@ class PelayananController extends Controller
             $dataUpdate['Hasil_Pemenuhan_Path'] = 'storage/' . $suratPath; // Update path hasil pemenuhan
         }
     
-        // ====== Cek dan simpan file BA jika dikirim ======
         if ($request->hasFile('hasil_BA')) {
             $baFile = $request->file('hasil_BA');
             $baName = $datetime . '_' . hash('sha256', time() . $baFile->getClientOriginalName()) . '.' . $baFile->getClientOriginalExtension();
@@ -275,7 +238,6 @@ class PelayananController extends Controller
             $dataUpdate['BA_Path'] = 'storage/' . $baPath; // Update path BA
         }
     
-        // ====== Cek dan simpan file SLA jika dikirim ======
         if ($request->hasFile('hasil_SLA')) {
             $slaFile = $request->file('hasil_SLA');
             $slaName = $datetime . '_' . hash('sha256', time() . $slaFile->getClientOriginalName()) . '.' . $slaFile->getClientOriginalExtension();
@@ -283,7 +245,6 @@ class PelayananController extends Controller
             $dataUpdate['SLA_Path'] = 'storage/' . $slaPath; // Update path SLA
         }
     
-        // ====== Set status dan Is_Done jika ada file yang dikirim ======
         if (!empty($dataUpdate)) {
             $dataUpdate['ID_Status'] = 4;
             $dataUpdate['Is_Done'] = true;
@@ -295,10 +256,8 @@ class PelayananController extends Controller
             $dataUpdate['Pesan_Revisi'] = $request->input('Pesan_Revisi');
         }
     
-        // ====== Update ke database ======
         Pelayanan::where('ID_Pelayanan', $pelayananId)->update($dataUpdate);
     
-        // ====== Ambil data setelah update untuk dikembalikan ======
         $updateLaporan = Pelayanan::where('ID_Pelayanan', $pelayananId)
             ->select('ID_Pelayanan', 'Hasil_Pemenuhan_Path', 'BA_Path', 'SLA_Path', 'ID_Status', 'Is_Done')
             ->first();
@@ -311,7 +270,7 @@ class PelayananController extends Controller
 
     public function Pelayanan_byUser(Request $request){
         $userId = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        $pelayanans = Pelayanan::with('jenis_pelayanan', 'status_pelayanan', 'teknis_pelayanan')->where('ID_User', $userId)->get();
+        $pelayanans = Pelayanan::with('jenis_pelayanan', 'sub_jenis_pelayanan', 'status_pelayanan', 'teknis_pelayanan')->where('ID_User', $userId)->get();
         return response()->json($pelayanans);
     }
 
@@ -397,7 +356,6 @@ class PelayananController extends Controller
         return response()->json($PelayananCounts);
     }
     
-
     // untuk user mengunggah file
     public function uploadKeperluan(Request $request)
     {

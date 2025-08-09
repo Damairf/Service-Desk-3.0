@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\JenisPelayananController;
+use App\Http\Controllers\SubJenisPelayananController;
 use App\Http\Controllers\OrganisasiController;
 use App\Http\Controllers\PelayananController;
 use App\Http\Controllers\PesanController;
@@ -32,8 +33,8 @@ Route::post('/pesan/{pelayananId}',[PesanController::class, 'kirimPesan']);
 
 // endpoint user
 Route::get('/role/{roleId}', [RoleController::class, 'findOne_Role']);
-Route::get('/jenispelayanan',[JenisPelayananController::class, 'getAll_JnsPelayanan']);
-Route::get('/jenispelayanan/{jnspelayananId}',[JenisPelayananController::class, 'findOne_JnsPelayanan']);
+Route::get('/subjenispelayanan',[SubJenisPelayananController::class, 'getAll_SubJnsPelayanan']);
+Route::get('/subjenispelayanan/{subjnspelayananId}',[SubJenisPelayananController::class, 'findOne_SubJnsPelayanan']);
 
 Route::post('/pelayanan/tambah',[PelayananController::class, 'postLayanan']);
 Route::post('/uploadKeperluan',[PelayananController::class, 'uploadKeperluan']);
@@ -42,7 +43,7 @@ Route::get('/pelayananUser',[PelayananController::class, 'Pelayanan_byUser']);
 Route::get('/pelayananUser/{pelayananId}',[PelayananController::class, 'getByID_Pelayanan_Jenis_User']);
 // Route::get('/pelayanan/teknis/{pelayananId}',[PelayananController::class, 'getTeknis']);
 
-Route::get('/alur/jenis_pelayanan/{id}',[AlurController::class, 'getAlurByJenisPelayanan']);
+Route::get('/alur/sub_jenis_pelayanan/{id}',[AlurController::class, 'getAlurBySubJenisPelayanan']);
 Route::get('/pelayanan/alur/progress/{id}',[ProgressAlurController::class, 'getAlurByPelayanan']);
 
 
@@ -94,10 +95,10 @@ Route::get('/pdf/{filename}', [PelayananController::class, 'getPdfUrl']);
 Route::put('/pelayanan/disposisi/{pelayananId}', [PelayananController::class, 'disposisi']);
 
 Route::get('/isi_alur',[AlurController::class, 'getAll_IsiAlur']);
-Route::post('/jenis_pelayanan/tambah',[JenisPelayananController::class, 'postJenis_Pelayanan']);
+Route::post('/sub_jenis_pelayanan/tambah',[SubJenisPelayananController::class, 'post_Sub_Jenis_Pelayanan']);
 Route::post('/isi_alur/tambah',[AlurController::class, 'postIsi_Alur']);
-Route::post('/jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
-Route::post('/jenis_pelayanan/tambah/full',[JenisPelayananController::class, 'postJenisPelayananFull']);
+Route::post('/sub_jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
+Route::post('/sub_jenis_pelayanan/tambah/full',[SubJenisPelayananController::class, 'post_Sub_Jenis_Pelayanan_Full']);
 
 // endpoint unit pelaksana
 

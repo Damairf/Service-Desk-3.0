@@ -26,6 +26,7 @@ class Pelayanan extends Model
         'ID_Status',
         'ID_User',
         'ID_Jenis_Pelayanan',
+        'ID_Sub_Jenis_Pelayanan',
         'ID_Unit',
         'ID_Urgensi',
         'Pesan_Pengelola',
@@ -59,8 +60,8 @@ class Pelayanan extends Model
     public function User(): BelongsTo{
         return $this -> belongsTo( User::class, 'ID_User');
     }
-    public function Jenis_Pelayanan(): BelongsTo{
-        return $this -> belongsTo( JenisPelayanan::class, 'ID_Jenis_Pelayanan');
+    public function Sub_Jenis_Pelayanan(): BelongsTo{
+        return $this -> belongsTo( SubJenisPelayanan::class, 'ID_Sub_Jenis_Pelayanan');
     }
     public function status_pelayanan(): BelongsTo{
         return $this -> belongsTo(Status::class, 'ID_Status');
