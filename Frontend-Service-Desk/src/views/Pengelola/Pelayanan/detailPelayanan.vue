@@ -6,6 +6,14 @@ import axios from 'axios'
 const router = useRouter()
 const route = useRoute()
 
+// dummy for insiden
+const urgensi = ref([
+  { id_urgensi: 1, nama_urgensi: 'Urgensi Tinggi'},
+  { id_urgensi: 2, nama_urgensi: 'Urgensi sedang'},
+  { id_urgensi: 3, nama_urgensi: 'G urgen'}
+])
+const idUrgensiTerpilih = ref('')
+
 // State management
 const userId = ref(localStorage.getItem('user_id'));
 const pelayananId = ref(route.query.layanan || '-')
@@ -539,6 +547,17 @@ onMounted(() => {
                 </div>
                 <!-- Setuju  -->
                 <div class='wrapper-setuju'v-if='pilihan == "Setuju"'>
+                  <h4>Insiden</h4>
+                  <select id="urgensi" v-model="idUrgensiTerpilih">
+                    <option value="" disabled>Pilih Urgensi</option>
+                    <option
+                      v-for="option in urgensi"
+                      :key="option.id_urgensi"
+                      :value="option.id_urgensi"
+                    >
+                      {{ option.nama_urgensi }}
+                    </option>
+                  </select>
                   <h4>Unit Pelaksana</h4>
                   <select id="status" v-model="idUnitTerpilih">
                     <option value="" disabled>Pilih Unit Pelaksana</option>
@@ -550,6 +569,7 @@ onMounted(() => {
                   <textarea class="input" v-model="pesan"></textarea>
                   <button class="btn-selesai" @click="handleSelesai">Selesai</button>
                 </div>
+                <!-- Tolak -->
                 <div class="wrapper-tolak" v-if='pilihan =="Tolak"'>
                   <h4>Alasan Ditolak</h4>
                   <textarea class="input" v-model="pesan"></textarea>
