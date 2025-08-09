@@ -19,7 +19,6 @@ class JenisPelayananController extends Controller
     }
     public function post_Jenis_Pelayanan(Request $request){
         $Nama_Jenis_Pelayanan = $request->Nama_Jenis_Pelayanan;
-
         $newJenisPelayanan = JenisPelayanan::create([
             'Nama_Jenis_Pelayanan' => $Nama_Jenis_Pelayanan,
         ]);

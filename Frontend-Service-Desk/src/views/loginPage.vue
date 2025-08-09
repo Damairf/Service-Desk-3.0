@@ -11,13 +11,16 @@ const NIP = ref('')
 const Password = ref('')
 const errorMessage = ref('')
 const isLoading = ref(false)
+const passwordError =ref(false)
+const NIPerror = ref(false)
+const isEmpty = ref(false)
 
 async function login() {
+  
+  isEmpty.value = false
+  NIPerror.value = false
+  passwordError.value = false
   isLoading.value = true
-  if (!NIP.value || !Password.value) {
-    errorMessage.value = 'Harap isi NIP dan Password.'
-    return
-  }
 
   // Jalankan reCAPTCHA v3
   const tokenRecaptcha = await executeRecaptcha('login')
@@ -49,13 +52,12 @@ async function login() {
   .catch((error) => {
     isLoading.value = false
     if (error.response && error.response.status === 401) {
-      errorMessage.value = 'Password salah!'
+      passwordError.value = true
     } else if (error.response && error.response.status === 404) {
-      errorMessage.value = 'NIP tidak ditemukan!'
-    } else {
-      errorMessage.value = 'Terjadi kesalahan server.'
-    }
-    alert(errorMessage.value)
+      NIPerror.value = true
+    }  else if (error.response && error.response.status === 422) {
+      isEmpty.value = true
+    } 
   })
 }
 
@@ -92,12 +94,41 @@ onMounted(() => {
           <p>Mohon tunggu, sedang masuk...</p>
         </div>
         <button v-if="!isLoading" class="login" @click="login">Login</button>
+        <div v-if="isEmpty" class="isEmpty">
+          Harap isi NIP dan Password!
+        </div>
+        <div v-if="NIPerror" class="NotFound">
+          NIP tidak ditemukan!
+        </div>
+        <div v-if="passwordError" class="NotFound">
+          Password salah!
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.isEmpty {
+  background-color: #fff3cd; /* kuning lembut */
+  color: #856404;           /* teks kuning tua */
+  border: 1px solid #ffeeba;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.NotFound {
+  background-color: #f2babfa6; /* kuning lembut */
+  color: #dc3545;           /* teks kuning tua */
+  border: 1px solid #ffeeba;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
 .container {
   width: 100vw;
   height: 100vh;
@@ -184,6 +215,7 @@ input {
   border-radius: 20px;
   cursor: pointer;
   width: 35%;
+  margin-bottom: 5%;
 }
 
 .placeholderLgn {
