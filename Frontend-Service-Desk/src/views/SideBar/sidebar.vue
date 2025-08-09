@@ -174,7 +174,7 @@ if (role.value == 1) {
       <span class="nama-profile">{{ nama_depan + " " + nama_belakang }} <br> {{ role }}</span>
 
       <!-- Profile Dropdown Menu -->
-      <div v-if="tampilinOverlay" class="profile-dropdown" :class="{ 'collapsed': !isOpen }">
+      <div v-if="tampilinOverlay" class="profile-dropdown" :class="{ collapsed : !isOpen }">
         <button class="dropdown-item" @click="() => { toggleOverlay(); toProfile() }">
           <span class="dropdown-icon">👤</span>
           <span v-if="isOpen" class="dropdown-text">Profil Saya</span>
@@ -199,7 +199,7 @@ if (role.value == 1) {
           <li v-for="child in item.children" :key="child.label" class="dropdown-list-child">
             <router-link :to="child.to" class="dropdown-item-ref" active-class="active">
               <span class="dropdown-icon">📁</span>
-              <span class="text-child-ref">{{ child.label }}</span>
+              <span v-if="isOpen" class="text-child-ref">{{ child.label }}</span>
             </router-link>
           </li>
         </ul>
@@ -332,6 +332,10 @@ if (role.value == 1) {
 
 .sidebar.collapsed .dropdown-text {
   display: block;
+}
+
+.sidebar.collapsed .text-child-ref {
+  display: none;
 }
 
 .profile{
