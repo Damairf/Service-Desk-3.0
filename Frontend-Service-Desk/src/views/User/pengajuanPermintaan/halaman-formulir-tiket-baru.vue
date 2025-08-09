@@ -121,7 +121,6 @@ const token = localStorage.getItem('Token');
 axios.post('/api/pelayanan/tambah', {
   "ID_User": id_user,
   "Nama_Pelapor": namaPelapor.value,
-  "ID_Jenis_Pelayanan": id_jenis_pelayanan,
   "ID_Sub_Jenis_Pelayanan": id_sub_jenis_pelayanan,
   "ID_Jenis_Pelayanan": id_jenis_pelayanan,
   "ID_Status": id_status,

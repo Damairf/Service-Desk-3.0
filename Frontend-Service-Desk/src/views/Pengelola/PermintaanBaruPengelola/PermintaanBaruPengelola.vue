@@ -15,7 +15,7 @@ const itemsPerPage = 10
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token')
-  axios.get('/api/jenispelayanan', {
+  axios.get('/api/subjenispelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -48,7 +48,7 @@ const visiblePages = computed(() => {
 const filteredServices = computed(() => {
   const term = searchTerm.value.toLowerCase()
   const filtered = services.value.filter((s) =>
-    s.Nama_Jenis_Pelayanan.toLowerCase().includes(term)
+    s.Nama_Sub_Jenis_Pelayanan.toLowerCase().includes(term)
   )
   const start = (page.value - 1) * itemsPerPage
   return filtered.slice(start, start + itemsPerPage)
@@ -71,9 +71,9 @@ function openModal(item) {
   showModal.value = true
   router.push({
     name: 'FormulirTiketBaruPengelola',
-    query: { layanan: selectedItem.value.Nama_Jenis_Pelayanan, persyaratan: selectedItem.value.Persyaratan }
+    query: { layanan: selectedItem.value.Nama_Sub_Jenis_Pelayanan, persyaratan: selectedItem.value.Persyaratan }
   })
-  localStorage.setItem('ID_Jenis_Pelayanan', item.ID_Jenis_Pelayanan)
+  localStorage.setItem('ID_Sub_Jenis_Pelayanan', item.ID_Sub_Jenis_Pelayanan)
 }
 
 watch(searchTerm, () => {

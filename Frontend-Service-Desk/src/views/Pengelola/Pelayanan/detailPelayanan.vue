@@ -19,6 +19,7 @@ const nama_depanTeknis = ref('')
 const nama_belakangTeknis = ref('')
 const nama_depanUnit = ref('') 
 const nama_belakangUnit = ref('')
+const sub_jenis_pelayanan = ref('')
 const jenis_pelayanan = ref('')
 const deskripsi = ref('')
 const surat_dinas = ref('')
@@ -61,6 +62,7 @@ const pelayananData = computed(() => ({
   organisasi: organisasi.value,
   surat_dinas: surat_dinas.value,
   lampiran: lampiran.value,
+  sub_jenis_pelayanan: sub_jenis_pelayanan.value,
   jenis_pelayanan: jenis_pelayanan.value,
   nama_pelapor: nama_pelapor.value,
   nama_depanTeknis: nama_depanTeknis.value,
@@ -87,6 +89,7 @@ const fetchPelayananData = async () => {
     src_HasilBA.value = cached.src_HasilBA
     src_HasilSLA.value = cached.src_HasilSLA
     lampiran.value = cached.lampiran
+    sub_jenis_pelayanan.value = cached.sub_jenis_pelayanan
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_pelapor.value = cached.nama_pelapor
     nama_depanTeknis.value = cached.nama_depanTeknis
@@ -126,6 +129,7 @@ const fetchPelayananData = async () => {
     organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
+    sub_jenis_pelayanan.value = pelayananData.sub__jenis__pelayanan.Nama_Sub_Jenis_Pelayanan
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
     nama_pelapor.value = pelayananData.Nama_Pelapor
     nama_depanUnit.value = pelayananData.unit_pelayanan?.Nama_Depan || 'Belum'
@@ -171,6 +175,7 @@ const fetchPelayananData = async () => {
       organisasi: organisasi.value,
       surat_dinas: surat_dinas.value,
       lampiran: lampiran.value,
+      sub_jenis_pelayanan: sub_jenis_pelayanan.value,
       jenis_pelayanan: jenis_pelayanan.value,
       nama_pelapor: nama_pelapor.value,
       nama_depanTeknis: nama_depanTeknis.value,
@@ -386,7 +391,8 @@ onMounted(() => {
           <div class="layout-container">
             <div class="info-card">
               <h3>Informasi Umum</h3>
-              <div class="info-row"><strong>Layanan:</strong> <span>{{ jenis_pelayanan }}</span></div>
+              <div class="info-row"><strong>Layanan:</strong> <span>{{ sub_jenis_pelayanan }}</span></div>
+              <div class="info-row"><strong>Tipe Layanan:</strong> <span>{{ jenis_pelayanan }}</span></div>
               <div class="info-row"><strong>No. Tiket:</strong> <span>{{ pelayananId }}</span></div>
               <div class="info-row"><strong>Pelapor:</strong> <span>{{ nama_pelapor }}</span></div>
               <div class="info-row"><strong>Organisasi:</strong> <span>{{ organisasi }}</span></div>
