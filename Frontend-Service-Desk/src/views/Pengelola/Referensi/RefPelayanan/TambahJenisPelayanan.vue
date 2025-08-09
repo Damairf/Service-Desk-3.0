@@ -15,22 +15,23 @@ function handleSubmit() {
     return
   }
 
-  // Buat payload
   const payload = {
     Nama_Jenis_Pelayanan: namaJenisPelayanan.value,
   }
   const token = localStorage.getItem('Token')
-  axios.post(`/api/jenispelayanan`, payload, {
+  axios.post(`/api/jenispelayanan/tambah`, payload, {
     headers: {
       Authorization: 'Bearer ' + token,
     }
   })
-  .then(function (response) {
-    alert('Jenis Pelayanan sudah ditambahkan')
+  .then(res => {
+    alert(res.data.message)
+    handleReset()
     router.push('/referensi/jenis-pelayanan')
   })
-  .catch(function (error) {
-    console.log(error)
+  .catch(err => {
+    const errorMessage = err.response?.data?.error || err.message || 'Terjadi kesalahan';
+    alert('Gagal menyimpan: ' + errorMessage)
   })
 }
 

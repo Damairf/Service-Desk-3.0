@@ -10,16 +10,16 @@ const isLoading = ref(true)
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token')
-  axios.get('/api/subjenispelayanan', {
+  axios.get('/api/jenispelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
     }
   })
     .then(response => {
       services.value = response.data.map(item => ({
-        id: item.ID_Sub_Jenis_Pelayanan,
-        nama: item.Nama_Sub_Jenis_Pelayanan,
-        tglPembuatan: item.created_at
+        id: item.ID_Jenis_Pelayanan,
+        nama: item.Nama_Jenis_Pelayanan,
+        tglPembuatan: item.created_at || '-'
       }))
     })
     .catch(error => {

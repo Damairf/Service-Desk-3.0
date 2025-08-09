@@ -55,7 +55,6 @@ Route::put('/user/{userId}', [UserController::class, 'update_User']);
 Route::get('/userCount',[UserController::class, 'jumlah_User']);
 Route::get('/pelayanan/unit',[UserController::class, 'getUnit']);
 
-
 Route::get('/role',[RoleController::class, 'findAll_Role']);
 Route::get('/role/{roleId}',[RoleController::class, 'findOne_Role']);
 
@@ -84,6 +83,8 @@ Route::put('/urgensi/{urgensiId}',[UrgensiController::class, 'updateOne_Urgensi'
 Route::post('/urgensi',[UrgensiController::class, 'insertOne_Urgensi']);
 
 Route::get('/pelayanan',[PelayananController::class, 'getAll_Layanan']);
+Route::get('/jenispelayanan',[JenisPelayananController::class, 'getAll_JnsPelayanan']);
+Route::post('/jenispelayanan/tambah',[JenisPelayananController::class, 'post_Jenis_Pelayanan']);
 Route::get('/stsPelayananChart',[PelayananController::class, 'Chart_PelayananSts']);
 Route::get('/stsPelayananChartBulanIni',[PelayananController::class, 'Chart_PelayananStsBulanIni']);
 Route::get('/jnsPelayananChart',[PelayananController::class, 'Chart_PelayananJns']);

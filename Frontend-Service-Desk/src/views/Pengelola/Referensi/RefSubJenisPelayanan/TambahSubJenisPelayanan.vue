@@ -6,7 +6,7 @@ const router = useRouter()
 const route = useRoute()
 
 // State untuk form
-const namaJenisPelayanan = ref('')
+const namaSubJenisPelayanan = ref('')
 const persyaratan = ref('')
 const daftarInputPelayanan = ref([])
 const daftarLangkahPelayanan = ref([])
@@ -99,13 +99,13 @@ function handleSubmit() {
     .filter(i => !i.default && !i.isLast)
     .map(i => i.namaYangDipilih)
     .filter(Boolean)
-  if (!namaJenisPelayanan.value || !persyaratan.value || langkahValid.length === 0) {
+  if (!namaSubJenisPelayanan.value || !persyaratan.value || langkahValid.length === 0) {
     alert('Harap isi semua keperluan *');
     return;
   }
 
   const payload = {
-    Nama_Jenis_Pelayanan: namaJenisPelayanan.value,
+    Nama_Sub_Jenis_Pelayanan: namaSubJenisPelayanan.value,
     Persyaratan: persyaratan.value,
     Langkah_Pelayanan: daftarInputPelayanan.value.map(i => i.namaYangDipilih)
   }
@@ -127,7 +127,7 @@ function handleSubmit() {
 
 // Reset form
 function handleReset() {
-  namaJenisPelayanan.value = ''
+  namaSubJenisPelayanan.value = ''
   persyaratan.value = ''
   const defaultID = [1, 2, 3, 4]
   const defaultLangkah = semuaLangkah.value
@@ -156,7 +156,7 @@ function handleReset() {
 
         <div class="form-group">
           <label>Nama Jenis Pelayanan<span class="red">*</span></label>
-          <input type="text" placeholder="Nama Jenis Pelayanan" v-model="namaJenisPelayanan" />
+          <input type="text" placeholder="Nama Jenis Pelayanan" v-model="namaSubJenisPelayanan" />
         </div>
 
         <div class="form-group">

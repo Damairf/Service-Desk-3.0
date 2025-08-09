@@ -23,6 +23,6 @@ class JenisPelayananController extends Controller
         $newJenisPelayanan = JenisPelayanan::create([
             'Nama_Jenis_Pelayanan' => $Nama_Jenis_Pelayanan,
         ]);
-        return response(["message" => "Jenis Pelayanan ditambahkan", "data" => $newSubJenisPelayanan]);
+        return response(["message" => "Jenis Pelayanan ditambahkan", "data" => $newJenisPelayanan]);
     }   
 }
