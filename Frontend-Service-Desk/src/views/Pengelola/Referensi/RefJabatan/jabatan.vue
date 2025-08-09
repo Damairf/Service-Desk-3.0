@@ -183,12 +183,12 @@ function editJabatan(jabatan) {
             </tr>
           </thead>
           <tbody>
-            <!-- <tr v-if="isLoading">
+            <tr v-if="isLoading">
               <td colspan="4" style="text-align: center; padding: 1rem;">Memuat data...</td>
             </tr>
             <tr v-else-if="filteredItems.length === 0">
               <td colspan="4" style="text-align: center; padding: 1rem;">Tidak ada data jabatan</td>
-            </tr> -->
+            </tr>
             <tr v-for="(jabatan, index) in paginatedItems" :key="index">
               <td>{{ jabatan.id }}</td>
               <td>{{ jabatan.nama }}</td>

@@ -7,53 +7,21 @@ const route = useRoute()
 
 
 // === State untuk form ===
-const namaJabatan = ref(route.query.nama_jabatan || '')
+const namaJenisPelayanan = ref(route.query.nama_jenis_pelayanan || '')
+const jenisPelayananId = ref(route.query.id || '')
 
-const pilihanInduk = ref([])
-const idOrganisasiTerpilih = ref('')
-
-const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/organisasi', {
-    headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
-  .then(response => {
-   console.log(response.data)
-   pilihanInduk.value = response.data.map(item => ({
-      id_organisasi: item.ID_Organisasi,
-      nama_PerangkatDaerah: item.Nama_OPD
-    }))
-  })
-  .catch(error => {
-    console.error(error); 
-  });
-
-
-
-// === Submit handler (dengan validasi) ===
 function handleSubmit() {
   // Validasi field wajib
-  if (!namaPerangkatDaerah.value || !email.value || !status.value) {
+  if (!namaJenisPelayanan.value) {
     alert('Harap isi semua field yang bertanda *')
     return
   }
 
-  if (nomorHP.value.length < 10) {
-  alert("Nomor HP minimal 10 digit")
-  return
-  }
-
-  // Mas Backend tolong revisi lagi
-  const payload = {
-    Nama_Jabatan: namaJabatan.value
-  }
-
-  console.log('Data yang akan dikirim ke backend:', payload)
-
   const token = localStorage.getItem('Token');
-  axios.post(`http://127.0.0.1:8000/api/organisasi`, payload
-  , {
+  axios.put(`/api/jenispelayanan/update/${jenisPelayananId.value}`
+  ,{
+    Nama_Jenis_Pelayanan: namaJenisPelayanan.value
+  }, {
     headers: {
       Authorization: 'Bearer ' + token,
     }
@@ -63,13 +31,13 @@ function handleSubmit() {
   }) .catch(function(error){
     console.log(error)
   })
-  alert('Organisasi sudah ditambahkan')
-  router.push('/jabatan')
+  alert('Jenis Pelayanan sudah diubah')
+  router.push('/referensi/jenis-pelayanan')
 }
 
 // === Reset form ===
 function handleReset() {
-  namaJabatan.value = ''
+  namaJenisPelayanan.value = ''
 }
 
 
@@ -77,21 +45,20 @@ function handleReset() {
 
 <template>
   <div class="page-bg">
-    <h1 class="main-title">Ubah Jabatan</h1>
+    <h1 class="main-title">Ubah Jenis Pelayanan</h1>
     <div class="form-card">
       <div class="form-card-header">
-        Formulir Ubah Jabatan
+        Formulir Ubah Jenis Pelayanan
       </div>
 
-      <!-- Form pakai @submit.prevent supaya tidak reload -->
       <form class="form-content" @submit.prevent="handleSubmit">
         <div class="form-note">
           <span class="required-text">Keterangan <span class="red">*</span> Harus Diisi</span>
         </div>
 
         <div class="form-group">
-          <label>Nama Jabatan<span class="red">*</span></label>
-          <input type="text" placeholder="Nama PD" v-model="namaJabatan" />
+          <label>Nama Jenis pelayanan<span class="red">*</span></label>
+          <input type="text" placeholder="Nama Jenis Pelayanan" v-model="namaJenisPelayanan" />
         </div>
 
         <div class="form-actions">

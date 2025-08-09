@@ -15,7 +15,16 @@ class JenisPelayananController extends Controller
         $jnspelayananId = $request->route('jnspelayananId');
         $jnspelayananId = JenisPelayanan::where('ID_Jenis_Pelayanan', $jnspelayananId)->get();
 
-        return response()->json($subjnspelayananId);
+        return response()->json($jnspelayananId);
+    }
+    public function update_JnsPelayanan(Request $request){
+        $jnspelayananId = $request->route('jnspelayananId');
+        $Nama_Jenis_Pelayanan = $request->Nama_Jenis_Pelayanan;
+
+        JenisPelayanan::where('ID_Jenis_Pelayanan', $jnspelayananId)
+        ->update(['Nama_Jenis_Pelayanan'=>$Nama_Jenis_Pelayanan]);
+
+        return response("Jenis Pelayanan Diperbarui");
     }
     public function post_Jenis_Pelayanan(Request $request){
         $Nama_Jenis_Pelayanan = $request->Nama_Jenis_Pelayanan;
@@ -23,5 +32,11 @@ class JenisPelayananController extends Controller
             'Nama_Jenis_Pelayanan' => $Nama_Jenis_Pelayanan,
         ]);
         return response(["message" => "Jenis Pelayanan ditambahkan", "data" => $newJenisPelayanan]);
+    }
+        public function deleteOne_JnsPelayanan(Request $request){
+        $jnspelayananId = $request->route('jnspelayananId');
+        jenispelayanan::where('ID_Jenis_Pelayanan', $jnspelayananId)->delete();
+
+        return response("Jenis Pelayanan Dihapus");
     }   
 }

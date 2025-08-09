@@ -8,6 +8,13 @@ const router = useRouter()
 const services = ref([])
 const isLoading = ref(true)
 
+function formatDate(dateString) {
+  if (!dateString) return '-';
+
+  const date = new Date(dateString);
+  return isNaN(date.getTime()) ? '-' : date.toLocaleDateString('id-ID');
+}
+
 onBeforeMount(() => {
   const token = localStorage.getItem('Token')
   axios.get('/api/jenispelayanan', {
@@ -95,7 +102,7 @@ watch(search, () => {
 
 // === Modal Delete ===
 const showModal = ref(false)
-const pelayananToDelete = ref(null) // Store entire item for ID access
+const pelayananToDelete = ref(null)
 
 function Delete(item) {
   pelayananToDelete.value = item
@@ -109,7 +116,7 @@ function cancelDelete() {
 
 function confirmDelete() {
   const token = localStorage.getItem('Token')
-  axios.delete(`/api/subjenispelayanan/${pelayananToDelete.value.id}`, {
+  axios.delete(`/api/jenispelayanan/delete/${pelayananToDelete.value.id}`, {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -147,8 +154,8 @@ function editPelayanan(pelayanan) {
   router.push({
     path: '/ubahPelayanan',
     query: {
-      id: pelayanan.id, // Pass ID for editing
-      nama_pelayanan: pelayanan.nama
+      id: pelayanan.id,
+      nama_jenis_pelayanan: pelayanan.nama
     }
   })
 }
@@ -183,7 +190,7 @@ function editPelayanan(pelayanan) {
           <tr v-else v-for="(pelayanan, index) in paginatedItems" :key="index">
             <td>{{ pelayanan.id }}</td>
             <td>{{ pelayanan.nama }}</td>
-            <td>{{ pelayanan.tglPembuatan }}</td>
+            <td>{{ formatDate(pelayanan.tglPembuatan) }}</td>
             <td>
               <div class="wrapper-aksiBtn">
                 <button class="aksiEdit-btn" title="Edit" @click="editPelayanan(pelayanan)">Ubah</button>

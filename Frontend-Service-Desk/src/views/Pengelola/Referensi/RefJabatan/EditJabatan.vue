@@ -18,9 +18,6 @@ function handleSubmit() {
     return
   }
 
-
-  // Mas Backend tolong revisi lagi
-
   const token = localStorage.getItem('Token');
   axios.put(`/api/jabatan/${jabatanId.value}`, {
       Nama_Jabatan: namaJabatan.value
