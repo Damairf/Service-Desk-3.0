@@ -25,7 +25,6 @@ onMounted(()=> {
   }
 })
 
-
   const token = localStorage.getItem('Token');
   axios.get('/api/user/profile', {
     headers: {

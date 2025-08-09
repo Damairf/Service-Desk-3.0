@@ -5,7 +5,7 @@ const router = useRouter()
 import axios from 'axios'
 
 onUnmounted(() => {
-  localStorage.removeItem('ID_Jenis_Pelayanan');
+  localStorage.removeItem('ID_Sub_Jenis_Pelayanan');
 });
 
 // nerima dari pengajuanPermintaan.vue
@@ -14,7 +14,8 @@ const layanan = ref(route.query.layanan || '')
 const persyaratan = ref(route.query.persyaratan || '')
 const namaPelapor = ref('')
 const id_user = localStorage.getItem('ID_User')
-const id_jenis_pelayanan = localStorage.getItem('ID_Jenis_Pelayanan')
+const id_sub_jenis_pelayanan = localStorage.getItem('ID_Sub_Jenis_Pelayanan')
+const id_jenis_pelayanan = ref('')
 const id_status = 2
 
 const perihal = ref('')
@@ -137,6 +138,7 @@ async function handleSubmit(){
   axios.post('/api/pelayanan/tambah', {
     "ID_User": id_user,
     "Nama_Pelapor": namaPelapor.value,
+    "ID_Sub_Jenis_Pelayanan": id_sub_jenis_pelayanan,
     "ID_Jenis_Pelayanan": id_jenis_pelayanan,
     "ID_Status": id_status,
     "Perihal": perihal.value,

@@ -25,6 +25,7 @@ onMounted(() => {
     layananData.value = response.data.map(item => ({
       noTiket: item.ID_Pelayanan,
       jenis: item.ID_Jenis_Pelayanan,
+      sub_jenis: item.ID_Sub_Jenis_Pelayanan,
       perihal: item.Perihal,
       pelapor: item.Nama_Pelapor,
       tanggal: item.created_at,
