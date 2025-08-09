@@ -16,6 +16,10 @@ const NIPerror = ref(false)
 const isEmpty = ref(false)
 
 async function login() {
+  
+  isEmpty.value = false
+  NIPerror.value = false
+  passwordError.value = false
   isLoading.value = true
 
   // Jalankan reCAPTCHA v3
@@ -49,15 +53,9 @@ async function login() {
     isLoading.value = false
     if (error.response && error.response.status === 401) {
       passwordError.value = true
-      NIPerror.value = false
-      isEmpty.value = false
     } else if (error.response && error.response.status === 404) {
       NIPerror.value = true
-      passwordError.value = false
-      isEmpty.value = false
     }  else if (error.response && error.response.status === 422) {
-      NIPerror.value = false
-      passwordError.value = false
       isEmpty.value = true
     } 
   })
