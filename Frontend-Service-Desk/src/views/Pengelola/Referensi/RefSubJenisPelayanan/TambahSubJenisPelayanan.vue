@@ -91,7 +91,7 @@ function cariLangkahYangCocok(teksYangDiketik) {
   }
 
   return daftarLangkahPelayanan.value.filter(namaLangkah =>
-    langkah.toLowerCase().includes(teksYangDiketik.toLowerCase())
+    namaLangkah.toLowerCase().includes(teksYangDiketik.toLowerCase())
   )
 }
 
