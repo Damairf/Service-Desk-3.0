@@ -13,14 +13,19 @@ class AuthController extends Controller
 {
     public function login(Request $request){
 
+        $request->validate([
+            'NIP' => 'required|string',
+            'Password' => 'required|string',
+        ]);
+
         $NIP = $request->NIP;
         $Password = $request->Password;
 
         $user = User::where('NIP', $NIP)->first();
 
-            if(!$user){
-                return response("NIP tidak ditemukan", 404);
-            }
+        if(!$user){
+            return response("NIP tidak ditemukan", 404);
+        }
 
         if(!Hash::check($Password, $user->Password)){
             return response("Password salah", 401);
