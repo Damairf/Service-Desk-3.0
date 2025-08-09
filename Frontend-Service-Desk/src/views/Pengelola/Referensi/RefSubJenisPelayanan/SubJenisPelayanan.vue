@@ -6,7 +6,7 @@ import axios from 'axios'
 const router = useRouter()
 
 const isLoading = ref(true)
-
+const langkahDefault = ref([])
 // === Data Referensi Jabatan ===
 const referensiJabatan = ref([])
 
@@ -20,8 +20,32 @@ function formatDate(dateString) {
 //===BACKEND=== 
 onBeforeMount(() => {
   fetchDataOrganisasi();
+  fetchLangkahDefault();
 });
 
+function fetchLangkahDefault() {
+  const token = localStorage.getItem('Token')
+  axios.get('/api/isi_alur', {
+    headers: { Authorization: 'Bearer ' + token }
+  })
+  .then(res => {
+    const data = res.data.data
+
+    const langkahAwal = data
+      .filter(item => [1, 2, 3].includes(item.ID_Isi_Alur))
+      .map(item => item.Nama_Alur)
+
+    const langkahAkhir = data.find(item => item.ID_Isi_Alur === 4)
+
+    langkahDefault.value = [
+      ...langkahAwal,
+      langkahAkhir?.Nama_Alur || 'Selesai'
+    ]
+  })
+  .catch(err => {
+    console.error('Gagal mengambil langkah default:', err)
+  })
+}
 
 const fetchDataOrganisasi = () => {
 const token = localStorage.getItem('Token');
@@ -161,6 +185,14 @@ function editJabatan(jabatan) {
     }
   })
 }
+const goToTambahPelayanan = () => {
+  router.push({
+    path: '/tambahSubJenisPelayanan',
+    query: {
+      defaultLangkah: JSON.stringify(langkahDefault.value)
+    }
+  })
+}
 </script>
 
 
@@ -169,7 +201,7 @@ function editJabatan(jabatan) {
       <div class="user-card">
         <h1 class="title">Referensi Sub Jenis Pelayanan</h1>
         <div class="top-actions">
-          <button class="btn tambah" @click="router.push('/tambahJabatan')">Tambah</button>
+          <button class="btn tambah" @click="goToTambahPelayanan">Tambah</button>
         </div>
         <input type="text" v-model="search" placeholder="Cari Jabatan" class="search-bar" />
   
