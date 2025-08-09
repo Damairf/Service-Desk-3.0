@@ -7,7 +7,6 @@ const router = useRouter()
 
 const services = ref([])
 const isLoading = ref(true)
-const langkahDefault = ref([])
 
 onBeforeMount(() => {
   const token = localStorage.getItem('Token')
@@ -29,34 +28,6 @@ onBeforeMount(() => {
     .finally(() => {
       isLoading.value = false
     })
-})
-
-function fetchLangkahDefault() {
-  const token = localStorage.getItem('Token')
-  axios.get('/api/isi_alur', {
-    headers: { Authorization: 'Bearer ' + token }
-  })
-  .then(res => {
-    const data = res.data.data
-
-    const langkahAwal = data
-      .filter(item => [1, 2, 3].includes(item.ID_Isi_Alur))
-      .map(item => item.Nama_Alur)
-
-    const langkahAkhir = data.find(item => item.ID_Isi_Alur === 4)
-
-    langkahDefault.value = [
-      ...langkahAwal,
-      langkahAkhir?.Nama_Alur || 'Selesai'
-    ]
-  })
-  .catch(err => {
-    console.error('Gagal mengambil langkah default:', err)
-  })
-}
-
-onBeforeMount(() => {
-  fetchLangkahDefault()
 })
 
 // === Search, Sort & Pagination ===
@@ -110,10 +81,7 @@ function nextPage() {
 
 const goToTambahPelayanan = () => {
   router.push({
-    path: '/tambahPelayanan',
-    query: {
-      defaultLangkah: JSON.stringify(langkahDefault.value)
-    }
+    path: '/tambahPelayanan'
   })
 }
 
