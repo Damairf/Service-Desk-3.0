@@ -47,14 +47,14 @@ class AuthController extends Controller
         ])->where("ID_User", $user->ID_User)->first();
 
         // untuk debugging (hapus jika production)
-        if (!$request->has('recaptcha_token')) {
+        // if (!$request->has('recaptcha_token')) {
             // Skip reCAPTCHA verification
-            return response([
-                "token" => $token,
-                "data_user" => $datauser,
-                "bypass_recaptcha" => true,
-            ]);
-        }
+        //     return response([
+        //         "token" => $token,
+        //         "data_user" => $datauser,
+        //         "bypass_recaptcha" => true,
+        //     ]);
+        // }
 
         $recaptchaToken = $request->input('recaptcha_token');
         $secretKey = env('RECAPTCHA_SECRET');
