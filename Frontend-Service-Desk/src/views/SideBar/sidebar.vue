@@ -24,7 +24,6 @@ import IconKepuasanUserKeseluruhan from '../../../public/iconlaporankepuasanuser
 import IconKepuasanUserBulanIni from '../../../public/iconlaporankepuasanuserbulan.svg'
 import IconJenisPelayanan from '../../../public/iconjenispelayanan.svg'
 import IconSubJenisPelayanan from '../../../public/iconsubjenispelayanan.svg'
-import IconTipePermintaan from '../../../public/icontipepermintaan.svg'
 
 const nama_depan = ref(localStorage.getItem('nama_depan'));
 const nama_belakang = ref(localStorage.getItem('nama_belakang'));
@@ -134,7 +133,6 @@ if (role.value == 1) {
     { icon: IconStatus, label: "Status", to: '/referensi/status'},
     { icon: IconJenisPelayanan, label: "Jenis Pelayanan", to: '/referensi/jenis-pelayanan'},
     { icon: IconSubJenisPelayanan, label: "Sub Jenis Pelayanan", to: '/referensi/sub-jenis-pelayanan'},
-    { icon: IconTipePermintaan, label: "Tipe Permintaan", to: '/referensi/tipe-permintaan'},
     { icon: IconUrgensi, label: "Urgensi", to: '/referensi/urgensi'},
   ] },
   { icon: IconProfile, label: 'Pengguna', to: '/pengguna' },
