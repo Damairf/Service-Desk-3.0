@@ -96,7 +96,7 @@ const fetchPelayananData = async () => {
     lampiran.value = pelayananData.Lampiran_Path
     sub_jenis_pelayanan.value = pelayananData.sub__jenis__pelayanan.Nama_Sub_Jenis_Pelayanan
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
-    nama_pelapor.value = pelayananData.Nama_Pelapor
+    nama_pelapor.value = [pelayananData.user.Nama_Depan, pelayananData.user.Nama_Belakang].filter(Boolean).join(' ');
     nama_depanTeknis.value = pelayananData.teknis_pelayanan?.Nama_Depan || 'Belum'
     nama_belakangTeknis.value = pelayananData.teknis_pelayanan?.Nama_Belakang || 'Tersedia'
     perihal.value = pelayananData.Perihal
