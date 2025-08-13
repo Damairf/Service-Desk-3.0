@@ -193,7 +193,7 @@ onBeforeMount(() => {
   width: 100%;
   max-width: 35rem;
   min-width: 250px;
-  height: 100%;
+  height: 19rem;
   border-radius: 8px;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
   position: relative;

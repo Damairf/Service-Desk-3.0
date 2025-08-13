@@ -136,9 +136,9 @@ onBeforeMount(() => {
     .chart-box {
       background-color: white;
       width: 100%;
-      max-width: 35rem;
+      max-width: 33rem;
       min-width: 250px;
-      height: 100%;
+      height: 19rem;
       border-radius: 8px;
       box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
       position: relative;
@@ -203,7 +203,7 @@ onBeforeMount(() => {
   
 .chart-box {
   flex: 1;
-  min-width: 250px;
+  width: 100px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
