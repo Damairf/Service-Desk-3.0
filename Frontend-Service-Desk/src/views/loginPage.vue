@@ -89,8 +89,8 @@ onMounted(() => {
         <input class="placeholderLgn" v-model="NIP" type="text" placeholder="NIP" />
         <input class="placeholderLgn" v-model="Password" @keyup.enter="login" type="password" placeholder="Password" />
         <!-- Loading State -->
-        <div v-if="isLoading" class="loading-container">
-          <div class="loading-spinner"></div>
+        <div v-if="isLoading" class="loading-container-login">
+          <div class="loading-spinner-login"></div>
           <p>Mohon tunggu, sedang masuk...</p>
         </div>
         <button v-if="!isLoading" class="login" @click="login">Login</button>
@@ -234,7 +234,7 @@ p.error {
 }
 
 /* Loading States */
-.loading-container {
+.loading-container-login {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -243,7 +243,7 @@ p.error {
   width: 100%;
 }
 
-.loading-spinner {
+.loading-spinner-login {
   width: 30px;
   height: 30px;
   border: 4px solid #0D47A1;

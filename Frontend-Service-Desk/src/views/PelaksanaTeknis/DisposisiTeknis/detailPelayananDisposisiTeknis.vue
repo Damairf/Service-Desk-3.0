@@ -479,7 +479,7 @@ onMounted(() => {
                     {{ namaFileSuratDinas }}
                   </a>
                 </div>  
-                <strong>Lampiran</strong>
+                <strong class="link-surat">Lampiran</strong>
                 <div v-if="lampiran">
                   <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                     {{ namaFileLampiran }}
@@ -516,7 +516,7 @@ onMounted(() => {
               </div>
                 </div>
                 <div class="chat-input">
-              <label for="file-upload" class="upload-btn">+</label>
+              <label for="file-upload" class="upload-btn">Kirim File</label>
               <input
                 type="file"
                 id="file-upload"
@@ -535,7 +535,7 @@ onMounted(() => {
                   placeholder="Pesan"
                   @keyup.enter="addMessage"
                 ></textarea>
-                <button class="send-btn" @click="addMessage">Kirim</button>
+                <button class="send-btn-chat" @click="addMessage">Kirim</button>
               </div>
               <div class="info-row-hasil">
                 <template v-if="!src_HasilPemenuhan && !src_HasilBA && !src_HasilSLA">
@@ -561,7 +561,7 @@ onMounted(() => {
                   <div class="tinjau-card">
                     <h3>Kirim Hasil Pelayanan</h3>
                     <div class="wrapper-btn">
-                      <button class="btn-selesai" @click="handleSelesai">Kirim</button>
+                      <button class="btn-selesai-detail" @click="handleSelesai">Kirim</button>
                     </div>
                   </div>
                 </template>
@@ -646,31 +646,6 @@ onMounted(() => {
   overflow-x: hidden;
 }
 
-/* Loading States */
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  width: 100%;
-}
-
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #0D47A1;
-  border-top: 4px solid #64B5F6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 .error-container {
   display: flex;
   align-items: center;
@@ -678,44 +653,6 @@ onMounted(() => {
   height: 200px;
   width: 100%;
   color: #ef4444;
-}
-
-/* Tabs */
-.tabs {
-  align-self: flex-start;
-  display: flex;
-  gap: 16px;
-  background-color: white;
-  padding: 8px 16px;
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  width: 12.9rem;
-}
-
-.tab {
-  padding: 8px 16px;
-  border-radius: 8px 8px 0 0;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.tab:hover {
-  transform: scale(1.05);
-}
-
-.active-tab-info {
-  color: black;
-  background-color: #fb923c;
-}
-
-.active-tab-track {
-  background-color: #fb923c;
-  color: black;
-}
-
-.inactive-tab {
-  color: #6b7280;
 }
 
 /* Card */
@@ -761,7 +698,6 @@ onMounted(() => {
 
 .info-row-hasil {
   display: block;
-  padding: 0.8rem 0;
 }
 
 .jarak-hasil {
@@ -788,8 +724,9 @@ onMounted(() => {
 }
 
 .textarea-row textarea {
-  width: 100%;
+  width: 97%;
   margin-top: 0.5rem;
+  margin-bottom: 1rem;
   padding: 0.5rem;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -835,28 +772,6 @@ onMounted(() => {
   opacity: 0.7;
 }
 
-.message {
-  width: 100%;
-  border: 1px solid #aaa;
-  border-radius: 8px;
-  padding: 0.5rem;
-  resize: vertical;
-  margin-bottom: 1rem;
-  background-color: white;
-  color: black;
-  font-family: poppins, sans-serif;
-}
-
-.send-btn {
-  background: #006920;
-  color: white;
-  padding: 0.5rem 1.5rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  margin-bottom: 1rem;
-}
-
 .note {
   color: red;
   font-size: 0.8rem;
@@ -872,6 +787,7 @@ onMounted(() => {
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding-bottom: 1rem;
 }
 
 .wrapper-btn{
@@ -929,64 +845,6 @@ select {
   flex-direction: column;
   gap: 0.5rem;
 }
-.btn-selesai{
-  color: white;
-  background-color: #2BA9E4;
-  border-radius: 12px;
-  padding: 0.5rem 2rem;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  width: fit-content;
-  align-self: center;     
-}
-.btn-selesai:hover{
-  transform: scale(1.02);
-  background-color: #48B7ED;
-}
-
-/* Steps */
-.card-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 32px;
-}
-
-.step-wrapper {
-  position: relative;
-  padding-left: 36px;
-}
-
-.step-row {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 32px;
-  z-index: 10;
-}
-
-.circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-  font-size: 16px;
-}
-
-.circle:hover {
-  transform: scale(1.1);
-}
-
-.circle-inactive {
-  background-color: #d1d5db;
-  color: white;
-}
 
 .step-label {
   font-size: 16px;
@@ -1035,14 +893,5 @@ select {
   transition: transform 0.2s ease;
   align-self: center;     
   font-weight: bolder;
-}
-
-.circle-blue {
-  background-color: #0185DA !important;
-  color: white;
-}
-
-.label-blue {
-  color: #0185DA !important;
 }
 </style>

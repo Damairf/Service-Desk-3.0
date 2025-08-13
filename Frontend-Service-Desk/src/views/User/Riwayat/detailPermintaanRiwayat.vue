@@ -319,14 +319,14 @@ onMounted(() => {
                 <strong>Deskripsi</strong>
                 <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
 
-                <strong>Surat Dinas</strong>
+                <strong class="link-surat">Surat Dinas</strong>
                 <div v-if="surat_dinas">
                   <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                     {{ namaFileSuratDinas }}
                   </a>
                 </div>
 
-                <strong>Lampiran</strong>
+                <strong class="link-surat">Lampiran</strong>
                 <div v-if="lampiran">
                   <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                     {{ namaFileLampiran }}
@@ -395,29 +395,23 @@ onMounted(() => {
 
               <div v-if="status !== 3" class="document-links">
                 <div class="info-row-docs">
-                  <strong>Hasil Pemenuhan</strong>
+                  <h4 class="judul-input-tambahan">Hasil Pemenuhan</h4>
                   <div v-if="HasilPemenuhan_Path">
                     <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                       {{ namaFileHasilPemenuhan }}
                     </a>
                   </div>
-                </div>
-
-                <div class="info-row-docs">
-                  <strong>Hasil BA</strong>
+                  <h4 class="judul-input-tambahan">Hasil BA</h4>
                   <div v-if="HasilBA_Path">
                     <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                       {{ namaFileHasilBA }}
                     </a>
                   </div>
-
-                  <div class="info-row-docs">
-                    <strong>Hasil SLA</strong>
-                    <div v-if="HasilSLA_Path">
-                      <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                        {{ namaFileHasilSLA }}
-                      </a>
-                    </div>
+                  <h4 class="judul-input-tambahan">Hasil SLA</h4>
+                  <div v-if="HasilSLA_Path">
+                    <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                      {{ namaFileHasilSLA }}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -474,31 +468,6 @@ onMounted(() => {
   overflow-x: hidden;
 }
 
-/* Loading States */
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  width: 100%;
-}
-
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #0D47A1;
-  border-top: 4px solid #64B5F6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 .error-container {
   display: flex;
   align-items: center;
@@ -506,44 +475,6 @@ onMounted(() => {
   height: 200px;
   width: 100%;
   color: #ef4444;
-}
-
-/* Tabs */
-.tabs {
-  align-self: flex-start;
-  display: flex;
-  gap: 16px;
-  background-color: white;
-  padding: 8px 16px;
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  width: 12.9rem;
-}
-
-.tab {
-  padding: 8px 16px;
-  border-radius: 8px 8px 0 0;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.tab:hover {
-  transform: scale(1.05);
-}
-
-.active-tab-info {
-  color: black;
-  background-color: #fb923c;
-}
-
-.active-tab-track {
-  background-color: #fb923c;
-  color: black;
-}
-
-.inactive-tab {
-  color: #6b7280;
 }
 
 /* Card */
@@ -590,7 +521,6 @@ onMounted(() => {
 
 .document-links {
   display: block;
-  padding: 0.8rem 0;
 }
 
 .info-row strong {
@@ -686,19 +616,19 @@ onMounted(() => {
 
 .review-section {
   border-top: 1px solid #eee;
-  padding-top: 0.5rem;
 }
 
 .review-title {
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0rem;
+  margin-top: 0.2rem;
 }
 
 .star-rating {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .star {
@@ -732,63 +662,5 @@ onMounted(() => {
   border-radius: 8px;
   text-align: center;
   font-weight: 500;
-}
-
-/* Steps */
-.card-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 32px;
-}
-
-.step-wrapper {
-  position: relative;
-  padding-left: 36px;
-}
-
-.step-row {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 32px;
-  z-index: 10;
-}
-
-.circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-  font-size: 16px;
-}
-
-.circle:hover {
-  transform: scale(1.1);
-}
-
-.circle-inactive {
-  background-color: #d1d5db;
-  color: white;
-}
-
-.step-label {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.circle-blue {
-  background-color: #0185DA !important;
-  color: white;
-}
-
-.label-blue {
-  color: #0185DA !important;
 }
 </style>
