@@ -26,6 +26,10 @@ if ! php artisan tinker --execute="echo \DB::table('migrations')->where('migrati
     php artisan tinker --execute="\DB::table('migrations')->insert(['migration' => 'seed_flag', 'batch' => 1]);"
 fi
 
+# Buat symbolic link storage
+echo "🔗 Linking storage..."
+php artisan storage:link || true
+
 # Jalankan Laravel di port 8000
 echo "🚀 Starting Laravel server..."
 exec php artisan serve --host=0.0.0.0 --port=8000

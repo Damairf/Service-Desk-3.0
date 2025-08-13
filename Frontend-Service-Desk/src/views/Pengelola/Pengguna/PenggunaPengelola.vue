@@ -349,7 +349,6 @@ function lihatPengguna(user) {
   align-items: center;
   gap: 0.5rem;
 }
-
 .search-bar {
   width: 100%;
   padding: 10px;

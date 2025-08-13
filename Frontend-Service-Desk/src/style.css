@@ -286,10 +286,10 @@ a:hover {
 }
 .aksiDelete-btn:hover { background: #ff4444; }
 .aksiUndo-btn {
-  background: #30e776;
+  background: #1dd764;
   border: 1px solid #ccc;
   border-radius: 6px;
-  padding: 0.3rem 0.5rem;
+  padding: 0.3rem 1.295rem;
   margin-right: 0.2rem;
   font-family: 'Poppins';
   cursor: pointer;
@@ -297,7 +297,7 @@ a:hover {
   color: white;
   transition: background 0.2s;
 }
-.aksiUndo-btn:hover { background: #30ea43; }
+.aksiUndo-btn:hover { background: #1fef6f; }
 
 .aksiLihat-btn{
   background: #6c757d;
@@ -334,13 +334,13 @@ a:hover {
 }
 
 .btn.green {
-  background: #5ade3d;
+  background: #1dd764;
   font-family: 'Poppins';
   font-size: 0.9rem;
   color: white;
 }
 .btn.btn.green:hover {
-  background: #26cf3d;
+  background: #1fef6f;
 }
 
 .status {

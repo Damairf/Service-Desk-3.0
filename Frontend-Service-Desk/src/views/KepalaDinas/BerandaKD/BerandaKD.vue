@@ -66,14 +66,14 @@ onBeforeMount(() => {
           </div>
           <div class="box" @click="router.push('/KepuasanUserKeseluruhan')">
             <img src="../../../../public/iconkepuasanuserseluruhberanda.svg" alt="Persetujuan Permintaan">
-            <h3>Laporan & Kepuasan User Keseluruhan</h3>
-            <p>Lihat Seluruh Laporan & Kepuasan User</p>
+            <h3>Laporan & Kepuasan Pengguna Keseluruhan</h3>
+            <p>Lihat Seluruh Laporan & Kepuasan Pengguna</p>
             <button class="tambah" @click="router.push('/KepuasanUserKeseluruhan')">Buka Laporan</button>
           </div>
           <div class="box" @click="router.push('/KepuasanUserBulanIni')">
             <img src="../../../../public/iconkepuasanuserbulanberanda.svg" alt="Disposisi Permintaan">
-            <h3>Laporan & Kepuasan User Bulan Ini</h3>
-            <p>Lihat Laporan & Kepuasan User Bulan Ini</p>
+            <h3>Laporan & Kepuasan Pengguna Bulan Ini</h3>
+            <p>Lihat Laporan & Kepuasan Pengguna Bulan Ini</p>
             <button class="lacak" @click="router.push('/KepuasanUserBulanIni')">Buka Laporan</button>
           </div>
 
