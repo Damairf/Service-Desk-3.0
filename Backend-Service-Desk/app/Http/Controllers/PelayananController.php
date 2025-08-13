@@ -122,6 +122,7 @@ class PelayananController extends Controller
         $ID_Status = $request->ID_Status;
         $ID_Unit = $request->ID_Unit;
         $Pesan_Pengelola = $request->Pesan_Pengelola;
+        $ID_Urgensi = $request->ID_Urgensi;
 
         $ID_Jenis_Pelayanan = SubJenisPelayanan::where('ID_Sub_Jenis_Pelayanan', $request->ID_Sub_Jenis_Pelayanan)
             ->value('ID_Jenis_Pelayanan');
@@ -138,6 +139,7 @@ class PelayananController extends Controller
             'ID_Status' => $ID_Status,
             'ID_Unit' => $ID_Unit,
             'Pesan_Pengelola' => $Pesan_Pengelola,
+            'ID_Urgensi' => $ID_Urgensi,
         ]);
 
         $alurList = Alur::where('ID_Sub_Jenis_Pelayanan', $ID_Sub_Jenis_Pelayanan)->get();
