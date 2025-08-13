@@ -30,7 +30,8 @@ onMounted(() => {
       pelapor: item.Nama_Pelapor,
       tanggal: item.created_at,
       status: item.status_pelayanan.Nama_Status,
-      terkirim: item.Is_Done
+      terkirim: item.Is_Done,
+      urgensi: item.urgensi_pelayanan?.Nama_Urgensi || '-'
     }))
   })
   .catch(error => {
@@ -136,6 +137,7 @@ watch(search, () => {
             <th>Perihal</th>
             <th>Tanggal</th>
             <th>Pelapor</th>
+            <th>Urgensi</th>
             <th @click="toggleSort('status')" class="cursor-pointer">Status
                 <span v-if="sortKey === 'status' || sortOrder === null">
                 <span v-if="sortOrder === 'asc'">🔼</span>
@@ -163,6 +165,7 @@ watch(search, () => {
             <td>{{ item.perihal }}</td>
             <td>{{ formatDate(item.tanggal) }}</td>
             <td>{{ item.pelapor }}</td>
+            <td>{{ item.urgensi }}</td>
             <td>
               <span :class="['status', item.status.toLowerCase()]">{{ item.status }}</span>
             </td>

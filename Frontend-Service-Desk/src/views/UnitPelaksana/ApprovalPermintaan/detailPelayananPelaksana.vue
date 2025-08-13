@@ -176,7 +176,7 @@ const fetchPelayananData = async () => {
 const handleSelesai = async () => {
   try {
     const token = localStorage.getItem('Token')
-    axios.put(`http://127.0.0.1:8000/api/pelayanan/disposisi/${pelayananId.value}`, 
+    axios.put(`/api/pelayanan/disposisi/${pelayananId.value}`, 
   {
     ID_Teknis: idTeknisTerpilih.value,
     Pesan_Unit: pesanUnit.value,

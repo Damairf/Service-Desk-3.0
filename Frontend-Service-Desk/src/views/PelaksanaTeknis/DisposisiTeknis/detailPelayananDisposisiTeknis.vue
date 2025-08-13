@@ -340,6 +340,8 @@ async function handleSelesai() {
       alert('Harap unggah semua keperluan dokumen')
       return;
     } else {
+      const confirmSubmit = window.confirm("Apakah Anda yakin ingin mengirim hasil?");
+        if (!confirmSubmit) return;
       router.push('/hasilPengerjaan')
     }
   } catch (error) {
