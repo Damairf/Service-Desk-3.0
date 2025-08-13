@@ -65,13 +65,13 @@ onBeforeMount(() => {
             <ChartProgressBulanIni />
           </div>
           <div class="box" @click="router.push('/KepuasanUserKeseluruhan')">
-            <img src="../../../../public/Approval.svg" alt="Persetujuan Permintaan">
+            <img src="../../../../public/iconkepuasanuserseluruhberanda.svg" alt="Persetujuan Permintaan">
             <h3>Laporan & Kepuasan User Keseluruhan</h3>
             <p>Lihat Seluruh Laporan & Kepuasan User</p>
             <button class="tambah" @click="router.push('/KepuasanUserKeseluruhan')">Buka Laporan</button>
           </div>
           <div class="box" @click="router.push('/KepuasanUserBulanIni')">
-            <img src="../../../../public/Disposisi.svg" alt="Disposisi Permintaan">
+            <img src="../../../../public/iconkepuasanuserbulanberanda.svg" alt="Disposisi Permintaan">
             <h3>Laporan & Kepuasan User Bulan Ini</h3>
             <p>Lihat Laporan & Kepuasan User Bulan Ini</p>
             <button class="lacak" @click="router.push('/KepuasanUserBulanIni')">Buka Laporan</button>
