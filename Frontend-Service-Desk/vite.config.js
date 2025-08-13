@@ -9,7 +9,7 @@ export default defineConfig({
     port: 1234,
     proxy: {
       '/api': {
-        target: 'http://laravel_:8000', // Ganti URL sesuai backend Laravel di dalam jaringan Docker (service name:port)
+        target: 'http://localhost:8000', // Ganti URL sesuai backend Laravel di dalam jaringan Docker (service name:port)
         changeOrigin: true,
         secure: false
       },
