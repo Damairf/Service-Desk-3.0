@@ -19,6 +19,7 @@ ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement,
 // Data for pie chart
 const labelPermintaanLayanan = ref([])
 const dataPermintaanLayanan = ref([])
+const isLoading = ref(true)
 
 onBeforeMount(async () => {
   try {
@@ -33,6 +34,8 @@ onBeforeMount(async () => {
     dataPermintaanLayanan.value = data.map(item => item.total)
   } catch (error) {
     console.error("Gagal memuat data:", error)
+  } finally {
+    isLoading.value = false
   }
 })
 
@@ -91,8 +94,22 @@ const configPermintaanLayanan = {
 
 <template>
   <div class="chart-container">
+  <!-- Loading -->
+  <div v-if="isLoading">
+    <div v-if="isLoading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Memuat data...</p>
+    </div>
+  </div>
+  <!-- Ada data -->
+  <div v-else-if="dataPermintaanLayanan.length > 0">
     <Pie :data="PermintaanLayananData" :options="configPermintaanLayanan" />
   </div>
+  <!-- Tidak ada data -->
+  <div v-else>
+    <p>Tidak ada data untuk ditampilkan</p>
+  </div>
+</div>
 </template>
 
 <style scoped>
