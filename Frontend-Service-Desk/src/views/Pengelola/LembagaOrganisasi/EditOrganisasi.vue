@@ -22,7 +22,7 @@ const idOrganisasiTerpilih = ref(route.query.id_induk_organisasi || '')
 const readonlyMode = ref(route.query.viewOnly === 'true')
 
 const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/organisasi', {
+  axios.get('/api/organisasi', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -37,7 +37,7 @@ const token = localStorage.getItem('Token');
     console.error(error); 
   });
 
-  axios.get(`http://127.0.0.1:8000/api/organisasi/${id_organisasi.value}` , {
+  axios.get(`/api/organisasi/${id_organisasi.value}` , {
     headers: {
       Authorization: 'Bearer ' + token,
     }

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 import axios from 'axios';
@@ -8,7 +8,11 @@ const isLoading = ref(true)
 // === backend ===
 const daftarPengguna = ref([])  
 
-onMounted(() => {
+onBeforeMount(() => {
+  fetchDataUser();
+});
+
+const fetchDataUser = () => {
   const token = localStorage.getItem('Token');
   axios.get('/api/user', {
     headers: {
@@ -22,8 +26,8 @@ onMounted(() => {
       nama_belakang: item.Nama_Belakang,
       NIP: item.NIP,
       role: item.user_role.Nama_Role,
-      jabatan: item.user_jabatan.Nama_Jabatan,
-      organisasi: item.user_organisasi.Nama_OPD,
+      jabatan: item.user_jabatan?.Nama_Jabatan || '-',
+      organisasi: item.user_organisasi?.Nama_OPD || '-',
       status: item.Status
     }))
   })
@@ -33,7 +37,7 @@ onMounted(() => {
   .finally(() => {
   isLoading.value = false;
   });
-});
+};
 
 // === Buat Search ===
 const search = ref('')
@@ -100,28 +104,50 @@ watch(search, () => {
   currentPage.value = 1
 })
 
-// === Modal saat delete ===
+// === Modal Delete ===
 const showModal = ref(false)
+const namaUserToDelete = ref('')
 const idUserToDelete = ref(null)
 
-function Delete(user) {
-  idUserToDelete.value = user 
+function Delete(item) {
+  idUserToDelete.value = item.id
+  namaUserToDelete.value = item.nama_depan + ' ' + item.nama_belakang
   showModal.value = true
 }
+
 function cancelDelete() {
   showModal.value = false
-  idUserToDelete = null
+  idUserToDelete.value = null
 }
+
 function confirmDelete() {
-  daftarPengguna.value = daftarPengguna.value.filter(u => u.id !== idUserToDelete.value.id)
-  showModal = false
-  idUserToDelete = null
+  const token = localStorage.getItem('Token');
+  axios.delete(`http://127.0.0.1:8000/api/user/${idUserToDelete.value}`, {
+  headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(() => {
+  fetchDataUser() 
+  showModal.value = false
+  idUserToDelete.value = null
+})
+
+  .catch(error => {
+    console.error(error);
+    alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus pengguna.');
+  });
 }
+
+const penggunaTerpilih = computed(() =>
+  daftarPengguna.value.find(item => item.id === idUserToDelete.value)
+)
 
 function ubahPengguna(user) {
   router.push({
     path: '/ubahPengguna',
     query: {
+      user_id: user.id,
       nama_depan: user.nama_depan,
       nama_belakang: user.nama_belakang,
       role: user.role,
@@ -215,7 +241,7 @@ function lihatPengguna(user) {
     <div class="modal-box">
       <h3>Konfirmasi Hapus</h3>
       <p>
-        Apakah Anda yakin ingin menghapus pengguna <strong>{{ idUserToDelete.nama_depan + ' ' + idUserToDelete.nama_belakang }}</strong>?
+        Apakah Anda yakin ingin menonaktifkan pengguna <strong>{{ namaUserToDelete }}</strong>?
       </p>
       <div class="modal-actions">
         <button class="btn danger" @click="confirmDelete()">Ya, hapus</button>

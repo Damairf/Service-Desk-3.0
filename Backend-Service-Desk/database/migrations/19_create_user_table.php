@@ -25,8 +25,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('ID_Role')->references('ID_Role')->on('reff_role');
-            $table->foreign('ID_Jabatan')->references('ID_Jabatan')->on('reff_jabatan')->onDelete('cascade');
-            $table->foreign('ID_Organisasi')->references('ID_Organisasi')->on('reff_organisasi')->onDelete('cascade');
+            $table->foreign('ID_Jabatan')->references('ID_Jabatan')->on('reff_jabatan')->nullOnDelete();
+            $table->foreign('ID_Organisasi')->references('ID_Organisasi')->on('reff_organisasi')->NullonDelete();
         });
     }
 

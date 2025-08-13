@@ -7,6 +7,7 @@ const router = useRouter()
 const route = useRoute()
 
 // === State untuk form ===
+const idUser = ref(route.query.user_id || '')
 const Nama_Depan = ref(route.query.nama_depan || '')
 const Nama_Belakang = ref(route.query.nama_belakang || '')
 const role = ref(route.query.role || '')
@@ -84,20 +85,14 @@ axios.get('/api/organisasi', {
 
 // === Submit handler ===
 function handleSubmit() {
-  if (!Nama_Depan.value || !Nama_Belakang.value || !NIP.value || !idRoleTerpilih.value || !idJabatanTerpilih.value || !idOrganisasiTerpilih.value || !status.value || !password.value) {
+  if (!Nama_Depan.value || !Nama_Belakang.value || !idRoleTerpilih.value || !status.value || !password.value) {
     alert('Harap isi semua kolom yang bertanda *')
-    return
-  }
-
-  if (NIP.value.length !== 18) {
-    alert('NIP harus 18 digit')
     return
   }
 
   const payload = {
     Nama_Depan: Nama_Depan.value,
     Nama_Belakang: Nama_Belakang.value,
-    NIP: NIP.value,
     ID_Role: idRoleTerpilih.value,
     ID_Jabatan: idJabatanTerpilih.value,
     ID_Organisasi: idOrganisasiTerpilih.value,
@@ -105,11 +100,13 @@ function handleSubmit() {
     Status: status.value
   }
 
-  axios.post('/api/user', payload, {
+  axios.put(`/api/user/${idUser.value}`, payload, {
     headers: { Authorization: 'Bearer ' + token }
   })
-  .then(() => {
-    alert('Pengguna sudah ditambahkan')
+  .then(response => {
+    alert('Pengguna berhasil diubah')
+    console.log(response.data)
+    console.log(status.value)
     router.push('/pengguna')
   })
   .catch(error => console.log(error))
@@ -156,7 +153,7 @@ function handleSubmit() {
         </div>
 
         <div class="form-group">
-          <label>Jabatan <span class="red">*</span></label>
+          <label>Jabatan</label>
           <select v-model="idJabatanTerpilih">
             <option disabled value="">Pilih Jabatan</option>
             <option
@@ -170,7 +167,7 @@ function handleSubmit() {
         </div>
 
         <div class="form-group">
-          <label>Organisasi <span class="red">*</span></label>
+          <label>Organisasi</label>
           <select v-model="idOrganisasiTerpilih">
             <option disabled value="">Pilih Perangkat Daerah</option>
             <option

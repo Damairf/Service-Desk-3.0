@@ -31,6 +31,10 @@ class AuthController extends Controller
             return response("Password salah", 401);
         }
 
+        if (strtolower($user->Status) === 'nonaktif') {
+            return response("Akun Anda nonaktif, silakan hubungi Pengelola", 403);
+        }
+
         $key = env("JWT_SECRET");
         $payload = [
             "ID_User" => $user->ID_User,

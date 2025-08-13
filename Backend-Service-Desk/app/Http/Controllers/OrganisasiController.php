@@ -63,7 +63,7 @@ class OrganisasiController extends Controller
 
     public function deleteOne_Organisasi(Request $request){
         $organisasiId = $request->route('organisasiId');
-        Organisasi::where('ID_Organisasi', $organisasiId)->update(['Status' => 'Nonaktif']);
+        Organisasi::where('ID_Organisasi', $organisasiId)->delete();
 
         return response("Organisasi Dinonaktifkan");
     }
