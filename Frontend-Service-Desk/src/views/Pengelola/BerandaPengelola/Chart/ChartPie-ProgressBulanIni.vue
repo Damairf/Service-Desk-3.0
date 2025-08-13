@@ -109,7 +109,7 @@ const configProgressBulanIni = {
     <Pie :data="progressBulanIniData" :options="configProgressBulanIni" />
   </div>
   <!-- Tidak ada data -->
-  <div v-else>
+  <div v-else class="no-data">
     <p>Tidak ada data ditampilkan untuk Progress Bulan ini</p>
   </div>
 </div>
@@ -133,7 +133,7 @@ const configProgressBulanIni = {
 .no-data {
   text-align: center;
   font-size: 1.1rem;
-  color: #666;
+  color: #ff0000; /* Changed to red for better visibility */
   padding: 20px;
 }
 </style>

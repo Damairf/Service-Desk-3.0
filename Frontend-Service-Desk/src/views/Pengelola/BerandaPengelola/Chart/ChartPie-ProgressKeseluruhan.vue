@@ -105,7 +105,7 @@ const configKeseluruhanData = {
     <Pie :data="progressKeseluruhanData" :options="configKeseluruhanData" />
   </div>
   <!-- Tidak ada data -->
-  <div v-else>
+  <div v-else class="no-data">
     <p>Tidak ada data ditampilkan untuk Progress Keseluruhan</p>
   </div>
 </div>
@@ -118,5 +118,11 @@ const configKeseluruhanData = {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.no-data {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #ff0000; /* Changed to red for better visibility */
+  padding: 20px;
 }
 </style>
