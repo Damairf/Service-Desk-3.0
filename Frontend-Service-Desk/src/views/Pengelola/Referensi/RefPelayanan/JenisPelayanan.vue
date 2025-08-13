@@ -344,29 +344,6 @@ function editPelayanan(pelayanan) {
   display: flex;
   gap: 3px;
 }
-.aksiEdit-btn {
-  background: #2196f3;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 0.3rem 0.5rem;
-  margin-right: 0.2rem;
-  cursor: pointer;
-  font-size: 14px;
-  color: white;
-  transition: background 0.2s;
-}
-.aksiEdit-btn:hover { background: #1976d2; }
-.aksiDelete-btn {
-  background: #c14421;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 0.3rem 0.5rem;
-  cursor: pointer;
-  font-size: 14px;
-  color: white;
-  transition: background 0.2s;
-}
-.aksiDelete-btn:hover { background: #a63a1d; }
 /* Pengganti Halaman */
 .pagination {
   display: flex;

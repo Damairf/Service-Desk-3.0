@@ -259,6 +259,47 @@ a:hover {
   color: #0185DA !important;
 }
 
+.aksiEdit-btn {
+  background: #2BA9E4;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  margin-right: 0.2rem;
+  font-family: 'Poppins';
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: white;
+  transition: background 0.2s;
+}
+.aksiEdit-btn:hover { background: #48B7ED; }
+.aksiDelete-btn {
+  background: #e73030;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  margin-right: 0.2rem;
+  font-family: 'Poppins';
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: white;
+  transition: background 0.2s;
+}
+.aksiDelete-btn:hover { background: #ff4444; }
+.aksiLihat-btn{
+  background: #6c757d;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  font-family: 'Poppins';
+  font-size: 0.8rem;
+  color: white;
+  transition: background 0.2s;
+}
+.aksiLihat-btn:hover{
+  background: #969fa7;
+}
+
 .status {
   padding: 4px 10px;
   border-radius: 12px;
