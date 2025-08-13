@@ -9,7 +9,7 @@ const gambar = ref(localStorage.getItem('src_gambar'));
 const role = ref(localStorage.getItem('id_role'))
 
 const imageSrc = computed(() => {
-  if (gambar.value && gambar.value !== 'null') {
+  if (gambar.value && gambar.value !== null) {
     return `/images/${gambar.value}`;
   }
   return '/images/default.jpeg'; // Default image

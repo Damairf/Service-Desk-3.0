@@ -1,0 +1,36 @@
+# Laravel & Composer
+/vendor
+/node_modules
+/.env
+/.env.*
+/.env.example
+
+# Cache & Logs
+/storage/*.key
+/storage/framework/*
+/storage/logs/*
+/bootstrap/cache/*
+
+# Git & CI/CD
+.git
+.gitignore
+.gitattributes
+.github
+.gitlab-ci.yml
+
+# OS & Editor Files
+*.swp
+*.swo
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
+# Docker & Build Artifacts
+docker-compose.override.yml
+Dockerfile*
+.dockerignore
+
+# Tests
+/phpunit.xml
+/tests

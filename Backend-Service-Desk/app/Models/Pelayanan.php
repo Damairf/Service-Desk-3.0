@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Pelayanan extends Model
 {
-    protected $table = 'Pelayanan';
+    protected $table = 'pelayanan';
     protected $primaryKey = 'ID_Pelayanan';
      public $incrementing = false;
     protected $keyType = 'string';

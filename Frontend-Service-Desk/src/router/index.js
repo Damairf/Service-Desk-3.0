@@ -240,7 +240,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/user/profile', {
+    const response = await axios.get('http://localhost:8000/api/user/profile', {
       headers: { Authorization: 'Bearer ' + token }
     });
     const userRole = response.data.ID_Role;
