@@ -134,7 +134,6 @@
 }
 
 .btn-edit:hover{
-  transform: scale(1.02);
   background-color: #66BB6A;
 }
 

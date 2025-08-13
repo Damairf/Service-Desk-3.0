@@ -273,19 +273,23 @@ function cancelChanges() {
   justify-content: center;
 }
 .btn.edit {
-  background: #2196f3;
+  font-family: 'Poppins';
+  background: #2BA9E4;
   align-items: center;
+  font-size: 0.9rem;
   color: #fff;
 }
 .btn.edit:hover {
-  background: #1976d2;
+  background: #48B7ED;
 }
 .btn.delete {
-  background: #f44336;
+  font-family: 'Poppins';
+  background: #e73030;
+  font-size: 0.9rem;
   color: #fff;
 }
 .btn.delete:hover {
-  background: #d32f2f;
+  background: #ff4444;
 }
 .profile-right {
   flex: 2;
@@ -335,18 +339,22 @@ function cancelChanges() {
   gap: 1rem;
 }
 .btn.save {
-  background: #00a130;
+  font-family: 'Poppins';
+  background: #4CAF50;
+  font-size: 0.9rem;
   color: #fff;
 }
 .btn.save:hover {
-  background: #006920;
+  background: #66BB6A;
 }
 .btn.cancel {
-  background: #f44336;
+  font-family: 'Poppins';
+  background: #e73030;
+  font-size: 0.9rem;
   color: #fff;
 }
 .btn.cancel:hover {
-  background: #d32f2f;
+  background: #ff4444;
 }
 /* Overlay (tetap gunakan style lama) */
 .overlay {

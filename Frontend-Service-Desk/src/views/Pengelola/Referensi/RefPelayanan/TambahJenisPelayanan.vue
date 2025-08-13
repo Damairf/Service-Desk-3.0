@@ -75,7 +75,6 @@ function handleReset() {
 .page-bg {
   min-height: 100vh;
   background: #f6f0fa;
-  padding: 2rem 0;
 }
 .main-title {
   font-size: 2.4rem;

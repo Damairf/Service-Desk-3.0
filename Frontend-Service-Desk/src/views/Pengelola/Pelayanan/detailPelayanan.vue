@@ -477,8 +477,6 @@ onMounted(() => {
                     ★
                   </span>
                 </div>
-                <textarea v-model="reviewText" class="review-textarea" placeholder="Bagikan pengalaman pengguna..." rows="4"></textarea>
-                <button class="send-btn" @click="submitReview">Kirim Ulasan</button>
               </div>
             </div>
             </div>
