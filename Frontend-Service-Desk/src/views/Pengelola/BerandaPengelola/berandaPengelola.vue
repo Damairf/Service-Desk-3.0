@@ -23,15 +23,6 @@ const nama_jabatan = ref('')
 const nama_organisasi = ref('')
 const nama_user = [localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' ')
 
-const noData = ref({
-  progressKeseluruhan: false,
-  progressBulanIni: false,
-  permintaanLayanan: false,
-  permintaanBerdasarkanStatus: false,
-  permintaanBerdasarkanPengelolaTeknis: false,
-  penilaianLayananServiceDesk: false
-})
-
 onMounted(async () => {
   const token = localStorage.getItem('Token')
   if (!token) {
