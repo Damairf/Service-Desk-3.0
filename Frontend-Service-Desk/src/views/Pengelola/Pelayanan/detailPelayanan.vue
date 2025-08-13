@@ -138,12 +138,12 @@ const fetchPelayananData = async () => {
     const pelayananData = pelayananResponse.data
     id_user.value = pelayananData.ID_User
     deskripsi.value = pelayananData.Deskripsi
-    organisasi.value = pelayananData.user.user_organisasi.Nama_OPD
+    organisasi.value = pelayananData.user.user_organisasi?.Nama_OPD || '-'
     surat_dinas.value = pelayananData.Surat_Dinas_Path
     lampiran.value = pelayananData.Lampiran_Path
     sub_jenis_pelayanan.value = pelayananData.sub__jenis__pelayanan.Nama_Sub_Jenis_Pelayanan
     jenis_pelayanan.value = pelayananData.jenis__pelayanan.Nama_Jenis_Pelayanan
-    nama_pelapor.value = [pelayananData.user.Nama_Depan, pelayananData.user.Nama_Belakang].filter(Boolean).join(' ');
+    nama_pelapor.value = pelayananData.Nama_Pelapor;
     nama_urgensi.value = pelayananData.urgensi_pelayanan?.Nama_Urgensi || 'Belum Ditetapkan'
     nama_depanUnit.value = pelayananData.unit_pelayanan?.Nama_Depan || 'Belum'
     nama_belakangUnit.value = pelayananData.unit_pelayanan?.Nama_Belakang || 'Ditetapkan'
