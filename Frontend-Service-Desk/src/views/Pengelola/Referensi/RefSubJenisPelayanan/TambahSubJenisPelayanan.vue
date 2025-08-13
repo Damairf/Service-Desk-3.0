@@ -14,7 +14,7 @@ const semuaLangkah = ref([])
 const daftarJenisPelayanan = ref([])
 
 const jenisPelayananNama = ref('')
-const jenisPelayananId = ref(null)
+const jenisPelayananId = ref('')
 
 const dropdownTerbukaJenisPelayanan = ref(false)
 
@@ -98,7 +98,6 @@ function cariLangkahYangCocok(teksYangDiketik) {
 function pilihJenisPelayanan(pelayanan) {
   jenisPelayananNama.value = pelayanan.Nama_Jenis_Pelayanan
   jenisPelayananId.value = pelayanan.ID_Jenis_Pelayanan
-  dropdownTerbukaJenisPelayanan.value = false
 }
 
 // Ketika langkah pelayanan dipilih dari dropdown
@@ -188,26 +187,23 @@ function handleReset() {
 
         <div class="form-group dropdown-container">
           <label>Jenis Pelayanan<span class="red">*</span></label>
-          <input
-            type="text"
-            placeholder="Pilih Jenis Pelayanan"
-            v-model="jenisPelayananNama"
-            readonly
-            @focus="dropdownTerbukaJenisPelayanan = true"
-            @blur="setTimeout(() => dropdownTerbukaJenisPelayanan = false, 100)"
+          <select
+          v-model="jenisPelayananId"
+            @change="event => {
+              const id = event.target.value;
+              const pelayanan = daftarJenisPelayanan.find(p => p.ID_Jenis_Pelayanan == id);
+              pilihJenisPelayanan(pelayanan);
+            }"
           >
-          <ul
-            v-if="dropdownTerbukaJenisPelayanan"
-            class="dropdown"
-          >
-            <li
+            <option value="" disabled>Pilih Jenis Pelayanan</option>
+            <option
               v-for="pelayanan in daftarJenisPelayanan"
               :key="pelayanan.ID_Jenis_Pelayanan"
-              @mousedown="pilihJenisPelayanan(pelayanan)"
+              :value="pelayanan.ID_Jenis_Pelayanan"
             >
               {{ pelayanan.Nama_Jenis_Pelayanan }}
-            </li>
-          </ul>
+            </option>
+          </select>
         </div>
 
         <div class="form-group">

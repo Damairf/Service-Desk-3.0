@@ -208,13 +208,14 @@ input {
 }
 
 .login {
-  background-color: #42b983;
+  background-color: #099d49;
   color: white;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  width: 35%;
+  width: 40%;
+  font-family: 'Poppins';
   margin-bottom: 5%;
 }
 
@@ -224,7 +225,7 @@ input {
 }
 
 button:hover {
-  background-color: #369870;
+  background-color: #0dc95e;
 }
 
 p.error {
