@@ -280,16 +280,12 @@ function editJabatan(jabatan) {
   border: none;
   border-radius: 8px;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-family: 'Poppins';
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-.btn.tambah {
-  background: #009e3c;
-  color: #fff;
-  margin-left: auto;
 }
 .search-bar {
   width: 100%;
@@ -404,10 +400,6 @@ function editJabatan(jabatan) {
   gap: 1rem;
 }
 
-.btn.danger {
-  background: #e53935;
-  color: white;
-}
 /* === Warna Status === */
 .status {
   padding: 4px 10px;

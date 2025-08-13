@@ -299,6 +299,25 @@ a:hover {
 .aksiLihat-btn:hover{
   background: #969fa7;
 }
+.btn.tambah {
+  background: #009e3c;
+  font-family: 'Poppins';
+  font-size: 0.9rem;
+  color: #fff;
+  margin-left: auto;
+}
+.btn.tambah:hover {
+  background: #00cc4e;
+}
+.btn.danger {
+  background: #e53935;
+  font-family: 'Poppins';
+  font-size: 0.9rem;
+  color: white;
+}
+.btn.danger:hover {
+  background: #fc5350;
+}
 
 .status {
   padding: 4px 10px;

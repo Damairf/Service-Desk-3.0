@@ -392,10 +392,6 @@ function editStatus(status) {
   gap: 1rem;
 }
 
-.btn.danger {
-  background: #e53935;
-  color: white;
-}
 /* === Warna Status === */
 .status {
   padding: 4px 10px;
