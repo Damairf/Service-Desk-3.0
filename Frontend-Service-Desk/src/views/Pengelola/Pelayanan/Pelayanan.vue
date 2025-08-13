@@ -158,7 +158,7 @@ watch(search, () => {
             </td>
           </tr>
           <tr v-else-if="filteredItems.length === 0">
-            <td colspan="6" style="text-align: center; padding: 1rem;">Tidak ada permintaan pelayanan</td>
+            <td colspan="7" style="text-align: center; padding: 1rem;">Tidak ada permintaan pelayanan</td>
           </tr>
           <tr v-for="(item, index) in paginatedItems" :key="index">
             <td>{{ item.noTiket }}</td>

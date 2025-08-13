@@ -474,7 +474,7 @@ if (role.value == 1) {
 
 .tombol-toggle {
   background: none;
-  background-color: #68b8e1;
+  background-color: #48a1ce;
   color: rgb(50, 50, 50);
   border: none;
   cursor: pointer;
@@ -526,7 +526,7 @@ nav {
   padding-left: 0.7rem;
 }
 .tombol-toggle:hover {
-  background: #48a1ce;
+  background: #3b8eb8;
 }
 
 .icon {

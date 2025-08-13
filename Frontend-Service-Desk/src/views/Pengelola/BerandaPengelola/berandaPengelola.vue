@@ -47,8 +47,8 @@ const fetchDashboardData = async (token) => {
     // Simpan data
     const profile = profileRes.data
     nip_user.value = profile.NIP
-    nama_jabatan.value = profile.user_jabatan.Nama_Jabatan
-    nama_organisasi.value = profile.user_organisasi.Nama_OPD
+    nama_jabatan.value = profile.user_jabatan?.Nama_Jabatan || '-'
+    nama_organisasi.value = profile.user_organisasi?.Nama_OPD || '-'
 
     jumlahPenggunaTerdaftar.value = userCountRes.data
     jumlahPermintaanBaru.value = layananRes.data
@@ -56,8 +56,8 @@ const fetchDashboardData = async (token) => {
 
     // Cache
     localStorage.setItem('nip_user', profile.NIP)
-    localStorage.setItem('nama_jabatan', profile.user_jabatan.Nama_Jabatan)
-    localStorage.setItem('nama_organisasi', profile.user_organisasi.Nama_OPD)
+    localStorage.setItem('nama_jabatan', profile.user_jabatan?.Nama_Jabatan || '-')
+    localStorage.setItem('nama_organisasi', profile.user_organisasi?.Nama_OPD || '-')
 
   } catch (error) {
     console.error('Gagal memuat dashboard:', error)

@@ -335,7 +335,7 @@ onMounted(() => {
               <div class="jarak-bawah">{{ nama_depanUnit + ' ' + nama_belakangUnit }}</div>
             </div>
             <div v-if="status !==3">
-              <strong>Pesan dari {{ nama_depanUnit + ' ' + nama_belakangUnit }}</strong>
+              <strong>Pesan dari Unit Pelaksana</strong>
               <div class="textarea-row jarak-bawah">
                 <textarea class="input" :value="pesanUnit" placeholder="Tidak Ada Pesan" rows="5" readonly></textarea>
               </div>

@@ -425,7 +425,7 @@ function cancelChanges() {
 .wrapper-btn-edit{
   display: flex;
   justify-content: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.2rem;
 }
 
 @media (max-width: 900px) {
