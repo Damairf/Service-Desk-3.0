@@ -110,7 +110,7 @@ const configProgressBulanIni = {
   </div>
   <!-- Tidak ada data -->
   <div v-else>
-    <p>Tidak ada data untuk ditampilkan untuk Progress Bulan ini</p>
+    <p>Tidak ada data ditampilkan untuk Progress Bulan ini</p>
   </div>
 </div>
 </template>

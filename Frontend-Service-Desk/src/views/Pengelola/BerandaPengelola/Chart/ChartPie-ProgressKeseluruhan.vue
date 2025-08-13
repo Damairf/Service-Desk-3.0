@@ -106,7 +106,7 @@ const configKeseluruhanData = {
   </div>
   <!-- Tidak ada data -->
   <div v-else>
-    <p>Tidak ada data untuk ditampilkan untuk Progress Keseluruhan</p>
+    <p>Tidak ada data ditampilkan untuk Progress Keseluruhan</p>
   </div>
 </div>
 </template>
