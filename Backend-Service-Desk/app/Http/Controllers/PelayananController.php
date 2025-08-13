@@ -48,13 +48,13 @@ class PelayananController extends Controller
     
     public function getDisposisiPelayananIDTeknis(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        $pelayanans = Pelayanan::where('ID_Teknis', $ID_User)->where('ID_Status', 4)->where('Is_Done', false)->with('user', 'status_pelayanan')->get();
+        $pelayanans = Pelayanan::where('ID_Teknis', $ID_User)->where('ID_Status', 4)->where('Is_Done', false)->with('user', 'status_pelayanan', 'urgensi_pelayanan')->get();
         return response()->json($pelayanans);   
     }
 
     public function getHasilPelayananIDTeknis(Request $request){
         $ID_User = User::where('ID_User', $request->ID_User)->pluck('ID_User')->first();
-        $pelayanans = Pelayanan::where('ID_Teknis', $ID_User)->where('Is_Done', true)->with('user', 'status_pelayanan')->get();
+        $pelayanans = Pelayanan::where('ID_Teknis', $ID_User)->where('Is_Done', true)->with('user', 'status_pelayanan', 'urgensi_pelayanan')->get();
         return response()->json($pelayanans);
     }
 

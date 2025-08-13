@@ -16,6 +16,7 @@ ChartJS.register(Title, Tooltip, Legend, ArcElement)
 // API data placeholders
 const labelProgressKeseluruhan = ref([])
 const dataProgressKeseluruhan = ref([])
+const isLoading = ref(true)
 
 onBeforeMount(async () => {
   try {
@@ -32,6 +33,8 @@ onBeforeMount(async () => {
     // fallback dummy
     labelProgressKeseluruhan.value = ['Baru', 'Disetujui', 'Ditolak', 'Proses', 'Selesai', 'Tutup']
     dataProgressKeseluruhan.value = [0, 0, 0, 0, 0, 0]
+  } finally {
+    isLoading.value = false
   }
 })
 
@@ -90,8 +93,22 @@ const configKeseluruhanData = {
 
 <template>
   <div class="chart-container">
+  <!-- Loading -->
+  <div v-if="isLoading">
+    <div v-if="isLoading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Memuat data...</p>
+    </div>
+  </div>
+  <!-- Ada data -->
+  <div v-else-if="dataProgressKeseluruhan.length > 0">
     <Pie :data="progressKeseluruhanData" :options="configKeseluruhanData" />
   </div>
+  <!-- Tidak ada data -->
+  <div v-else>
+    <p>Tidak ada data untuk ditampilkan</p>
+  </div>
+</div>
 </template>
 
 <style scoped>
