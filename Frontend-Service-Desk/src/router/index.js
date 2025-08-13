@@ -61,11 +61,6 @@ import referensiSubJenisPelayanan from '../views/Pengelola/Referensi/RefSubJenis
 import TambahSubJenisPelayanan from '../views/Pengelola/Referensi/RefSubJenisPelayanan/TambahSubJenisPelayanan.vue'
 import UbahSubJenisPelayanan from '../views/Pengelola/Referensi/RefSubJenisPelayanan/EditSubJenisPelayanan.vue'
 
-// Tipe Permintaan
-import referensiTipePermintaan from '../views/Pengelola/Referensi/RefTipePermintaan/TipePermintaan.vue'
-import TambahTipePermintaan from '../views/Pengelola/Referensi/RefTipePermintaan/TambahTipePermintaan.vue'
-import UbahTipePermintaan from '../views/Pengelola/Referensi/RefTipePermintaan/EditTipePermintaan.vue'
-
 // Urgensi
 import referensiUrgensi from '../views/Pengelola/Referensi/RefUrgensi/Urgensi.vue'
 import TambahUrgensi from '../views/Pengelola/Referensi/RefUrgensi/TambahUrgensi.vue'
@@ -174,11 +169,6 @@ const routes = [
   { path: '/referensi/sub-jenis-pelayanan', name: 'referensiSubJenisPelayanan', component: referensiSubJenisPelayanan, meta: {allowedRoles: [2]}},
   { path: '/tambahSubJenisPelayanan', name: 'TambahSubJenisPelayanan', component: TambahSubJenisPelayanan, meta: {allowedRoles: [2]}},
   { path: '/ubahSubJenisPelayanan', name: 'UbahSubJenisPelayanan', component: UbahSubJenisPelayanan, meta: {allowedRoles: [2]}},
-
-  // Tipe Permintaan
-  { path: '/referensi/tipe-permintaan', name: 'referensiTipePermintaan', component: referensiTipePermintaan, meta: {allowedRoles: [2]}},
-  { path: '/tambahTipePermintaan', name: 'TambahTipePermintaan', component: TambahTipePermintaan, meta: {allowedRoles: [2]}},
-  { path: '/ubahTipePermintaan', name: 'UbahTipePermintaan', component: UbahTipePermintaan, meta: {allowedRoles: [2]}},
 
   // Urgensi
   { path: '/referensi/urgensi', name: 'referensiUrgensi', component: referensiUrgensi, meta: {allowedRoles: [2]}},

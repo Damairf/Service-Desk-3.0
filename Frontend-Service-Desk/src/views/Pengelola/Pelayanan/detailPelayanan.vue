@@ -421,13 +421,13 @@ onMounted(() => {
               <div class="info-row textarea-row">
                 <strong>Deskripsi</strong>
                 <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
-                <strong>Surat Dinas</strong>
+                <strong class="link-surat">Surat Dinas</strong>
                 <div v-if="surat_dinas">
                   <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                     {{ namaFileSuratDinas }}
                   </a>
                 </div>  
-                <strong>Lampiran</strong>
+                <strong class="link-surat">Lampiran</strong>
                 <div v-if="lampiran">
                   <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                     {{ namaFileLampiran }}
@@ -456,7 +456,7 @@ onMounted(() => {
                 <div>
                   <h4 class="review-title">Ulasan Pengguna</h4>
                   <div class="star-rating">
-                    <strong>Belum Ada Ulasan dari Pengguna</strong>
+                    <strong style="font-weight: 500;">Belum Ada Ulasan dari Pengguna</strong>
                   </div>
                   <textarea v-model="reviewText" class="review-textarea" placeholder="Belum Ada Ulasan" rows="4" readonly></textarea>
                 </div>
@@ -512,40 +512,34 @@ onMounted(() => {
                   <textarea class="input" :value="pelayananData.pesanPengelola" placeholder="Alasan Penolakan" rows="5" readonly></textarea>
                 </div>
               </div>
-              <div v-if="progress" class="nama-pelaksana">
-                <strong>Urgensi</strong>
+              <div v-if="progress" class="teks-tambahan">
+                <h4 class="judul-input-tambahan">Urgensi</h4>
                 <div>{{ nama_urgensi }}</div>
-                <strong>Nama Unit Pelaksana</strong>
+                <h4 class="judul-input-tambahan">Nama Unit Pelaksana</h4>
                 <div>{{ nama_depanUnit + ' ' + nama_belakangUnit }}</div>
-                <strong>Nama Pelaksana Teknis</strong>
+                <h4 class="judul-input-tambahan">Nama Pelaksana Teknis</h4>
                 <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
               </div>
 
               <div v-if="status === 5 || status === 6" class="document-links">
                 <div class="info-row-docs">
-                  <strong>Hasil Pemenuhan</strong>
+                  <h4 class="judul-input-tambahan">Hasil Pemenuhan</h4>
                   <div v-if="HasilPemenuhan_Path">
                     <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                       {{ namaFileHasilPemenuhan }}
                     </a>
                   </div>
-                </div>
-
-                <div class="info-row-docs">
-                  <strong>Hasil BA</strong>
+                  <h4 class="judul-input-tambahan">Hasil BA</h4>
                   <div v-if="HasilBA_Path">
                     <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                       {{ namaFileHasilBA }}
                     </a>
-                  </div>
-
-                  <div class="info-row-docs">
-                    <strong>Hasil SLA</strong>
-                    <div v-if="HasilSLA_Path">
-                      <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                        {{ namaFileHasilSLA }}
-                      </a>
-                    </div>
+                  </div>  
+                  <h4 class="judul-input-tambahan">Hasil SLA</h4>
+                  <div v-if="HasilSLA_Path">
+                    <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                      {{ namaFileHasilSLA }}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -559,7 +553,7 @@ onMounted(() => {
                 </div>
                 <!-- Setuju  -->
                 <div class='wrapper-setuju'v-if='pilihan == "Setuju"'>
-                  <h4>Urgensi</h4>
+                  <h4 class="judul-input-tambahan">Urgensi</h4>
                   <select id="urgensi" v-model="idUrgensiTerpilih">
                     <option value="" disabled>Pilih Urgensi</option>
                     <option
@@ -570,22 +564,22 @@ onMounted(() => {
                       {{ option.nama_urgensi }}
                     </option>
                   </select>
-                  <h4>Unit Pelaksana</h4>
+                  <h4 class="judul-input-tambahan">Unit Pelaksana</h4>
                   <select id="status" v-model="idUnitTerpilih">
                     <option value="" disabled>Pilih Unit Pelaksana</option>
                     <option v-for="option in unit" :key="option.id_user" :value="option.id_user">
                       {{ option.nama_depan }} {{ option.nama_belakang }}
                     </option>
                   </select>
-                  <h4>Pesan untuk Unit Pelaksana</h4>
-                  <textarea class="input" v-model="pesan"></textarea>
-                  <button class="btn-selesai" @click="handleSelesai">Selesai</button>
+                  <h4 class="judul-input-tambahan">Pesan untuk Unit Pelaksana</h4>
+                  <textarea class="textarea-row-tambahan" v-model="pesan" placeholder="Masukkan pesan"></textarea>
+                  <button class="btn-selesai-detail" @click="handleSelesai">Selesai</button>
                 </div>
                 <!-- Tolak -->
                 <div class="wrapper-tolak" v-if='pilihan =="Tolak"'>
-                  <h4>Alasan Ditolak</h4>
-                  <textarea class="input" v-model="pesan"></textarea>
-                  <button class="btn-selesai" @click="handleSelesai">Selesai</button>
+                  <h4 class="judul-input-tambahan">Alasan Ditolak</h4>
+                  <textarea class="textarea-row-tambahan" v-model="pesan" placeholder="Masukkan alasan"></textarea>
+                  <button class="btn-selesai-detail" @click="handleSelesai">Selesai</button>
                 </div>
               </div>
             </div>
@@ -640,31 +634,6 @@ onMounted(() => {
   overflow-x: hidden;
 }
 
-/* Loading States */
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  width: 100%;
-}
-
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #0D47A1;
-  border-top: 4px solid #64B5F6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 .error-container {
   display: flex;
   align-items: center;
@@ -672,44 +641,6 @@ onMounted(() => {
   height: 200px;
   width: 100%;
   color: #ef4444;
-}
-
-/* Tabs */
-.tabs {
-  align-self: flex-start;
-  display: flex;
-  gap: 16px;
-  background-color: white;
-  padding: 8px 16px;
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  width: 12.9rem;
-}
-
-.tab {
-  padding: 8px 16px;
-  border-radius: 8px 8px 0 0;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.tab:hover {
-  transform: scale(1.05);
-}
-
-.active-tab-info {
-  color: black;
-  background-color: #fb923c;
-}
-
-.active-tab-track {
-  background-color: #fb923c;
-  color: black;
-}
-
-.inactive-tab {
-  color: #6b7280;
 }
 
 /* Card */
@@ -769,7 +700,7 @@ onMounted(() => {
 }
 
 .textarea-row textarea {
-  width: 100%;
+  width: 97%;
   margin-top: 0.5rem;
   padding: 0.5rem;
   border-radius: 8px;
@@ -842,10 +773,6 @@ onMounted(() => {
   margin-bottom: 1rem;
 }
 
-.nama-pelaksana {
-  margin-top: 1rem;
-}
-
 .note {
   color: #888;
   font-size: 0.8rem;
@@ -874,20 +801,16 @@ onMounted(() => {
 .btn-setuju{
   color: white;
   background-color: #4CAF50;
-  border-radius: 12px;
+  border-radius: 15px;
   padding: 0.5rem 2.5rem;
   border: none;
   cursor: pointer;
+  font-family: 'Poppins';
+  font-weight: 500;
   transition: transform 0.2s ease;
 }
 .btn-setuju:hover{
   background-color: #66BB6A;
-  transform: scale(1.02);
-}
-.wrapper-setuju {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }
 select {
   padding: 0.5rem;
@@ -899,50 +822,30 @@ select {
 .btn-tolak{
   color: white;
   background-color: #D51518;
-  border-radius: 12px;
+  border-radius: 15px;
   padding: 0.5rem 2.5rem;
   border: none;
+  font-family: 'Poppins';
+  font-weight: 500;
   cursor: pointer;
 }
 .btn-tolak:hover{
   background-color: #E53935;
-  transform: scale(1.02);
-}
-.wrapper-setuju {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-self: flex-start;
 }
 .wrapper-tolak{
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
-.btn-selesai{
-  color: white;
-  background-color: #2BA9E4;
-  border-radius: 12px;
-  padding: 0.5rem 2rem;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  width: fit-content;         /* <-- biar lebarnya mengikuti konten */
-  align-self: center;     
-}
-.btn-selesai:hover{
-  transform: scale(1.02);
-  background-color: #48B7ED;
-}
+
 .review-section {
   border-top: 1px solid #eee;
-  padding-top: 0.5rem;
 }
 
 .review-title {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  margin-top: 0.2rem;
 }
 
 .star-rating {
@@ -971,67 +874,6 @@ select {
   margin-bottom: 1rem;
   background-color: #e6e6e6;
   color: black;
-  font-family: poppins, sans-serif;
-}
-/* Steps */
-.card-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 32px;
-}
-
-.step-wrapper {
-  position: relative;
-  padding-left: 36px;
-}
-
-.step-row {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 32px;
-  z-index: 10;
-}
-
-.circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-  font-size: 16px;
-}
-
-.circle:hover {
-  transform: scale(1.1);
-}
-
-.circle-inactive {
-  background-color: #d1d5db;
-  color: white;
-}
-
-.step-label {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.circle-blue {
-  background-color: #0185DA !important;
-  color: white;
-}
-
-.label-blue {
-  color: #0185DA !important;
-}
-
-.input {
   font-family: poppins, sans-serif;
 }
 </style>

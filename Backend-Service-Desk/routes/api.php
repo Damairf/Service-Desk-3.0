@@ -103,6 +103,7 @@ Route::post('/sub_jenis_pelayanan/tambah',[SubJenisPelayananController::class, '
 Route::post('/isi_alur/tambah',[AlurController::class, 'postIsi_Alur']);
 Route::post('/sub_jenis_pelayanan/alur',[AlurController::class, 'postAlur']);
 Route::post('/sub_jenis_pelayanan/tambah/full',[SubJenisPelayananController::class, 'post_Sub_Jenis_Pelayanan_Full']);
+Route::put('/sub_jenis_pelayanan/update/full/{id}',[SubJenisPelayananController::class, 'put_Sub_Jenis_Pelayanan_Full']);
 
 // endpoint unit pelaksana
 

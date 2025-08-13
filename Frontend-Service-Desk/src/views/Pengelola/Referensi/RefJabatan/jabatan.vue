@@ -115,24 +115,24 @@ function cancelDelete() {
   jabatanToDelete.value = null
 }
 
-// function confirmDelete() {
-//   const token = localStorage.getItem('Token');
-//   axios.delete(`http://127.0.0.1:8000/api/organisasi/${idOrganisasiToDelete.value}`, {
-//   headers: {
-//       Authorization: 'Bearer ' + token
-//     }
-//   })
-//   .then(() => {
-//   fetchDataOrganisasi();
-//   showModal.value = false
-//   idOrganisasiToDelete.value = null
-// })
+function confirmDelete() {
+  const token = localStorage.getItem('Token');
+  axios.delete(`http://127.0.0.1:8000/api/organisasi/${idOrganisasiToDelete.value}`, {
+  headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(() => {
+  fetchDataOrganisasi();
+  showModal.value = false
+  idOrganisasiToDelete.value = null
+})
 
-//   .catch(error => {
-//     console.error(error);
-//     alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus organisasi.');
-//   });
-// }
+  .catch(error => {
+    console.error(error);
+    alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus organisasi.');
+  });
+}
 
 //Countdown
 const countdown = ref(5)
@@ -330,6 +330,7 @@ function editJabatan(jabatan) {
 .data-table th, .data-table td {
   padding: 12px;
   text-align: left;
+  font-size: 0.9rem;
   border-bottom: 1px solid #ddd;
 }
 .data-table tr:nth-child(even){

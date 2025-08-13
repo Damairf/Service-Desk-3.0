@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('ID_Pelayanan')->references('ID_Pelayanan')->on('pelayanan');
-            $table->foreign('ID_Alur')->references('ID_Alur')->on('alur');
+            $table->foreign('ID_Alur')->references('ID_Alur')->on('alur')->onDelete('cascade');;
         });
     }
 

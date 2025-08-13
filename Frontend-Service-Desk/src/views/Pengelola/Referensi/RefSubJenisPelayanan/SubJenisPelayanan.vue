@@ -58,6 +58,9 @@ const fetchDataSubJenisPelayanan = () => {
     referensiSubJenisPelayanan.value = response.data.map(item => ({
       id: item.ID_Sub_Jenis_Pelayanan,
       nama: item.Nama_Sub_Jenis_Pelayanan,
+      persyaratan: item.Persyaratan,
+      nama_jenis_pelayanan: item.sub__jns_pelayanan.Nama_Jenis_Pelayanan,
+      id_jenis_pelayanan: item.ID_Jenis_Pelayanan,
       tglPembuatan: item.created_at || '-'
     }))
   })
@@ -181,7 +184,25 @@ function editSubJenisPelayanan(subJenisPelayanan) {
     path: '/ubahSubJenisPelayanan',
     query: {
       nama_sub_jenis_pelayanan: subJenisPelayanan.nama,
-      subJenisPelayananId: subJenisPelayanan.id
+      subJenisPelayananId: subJenisPelayanan.id,
+      persyaratan: subJenisPelayanan.persyaratan,
+      JenisPelayananId: subJenisPelayanan.id_jenis_pelayanan,
+      nama_jenis_pelayanan: subJenisPelayanan.nama_jenis_pelayanan,
+      defaultLangkah: JSON.stringify(langkahDefault.value)
+    }
+  })
+}
+function lihatSubJenisPelayanan(subJenisPelayanan) {
+  router.push({
+    path: '/ubahSubJenisPelayanan',
+    query: {
+      nama_sub_jenis_pelayanan: subJenisPelayanan.nama,
+      subJenisPelayananId: subJenisPelayanan.id,
+      persyaratan: subJenisPelayanan.persyaratan,
+      JenisPelayananId: subJenisPelayanan.id_jenis_pelayanan,
+      nama_jenis_pelayanan: subJenisPelayanan.nama_jenis_pelayanan,
+      defaultLangkah: JSON.stringify(langkahDefault.value),
+      viewOnly: 'true'
     }
   })
 }
@@ -194,7 +215,6 @@ const goToTambahPelayanan = () => {
   })
 }
 </script>
-
 
 <template>
   <div class="page-bg">
@@ -235,6 +255,7 @@ const goToTambahPelayanan = () => {
               <div class="wrapper-aksiBtn">
                 <button class="aksiEdit-btn" title="Edit" @click="editSubJenisPelayanan(subJenisPelayanan)">Ubah</button>
                 <button class="aksiDelete-btn" title="Delete" @click="Delete(subJenisPelayanan); startCountdown()">Hapus</button>
+                <button class="aksiLihat-btn" title="Detail" @click="lihatSubJenisPelayanan(subJenisPelayanan)">Detail</button>
               </div>
             </td>
           </tr>
@@ -359,6 +380,7 @@ const goToTambahPelayanan = () => {
 .data-table th, .data-table td {
   padding: 12px;
   text-align: left;
+  font-size: 0.9rem;
   border-bottom: 1px solid #ddd;
 }
 .data-table tr:nth-child(even){
@@ -399,6 +421,20 @@ const goToTambahPelayanan = () => {
   transition: background 0.2s;
 }
 .aksiDelete-btn:hover { background: #a63a1d; }
+.aksiLihat-btn{
+  background: #6c757d;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  font-size: 14px;
+  color: white;
+  transition: background 0.2s;
+}
+.aksiLihat-btn:hover{
+  background: #5a6268;
+}
+
 /* Pengganti Halaman */
 .pagination {
   display: flex;

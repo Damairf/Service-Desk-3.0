@@ -286,6 +286,7 @@ form {
   border-radius: 5px;
   border: 1px solid #ccc;
   width: 95%;
+  font-size: 0.9rem;
   font-family: poppins, sans-serif;
 }
 
@@ -307,12 +308,14 @@ input[type="file"] {
   border: 1px solid #ccc;
   background-color: white;
   color: black;
+  font-size: 0.9rem;
   font-family: poppins, sans-serif;
 }
 
 textarea {
   resize: vertical;
   border: 2px solid #4285f4;
+  height: 7rem;
   font-family: poppins, sans-serif;
 }
 

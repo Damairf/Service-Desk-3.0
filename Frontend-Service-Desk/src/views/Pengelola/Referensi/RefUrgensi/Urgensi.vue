@@ -324,6 +324,7 @@ function editUrgensi(urgensi) {
 .data-table th, .data-table td {
   padding: 12px;
   text-align: left;
+  font-size: 0.9rem;
   border-bottom: 1px solid #ddd;
 }
 .data-table tr:nth-child(even){

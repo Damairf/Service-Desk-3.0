@@ -234,14 +234,6 @@ const namaFileHasilSLA = computed(() => {
 const rating = ref(null)
 const reviewText = ref('')
 
-const messages = ref([
-{
-    text: "Halo, bagaimana saya bisa membantu?",
-    sender: "Admin",
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  }
-])
-
 // Fungsi untuk menangani perubahan tab (tanpa router navigation)
 const handleTabChange = (tab) => {
   activeTab.value = tab
@@ -310,14 +302,14 @@ onMounted(() => {
                 <strong>Deskripsi User</strong>
                 <textarea class="input" :value="deskripsi" placeholder="Deskripsi Pelayanan" rows="5" readonly></textarea>
 
-                <strong>Surat Dinas</strong>
+                <strong class="link-surat">Surat Dinas</strong>
                 <div v-if="surat_dinas">
                   <a :href="SuratDinas_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                     {{ namaFileSuratDinas }}
                   </a>
                 </div>
 
-                <strong>Lampiran</strong>
+                <strong class="link-surat">Lampiran</strong>
                 <div v-if="lampiran">
                   <a :href="Lampiran_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                     {{ namaFileLampiran }}
@@ -338,45 +330,39 @@ onMounted(() => {
                   <textarea class="input" :value="pelayananData.pesanPengelola" placeholder="Alasan Penolakan" rows="5" readonly></textarea>
                 </div>
               </div>
-              <div v-if="status !== 3" class ="info-row-PelaksanaTeknis">
+              <div v-if="status !== 3">
                 <strong>Nama Unit Pelaksana</strong>
-              <div>{{ nama_depanUnit + ' ' + nama_belakangUnit }}</div>
+              <div class="jarak-bawah">{{ nama_depanUnit + ' ' + nama_belakangUnit }}</div>
             </div>
             <div v-if="status !==3">
               <strong>Pesan dari {{ nama_depanUnit + ' ' + nama_belakangUnit }}</strong>
-            <div class="textarea-row">
-            <textarea class="input" :value="pesanUnit" placeholder="Tidak Ada Pesan" rows="5" readonly></textarea>
+              <div class="textarea-row jarak-bawah">
+                <textarea class="input" :value="pesanUnit" placeholder="Tidak Ada Pesan" rows="5" readonly></textarea>
+              </div>
             </div>
-            </div>
-            <div v-if="status !== 3" class ="info-row-PelaksanaTeknis">
+            <div v-if="status !== 3">
                 <strong>Nama Pelaksana Teknis</strong>
               <div>{{ nama_depanTeknis + ' ' + nama_belakangTeknis }}</div>
             </div>
               <div v-if="status !== 3" class="document-links">
-                <div class="info-row-docs">
-                  <strong>Hasil Pemenuhan</strong>
+                <div>
+                  <h4 class="judul-input-tambahan" style="margin-top: 1.2rem;">Hasil Pemenuhan</h4>
                   <div v-if="HasilPemenuhan_Path">
                     <a :href="HasilPemenuhan_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                       {{ namaFileHasilPemenuhan }}
                     </a>
                   </div>
-                </div>
-
-                <div class="info-row-docs">
-                  <strong>Hasil BA</strong>
+                  <h4 class="judul-input-tambahan" style="margin-top: 1.2rem;">Hasil BA</h4>
                   <div v-if="HasilBA_Path">
                     <a :href="HasilBA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
                       {{ namaFileHasilBA }}
                     </a>
                   </div>
-
-                  <div class="info-row-docs">
-                    <strong>Hasil SLA</strong>
-                    <div v-if="HasilSLA_Path">
-                      <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
-                        {{ namaFileHasilSLA }}
-                      </a>
-                    </div>
+                  <h4 class="judul-input-tambahan" style="margin-top: 1.2rem;">Hasil SLA</h4>
+                  <div v-if="HasilSLA_Path">
+                    <a :href="HasilSLA_Path" target="_blank" rel="noopener" style="color: #2196f3; text-decoration: underline;">
+                      {{ namaFileHasilSLA }}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -459,31 +445,6 @@ onMounted(() => {
   overflow-x: hidden;
 }
 
-/* Loading States */
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  width: 100%;
-}
-
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #0D47A1;
-  border-top: 4px solid #64B5F6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 .error-container {
   display: flex;
   align-items: center;
@@ -491,44 +452,6 @@ onMounted(() => {
   height: 200px;
   width: 100%;
   color: #ef4444;
-}
-
-/* Tabs */
-.tabs {
-  align-self: flex-start;
-  display: flex;
-  gap: 16px;
-  background-color: white;
-  padding: 8px 16px;
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  width: 12.9rem;
-}
-
-.tab {
-  padding: 8px 16px;
-  border-radius: 8px 8px 0 0;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.tab:hover {
-  transform: scale(1.05);
-}
-
-.active-tab-info {
-  color: black;
-  background-color: #fb923c;
-}
-
-.active-tab-track {
-  background-color: #fb923c;
-  color: black;
-}
-
-.inactive-tab {
-  color: #6b7280;
 }
 
 /* Card */
@@ -575,7 +498,6 @@ onMounted(() => {
 
 .document-links {
   display: block;
-  padding: 0.8rem 0;
 }
 
 .info-row strong {
@@ -604,6 +526,10 @@ onMounted(() => {
   background-color: #e6e6e6;
 }
 
+.jarak-bawah {
+  margin-bottom: 1.2rem;
+}
+
 .note {
   color: #888;
   font-size: 0.8rem;
@@ -623,13 +549,14 @@ onMounted(() => {
 .review-title {
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0rem;
+  margin-top: 1rem;
 }
 
 .star-rating {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .star {
@@ -653,73 +580,5 @@ onMounted(() => {
   background-color: #e6e6e6;
   color: black;
   font-family: poppins, sans-serif;
-}
-
-.thank-you-message {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  border-radius: 8px;
-  text-align: center;
-  font-weight: 500;
-}
-
-/* Steps */
-.card-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 32px;
-}
-
-.step-wrapper {
-  position: relative;
-  padding-left: 36px;
-}
-
-.step-row {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 32px;
-  z-index: 10;
-}
-
-.circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-  font-size: 16px;
-}
-
-.circle:hover {
-  transform: scale(1.1);
-}
-
-.circle-inactive {
-  background-color: #d1d5db;
-  color: white;
-}
-
-.step-label {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.circle-blue {
-  background-color: #0185DA !important;
-  color: white;
-}
-
-.label-blue {
-  color: #0185DA !important;
 }
 </style>

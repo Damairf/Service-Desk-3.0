@@ -6,6 +6,9 @@ import ChartProgressBulanIni from '../../Pengelola/BerandaPengelola/Chart/ChartP
 import ChartPermintaanLayanan from '../../Pengelola/BerandaPengelola/Chart/ChartPie-PermintaanLayanan.vue'
 import ChartBarPermintaanBerdasarkanStatus from '../../Pengelola/BerandaPengelola/Chart/ChartBar-PermintaanBerdasarkanStatus.vue'
 import ChartBarPermintaanBerdasarkanPengelolaTeknis from '../../Pengelola/BerandaPengelola/Chart/ChartBar-PermintaanBerdasarkanPengelolaTeknis.vue'
+import IconPermintaanBaru from '../../../../public/iconpermintaanbaru.svg'
+import IconProfile from '../../../../public/profileicon.svg'
+import IconLembagaOrganisasi from '../../../../public/iconlembagaorganisasi.svg'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 // ceritanya backend
@@ -93,7 +96,7 @@ onMounted(()=> {
   <div class="summary-box">
     <p class="label">Permintaan Baru</p>
     <div class="summary-content">
-      <div class="icon">📄</div>
+      <img :src="IconPermintaanBaru" alt="📄" class="icon"/>
       <div class="loading-data" v-if="isLoading">Memuat data...</div>
       <p class="value">{{ jumlahPermintaanBaru }}</p>
     </div>
@@ -101,7 +104,7 @@ onMounted(()=> {
   <div class="summary-box">
     <p class="label">Pengguna Terdaftar</p>
     <div class="summary-content">
-      <div class="icon">👤</div>
+      <img :src="IconProfile" alt="👤" class="icon"/>
       <div class="loading-data" v-if="isLoading">Memuat data...</div>
       <p class="value">{{ jumlahPenggunaTerdaftar }}</p>
     </div>
@@ -109,7 +112,7 @@ onMounted(()=> {
   <div class="summary-box">
     <p class="label">Organisasi Terdaftar</p>
     <div class="summary-content">
-      <div class="icon">👥</div>
+      <img :src="IconLembagaOrganisasi" alt="👥" class="icon"/>
       <div class="loading-data" v-if="isLoading">Memuat data...</div>
       <p class="value">{{ jumlahOrganisasiTerdaftar }}</p>
     </div>
@@ -190,16 +193,17 @@ onMounted(()=> {
 .summary-content {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 }
 
 .icon {
   font-size: 40px;
+  width: 45px;
 }
 
 .value {
   color: black;
-  font-size: 36px;
+  font-size: 35px;
   font-weight: bold;
   margin: 0;
 }

@@ -6,6 +6,7 @@ import { ref, onMounted } from 'vue'
 
 const route = useRoute()
 const isSidebarCollapsed = ref(false)
+const hiddenFooterPages = ['Login', 'ProfileSaya', 'EditProfile']
 
 // Listen for sidebar state changes
 onMounted(() => {
@@ -25,6 +26,10 @@ onMounted(() => {
           'sidebar-collapsed': isSidebarCollapsed && route.path !== '/login'
         }">
         <RouterView/>
+        <!-- Footer -->
+        <footer v-if="!hiddenFooterPages.includes(route.name)" class="app-footer">
+          <p>© 2025 Service Desk V3.0. All rights reserved.</p>
+        </footer>
     </div>
 </template>
 
@@ -53,6 +58,13 @@ html, body, #app {
 
 .sidebar-collapsed {
     margin-left: 50px; /* Sidebar width when collapsed */
+}
+.app-footer {
+  margin-top: auto;
+  padding-bottom: 0.1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #555;
 }
 
 /* Responsive design for smaller screens */

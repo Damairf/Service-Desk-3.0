@@ -321,7 +321,7 @@ function cancelChanges() {
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #222;
   background: #fff;
 }

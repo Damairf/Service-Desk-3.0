@@ -11,7 +11,11 @@ use Illuminate\Support\Facades\DB;
 class SubJenisPelayananController extends Controller
 {
     public function getAll_SubJnsPelayanan(){
-        $sub_jenispelayanan = SubJenisPelayanan::get();
+        $sub_jenispelayanan = SubJenisPelayanan::with([
+            'Sub_JnsPelayanan' => function ($query) {
+                $query->select('ID_Jenis_Pelayanan', 'Nama_Jenis_Pelayanan');
+            }
+        ])->get();
         return response()->json($sub_jenispelayanan);
     }
     public function getAll_Alur_SubJnsPelayanan_byId(Request $request){
@@ -79,6 +83,49 @@ class SubJenisPelayananController extends Controller
         } catch(\Exception $e) {
             DB::rollBack();
             return response()->json(["error" => "Terjadi kesalahan: " . $e->getMessage()], 500);
+        }
+    }
+    public function put_Sub_Jenis_Pelayanan_Full(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $subjenisPelayanan = SubJenisPelayanan::findOrFail($id);
+
+            $subjenisPelayanan->update([
+                'Nama_Sub_Jenis_Pelayanan' => $request->Nama_Sub_Jenis_Pelayanan,
+                'Persyaratan' => $request->Persyaratan,
+                'ID_Jenis_Pelayanan' => $request->ID_Jenis_Pelayanan,
+            ]);
+
+            Alur::where('ID_Sub_Jenis_Pelayanan', $subjenisPelayanan->ID_Sub_Jenis_Pelayanan)->delete();
+
+            if (is_array($request->Langkah_Pelayanan)) {
+                foreach ($request->Langkah_Pelayanan as $namaLangkah) {
+                    $isiAlur = Isi_Alur::create([
+                        'Nama_Alur' => $namaLangkah
+                    ]);
+
+                    Alur::create([
+                        'ID_Sub_Jenis_Pelayanan' => $subjenisPelayanan->ID_Sub_Jenis_Pelayanan,
+                        'ID_Isi_Alur' => $isiAlur->ID_Isi_Alur
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                "message" => "Data berhasil diperbarui",
+                "data" => [
+                    "sub_jenis_pelayanan" => $subjenisPelayanan,
+                    "langkah_pelayanan" => $request->Langkah_Pelayanan
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                "error" => "Terjadi kesalahan: " . $e->getMessage()
+            ], 500);
         }
     }
     public function deleteOne_SubJnsPelayanan(Request $request){
