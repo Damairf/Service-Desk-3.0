@@ -23,15 +23,6 @@ const nama_jabatan = ref('')
 const nama_organisasi = ref('')
 const nama_user = [localStorage.getItem('nama_depan'), localStorage.getItem('nama_belakang')].join(' ')
 
-const noData = ref({
-  progressKeseluruhan: false,
-  progressBulanIni: false,
-  permintaanLayanan: false,
-  permintaanBerdasarkanStatus: false,
-  permintaanBerdasarkanPengelolaTeknis: false,
-  penilaianLayananServiceDesk: false
-})
-
 onMounted(async () => {
   const token = localStorage.getItem('Token')
   if (!token) {
@@ -112,41 +103,29 @@ const fetchDashboardData = async (token) => {
 <div class="box-row">
   <div class="chart-box">
     <div class="chart-container">
-      <div v-if="isLoading" class="loading-data">Memuat data...</div>
-      <div v-else-if="noData.progressKeseluruhan" class="no-data">Belum ada data untuk ditampilkan</div>
-      <ChartProgressKeseluruhan v-else @no-data="noData.progressKeseluruhan = $event" />
+      <ChartProgressKeseluruhan/>
     </div>
   </div>
   <div class="chart-box">
     <div class="chart-container">
-      <div v-if="isLoading" class="loading-data">Memuat data...</div>
-      <div v-else-if="noData.progressBulanIni" class="no-data">Belum ada data untuk ditampilkan</div>
-      <ChartProgressBulanIni v-else @no-data="noData.progressBulanIni = $event" />
+      <ChartProgressBulanIni/>
     </div>
   </div>
 </div>
 
-<!-- Chart Bar: 4 baris -->
+<!-- Chart bawahnya: 4 baris -->
 <div class="bar-chart-section">
   <div class="chart-full">
-    <div v-if="isLoading" class="loading-data">Memuat data...</div>
-    <div v-else-if="noData.permintaanLayanan" class="no-data">Belum ada data untuk ditampilkan</div>
-    <ChartPermintaanLayanan v-else @no-data="noData.permintaanLayanan = $event" />
+    <ChartPermintaanLayanan/>
   </div>
   <div class="chart-full">
-    <div v-if="isLoading" class="loading-data">Memuat data...</div>
-    <div v-else-if="noData.permintaanBerdasarkanStatus" class="no-data">Belum ada data untuk ditampilkan</div>
-    <ChartBarPermintaanBerdasarkanStatus v-else @no-data="noData.permintaanBerdasarkanStatus = $event" />
+    <ChartBarPermintaanBerdasarkanStatus/>
   </div>
   <div class="chart-full">
-    <div v-if="isLoading" class="loading-data">Memuat data...</div>
-    <div v-else-if="noData.permintaanBerdasarkanPengelolaTeknis" class="no-data">Belum ada data untuk ditampilkan</div>
-    <ChartBarPermintaanBerdasarkanPengelolaTeknis v-else @no-data="noData.permintaanBerdasarkanPengelolaTeknis = $event" />
+    <ChartBarPermintaanBerdasarkanPengelolaTeknis/>
   </div>
   <div class="chart-full">
-    <div v-if="isLoading" class="loading-data">Memuat data...</div>
-    <div v-else-if="noData.penilaianLayananServiceDesk" class="no-data">Belum ada data untuk ditampilkan</div>
-    <ChartBarPenilaianLayananServiceDesk v-else @no-data="noData.penilaianLayananServiceDesk = $event" />
+    <ChartBarPenilaianLayananServiceDesk/>
   </div>
 </div>
 </template>

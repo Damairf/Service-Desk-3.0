@@ -16,11 +16,10 @@ import {
 // Register Chart.js components
 ChartJS.register(Title, Tooltip, Legend, CategoryScale, LinearScale, BarElement, ArcElement)
 
-// API Data
+// Data for pie chart
 const labelProgressBulanIni = ref([])
 const dataProgressBulanIni = ref([])
-const hasData = ref(false)
-const emit = defineEmits(['no-data'])
+const isLoading = ref(true)
 
 onBeforeMount(async () => {
   try {
@@ -34,16 +33,12 @@ onBeforeMount(async () => {
     labelProgressBulanIni.value = data.map(item => item.status)
     dataProgressBulanIni.value = data.map(item => item.total)
     // Check if there is valid data (non-empty and not all zeros)
-    hasData.value = dataProgressBulanIni.value.length > 0 && dataProgressBulanIni.value.some(val => val > 0)
-    if (!hasData.value) {
-      emit('no-data', true)
-    }
   } catch (error) {
     console.error('Error fetching chart data:', error)
     labelProgressBulanIni.value = ['Baru', 'Disetujui', 'Ditolak', 'Proses', 'Selesai', 'Tutup']
     dataProgressBulanIni.value = [0, 0, 0, 0, 0, 0]
-    hasData.value = false
-    emit('no-data', true)
+  } finally {
+    isLoading.value = false
   }
 })
 
@@ -102,11 +97,22 @@ const configProgressBulanIni = {
 
 <template>
   <div class="chart-container">
-    <div v-if="hasData" class="chart-wrapper">
-      <Pie :data="progressBulanIniData" :options="configProgressBulanIni" />
+  <!-- Loading -->
+  <div v-if="isLoading">
+    <div v-if="isLoading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Memuat data...</p>
     </div>
-    <div v-else class="no-data">Tidak ada data untuk ditampilkan</div>
   </div>
+  <!-- Ada data -->
+  <div v-else-if="dataProgressBulanIni.length > 0">
+    <Pie :data="progressBulanIniData" :options="configProgressBulanIni" />
+  </div>
+  <!-- Tidak ada data -->
+  <div v-else>
+    <p>Tidak ada data untuk ditampilkan</p>
+  </div>
+</div>
 </template>
 
 <style scoped>
