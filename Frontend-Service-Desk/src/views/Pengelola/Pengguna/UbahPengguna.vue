@@ -105,8 +105,6 @@ function handleSubmit() {
   })
   .then(response => {
     alert('Pengguna berhasil diubah')
-    console.log(response.data)
-    console.log(status.value)
     router.push('/pengguna')
   })
   .catch(error => console.log(error))

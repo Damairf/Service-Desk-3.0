@@ -53,6 +53,7 @@ Route::get('/user',[UserController::class, 'findAll_User']);
 Route::post('/user',[UserController::class, 'createOne_User']);
 Route::put('/user/{userId}', [UserController::class, 'update_User']);
 Route::delete('/user/{userId}',[UserController::class, 'delete_user']);
+Route::delete('/user/undo/{userId}',[UserController::class, 'undoDelete_user']);
 Route::get('/userCount',[UserController::class, 'jumlah_User']);
 Route::get('/pelayanan/unit',[UserController::class, 'getUnit']);
 

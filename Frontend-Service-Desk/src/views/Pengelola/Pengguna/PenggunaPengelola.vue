@@ -122,7 +122,7 @@ function cancelDelete() {
 
 function confirmDelete() {
   const token = localStorage.getItem('Token');
-  axios.delete(`http://127.0.0.1:8000/api/user/${idUserToDelete.value}`, {
+  axios.delete(`/api/user/${idUserToDelete.value}`, {
   headers: {
       Authorization: 'Bearer ' + token
     }
@@ -139,8 +139,43 @@ function confirmDelete() {
   });
 }
 
+// === Modal Undo Delete ===
+const showModalUndo = ref(false)
+const namaUserToUndo = ref('')
+const idUserToUndo = ref(null)
+
+function undoDelete(item) {
+  idUserToUndo.value = item.id
+  namaUserToUndo.value = item.nama_depan + ' ' + item.nama_belakang
+  showModalUndo.value = true
+}
+
+function cancelUndoDelete() {
+  showModalUndo.value = false
+  idUserToUndo.value = null
+}
+
+function confirmUndoDelete() {
+  const token = localStorage.getItem('Token');
+  axios.delete(`/api/user/undo/${idUserToUndo.value}`, {
+  headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  .then(() => {
+  fetchDataUser() 
+  showModalUndo.value = false
+  idUserToUndo.value = null
+})
+
+  .catch(error => {
+    console.error(error);
+    alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus pengguna.');
+  });
+}
+
 const penggunaTerpilih = computed(() =>
-  daftarPengguna.value.find(item => item.id === idUserToDelete.value)
+  daftarPengguna.value.find(item => item.id === idUserToUndo.value)
 )
 
 function ubahPengguna(user) {
@@ -217,7 +252,8 @@ function lihatPengguna(user) {
             <td>
               <div class="wrapper-aksiBtn">
                 <button class="aksiEdit-btn" title="Edit" @click="ubahPengguna(user)">Ubah</button>
-                <button class="aksiDelete-btn" title="Delete" @click="Delete(user)">Hapus</button>
+                <button v-if="user.status === 'Aktif'" class="aksiDelete-btn" title="Delete" @click="Delete(user)">Nonaktif</button>
+                <button v-else class="aksiUndo-btn" title="Undo" @click="undoDelete(user)">Aktif</button>
                 <button class="aksiLihat-btn" @click="lihatPengguna(user)">Detail</button>
               </div>
             </td>
@@ -239,16 +275,28 @@ function lihatPengguna(user) {
   <!-- Overlay buat delete -->
    <div v-if="showModal" class="modal-overlay">
     <div class="modal-box">
-      <h3>Konfirmasi Hapus</h3>
+      <h3>Konfirmasi Nonaktifkan</h3>
       <p>
         Apakah Anda yakin ingin menonaktifkan pengguna <strong>{{ namaUserToDelete }}</strong>?
       </p>
       <div class="modal-actions">
-        <button class="btn danger" @click="confirmDelete()">Ya, hapus</button>
+        <button class="btn danger" @click="confirmDelete()">Ya, nonaktifkan</button>
         <button class="btn" @click="cancelDelete()">Batal</button>
       </div>
     </div>
-
+   </div>
+  <!-- Overlay buat undo delete -->
+   <div v-if="showModalUndo" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Konfirmasi Aktifkan</h3>
+      <p>
+        Apakah Anda yakin ingin mengaktifkan pengguna <strong>{{ namaUserToUndo }}</strong>?
+      </p>
+      <div class="modal-actions">
+        <button class="btn green" @click="confirmUndoDelete()">Ya, aktifkan</button>
+        <button class="btn" @click="cancelUndoDelete()">Batal</button>
+      </div>
+    </div>
    </div>
 </template>
 
