@@ -71,6 +71,7 @@ const pelayananData = computed(() => ({
   jenis_pelayanan: jenis_pelayanan.value,
   nama_urgensi: nama_urgensi.value,
   nama_pelapor: nama_pelapor.value,
+  pesan: pesan.value,
   nama_depanTeknis: nama_depanTeknis.value,
   nama_belakangTeknis: nama_belakangTeknis.value,
   perihal: perihal.value,
@@ -98,6 +99,7 @@ const fetchPelayananData = async () => {
     sub_jenis_pelayanan.value = cached.sub_jenis_pelayanan
     jenis_pelayanan.value = cached.jenis_pelayanan
     nama_urgensi.value = cached.nama_urgensi
+    pesan.value = cached.pesan
     nama_pelapor.value = cached.nama_pelapor
     nama_depanTeknis.value = cached.nama_depanTeknis
     nama_belakangTeknis.value = cached.nama_belakangTeknis
@@ -154,6 +156,7 @@ const fetchPelayananData = async () => {
     tanggal.value = pelayananData.created_at
     status.value = pelayananData.ID_Status
     rating.value = pelayananData.Rating
+    pesan.value = pelayananData.Pesan_Pengelola
     reviewText.value = pelayananData.Isi_Survey
     messages.value = pelayananData.pelayanan_pesan.map(pesan => ({
       id_user: pesan.ID_User,
@@ -197,6 +200,7 @@ const fetchPelayananData = async () => {
       jenis_pelayanan: jenis_pelayanan.value,
       nama_urgensi: nama_urgensi.value,
       nama_pelapor: nama_pelapor.value,
+      pesan: pesan.value,
       nama_depanTeknis: nama_depanTeknis.value,
       nama_belakangTeknis: nama_belakangTeknis.value,
       perihal: perihal.value,
@@ -507,7 +511,7 @@ onMounted(() => {
               <div class="alasan-tolak" v-if="status === 3">
                 <strong>Alasan Penolakan</strong>
                 <div class="textarea-row">
-                  <textarea class="input" :value="pelayananData.pesanPengelola" placeholder="Alasan Penolakan" rows="5" readonly></textarea>
+                  <textarea class="input" :value="pesan" placeholder="Alasan Penolakan" rows="5" readonly></textarea>
                 </div>
               </div>
               <div v-if="progress" class="teks-tambahan">
