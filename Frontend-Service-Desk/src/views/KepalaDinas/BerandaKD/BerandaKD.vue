@@ -58,10 +58,10 @@ onBeforeMount(() => {
         </div>
         
         <div class="boxHolder">
-          <div class="box">
+          <div class="chart-box">
             <ChartProgressKeseluruhan />
           </div>
-          <div class="box">
+          <div class="chart-box">
             <ChartProgressBulanIni />
           </div>
           <div class="box" @click="router.push('/KepuasanUserKeseluruhan')">
@@ -189,13 +189,20 @@ onBeforeMount(() => {
 
   
 .chart-box {
-  flex: 1;
-  min-width: 250px;
   background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding-left: 16px;
-  padding-right: 16px;
+  width: 100%;
+  max-width: 35rem;
+  min-width: 250px;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
 }
 
 .chart-container {
