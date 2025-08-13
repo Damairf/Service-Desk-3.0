@@ -31,6 +31,9 @@ const isSubmitted = ref(false)
 const isLoading = ref(false)
 const stepsID = ref([]) 
 
+const urgensi = ref([])
+const idUrgensiTerpilih = ref('')
+
 const token = localStorage.getItem('Token');
 axios.get('/api/pelayanan/unit', {
   headers: { Authorization: 'Bearer ' + token }
@@ -42,6 +45,17 @@ axios.get('/api/pelayanan/unit', {
       nama_belakang: item.Nama_Belakang
     }))
     idUnitTerpilih.value = ''
+})
+
+axios.get('/api/urgensi', {
+  headers: { Authorization: 'Bearer ' + token }
+})
+.then (response => { 
+  urgensi.value = response.data.map(item => ({
+      id_urgensi: item.ID_Urgensi,
+      nama_urgensi: item.Nama_Urgensi
+    }))
+    idUrgensiTerpilih.value = ''
 })
 
 // Fungsi untuk menangani perubahan file
@@ -113,7 +127,8 @@ async function handleSubmit(){
     !namaPelapor.value || 
     !perihal.value || 
     !deskripsi.value || 
-    !idUnitTerpilih.value) {
+    !idUnitTerpilih.value ||
+    !idUrgensiTerpilih.value) {
       alert('Harap isi semua kolom yang bertanda *')
       return
   }
@@ -146,7 +161,8 @@ async function handleSubmit(){
     "Surat_Dinas_Path": suratDinasPath.value,
     "Lampiran_Path": lampiranPath.value,
     "ID_Unit": idUnitTerpilih.value,
-    "Pesan_Pengelola": pesan.value
+    "Pesan_Pengelola": pesan.value,
+    "ID_Urgensi": idUrgensiTerpilih.value
   },{
     headers: {
       Authorization: 'Bearer ' + token
@@ -229,6 +245,14 @@ async function handleSubmit(){
         <label>Lampiran<span class="red">*</span></label>
         <input type="file" accept=".pdf" @change="handleFileChange($event, 'lampiran')" />
         <p class="note">(Hanya PDF, maksimum 8MB)</p>
+
+        <label>Pilih Urgensi<span class="red">*</span></label>
+        <select id="status" v-model="idUrgensiTerpilih">
+          <option value="" disabled>Pilih Urgensi</option>
+          <option v-for="option in urgensi" :key="option.id_urgensi" :value="option.id_urgensi">
+            {{ option.nama_urgensi }}
+          </option>
+        </select>
 
         <label>Pilih Unit Pelaksana<span class="red">*</span></label>
         <select id="status" v-model="idUnitTerpilih">
