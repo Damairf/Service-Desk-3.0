@@ -417,16 +417,6 @@ onMounted(() => {
   if (pelayananId.value && pelayananId.value !== '-') {
     fetchPelayananData()
   }
-
-  const handlePopState = () => {
-    router.push('/pelayanan')
-  }
-
-  window.addEventListener('popstate', handlePopState)
-
-  onUnmounted(() => {
-    window.removeEventListener('popstate', handlePopState)
-  })
 })
 </script>
 
