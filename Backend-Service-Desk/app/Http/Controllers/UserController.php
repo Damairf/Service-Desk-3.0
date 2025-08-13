@@ -138,12 +138,30 @@ public function delete_Photo(Request $request){
 }
     public function update_User(Request $request){
         $userId = $request->route('userId');
-        $dataUser = $request->except('Password');
+        $dataUser = $request->only([
+            'Nama_Depan',
+            'Nama_Belakang',
+            'ID_Role',
+            'ID_Jabatan',
+            'ID_Organisasi',
+            'Password',
+            'Status',
+        ]);
+
+        $dataUser['Password'] = Hash::make($dataUser['Password']);
+        
         $user = User::where('ID_User', $userId)->first();
 
         $user->update($dataUser);
 
         return response(["User Diperbarui menjadi " => $user->fresh()]);
+    }
+
+    public function delete_user(Request $request){
+        $userId = $request->route('userId');
+        User::where('ID_User', $userId)->update(['Status' => 'Nonaktif']);
+
+        return response("User Dinonaktifkan");
     }
 
     public function getUnit(Request $request){

@@ -9,17 +9,18 @@ const { executeRecaptcha } = useReCaptcha()
 
 const NIP = ref('')
 const Password = ref('')
-const errorMessage = ref('')
 const isLoading = ref(false)
 const passwordError =ref(false)
 const NIPerror = ref(false)
 const isEmpty = ref(false)
+const isNonaktif = ref(false)
 
 async function login() {
   
   isEmpty.value = false
   NIPerror.value = false
   passwordError.value = false
+  isNonaktif.value = false
   isLoading.value = true
 
   // Jalankan reCAPTCHA v3
@@ -57,6 +58,8 @@ async function login() {
       NIPerror.value = true
     }  else if (error.response && error.response.status === 422) {
       isEmpty.value = true
+    } else if (error.response && error.response.status === 403) {
+      isNonaktif.value = true
     } 
   })
 }
@@ -102,6 +105,9 @@ onMounted(() => {
         </div>
         <div v-if="passwordError" class="NotFound">
           Password salah!
+        </div>
+        <div v-if="isNonaktif" class="NotFound">
+          Akun Anda nonaktif, silahkan hubungi Pengelola!
         </div>
       </div>
     </div>

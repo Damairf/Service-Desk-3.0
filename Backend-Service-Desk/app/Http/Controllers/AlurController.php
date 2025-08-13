@@ -28,7 +28,7 @@ class AlurController extends Controller
             'ID_Sub_Jenis_Pelayanan' => $ID_Sub_Jenis_Pelayanan,
             'ID_Isi_Alur' => $ID_Isi_Alur,
         ]);
-        return response(["message" => "Alur dari sub jenis layanan ditambahkan", "data" => $newAlurPelayanan]);
+        return response(["message" => "Alur dari sub jenis layanan ditambahkan", "data" => $newSubAlurPelayanan]);
     }
     public function postIsi_Alur(Request $request){
         $Nama_Alur = $request->Nama_Alur;
