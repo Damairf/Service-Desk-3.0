@@ -196,6 +196,7 @@ watch(filteredItems, () => {
 .rounded-table th, .rounded-table td {
   padding: 10px;
   text-align: left;
+  font-size: 0.9rem;
   border-bottom: 1px solid #ddd;
   font-family: poppins, sans-serif;
 }
