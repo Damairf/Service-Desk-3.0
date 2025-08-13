@@ -11,6 +11,7 @@ const userId = ref(localStorage.getItem('user_id'));
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
 const stepsStatus = ref([])
+const status = ref('')
 const perihal = ref('')
 const tanggal = ref('')
 const nama_depanPengaju = ref('') 
@@ -61,7 +62,8 @@ const pelayananData = computed(() => ({
   perihal: perihal.value,
   tanggal: tanggal.value,
   steps: steps.value,
-  stepsStatus: stepsStatus.value
+  stepsStatus: stepsStatus.value,
+  status: status.value
 }))
 
 // Fungsi untuk fetch data dengan caching
@@ -86,6 +88,7 @@ const fetchPelayananData = async () => {
     tanggal.value = cached.tanggal
     steps.value = cached.steps
     stepsStatus.value = cached.stepsStatus
+    status.value = cached.status
     isDataLoaded.value = true
     isLoading.value = false
     return
@@ -122,6 +125,8 @@ const fetchPelayananData = async () => {
     perihal.value = pelayananData.Perihal
     tanggal.value = pelayananData.created_at
     rating.value = pelayananData.Rating
+    status.value = pelayananData.ID_Status
+    reviewText.value = pelayananData.Isi_Survey
     messages.value = pelayananData.pelayanan_pesan.map(pesan => ({
       id_user: pesan.ID_User,
       text: pesan.Pesan,
@@ -153,7 +158,8 @@ const fetchPelayananData = async () => {
       perihal: perihal.value,
       tanggal: tanggal.value,
       steps: steps.value,
-      stepsStatus: stepsStatus.value
+      stepsStatus: stepsStatus.value,
+      status: status.value
     }
 
     SuratDinas_Path.value = '/files' + surat_dinas.value
@@ -216,7 +222,7 @@ const namaFileHasilSLA = computed(() => {
 const rating = ref(0)
 const hoverRating = ref(0)
 const reviewText = ref('')
-const reviewSubmitted = ref(false)
+const reviewSubmitted = ref(null)
 
 const dokumen = ref(null)
 const newMessage = ref('')
@@ -282,6 +288,7 @@ const submitReview = async () => {
       ID_Status: 6
     }, { headers: { Authorization: 'Bearer ' + token } })
     reviewSubmitted.value = true
+    status.value = 6
   } catch (error) {
     console.error('Gagal mengirim ulasan:', error)
     alert('Gagal mengirim ulasan. Silakan coba lagi.')
@@ -373,7 +380,7 @@ onMounted(() => {
 
             <!-- Review Section (SEKARANG di dalam info-card) -->
             <div class="review-section">
-              <div v-if="!reviewSubmitted">
+              <div v-if="status === 5">
                 <h4 class="review-title">Beri Ulasan</h4>
                 <div class="star-rating">
                   <span
