@@ -5,6 +5,8 @@ use App\Models\Alur;
 use App\Models\Isi_Alur;
 use App\Models\JenisPelayanan;
 use App\Models\SubJenisPelayanan;
+use App\Models\Pelayanan;
+use App\Models\ProgressAlur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -97,18 +99,40 @@ class SubJenisPelayananController extends Controller
                 'ID_Jenis_Pelayanan' => $request->ID_Jenis_Pelayanan,
             ]);
 
+            Pelayanan::where('ID_Sub_Jenis_Pelayanan', $subjenisPelayanan->ID_Sub_Jenis_Pelayanan)
+                ->update([
+                    'ID_Jenis_Pelayanan' => $request->ID_Jenis_Pelayanan
+                ]);
+
+            $pelayananIds = Pelayanan::where('ID_Sub_Jenis_Pelayanan', $subjenisPelayanan->ID_Sub_Jenis_Pelayanan)
+                ->pluck('ID_Pelayanan')
+                ->toArray();
+
+            if (!empty($pelayananIds)) {
+                ProgressAlur::whereIn('ID_Pelayanan', $pelayananIds)->delete();
+            }
+
             Alur::where('ID_Sub_Jenis_Pelayanan', $subjenisPelayanan->ID_Sub_Jenis_Pelayanan)->delete();
 
             if (is_array($request->Langkah_Pelayanan)) {
-                foreach ($request->Langkah_Pelayanan as $namaLangkah) {
+                foreach ($request->Langkah_Pelayanan as $index => $namaLangkah) {
+
                     $isiAlur = Isi_Alur::create([
                         'Nama_Alur' => $namaLangkah
                     ]);
 
-                    Alur::create([
+                    $alur = Alur::create([
                         'ID_Sub_Jenis_Pelayanan' => $subjenisPelayanan->ID_Sub_Jenis_Pelayanan,
                         'ID_Isi_Alur' => $isiAlur->ID_Isi_Alur
                     ]);
+
+                    foreach ($pelayananIds as $pelayananId) {
+                        ProgressAlur::create([
+                            'ID_Pelayanan' => $pelayananId,
+                            'ID_Alur' => $alur->ID_Alur,
+                            'Is_Done' => $index < 2 ? 1 : 0
+                        ]);
+                    }
                 }
             }
 
@@ -121,6 +145,7 @@ class SubJenisPelayananController extends Controller
                     "langkah_pelayanan" => $request->Langkah_Pelayanan
                 ]
             ], 200);
+
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
