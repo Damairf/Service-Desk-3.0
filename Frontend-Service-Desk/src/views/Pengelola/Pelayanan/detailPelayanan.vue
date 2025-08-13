@@ -481,6 +481,8 @@ onMounted(() => {
                     ★
                   </span>
                 </div>
+                <textarea v-model="reviewText" class="review-textarea" placeholder="Bagikan pengalaman Anda..." rows="4"></textarea>
+                <button class="send-btn-chat" @click="submitReview">Kirim Ulasan</button>
               </div>
             </div>
             </div>
