@@ -170,6 +170,7 @@
   border: 1px solid #ccc;
   width: 100%;
   display: inline-block;
+  font-size: 0.9rem;
 }
 
 .icon-area {

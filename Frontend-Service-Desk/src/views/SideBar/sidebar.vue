@@ -493,8 +493,10 @@ nav {
 .menu-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   padding: 8px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-decoration: none;
   color: rgb(50, 50, 50);
   transition: all 0.3s ease;
@@ -519,6 +521,8 @@ nav {
 }
 .text-child-ref {
   color: rgb(50, 50, 50);
+  padding-top: 8px;
+  padding-bottom: 8px;
   padding-left: 0.7rem;
 }
 .tombol-toggle:hover {

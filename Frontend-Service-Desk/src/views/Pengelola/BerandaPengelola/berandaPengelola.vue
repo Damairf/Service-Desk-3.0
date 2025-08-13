@@ -196,17 +196,17 @@ const fetchDashboardData = async (token) => {
 .summary-content {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 }
 
 .icon {
   font-size: 40px;
-  width: 55px;
+  width: 45px;
 }
 
 .value {
   color: black;
-  font-size: 36px;
+  font-size: 35px;
   font-weight: bold;
   margin: 0;
 }
