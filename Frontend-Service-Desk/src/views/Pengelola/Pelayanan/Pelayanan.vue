@@ -16,7 +16,7 @@ const sortOrder = ref(null)
 
 onMounted(() => {
   const token = localStorage.getItem('Token');
-  axios.get('http://127.0.0.1:8000/api/pelayanan', {
+  axios.get('/api/pelayanan', {
     headers: {
       Authorization: 'Bearer ' + token
     }
@@ -29,7 +29,7 @@ onMounted(() => {
       perihal: item.Perihal,
       teknis: item.teknis_pelayanan?.Nama_Depan || '-',
       tanggal: item.created_at,
-      organisasi: item.user.user_organisasi.Nama_OPD,
+      organisasi: item.user.user_organisasi?.Nama_OPD || '-',
       status: item.status_pelayanan.Nama_Status,
     }))
   })

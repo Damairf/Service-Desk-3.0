@@ -77,7 +77,7 @@ function handleSubmit() {
     !idJabatanTerpilih.value || 
     !idOrganisasiTerpilih.value || 
     !status.value || 
-    !password.value|| 
+    !password.value || 
     !konfirmasiPassword.value) {
       alert('Harap isi semua kolom yang bertanda *')
       return
@@ -120,7 +120,7 @@ function handleSubmit() {
       Authorization: 'Bearer ' + token,
     }
   })
-  .then(function(response){
+  .then(() => {
     alert('Pengguna sudah ditambahkan')
     router.push('/pengguna')
   }) 

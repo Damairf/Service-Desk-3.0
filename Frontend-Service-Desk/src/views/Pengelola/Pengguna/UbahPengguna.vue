@@ -12,8 +12,8 @@ const Nama_Depan = ref(route.query.nama_depan || '')
 const Nama_Belakang = ref(route.query.nama_belakang || '')
 const role = ref(route.query.role || '')
 const organisasi = ref(route.query.organisasi || '')
-const status = ref(route.query.status || '')
 const password = ref('')
+const konfirmasiPassword = ref('')
 
 const pilihanRole = ref([])
 const idRoleTerpilih = ref('')
@@ -85,8 +85,18 @@ axios.get('/api/organisasi', {
 
 // === Submit handler ===
 function handleSubmit() {
-  if (!Nama_Depan.value || !Nama_Belakang.value || !idRoleTerpilih.value || !status.value || !password.value) {
+  if (!Nama_Depan.value || !Nama_Belakang.value || !idRoleTerpilih.value || !password.value || !konfirmasiPassword.value) {
     alert('Harap isi semua kolom yang bertanda *')
+    return
+  }
+
+  if (password.value.length < 8) {
+    alert("Password minimal 8 karakter")
+    return
+  }
+
+  if (password.value != konfirmasiPassword.value) {
+    alert("Konfirmasi password salah!")
     return
   }
 
@@ -97,7 +107,6 @@ function handleSubmit() {
     ID_Jabatan: idJabatanTerpilih.value,
     ID_Organisasi: idOrganisasiTerpilih.value,
     Password: password.value,
-    Status: status.value
   }
 
   axios.put(`/api/user/${idUser.value}`, payload, {
@@ -105,8 +114,6 @@ function handleSubmit() {
   })
   .then(response => {
     alert('Pengguna berhasil diubah')
-    console.log(response.data)
-    console.log(status.value)
     router.push('/pengguna')
   })
   .catch(error => console.log(error))
@@ -155,7 +162,7 @@ function handleSubmit() {
         <div class="form-group">
           <label>Jabatan</label>
           <select v-model="idJabatanTerpilih">
-            <option disabled value="">Pilih Jabatan</option>
+            <option value="">Pilih Jabatan</option>
             <option
               v-for="item in pilihanJabatan"
               :key="item.id_jabatan"
@@ -169,7 +176,7 @@ function handleSubmit() {
         <div class="form-group">
           <label>Organisasi</label>
           <select v-model="idOrganisasiTerpilih">
-            <option disabled value="">Pilih Perangkat Daerah</option>
+            <option value="">Pilih Perangkat Daerah</option>
             <option
               v-for="item in pilihanInduk"
               :key="item.id_organisasi"
@@ -182,20 +189,13 @@ function handleSubmit() {
 
         <div class="form-group">
           <label>Password <span class="red">*</span></label>
-          <input type="password" v-model="password" />
+          <input type="password" v-model="password" placeholder="Masukkan Password"/>
         </div>
-
 
         <div class="form-group">
-          <label>Status<span class="red">*</span></label>
-          <select v-model="status">
-            <option disabled value="">Pilih Status</option>
-            <option value="Aktif">Aktif</option>
-            <option value="Nonaktif">Nonaktif</option>
-          </select>
+          <label>Konfirmasi Password <span class="red">*</span></label>
+          <input type="password" v-model="konfirmasiPassword" placeholder="Masukkan Ulang Password"/>
         </div>
-
-
 
         <div class="form-actions">
           <button type="submit" class="btn simpan">Simpan</button>

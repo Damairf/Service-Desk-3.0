@@ -149,7 +149,7 @@ public function delete_Photo(Request $request){
         ]);
 
         $dataUser['Password'] = Hash::make($dataUser['Password']);
-        
+
         $user = User::where('ID_User', $userId)->first();
 
         $user->update($dataUser);
@@ -162,6 +162,13 @@ public function delete_Photo(Request $request){
         User::where('ID_User', $userId)->update(['Status' => 'Nonaktif']);
 
         return response("User Dinonaktifkan");
+    }
+
+    public function undoDelete_user(Request $request){
+        $userId = $request->route('userId');
+        User::where('ID_User', $userId)->update(['Status' => 'Aktif']);
+
+        return response("User Diaktifkan");
     }
 
     public function getUnit(Request $request){
