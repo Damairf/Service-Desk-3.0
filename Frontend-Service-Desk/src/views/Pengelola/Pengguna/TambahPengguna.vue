@@ -167,13 +167,13 @@ function handleReset() {
 
         <div class="form-group">
           <label>NIP<span class="red">*</span></label>
-          <input type="text" v-model="NIP" />
+          <input type="text" v-model="NIP" placeholder="NIP"/>
         </div>
 
         <div class="form-group">
           <label>Role<span class="red">*</span></label>
           <select v-model="idRoleTerpilih">
-            <option disabled value="">-- Pilih Role --</option>
+            <option disabled value="">Pilih Role</option>
             <option
               v-for="item in pilihanRole"
               :key="item.id_role"
@@ -187,7 +187,7 @@ function handleReset() {
         <div class="form-group">
           <label>Jabatan <span class="red">*</span></label>
           <select v-model="idJabatanTerpilih">
-            <option disabled value="">-- Pilih Jabatan --</option>
+            <option disabled value="">Pilih Jabatan</option>
             <option
               v-for="item in pilihanJabatan"
               :key="item.id_jabatan"
@@ -201,7 +201,7 @@ function handleReset() {
         <div class="form-group">
           <label>Organisasi <span class="red">*</span></label>
           <select v-model="idOrganisasiTerpilih">
-            <option disabled value="">-- Pilih Perangkat Daerah --</option>
+            <option disabled value="">Pilih Perangkat Daerah</option>
             <option
               v-for="item in pilihanInduk"
               :key="item.id_organisasi"
@@ -214,24 +214,23 @@ function handleReset() {
 
         <div class="form-group">
           <label>Password <span class="red">*</span></label>
-          <input type="password" v-model="password" />
+          <input type="password" v-model="password" placeholder="Masukkan Password"/>
         </div>
 
         <div class="form-group">
           <label>Konfirmasi Password <span class="red">*</span></label>
-          <input type="password" v-model="konfirmasiPassword" />
+          <input type="password" v-model="konfirmasiPassword" placeholder="Masukkan Ulang Password"/>
         </div>
 
 
         <div class="form-group">
           <label>Status<span class="red">*</span></label>
           <select v-model="status">
+            <option disabled value="">Pilih Status</option>
             <option value="Aktif">Aktif</option>
             <option value="Nonaktif">Nonaktif</option>
           </select>
         </div>
-
-
 
         <div class="form-actions">
           <button type="submit" class="btn simpan">Simpan</button>
@@ -241,8 +240,6 @@ function handleReset() {
     </div>
   </div>
 </template>
-
-
 
 <style scoped>
 .page-bg {
@@ -266,7 +263,7 @@ function handleReset() {
   overflow: hidden;
 }
 .form-card-header {
-  background: #bdbdbd;
+  background-color: #419A4C;
   color: #fff;
   font-size: 1.3rem;
   font-weight: 600;
@@ -284,7 +281,7 @@ function handleReset() {
 .required-text {
   color: #e60000;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 .red {
   color: #e60000;
@@ -296,6 +293,7 @@ function handleReset() {
 }
 .form-group label {
   font-weight: 500;
+  font-size: 1rem;
   margin-bottom: 0.4rem;
   color: #222;
 }
@@ -304,7 +302,7 @@ function handleReset() {
   padding: 0.6rem 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   background: #fafafa;
   transition: border 0.2s;
   color: black;
@@ -324,22 +322,24 @@ function handleReset() {
   padding: 0.7rem 2.2rem;
   border: none;
   border-radius: 2rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   color: #fff;
   transition: background 0.2s;
 }
 .btn.simpan {
-  background: #2da8e2;
+  font-family: 'Poppins';
+  background: #2BA9E4;
 }
 .btn.simpan:hover {
-  background: #1976d2;
+  background: #48B7ED;
 }
 .btn.hapus {
-  background: #c62828;
+  font-family: 'Poppins';
+  background: #e73030;
 }
 .btn.hapus:hover {
-  background: #a31515;
+  background: #ff4444;
 }
 </style>

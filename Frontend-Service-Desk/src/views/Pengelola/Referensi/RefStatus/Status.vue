@@ -102,56 +102,6 @@ watch(search, () => {
   currentPage.value = 1
 })
 
-// === Modal Delete ===
-const showModal = ref(false)
-const jabatanToDelete = ref("")
-function Delete(item) {
-  jabatanToDelete.value = item.nama
-  showModal.value = true
-}
-
-function cancelDelete() {
-  showModal.value = false
-  jabatanToDelete.value = null
-}
-
-// function confirmDelete() {
-//   const token = localStorage.getItem('Token');
-//   axios.delete(`http://127.0.0.1:8000/api/organisasi/${idOrganisasiToDelete.value}`, {
-//   headers: {
-//       Authorization: 'Bearer ' + token
-//     }
-//   })
-//   .then(() => {
-//   fetchDataOrganisasi();
-//   showModal.value = false
-//   idOrganisasiToDelete.value = null
-// })
-
-//   .catch(error => {
-//     console.error(error);
-//     alert(error.response?.data?.message || 'Terjadi kesalahan saat menghapus organisasi.');
-//   });
-// }
-
-//Countdown
-const countdown = ref(5)
-const isCounting = ref(false)
-let timer = null
-function startCountdown() {
-  countdown.value = 5
-  isCounting.value = true
-
-  timer = setInterval(() => {
-    if (countdown.value > 1) {
-      countdown.value--
-    } else {
-      clearInterval(timer)
-      isCounting.value = false
-    }
-  }, 1000)
-}
-
 function editStatus(status) {
   router.push({
     path: '/ubahStatus',
@@ -194,9 +144,7 @@ function editStatus(status) {
               <td>{{ formatDate(status.tglPembuatan) }}</td>
               <td>
                 <div class="wrapper-aksiBtn">
-                    <!-- functionnya belum ada -->
                     <button class="aksiEdit-btn" title="Edit" @click="editStatus(status)">Ubah</button>
-                    <button class="aksiDelete-btn" title="Delete" @click="Delete(status); startCountdown()">Hapus</button>
                 </div>
               </td>
             </tr>

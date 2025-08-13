@@ -331,7 +331,7 @@ function handleReset() {
 .required-text {
   color: #e60000;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 .red {
   color: #e60000;
@@ -343,6 +343,7 @@ function handleReset() {
 }
 .form-group label, .form-Layanan label {
   font-weight: 500;
+  font-size: 1rem;
   margin-bottom: 0.4rem;
   color: #222;
 }
@@ -351,7 +352,7 @@ function handleReset() {
   padding: 0.6rem 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   background: #fafafa;
   transition: border 0.2s;
   color: black;
@@ -378,7 +379,7 @@ textarea {
   padding: 0.6rem 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   height: 5rem;
   font-family: poppins, sans-serif;
 }
@@ -394,6 +395,7 @@ textarea {
   overflow-y: auto;
   background-color: white;
   border: 1px solid #ccc;
+  font-size: 0.9rem;
   z-index: 1000;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   list-style: none;
@@ -411,38 +413,39 @@ textarea {
   display: flex;
   justify-content: center;
   gap: 1.2rem;
-  margin-top: 2.2rem;
+  margin-top: 1rem;
 }
 .btn {
   padding: 0.7rem 2.2rem;
   border: none;
   border-radius: 2rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   color: #fff;
   transition: background 0.2s;
 }
 .btn.simpan {
-  background: #2da8e2;
+  font-family: 'Poppins';
+  background: #2BA9E4;
 }
 .btn.simpan:hover {
-  background: #1976d2;
+  background: #48B7ED;
 }
 .btn.hapus {
-  background: #c62828;
+  font-family: 'Poppins';
+  background: #e73030;
 }
 .btn.hapus:hover {
-  background: #a31515;
+  background: #ff4444;
 }
 .btn.tambah {
-  background: #4caf50;
-  margin-top: 1rem;
-  margin: 1rem auto 0 auto; /* ini bikin tombol ke tengah */
-  display: block; /* pastikan tombol jadi block element */
+  background: #009e3c;
+  margin: 1rem auto 0 auto;
+  display: block;
 }
 .btn.tambah:hover {
-  background: #388e3c;
+  background: #00cc4e;
 }
 .input-langkah {
   width: 100%;

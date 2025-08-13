@@ -48,7 +48,6 @@ import UbahJabatan from '../views/Pengelola/Referensi/RefJabatan/EditJabatan.vue
 
 // Jabatan
 import referensiStatus from '../views/Pengelola/Referensi/RefStatus/Status.vue'
-import TambahStatus from '../views/Pengelola/Referensi/RefStatus/TambahStatus.vue'
 import UbahStatus from '../views/Pengelola/Referensi/RefStatus/EditStatus.vue'
 
 // Jenis Pelayanan
@@ -162,7 +161,6 @@ const routes = [
   
   // Status
   { path: '/referensi/status', name: 'referensiStatus', component: referensiStatus, meta: {allowedRoles: [2]}},
-  { path: '/tambahStatus', name: 'TambahStatus', component: TambahStatus, meta: {allowedRoles: [2]}},
   { path: '/ubahStatus', name: 'UbahStatus', component: UbahStatus, meta: {allowedRoles: [2]}},
 
   // Sub Jenis Pelayanan

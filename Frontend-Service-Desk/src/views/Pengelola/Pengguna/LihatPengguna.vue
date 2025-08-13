@@ -49,8 +49,6 @@ const token = localStorage.getItem('Token')
   </div>
 </template>
 
-
-
 <style scoped>
 .page-bg {
   min-height: 100vh;
@@ -73,7 +71,7 @@ const token = localStorage.getItem('Token')
   overflow: hidden;
 }
 .form-card-header {
-  background: #bdbdbd;
+  background-color: #419A4C;
   color: #fff;
   font-size: 1.3rem;
   font-weight: 600;
@@ -85,70 +83,6 @@ const token = localStorage.getItem('Token')
   padding: 2rem 2rem 2.5rem 2rem;
   background: #fff;
 }
-.form-note {
-  margin-bottom: 1.2rem;
-}
-.required-text {
-  color: #e60000;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-.red {
-  color: #e60000;
-}
-.form-group {
-  margin-bottom: 1.1rem;
-  display: flex;
-  flex-direction: column;
-}
-.form-group label {
-  font-weight: 500;
-  margin-bottom: 0.4rem;
-  color: #222;
-}
-.form-group input,
-.form-group select {
-  padding: 0.6rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  background: #fafafa;
-  transition: border 0.2s;
-  color: black;
-}
-.form-group input:focus,
-.form-group select:focus {
-  border: 1.5px solid #2196f3;
-  outline: none;
-}
-.form-actions {
-  display: flex;
-  justify-content: center;
-  gap: 1.2rem;
-  margin-top: 2.2rem;
-}
-.btn {
-  padding: 0.7rem 2.2rem;
-  border: none;
-  border-radius: 2rem;
-  font-size: 1.2rem;
-  font-weight: 500;
-  cursor: pointer;
-  color: #fff;
-  transition: background 0.2s;
-}
-.btn.simpan {
-  background: #2da8e2;
-}
-.btn.simpan:hover {
-  background: #1976d2;
-}
-.btn.hapus {
-  background: #c62828;
-}
-.btn.hapus:hover {
-  background: #a31515;
-}
 
 .display-info {
   padding: 0.7rem;
@@ -156,6 +90,7 @@ const token = localStorage.getItem('Token')
   margin-bottom: 0.75rem;
   background-color: #f0f0f0;
   border-radius: 5px;
+  font-size: 0.9rem;
   border: 1px solid #ccc;
   width: 95%;
   display: inline-block;
