@@ -17,8 +17,6 @@ const daftarJenisPelayanan = ref([])
 
 const jenisPelayananId = ref(route.query.JenisPelayananId)
 
-const dropdownTerbukaJenisPelayanan = ref(false)
-
 const readonlyMode = ref(route.query.viewOnly === 'true')
 
 onMounted(() => {
@@ -116,7 +114,6 @@ function cariLangkahYangCocok(teksYangDiketik) {
 function pilihJenisPelayanan(pelayanan) {
   jenisPelayananNama.value = pelayanan.Nama_Jenis_Pelayanan
   jenisPelayananId.value = pelayanan.ID_Jenis_Pelayanan
-  dropdownTerbukaJenisPelayanan.value = false
 }
 
 // Ketika langkah pelayanan dipilih dari dropdown
@@ -211,27 +208,24 @@ function handleReset() {
 
         <div class="form-group dropdown-container">
           <label>Jenis Pelayanan<span class="red">*</span></label>
-          <input
-            type="text"
-            placeholder="Pilih Jenis Pelayanan"
-            v-model="jenisPelayananNama"
-            readonly
+          <select
+            v-model="jenisPelayananId"
+            @change="event => {
+              const id = event.target.value;
+              const pelayanan = daftarJenisPelayanan.find(p => p.ID_Jenis_Pelayanan == id);
+              pilihJenisPelayanan(pelayanan);
+            }"
             :disabled="readonlyMode"
-            @focus="dropdownTerbukaJenisPelayanan = true"
-            @blur="setTimeout(() => dropdownTerbukaJenisPelayanan = false, 100)"
           >
-          <ul
-            v-if="dropdownTerbukaJenisPelayanan"
-            class="dropdown"
-          >
-            <li
+            <option value="" disabled>Pilih Jenis Pelayanan</option>
+            <option
               v-for="pelayanan in daftarJenisPelayanan"
               :key="pelayanan.ID_Jenis_Pelayanan"
-              @mousedown="pilihJenisPelayanan(pelayanan)"
+              :value="pelayanan.ID_Jenis_Pelayanan"
             >
               {{ pelayanan.Nama_Jenis_Pelayanan }}
-            </li>
-          </ul>
+            </option>
+          </select>
         </div>
 
         <div class="form-group">

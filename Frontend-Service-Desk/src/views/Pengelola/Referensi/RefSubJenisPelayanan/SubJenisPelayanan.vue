@@ -60,7 +60,7 @@ const fetchDataSubJenisPelayanan = () => {
       nama: item.Nama_Sub_Jenis_Pelayanan,
       persyaratan: item.Persyaratan,
       nama_jenis_pelayanan: item.sub__jns_pelayanan.Nama_Jenis_Pelayanan,
-      id_jenis_pelayanan: item.ID_Jenis_Pelayanan,
+      id_jenis_pelayanan: item.sub__jns_pelayanan.ID_Jenis_Pelayanan,
       tglPembuatan: item.created_at || '-'
     }))
   })

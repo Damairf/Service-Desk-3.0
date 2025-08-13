@@ -188,7 +188,7 @@ function handleReset() {
         <div class="form-group dropdown-container">
           <label>Jenis Pelayanan<span class="red">*</span></label>
           <select
-          v-model="jenisPelayananId"
+            v-model="jenisPelayananId"
             @change="event => {
               const id = event.target.value;
               const pelayanan = daftarJenisPelayanan.find(p => p.ID_Jenis_Pelayanan == id);
