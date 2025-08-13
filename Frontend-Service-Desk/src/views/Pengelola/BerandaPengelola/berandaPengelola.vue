@@ -219,7 +219,7 @@ const fetchDashboardData = async (token) => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding-left: 16px;
   padding-right: 16px;
-  height: 300px; /* Match the chart height for consistency */
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
