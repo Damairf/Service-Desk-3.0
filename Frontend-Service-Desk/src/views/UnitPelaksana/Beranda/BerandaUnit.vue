@@ -137,6 +137,23 @@ onBeforeMount(() => {
       margin-top: 2rem;
     }
 
+    .chart-box {
+      background-color: white;
+      width: 100%;
+      max-width: 33rem;
+      min-width: 250px;
+      height: 19rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+
     @media (max-width: 900px) {
       .boxHolder {
         flex-direction: column;
@@ -190,7 +207,7 @@ onBeforeMount(() => {
   
 .chart-box {
   flex: 1;
-  min-width: 250px;
+  width: 100px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
