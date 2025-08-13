@@ -110,7 +110,7 @@ const configProgressBulanIni = {
   </div>
   <!-- Tidak ada data -->
   <div v-else>
-    <p>Tidak ada data untuk ditampilkan</p>
+    <p>Tidak ada data untuk ditampilkan untuk Progress Bulan ini</p>
   </div>
 </div>
 </template>
@@ -123,7 +123,7 @@ const configProgressBulanIni = {
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} 
 
 .chart-wrapper {
   width: 100%;

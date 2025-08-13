@@ -107,7 +107,7 @@ const configPermintaanLayanan = {
   </div>
   <!-- Tidak ada data -->
   <div v-else>
-    <p>Tidak ada data untuk ditampilkan</p>
+    <p>Tidak ada data untuk ditampilkan untuk Permintaan Layanan</p>
   </div>
 </div>
 </template>
