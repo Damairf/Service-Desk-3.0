@@ -67,11 +67,15 @@ onBeforeMount(() => {
             <p>Disposisikan permintaan pelayanan yang telah disetujui</p>
             <button class="lacak" @click="router.push('/disposisi')">Disposisi</button>
           </div>
+            <div class="chart-box">
+              <div class="chart-container">
+                <ChartProgressKeseluruhan/>
+              </div>
+            </div>
           <div class="chart-box">
-            <ChartProgressKeseluruhan />
-          </div>
-          <div class="chart-box">
-            <ChartProgressBulanIni />
+            <div class="chart-container">
+              <ChartProgressBulanIni />
+            </div>
           </div>
         </div>
       </div>
@@ -122,23 +126,6 @@ onBeforeMount(() => {
       max-width: 35rem;
       min-width: 250px;
       height: 30rem;
-      border-radius: 8px;
-      box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 2rem;
-    }
-
-    .chart-box {
-      background-color: white;
-      width: 100%;
-      max-width: 35rem;
-      min-width: 250px;
-      height: 100%;
       border-radius: 8px;
       box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
       position: relative;
@@ -209,6 +196,10 @@ onBeforeMount(() => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding-left: 16px;
   padding-right: 16px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chart-container {
@@ -238,4 +229,4 @@ onBeforeMount(() => {
   font-weight: 600;
   margin-bottom: 12px;
 }
-    </style>
+</style>
