@@ -168,7 +168,7 @@ onBeforeMount(() => {
       margin-top: 1.2rem;
       transition: transform 0.1s ease;
     
-      /*text*/
+      /*teks*/
       font-size: 1.25rem;
       font-weight: bold;
       padding: 1rem 3rem;

@@ -240,7 +240,7 @@ p.error {
   color: #ef4444;
 }
 
-/* Loading States */
+/* Loading */
 .loading-container-login {
   display: flex;
   flex-direction: column;

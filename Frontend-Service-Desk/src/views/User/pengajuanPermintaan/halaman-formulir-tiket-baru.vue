@@ -8,7 +8,7 @@ onUnmounted(() => {
   localStorage.removeItem('ID_Sub_Jenis_Pelayanan');
 });
 
-// nerima dari pengajuanPermintaan.vue
+// Menerima dari pengajuanPermintaan.vue
 const route = useRoute()
 const layanan = ref(route.query.layanan || '')
 const persyaratan = ref(route.query.persyaratan || '')
@@ -102,7 +102,7 @@ async function handleSubmit(){
   }
 
   if (isLoading.value) {
-    return; // Prevent multiple submissions
+    return; // Untuk mencegah multiple submissions
   }
 
 const confirmSubmit = window.confirm("Apakah Anda yakin ingin mengirim permintaan ini?");
@@ -113,7 +113,7 @@ const confirmSubmit = window.confirm("Apakah Anda yakin ingin mengirim permintaa
 const uploaded = await uploadFiles()
 
 if (!uploaded) {
-  isLoading.value = false; // Stop loading if upload fails
+  isLoading.value = false; // Stop loading jika upload gagal
   return;
 }
 

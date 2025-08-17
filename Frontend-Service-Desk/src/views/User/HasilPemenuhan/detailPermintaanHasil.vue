@@ -6,7 +6,7 @@ import axios from 'axios'
 const router = useRouter()
 const route = useRoute()
 
-// State management
+// Manajemen state
 const userId = ref(localStorage.getItem('user_id'));
 const pelayananId = ref(route.query.layanan || '-')
 const steps = ref([])
@@ -37,7 +37,7 @@ const messages = ref([])
 
 const activeTab = ref('informasi')
 
-// Loading states
+// Loading
 const isLoading = ref(true)
 const isDataLoaded = ref(false)
 
