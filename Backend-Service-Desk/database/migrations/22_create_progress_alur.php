@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('progress_alur', function (Blueprint $table) {
             $table->id("ID_Progress_Alur");
-            $table->string("ID_Pelayanan", 10)->nullable(false);
             $table->unsignedBigInteger("ID_Alur")->nullable(false);
+            $table->string("ID_Pelayanan", 10)->nullable(false);
             $table->boolean("Is_Done")->default(false)->nullable(false);
             $table->timestamps();
 

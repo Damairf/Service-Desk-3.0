@@ -17,7 +17,7 @@ RUN composer install
 
 # Expose port
 EXPOSE 8000
-
+    
 # Copy entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

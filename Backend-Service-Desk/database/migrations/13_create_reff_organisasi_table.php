@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('reff_organisasi', function (Blueprint $table) {
             $table->id('ID_Organisasi');
-            $table->string('Nama_OPD')->nullable(false);
             $table->unsignedBigInteger('ID_Induk_Organisasi')->nullable();
+            $table->string('Nama_OPD')->nullable(false);
             $table->string('Nama_Pengelola')->nullable(false);
             $table->string('No_HP_Pengelola')->nullable(false);
             $table->string('Email')->nullable(false);
