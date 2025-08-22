@@ -2,7 +2,7 @@ Proyek Service Desk Versi 3.0 dari Tim Magang UNDIP
 
 [KEBUTUHAN]
 - Vue 3 + Vite
-- Laravel 13
+- Laravel 12
 - MySQL
 - Akun google developer Recaptcha
 
